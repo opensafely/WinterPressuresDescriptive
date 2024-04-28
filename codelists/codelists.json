@@ -1,3 +1,178 @@
 {
-  "files": {}
+  "files": {
+    "opensafely-asthma-diagnosis-snomed.csv": {
+      "id": "opensafely/asthma-diagnosis-snomed/2020-04-15",
+      "url": "https://www.opencodelists.org/codelist/opensafely/asthma-diagnosis-snomed/2020-04-15/",
+      "downloaded_at": "2024-04-28 15:38:17.689593Z",
+      "sha": "884477b8c56a7e29ef1684d5a7ea3cfd6f75b566"
+    },
+    "bristol-asthma-medications-bnf.csv": {
+      "id": "bristol/asthma-medications-bnf/7d1f49e6",
+      "url": "https://www.opencodelists.org/codelist/bristol/asthma-medications-bnf/7d1f49e6/",
+      "downloaded_at": "2024-04-28 15:38:18.079718Z",
+      "sha": "2bd8068b361bc652075daa324ec539f60f7a8380"
+    },
+    "user-hjforbes-type-1-diabetes.csv": {
+      "id": "user/hjforbes/type-1-diabetes/674fbd7a",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/type-1-diabetes/674fbd7a/",
+      "downloaded_at": "2024-04-28 15:38:18.484644Z",
+      "sha": "54a7772024e03c2129cb0c0c7ba77944eacd054a"
+    },
+    "user-hjforbes-type-2-diabetes.csv": {
+      "id": "user/hjforbes/type-2-diabetes/3530d710",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/type-2-diabetes/3530d710/",
+      "downloaded_at": "2024-04-28 15:38:19.096804Z",
+      "sha": "08421a5b1e92d07e47cbab2e12ecd71856cee98a"
+    },
+    "user-hjforbes-nondiagnostic-diabetes-codes.csv": {
+      "id": "user/hjforbes/nondiagnostic-diabetes-codes/50f30a3b",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/nondiagnostic-diabetes-codes/50f30a3b/",
+      "downloaded_at": "2024-04-28 15:38:19.750140Z",
+      "sha": "3b3bd24a816d04aeaaad93495d8c04772a12672f"
+    },
+    "user-hjforbes-other-or-nonspecific-diabetes.csv": {
+      "id": "user/hjforbes/other-or-nonspecific-diabetes/0311f0a6",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/other-or-nonspecific-diabetes/0311f0a6/",
+      "downloaded_at": "2024-04-28 15:38:20.431347Z",
+      "sha": "1461877af2c069504535089d669e830616629f67"
+    },
+    "user-hjforbes-gestational-diabetes.csv": {
+      "id": "user/hjforbes/gestational-diabetes/1ed423d1",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/gestational-diabetes/1ed423d1/",
+      "downloaded_at": "2024-04-28 15:38:20.956383Z",
+      "sha": "4298a4affa79a1f04130cf5c630892a25819292c"
+    },
+    "opensafely-insulin-medication.csv": {
+      "id": "opensafely/insulin-medication/2020-04-26",
+      "url": "https://www.opencodelists.org/codelist/opensafely/insulin-medication/2020-04-26/",
+      "downloaded_at": "2024-04-28 15:38:22.077704Z",
+      "sha": "e0be9fcdb96da316ff672893b99f727ad4495364"
+    },
+    "opensafely-antidiabetic-drugs.csv": {
+      "id": "opensafely/antidiabetic-drugs/2020-07-16",
+      "url": "https://www.opencodelists.org/codelist/opensafely/antidiabetic-drugs/2020-07-16/",
+      "downloaded_at": "2024-04-28 15:38:22.646109Z",
+      "sha": "821d163d926e12fc6bd07fc78187f2756e1c221f"
+    },
+    "user-r_denholm-non-metformin-antidiabetic-drugs_bristol.csv": {
+      "id": "user/r_denholm/non-metformin-antidiabetic-drugs_bristol/7207eb58",
+      "url": "https://www.opencodelists.org/codelist/user/r_denholm/non-metformin-antidiabetic-drugs_bristol/7207eb58/",
+      "downloaded_at": "2024-04-28 15:38:23.545916Z",
+      "sha": "1ac45646e6612579a38b3eff64524c72d150c6f1"
+    },
+    "opensafely-type-1-diabetes-secondary-care.csv": {
+      "id": "opensafely/type-1-diabetes-secondary-care/2020-09-27",
+      "url": "https://www.opencodelists.org/codelist/opensafely/type-1-diabetes-secondary-care/2020-09-27/",
+      "downloaded_at": "2024-04-28 15:38:24.340029Z",
+      "sha": "e51303ce0e7eb6ac9e0d1763bd23e49b0f273429"
+    },
+    "user-r_denholm-type-2-diabetes-secondary-care-bristol.csv": {
+      "id": "user/r_denholm/type-2-diabetes-secondary-care-bristol/0b7f6cd4",
+      "url": "https://www.opencodelists.org/codelist/user/r_denholm/type-2-diabetes-secondary-care-bristol/0b7f6cd4/",
+      "downloaded_at": "2024-04-28 15:38:24.947544Z",
+      "sha": "64dfc55f964cd811b59f0d142d661e1ad1b26f29"
+    },
+    "nhsd-primary-care-domain-refsets-hyp_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/hyp_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/hyp_cod/20210127/",
+      "downloaded_at": "2024-04-28 15:38:25.852551Z",
+      "sha": "2c1fb493d94ce1610482d575ef14c35bd09e47c1"
+    },
+    "user-elsie_horne-hypertension_icd10.csv": {
+      "id": "user/elsie_horne/hypertension_icd10/1a48296e",
+      "url": "https://www.opencodelists.org/codelist/user/elsie_horne/hypertension_icd10/1a48296e/",
+      "downloaded_at": "2024-04-28 15:38:26.258989Z",
+      "sha": "196b2688d715a5265757642853d94f824741f783"
+    },
+    "user-elsie_horne-hypertension_drugs_dmd.csv": {
+      "id": "user/elsie_horne/hypertension_drugs_dmd/0009f464",
+      "url": "https://www.opencodelists.org/codelist/user/elsie_horne/hypertension_drugs_dmd/0009f464/",
+      "downloaded_at": "2024-04-28 15:38:26.936572Z",
+      "sha": "9d97d2f8dd93c7942db9463b4e5e300a5ec35a85"
+    },
+    "user-elsie_horne-copd_snomed.csv": {
+      "id": "user/elsie_horne/copd_snomed/419c1000",
+      "url": "https://www.opencodelists.org/codelist/user/elsie_horne/copd_snomed/419c1000/",
+      "downloaded_at": "2024-04-28 15:38:27.461585Z",
+      "sha": "8621c69b3c52fd62b4ed4811411037eb9a2c9bb1"
+    },
+    "user-elsie_horne-copd_icd10.csv": {
+      "id": "user/elsie_horne/copd_icd10/5aab8335",
+      "url": "https://www.opencodelists.org/codelist/user/elsie_horne/copd_icd10/5aab8335/",
+      "downloaded_at": "2024-04-28 15:38:27.918679Z",
+      "sha": "06a1624b3719e3185010fa65aa7322d9176f914c"
+    },
+    "bristol-copd-medications-bnf.csv": {
+      "id": "bristol/copd-medications-bnf/4b00637c",
+      "url": "https://www.opencodelists.org/codelist/bristol/copd-medications-bnf/4b00637c/",
+      "downloaded_at": "2024-04-28 15:38:28.380976Z",
+      "sha": "821a27601a67cb992663a4a84c4d493d53c4e924"
+    },
+    "user-hjforbes-severe-mental-illness.csv": {
+      "id": "user/hjforbes/severe-mental-illness/2dd5e1c0",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/severe-mental-illness/2dd5e1c0/",
+      "downloaded_at": "2024-04-28 15:38:28.843451Z",
+      "sha": "34556a280d7c7e90ce823c84930a5209f011ad0e"
+    },
+    "user-kurttaylor-bipolar_and_mood_disorders_icd10.csv": {
+      "id": "user/kurttaylor/bipolar_and_mood_disorders_icd10/66d4dd3a",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/bipolar_and_mood_disorders_icd10/66d4dd3a/",
+      "downloaded_at": "2024-04-28 15:38:29.233366Z",
+      "sha": "8aad947d0f8a0496d5996b7469641526e669c37c"
+    },
+    "user-kurttaylor-other-psychotic_disorders_icd10.csv": {
+      "id": "user/kurttaylor/other-psychotic_disorders_icd10/69879d30",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/other-psychotic_disorders_icd10/69879d30/",
+      "downloaded_at": "2024-04-28 15:38:29.702511Z",
+      "sha": "31f303bbe7399676e9b2c56fc93db68ca8be1366"
+    },
+    "user-kurttaylor-schizophrenia_icd10.csv": {
+      "id": "user/kurttaylor/schizophrenia_icd10/3768b6c6",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/schizophrenia_icd10/3768b6c6/",
+      "downloaded_at": "2024-04-28 15:38:30.329583Z",
+      "sha": "532c3cc57b47d2854a36bba221be2e3ed1372e0f"
+    },
+    "opensafely-second-generation-antipsychotics-excluding-long-acting-injections.csv": {
+      "id": "opensafely/second-generation-antipsychotics-excluding-long-acting-injections/6c7c3c11",
+      "url": "https://www.opencodelists.org/codelist/opensafely/second-generation-antipsychotics-excluding-long-acting-injections/6c7c3c11/",
+      "downloaded_at": "2024-04-28 15:38:37.810898Z",
+      "sha": "c145115e96476895687b9f617efe3efee9ac1251"
+    },
+    "opensafely-prochlorperazine-dmd.csv": {
+      "id": "opensafely/prochlorperazine-dmd/058baf47",
+      "url": "https://www.opencodelists.org/codelist/opensafely/prochlorperazine-dmd/058baf47/",
+      "downloaded_at": "2024-04-28 15:38:38.441727Z",
+      "sha": "0ab5bc20f5d21839341f4c4a43808ea60e8a1647"
+    },
+    "user-hjforbes-intentional-self-harm-aged10-years.csv": {
+      "id": "user/hjforbes/intentional-self-harm-aged10-years/18951e5c",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/intentional-self-harm-aged10-years/18951e5c/",
+      "downloaded_at": "2024-04-28 15:38:39.604798Z",
+      "sha": "1178e91131e6c33a05854dc0c80e5b1bc96d4604"
+    },
+    "user-hjforbes-undetermined-intent-self-harm-aged15-years.csv": {
+      "id": "user/hjforbes/undetermined-intent-self-harm-aged15-years/4d66c4bc",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/undetermined-intent-self-harm-aged15-years/4d66c4bc/",
+      "downloaded_at": "2024-04-28 15:38:40.686580Z",
+      "sha": "f1984cc22e5046b1f68319d8459e0715106768e0"
+    },
+    "user-kurttaylor-self_harm_intentional_10_years_icd10.csv": {
+      "id": "user/kurttaylor/self_harm_intentional_10_years_icd10/1e594391",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/self_harm_intentional_10_years_icd10/1e594391/",
+      "downloaded_at": "2024-04-28 15:38:41.122242Z",
+      "sha": "3b51af8285b5b0499a48c31f9dd96910007acc80"
+    },
+    "user-kurttaylor-self_harm_undetermined_intent_15_years_icd10.csv": {
+      "id": "user/kurttaylor/self_harm_undetermined_intent_15_years_icd10/0549d05c",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/self_harm_undetermined_intent_15_years_icd10/0549d05c/",
+      "downloaded_at": "2024-04-28 15:38:41.739583Z",
+      "sha": "63966cb50c187d90c928792cdc6aada73d665ee3"
+    },
+    "user-hjforbes-suicide-icd-10.csv": {
+      "id": "user/hjforbes/suicide-icd-10/3b53a18e",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/suicide-icd-10/3b53a18e/",
+      "downloaded_at": "2024-04-28 15:38:42.436200Z",
+      "sha": "806be08bebc267e8abb26b8ceeefd713dacb1eb8"
+    }
+  }
 }
