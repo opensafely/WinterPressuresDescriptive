@@ -27,6 +27,8 @@ local files: dir "C:\Users\mz16609\OneDrive - University of Bristol\Documents - 
 	format date_collect %td
 	drop date
 	save workforce_master, replace
+
+	use workforce_master, clear
 	
 	
 	
