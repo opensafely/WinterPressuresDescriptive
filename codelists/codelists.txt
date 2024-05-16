@@ -35,13 +35,13 @@ user/kurttaylor/self_harm_undetermined_intent_15_years_icd10/0549d05c
 user/hjforbes/suicide-icd-10/3b53a18e
 opensafely/asthma-exacerbation-secondary-care/229001a8
 opensafely/pneumonia-secondary-care/2020-10-05
-user/ZoeMZou/coronary-artery-disease/086f1e63
-user/ZoeMZou/peripheral-artery-diseases/217e9198
+bristol/coronary-artery-disease/086f1e63
+bristol/peripheral-artery-diseases/217e9198
 opensafely/stroke-secondary-care/2020-10-05
 user/elsie_horne/ckd_icd10/0cca69a0
 opensafely/cardiovascular-secondary-care/20b63bd4
-user/ZoeMZou/fractures/3d40c4c3
-user/ZoeMZou/concussion/2431518e
+bristol/fractures/3d40c4c3
+bristol/concussion/72126b23
 opensafely/smoking-unclear/2020-04-29
 opensafely/smoking-clear/2020-04-29
 opensafely/ethnicity/2020-04-27

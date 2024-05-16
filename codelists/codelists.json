@@ -222,16 +222,16 @@
       "downloaded_at": "2024-04-29 23:00:09.170026Z",
       "sha": "866ab4f0ff144330c1a0ea28116c9d2073cf379a"
     },
-    "user-ZoeMZou-coronary-artery-disease.csv": {
-      "id": "user/ZoeMZou/coronary-artery-disease/086f1e63",
-      "url": "https://www.opencodelists.org/codelist/user/ZoeMZou/coronary-artery-disease/086f1e63/",
-      "downloaded_at": "2024-04-29 23:00:10.256091Z",
+    "bristol-coronary-artery-disease.csv": {
+      "id": "bristol/coronary-artery-disease/086f1e63",
+      "url": "https://www.opencodelists.org/codelist/bristol/coronary-artery-disease/086f1e63/",
+      "downloaded_at": "2024-05-16 14:06:55.528053Z",
       "sha": "a0a9f02fb446a219064d7095f9d6c696705b719e"
     },
-    "user-ZoeMZou-peripheral-artery-diseases.csv": {
-      "id": "user/ZoeMZou/peripheral-artery-diseases/217e9198",
-      "url": "https://www.opencodelists.org/codelist/user/ZoeMZou/peripheral-artery-diseases/217e9198/",
-      "downloaded_at": "2024-04-29 23:00:11.633279Z",
+    "bristol-peripheral-artery-diseases.csv": {
+      "id": "bristol/peripheral-artery-diseases/217e9198",
+      "url": "https://www.opencodelists.org/codelist/bristol/peripheral-artery-diseases/217e9198/",
+      "downloaded_at": "2024-05-16 14:06:56.098059Z",
       "sha": "63d964b08281e8a25611206bf510b2ea2edfac7a"
     },
     "opensafely-stroke-secondary-care.csv": {
@@ -252,16 +252,16 @@
       "downloaded_at": "2024-04-29 23:00:15.094731Z",
       "sha": "7c956ed25484f8c03dae29823031c27f2802914a"
     },
-    "user-ZoeMZou-fractures.csv": {
-      "id": "user/ZoeMZou/fractures/3d40c4c3",
-      "url": "https://www.opencodelists.org/codelist/user/ZoeMZou/fractures/3d40c4c3/",
-      "downloaded_at": "2024-04-29 23:00:15.801421Z",
+    "bristol-fractures.csv": {
+      "id": "bristol/fractures/3d40c4c3",
+      "url": "https://www.opencodelists.org/codelist/bristol/fractures/3d40c4c3/",
+      "downloaded_at": "2024-05-16 14:06:57.943478Z",
       "sha": "9beb6d8a2597feb80df4840e0d80a05bba485881"
     },
-    "user-ZoeMZou-concussion.csv": {
-      "id": "user/ZoeMZou/concussion/2431518e",
-      "url": "https://www.opencodelists.org/codelist/user/ZoeMZou/concussion/2431518e/",
-      "downloaded_at": "2024-04-29 23:00:16.935530Z",
+    "bristol-concussion.csv": {
+      "id": "bristol/concussion/72126b23",
+      "url": "https://www.opencodelists.org/codelist/bristol/concussion/72126b23/",
+      "downloaded_at": "2024-05-16 14:06:58.414434Z",
       "sha": "1a9213ad9b711c3eb079886fc1648c6babd7ab21"
     },
     "opensafely-smoking-unclear.csv": {
