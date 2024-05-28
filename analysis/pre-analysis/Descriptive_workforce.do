@@ -151,3 +151,8 @@ foreach id of local selected_ids {
 * Execute the plot command
 twoway `plotcmd', title("Subsample of Practices' Trajectories") xtitle("Time") ytitle("FTE(DPC) per 100,000 patients") legend(off) xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
 
+
+
+**Use R to visulise all the trajectories 
+use workforce_quar, clear 
+export delimited "workforce_quar.csv", replace
