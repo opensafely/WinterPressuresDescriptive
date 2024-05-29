@@ -37,14 +37,17 @@ ggsave("trajectories_ggplot_GP.png", width = 10, height = 6)
 
 ## Plot all data
 ggplot(gp_data, aes(x = time_num, y = gp_patient, group = prac_code, color = as.factor(prac_code))) +
-  geom_line() +
+  geom_line(alpha = 0.09) +
   labs(title = "Trajectories of FTE (GP) Over Time",
        x = "Time",
        y = "FTE(GP) per 100,000 patients",
        color = "prac_code") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+    legend.position = "none",
+    panel.background = element_rect(fill= "white", color = NA), 
+    plot.background = element_rect(fill= "white", color = NA)
+    )
 # Save the plot as a PNG file
 ggsave("trajectories_ggplot_GP_all.png", width = 10, height = 6)
 
@@ -73,14 +76,16 @@ ggplot(sampled_data_nurse, aes(x = time_num, y = nurse_patient, group = prac_cod
 ggsave("trajectories_ggplot_nurse.png", width = 10, height = 6)
 ## Plot all data
 ggplot(nurse_data, aes(x = time_num, y = nurse_patient, group = prac_code, color = as.factor(prac_code))) +
-  geom_line() +
+  geom_line(alpha = 0.09) +
   labs(title = "Trajectories of FTE (nurse) Over Time",
        x = "Time",
        y = "FTE(nurse) per 100,000 patients",
        color = "prac_code") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none",
+        panel.background = element_rect(fill= "white", color = NA), 
+        plot.background = element_rect(fill= "white", color = NA))
 # Save the plot as a PNG file
 ggsave("trajectories_ggplot_nurse_all.png", width = 10, height = 6)
 
@@ -108,13 +113,15 @@ ggsave("trajectories_ggplot_dpc.png", width = 10, height = 6)
 
 ## Plot all data
 ggplot(dpc_data, aes(x = time_num, y = dpc_patient, group = prac_code, color = as.factor(prac_code))) +
-  geom_line() +
+  geom_line(alpha = 0.09) +
   labs(title = "Trajectories of FTE (dpc) Over Time",
        x = "Time",
        y = "FTE(dpc) per 100,000 patients",
        color = "prac_code") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none",
+        panel.background = element_rect(fill= "white", color = NA), 
+        plot.background = element_rect(fill= "white", color = NA))
 # Save the plot as a PNG file
 ggsave("trajectories_ggplot_dpc_all.png", width = 10, height = 6)
