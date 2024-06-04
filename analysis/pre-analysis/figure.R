@@ -32,7 +32,7 @@ ggplot(sampled_data_gp, aes(x = time_num, y = gp_patient, group = prac_code, col
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
 legend.position = "none",
-panel.background = element_rect(fill= "white", color = NA), 
+panel.background = element_rect(fill= "grey78", color = NA), 
 plot.background = element_rect(fill= "white", color = NA))
 # Save the plot as a PNG file
 ggsave("trajectories_ggplot_GP.png", width = 10, height = 6)
@@ -47,7 +47,7 @@ ggplot(gp_data, aes(x = time_num, y = gp_patient, group = prac_code, color = as.
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "none",
-    panel.background = element_rect(fill= "white", color = NA), 
+    panel.background = element_rect(fill= "grey78", color = NA), 
     plot.background = element_rect(fill= "white", color = NA)
     )
 # Save the plot as a PNG file
