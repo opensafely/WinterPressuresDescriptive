@@ -156,3 +156,33 @@ twoway `plotcmd', title("Subsample of Practices' Trajectories") xtitle("Time") y
 **Use R to visulise all the trajectories 
 use workforce_quar, clear 
 export delimited "workforce_quar.csv", replace
+
+
+**Descriptive analysis 
+use workforce_quar, clear 
+drop if gp_patient>200
+drop if nurse_patient>200
+drop if dpc_patient>200
+collapse (mean) gp_patient (sd) sdgp_patient=gp_patient (median) medgp_patient=gp_patient (p25) iqr25gp_patient=gp_patient (p75) iqr75gp_patient=gp_patient, by(time_num)
+save time_stas_gp, replace 
+
+use workforce_quar, clear 
+drop if gp_patient>200
+drop if nurse_patient>200
+drop if dpc_patient>200
+collapse (mean) nurse_patient (sd) sdnurse_patient=nurse_patient (median) mednurse_patient=nurse_patient (p25) iqr25nurse_patient=nurse_patient (p75) iqr75nurse_patient=nurse_patient, by(time_num)
+save time_stas_nurse, replace 
+
+use workforce_quar, clear 
+drop if gp_patient>200
+drop if nurse_patient>200
+drop if dpc_patient>200
+collapse (mean) dpc_patient (sd) sddpc_patient=dpc_patient (median) meddpc_patient=dpc_patient (p25) iqr25dpc_patient=dpc_patient (p75) iqr75dpc_patient=dpc_patient, by(time_num)
+save time_stas_dpc, replace 
+
+use time_stas_gp, clear
+merge 1:1 time_num using time_stas_nurse, nogen
+merge 1:1 time_num using time_stas_dpc, nogen
+
+merge 1:1 cidB3106 qlet fa07day using f7_week_weekend_14052021, keep(match) nogen
+line gp_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
