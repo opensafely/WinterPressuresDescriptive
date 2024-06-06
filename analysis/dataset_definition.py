@@ -1,4 +1,5 @@
 from ehrql import create_dataset
+#bring table definitions from the TPP backend 
 from ehrql.tables.tpp import patients, practice_registrations
 
 dataset = create_dataset()
