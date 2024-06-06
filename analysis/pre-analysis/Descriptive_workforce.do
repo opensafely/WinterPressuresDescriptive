@@ -183,6 +183,7 @@ save time_stas_dpc, replace
 use time_stas_gp, clear
 merge 1:1 time_num using time_stas_nurse, nogen
 merge 1:1 time_num using time_stas_dpc, nogen
-
-merge 1:1 cidB3106 qlet fa07day using f7_week_weekend_14052021, keep(match) nogen
+save time_stas, replace
 line gp_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
+line nurse_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
+line dpc_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
