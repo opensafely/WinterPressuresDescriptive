@@ -555,21 +555,13 @@ depression_icd10 = codelist_from_csv(
     column="code"
 )
 
-
-
-
-# To update 
-
-
-
-
-
 # COCP
 cocp_dmd = codelist_from_csv(
     "codelists/user-elsie_horne-cocp_dmd.csv",
     system="snomed",
     column="dmd_id"
 )
+
 # Heart medication 
 hrt_dmd = codelist_from_csv(
     "codelists/user-elsie_horne-hrt_dmd.csv",
