@@ -455,6 +455,48 @@
       "url": "https://www.opencodelists.org/codelist/user/kurttaylor/depression_icd10/4dc56a05/",
       "downloaded_at": "2024-04-29 23:00:47.525736Z",
       "sha": "ae1ab7bb89c1636e7f582b9cb2a164221b1b1f46"
+    },
+    "primis-covid19-vacc-uptake-carer.csv": {
+      "id": "primis-covid19-vacc-uptake/carer/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/carer/v1/",
+      "downloaded_at": "2024-06-10 10:44:26.341945Z",
+      "sha": "e3526d8e7e1a3aaeeee29a3bb18c177243c218c6"
+    },
+    "primis-covid19-vacc-uptake-notcarer.csv": {
+      "id": "primis-covid19-vacc-uptake/notcarer/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/notcarer/v1/",
+      "downloaded_at": "2024-06-10 10:44:26.666474Z",
+      "sha": "94d7143d3baf5834ace777a28c88e8e5204955bb"
+    },
+    "primis-covid19-vacc-uptake-learndis.csv": {
+      "id": "primis-covid19-vacc-uptake/learndis/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/learndis/v1/",
+      "downloaded_at": "2024-06-10 10:44:26.996397Z",
+      "sha": "41f81fcb9fadb082a77cadd6cf60614d7c8d860f"
+    },
+    "primis-covid19-vacc-uptake-carehome.csv": {
+      "id": "primis-covid19-vacc-uptake/carehome/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/carehome/v1/",
+      "downloaded_at": "2024-06-10 10:44:27.326750Z",
+      "sha": "0543cdba73cfc6b892a94aad94beb7b4fd0ce8bb"
+    },
+    "primis-covid19-vacc-uptake-nursehome.csv": {
+      "id": "primis-covid19-vacc-uptake/nursehome/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/nursehome/v1/",
+      "downloaded_at": "2024-06-10 10:44:27.655111Z",
+      "sha": "91d03ec723ba5a6ab83b72d8307f68a5e4be2b4e"
+    },
+    "primis-covid19-vacc-uptake-domcare.csv": {
+      "id": "primis-covid19-vacc-uptake/domcare/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/domcare/v1/",
+      "downloaded_at": "2024-06-10 10:44:27.961459Z",
+      "sha": "711f760dbd4869a8836a7bf6bfc062c1fc286095"
+    },
+    "primis-covid19-vacc-uptake-longres.csv": {
+      "id": "primis-covid19-vacc-uptake/longres/v1",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/longres/v1/",
+      "downloaded_at": "2024-06-10 10:44:28.313865Z",
+      "sha": "4d4c94b9c6aa267c6a60657150bbc5ec7d2d7625"
     }
   }
 }
