@@ -184,6 +184,15 @@ use time_stas_gp, clear
 merge 1:1 time_num using time_stas_nurse, nogen
 merge 1:1 time_num using time_stas_dpc, nogen
 save time_stas, replace
-line gp_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
-line nurse_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
-line dpc_patient time_num, xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24" )
+use time_stas, clear
+
+twoway (line gp_patient time_num) ///
+       (line nurse_patient time_num) ///
+       (line dpc_patient time_num), ///
+       ylabel(0(5)60) ///
+       xlabel(1 "09/17" 3 "03/18" 5 "09/18" 7 "03/19" 9 "09/19" 11 "03/20" 13 "09/20" 15 "03/21" 17 "09/21" 19 "03/22" 21 "09/22" 23 "03/23" 25 "09/23" 27 "03/24", angle(45)) ///
+       ytitle("FTE per 100,000 patients") ///
+	   xtitle("Time") ///
+       legend(label(1 "GPs") label(2 "Nurses") label(3 "DPCs")) ///
+       title("Mean FTE Trajectories Over Time in All Practices", span margin(b=5) size(large) bcolor(white))
+graph export "C:\Users\mz16609\OpenSAFELY_IWP\ImpactWinterPressures\output\pre-analysis\trajectories_mean.png", replace
