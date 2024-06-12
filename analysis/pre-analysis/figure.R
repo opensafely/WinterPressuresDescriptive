@@ -33,18 +33,20 @@ unique_id_count_gp <- gp_data %>% summarise(unique_ids = n_distinct(prac_code))
 print(unique_id_count_gp)
 ## Plot the sub sample
 ggplot(sampled_data_gp, aes(x = time_num, y = gp_patient, group = prac_code, color = as.factor(prac_code))) +
-  geom_line() +  
-  labs(title = "Trajectories of FTE (GP) Over Time",
+  geom_line(alpha = 0.5) +  
+  labs(title = "Trajectories of FTE (GP) Over Time in Sampled Practices (n=360)",
   x = "Time",
   y = "FTE(GP) per 100,000 patients",
   color = "prac_code") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.position = "none",
-            panel.background = element_rect(fill= "grey78", color = NA), 
-            plot.background = element_rect(fill= "white", color = NA))
+            panel.background = element_rect(fill= "white", color = NA), 
+            plot.background = element_rect(fill= "white", color = NA),
+            plot.title = element_text(hjust = 0.5, face = "bold")  # Center and bold the title
+        )
 # Save the plot as a PNG file
-ggsave("trajectories_ggplot_GP.png", width = 10, height = 6)
+ggsave("C:/Users/mz16609/OpenSAFELY_IWP/ImpactWinterPressures/output/pre-analysis/trajectories_subsample_GP.png", width = 10, height = 6)
 
 ## Plot all data
 colnames(gp_data)
@@ -57,9 +59,9 @@ statistics <- gp_data %>%
   )
 ggplot(gp_data, aes(x = time_num, y = gp_patient, group = prac_code, color = as.factor(prac_code))) +
   geom_line(alpha = 0.09) + 
-  geom_line(data = statistics, aes(x = time_num, y = median_value, group = 1), color = "blue", size = 1.5, inherit.aes = FALSE) +  # Add median line
+  geom_line(data = statistics, aes(x = time_num, y = median_value, group = 1), color = "blue", size = 1.5, inherit.aes = FALSE) +  # Add median linehttp://127.0.0.1:34793/graphics/90b36c6a-4b7f-443e-86fd-aacdda3466e3.png
   geom_ribbon(data = statistics, aes(x = time_num, ymin = Q1, ymax = Q3, group = 1), fill = "blue", alpha = 0.2, inherit.aes = FALSE) +  # Add IQR ribbon
-  labs(title = "Trajectories of FTE (GP) Over Time",
+  labs(title = "Trajectories of FTE (GP) Over Time in All Practices (n=7206)",
        x = "Time",
        y = "FTE(GP) per 100,000 patients",
        color = "prac_code") +
@@ -73,7 +75,7 @@ ggplot(gp_data, aes(x = time_num, y = gp_patient, group = prac_code, color = as.
     plot.title = element_text(hjust = 0.5, face = "bold")  # Center and bold the title
     )
 # Save the plot as a PNG file
-ggsave("trajectories_ggplot_GP_all.png", width = 10, height = 6)
+ggsave("C:/Users/mz16609/OpenSAFELY_IWP/ImpactWinterPressures/output/pre-analysis/trajectories_all_GP.png", width = 10, height = 6)
 
 
 
@@ -92,16 +94,20 @@ unique_id_count_nurse <- nurse_data %>% summarise(unique_ids = n_distinct(prac_c
 print(unique_id_count_nurse)
 ## Plot the sub sample
 ggplot(sampled_data_nurse, aes(x = time_num, y = nurse_patient, group = prac_code, color = as.factor(prac_code))) +
-  geom_line() +
-  labs(title = "Trajectories of FTE (nurse) Over Time",
+  geom_line(alpha=0.5) +
+  labs(title = "Trajectories of FTE (Nurse) Over Time in Sampled Practices (n=360)",
        x = "Time",
        y = "FTE(nurse) per 100,000 patients",
        color = "prac_code") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none",
+        panel.background = element_rect(fill= "white", color = NA), 
+        plot.background = element_rect(fill= "white", color = NA),
+        plot.title = element_text(hjust = 0.5, face = "bold")  # Center and bold the title
+        )
 # Save the plot as a PNG file
-ggsave("trajectories_ggplot_nurse.png", width = 10, height = 6)
+ggsave("C:/Users/mz16609/OpenSAFELY_IWP/ImpactWinterPressures/output/pre-analysis/trajectories_subsample_nurse.png", width = 10, height = 6)
 ## Plot all data
 colnames(nurse_data)
 statistics_nurse <- nurse_data %>%
@@ -115,7 +121,7 @@ ggplot(nurse_data, aes(x = time_num, y = nurse_patient, group = prac_code, color
   geom_line(alpha = 0.09) +
   geom_line(data = statistics_nurse, aes(x = time_num, y = median_value, group = 1), color = "blue", size = 1.5, inherit.aes = FALSE) +  # Add median line
   geom_ribbon(data = statistics_nurse, aes(x = time_num, ymin = Q1, ymax = Q3, group = 1), fill = "blue", alpha = 0.2, inherit.aes = FALSE) +  # Add IQR ribbon
-  labs(title = "Trajectories of FTE (nurse) Over Time",
+  labs(title = "Trajectories of FTE (Nurse) Over Time in All Practices (n=7214)",
        x = "Time",
        y = "FTE(nurse) per 100,000 patients",
        color = "prac_code") +
@@ -129,7 +135,7 @@ ggplot(nurse_data, aes(x = time_num, y = nurse_patient, group = prac_code, color
         plot.title = element_text(hjust = 0.5, face = "bold")  # Center and bold the title
         )
 # Save the plot as a PNG file
-ggsave("trajectories_ggplot_nurse_all.png", width = 10, height = 6)
+ggsave("C:/Users/mz16609/OpenSAFELY_IWP/ImpactWinterPressures/output/pre-analysis/trajectories_all_nurse.png", width = 10, height = 6)
 
 ##### FTE (dpc)#####
 dpc_data <- data %>% filter(dpc_patient <= 200)
@@ -146,16 +152,20 @@ unique_id_count_dpc <- dpc_data %>% summarise(unique_ids = n_distinct(prac_code)
 print(unique_id_count_dpc)
 ## Plot the sub sample
 ggplot(sampled_data_dpc, aes(x = time_num, y = dpc_patient, group = prac_code, color = as.factor(prac_code))) +
-  geom_line() +
-  labs(title = "Trajectories of FTE (dpc) Over Time",
+  geom_line(alpha=0.5) +
+  labs(title = "Trajectories of FTE (DPC) Over Time in Sampled Practices (n=361)",
        x = "Time",
        y = "FTE(dpc) per 100,000 patients",
        color = "prac_code") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none",
+        panel.background = element_rect(fill= "white", color = NA), 
+        plot.background = element_rect(fill= "white", color = NA),
+        plot.title = element_text(hjust = 0.5, face = "bold")  # Center and bold the title
+        )
 # Save the plot as a PNG file
-ggsave("trajectories_ggplot_dpc.png", width = 10, height = 6)
+ggsave("C:/Users/mz16609/OpenSAFELY_IWP/ImpactWinterPressures/output/pre-analysis/trajectories_subsample_dpc.png", width = 10, height = 6)
 
 ## Plot all data
 colnames(dpc_data)
@@ -170,7 +180,7 @@ ggplot(dpc_data, aes(x = time_num, y = dpc_patient, group = prac_code, color = a
   geom_line(alpha = 0.09) +
   geom_line(data = statistics_dpc, aes(x = time_num, y = median_value, group = 1), color = "blue", size = 1.5, inherit.aes = FALSE) +  # Add median line
   geom_ribbon(data = statistics_dpc, aes(x = time_num, ymin = Q1, ymax = Q3, group = 1), fill = "blue", alpha = 0.2, inherit.aes = FALSE) +  # Add IQR ribbon
-  labs(title = "Trajectories of FTE (dpc) Over Time",
+  labs(title = "Trajectories of FTE (DPC) Over Time in All Practices (n=7223)",
        x = "Time",
        y = "FTE(dpc) per 100,000 patients",
        color = "prac_code") +
@@ -184,7 +194,7 @@ ggplot(dpc_data, aes(x = time_num, y = dpc_patient, group = prac_code, color = a
         plot.title = element_text(hjust = 0.5, face = "bold")  # Center and bold the title
         )
 # Save the plot as a PNG file
-ggsave("trajectories_ggplot_dpc_all.png", width = 10, height = 6)
+ggsave("C:/Users/mz16609/OpenSAFELY_IWP/ImpactWinterPressures/output/pre-analysis/trajectories_all_dpc.png", width = 10, height = 6)
 
 
 
