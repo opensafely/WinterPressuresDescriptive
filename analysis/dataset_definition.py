@@ -37,7 +37,7 @@ dataset.define_population(
     )
 )
 # Add additional columns to the dataset if needed
-dataset = dataset.add_columns(
+dataset = dataset.add_column(
     patient_id=patients.patient_id,
 
 # Outcomes- date of apc, opc, ec, and death
