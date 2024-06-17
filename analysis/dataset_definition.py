@@ -1,6 +1,6 @@
 from ehrql import codelist_from_csv, create_dataset, days
 #bring table definitions from the TPP backend 
-from ehrql.tables.tpp import patients, practice_registrations, clinical_events
+from ehrql.tables.tpp import patients, practice_registrations, addresses, apcs, ec, opa, clinical_events, medications, ons_deaths
 ## Codelists from codelists.py (which pulls all variables from the codelist folder)
 from codelists import *
 # Define study start and end dates
@@ -39,22 +39,32 @@ dataset.define_population(
 # Add additional columns to the dataset if needed
 dataset = dataset.add_columns(
     patient_id=patients.patient_id,
-    date_of_birth=patients.date_of_birth,
-    sex=patients.sex,
-    deprivation=patients.deprivation,
-    region=patients.region,
-    age=patients.age_on(study_start_date)
-# Outcomes
-    out_
+
+# Outcomes- date of apc, opc, and ec
+    out_date_apcadm=apcs.admission_date,
+    out_date_apcdis=apcs.discharge_date,
+    out_date_opcadm=opa.appointment_date,
+    out_date_ecadm=ec.arrival_date,
 # Covariates
 ## Age
+    cov_date_of_birth=patients.date_of_birth,
+    cov_cat_sex=patients.sex,
+    region=patients.region,
+    age=patients.age_on(study_start_date)
     cov_num_age = 
-
     cov_cat_age = 
 ## Ethnicity 
     cov_cat_ethnicity = 
 ## Region
     cov_cat_region =
-
-)
+## IMD
+    cov_cat_imd = addresses.for_patient_on("2023-01-01").imd_rounded
+    dataset.imd_quintile = case(
+        when((imd >=0) & (imd < int(32844 * 1 / 5))).then("1 (most deprived)"),
+        when(imd < int(32844 * 2 / 5)).then("2"),
+        when(imd < int(32844 * 3 / 5)).then("3"),
+        when(imd < int(32844 * 4 / 5)).then("4"),
+        when(imd < int(32844 * 5 / 5)).then("5 (least deprived)"),
+        otherwise="unknown"
+        )
 results = dataset.execute()
