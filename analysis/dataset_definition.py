@@ -40,23 +40,24 @@ dataset.define_population(
 dataset = dataset.add_columns(
     patient_id=patients.patient_id,
 
-# Outcomes- date of apc, opc, and ec
+# Outcomes- date of apc, opc, ec, and death
     out_date_apcadm=apcs.admission_date,
     out_date_apcdis=apcs.discharge_date,
     out_date_opcadm=opa.appointment_date,
     out_date_ecadm=ec.arrival_date,
+    out_date_death_tpp=patients.date_of_death,
+    out_date_death_ons=ons_deaths.date,
+    out_date_death_min=minimum_of(patients.date_of_death, ons_deaths.date),
 # Covariates
 ## Age
     cov_date_of_birth=patients.date_of_birth,
+    cov_num_age=patients.age_on(study_start_date),
+## Sex
     cov_cat_sex=patients.sex,
-    region=patients.region,
-    age=patients.age_on(study_start_date)
-    cov_num_age = 
-    cov_cat_age = 
 ## Ethnicity 
-    cov_cat_ethnicity = 
+    cov_cat_ethnicity = ethinicity_codelist,
 ## Region
-    cov_cat_region =
+    cov_cat_region=patients.region,
 ## IMD
     cov_cat_imd = addresses.for_patient_on("2023-01-01").imd_rounded
     dataset.imd_quintile = case(
@@ -67,4 +68,5 @@ dataset = dataset.add_columns(
         when(imd < int(32844 * 5 / 5)).then("5 (least deprived)"),
         otherwise="unknown"
         )
+)
 results = dataset.execute()
