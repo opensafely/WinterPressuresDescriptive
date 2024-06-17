@@ -1,4 +1,4 @@
-from ehrql import codelist_from_csv, create_dataset, days
+from ehrql import codelist_from_csv, create_dataset, days, minimum_of, case, when
 #bring table definitions from the TPP backend 
 from ehrql.tables.tpp import patients, practice_registrations, addresses, apcs, ec, opa, clinical_events, medications, ons_deaths
 ## Codelists from codelists.py (which pulls all variables from the codelist folder)
@@ -59,14 +59,14 @@ dataset = dataset.add_columns(
 ## Region
     cov_cat_region=patients.region,
 ## IMD
-    cov_cat_imd = addresses.for_patient_on("2023-01-01").imd_rounded
-    dataset.imd_quintile = case(
-        when((imd >=0) & (imd < int(32844 * 1 / 5))).then("1 (most deprived)"),
-        when(imd < int(32844 * 2 / 5)).then("2"),
-        when(imd < int(32844 * 3 / 5)).then("3"),
-        when(imd < int(32844 * 4 / 5)).then("4"),
-        when(imd < int(32844 * 5 / 5)).then("5 (least deprived)"),
-        otherwise="unknown"
-        )
+    cov_num_imd = addresses.for_patient_on("2023-01-01").imd_rounded
+    dov_cat_imd = case(
+        when((cov_num_imd >=0) & (cov_num_imd < int(32844 * 1 / 5))).then("1 (most deprived)"),
+        when(cov_num_imd < int(32844 * 2 / 5)).then("2"),
+        when(cov_num_imd < int(32844 * 3 / 5)).then("3"),
+        when(cov_num_imd < int(32844 * 4 / 5)).then("4"),
+        when(cov_num_imd < int(32844 * 5 / 5)).then("5 (least deprived)"),
+        otherwise="unknown",
+    )
 )
 results = dataset.execute()
