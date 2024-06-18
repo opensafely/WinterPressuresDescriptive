@@ -1,6 +1,6 @@
 from ehrql import (codelist_from_csv, create_dataset, days, minimum_of, case, when,)
 # Bring table definitions from the TPP backend 
-from ehrql.tables.tpp import (patients, practice_registrations, addresses, apcs, ec, opa, clinical_events, medications, ons_deaths,)
+from ehrql.tables.tpp import (patients, practice_registrations, addresses, apcs, ec, opa, opa_diag, clinical_events, medications, ons_deaths,)
 # Codelists from codelists.py (which pulls all variables from the codelist folder)
 from codelists import *
 # Define study start and end dates
@@ -28,7 +28,7 @@ dataset.define_population(
     & was_registered
 )
 
-# Outcomes- date of apc, opc, ec, and death
+# Outcomes- total number of apc, opc, ec, and the date of death
 ## time period depending on the time period of winter pressure
 dataset.out_ct_apc=apcs.where(
     apcs.admission_date.is_on_or_between(
@@ -51,6 +51,101 @@ dataset.out_ct_ec=ec.where(
 dataset.out_date_death_tpp=patients.date_of_death
 dataset.out_date_death_ons=ons_deaths.date
 dataset.out_date_death_min=minimum_of(patients.date_of_death, ons_deaths.date)
+
+# Cohorts indicator (return a Boolean variable to indicate T-had disease before start date; otherwise F)
+## Asthma (?bnf codes not in medications table )
+
+dataset.had_asthma = (
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(ast_codelist)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (medications.where(
+        (medications.dmd_code.is_in(salbutamol_codes + ics_codes + pred_codes)) &
+        (medications.date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+
+## Diabetes
+dataset.had_diabetes = (
+    (clinical_events.where(
+        (clinical_events.ctv3_code.is_in(diabetes_type1_snomed_clinical + 
+        diabetes_type2_snomed_clinical + 
+        diabetes_diagnostic_snomed_clinical + 
+        diabetes_other_snomed_clinical + 
+        diabetes_gestational_snomed_clinical + 
+        diabetes_permanent_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (medications.where(
+        ((medications.dmd_code.is_in(insulin_snomed_clinical)) | 
+        (medications.dmd_code.is_in(antidiabetic_drugs_snomed_clinical)) |
+        (medications.dmd_code.is_in(non_metformin_dmd))) &
+        (medications.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(diabetes_type1_icd10)) | 
+        (apcs.primary_diagnosis.is_in(diabetes_type2_icd10)) |
+        (apcs.secondary_diagnosis.is_in(diabetes_type1_icd10)) |
+        (apcs.secondary_diagnosis.is_in(diabetes_type2_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(diabetes_type1_icd10)) | 
+        (opa_diag.primary_diagnosis_code.is_in(diabetes_type2_icd10)) |
+        (opa_diag.secondary_diagnosis_code_1.is_in(diabetes_type1_icd10)) |
+        (opa_diag.secondary_diagnosis_code_1.is_in(diabetes_type2_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+
+## Hypertension
+dataset.had_hypertension = (
+    (clinical_events.where(
+        ((clinical_events.snomedct_code.is_in(hypertension_snomed_clinical)) |
+        (clinical_events.ctv3_code.is_in(hypertension_codes))) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (medications.where(
+        ((medications.dmd_code.is_in(hypertension_drugs_dmd))) &
+        (medications.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(hypertension_icd10)) |
+        (apcs.secondary_diagnosis.is_in(hypertension_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+            (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(hypertension_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(hypertension_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## COPD (?bnf codes not in medications table)
+dataset.had_copd = (
+    (clinical_events.where(
+        ((clinical_events.snomedct_code.is_in(copd_snomed_clinical))) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(copd_icd10)) |
+        (apcs.secondary_diagnosis.is_in(copd_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+            (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(copd_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(copd_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## Severe mental illness
+
+
+## Self-harm
+
+
+
+
 # Covariates
 ## Age
 dataset.cov_date_of_birth=patients.date_of_birth
