@@ -268,10 +268,10 @@ concussion_icd10 = codelist_from_csv(
 ############Confounders##########################
 #################################################
 #Ethnicity 
-ethinicity_codelist = codelist_from_csv(
+ethnicity_codelist = codelist_from_csv(
     "codelists/opensafely-ethnicity.csv",
     column="Code",
-    category_column="Grouping_6"
+    category_column="Grouping_6",
 )
 
 # Smoking
