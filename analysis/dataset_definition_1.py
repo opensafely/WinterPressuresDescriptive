@@ -172,4 +172,73 @@ dataset.cov_cat_imd = case(
     otherwise="unknown",
 )
 
-# All Health Outcomes for Different Cohorts - total number of events in apc, opc, ec
+# All Health Outcomes for Different Cohorts - total number of events in apc and opc
+
+## Asthma Exacerbation
+dataset.out_ast_exacerbation_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(ast_exacerbation_icd10)) |
+        (apcs.secondary_diagnosis.is_in(ast_exacerbation_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_ast_exacerbation_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(ast_exacerbation_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(ast_exacerbation_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+
+## Pneumonia due to [asthma or COPD]
+pneu_icd10 = codelist_from_csv(
+    "codelists/opensafely-pneumonia-secondary-care.csv", 
+    column="ICD code"
+)
+
+# Coronary Artery Disease due to [diabetes or hypertension]
+cad_icd10 = codelist_from_csv(
+    "codelists/bristol-coronary-artery-disease.csv", 
+    column="code"
+)
+
+# Peripheral Artery Disease due to [diabetes or hypertension]
+pad_icd10 = codelist_from_csv(
+    "codelists/bristol-peripheral-artery-diseases.csv", 
+    column="code"
+)
+
+# Acute Ischaemic Stroke due to [diabetes or hypertension]
+stroke_icd10 = codelist_from_csv(
+    "codelists/opensafely-stroke-secondary-care.csv", 
+    column="icd"
+)
+stroke_isch_icd10 = codelist_from_csv(
+    "codelists/user-RochelleKnight-stroke_isch_icd10.csv",
+    column="code",
+)
+# Chronic Kidney Disease due to [diabetes]
+ckd_icd10 = codelist_from_csv(
+    "codelists/user-elsie_horne-ckd_icd10.csv",
+    column="code"
+)
+
+# Cardiovascular including MI and Heart failure
+cardiovascular_icd10 = codelist_from_csv(
+    "codelists/opensafely-cardiovascular-secondary-care.csv", 
+    column="icd"
+)
+
+# Suicide
+suicide_icd10 = codelist_from_csv(
+    "codelists/user-hjforbes-suicide-icd-10.csv",
+    column="code"
+)
+
+# Negative Control Outcome-Fractures
+fracture_icd10 = codelist_from_csv(
+    "codelists/bristol-fractures.csv",
+    column="code"
+)
+# Negative Control Outcome-Concussion
+concussion_icd10 = codelist_from_csv(
+    "codelists/bristol-concussion.csv",
+    column="code"
+)
