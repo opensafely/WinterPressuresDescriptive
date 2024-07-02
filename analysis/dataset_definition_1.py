@@ -28,7 +28,7 @@ dataset.define_population(
     & was_registered
 )
 
-# Outcomes- total number of apc, opc, ec, and the date of death
+# Outcomes for general population- total number of apc, opc, ec, and the date of death
 ## time period depending on the time period of winter pressure
 dataset.out_ct_apc=apcs.where(
     apcs.admission_date.is_on_or_between(
@@ -172,4 +172,4 @@ dataset.cov_cat_imd = case(
     otherwise="unknown",
 )
 
-
+# All Health Outcomes for Different Cohorts - total number of events in apc, opc, ec
