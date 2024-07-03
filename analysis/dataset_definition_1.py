@@ -53,7 +53,7 @@ dataset.out_date_death_ons=ons_deaths.date
 dataset.out_date_death_min=minimum_of(patients.date_of_death, ons_deaths.date)
 
 # Cohorts indicator (return a Boolean variable to indicate T-had disease before start date; otherwise F)
-## Asthma (?bnf codes not in medications table )
+## Asthma (?bnf codes not in medications table, dm+d map does not work)
 
 dataset.had_asthma = (
     (clinical_events.where(
@@ -121,7 +121,7 @@ dataset.had_hypertension = (
         (opa_diag.appointment_date.is_before(study_start_date))
     ).exists_for_patient())
 )
-## COPD (?bnf codes not in medications table)
+## COPD (?bnf codes not in medications table, dm+d map does not work)
 dataset.had_copd = (
     (clinical_events.where(
         ((clinical_events.snomedct_code.is_in(copd_snomed_clinical))) &
@@ -139,10 +139,44 @@ dataset.had_copd = (
     ).exists_for_patient())
 )
 ## Severe mental illness
-
+dataset.had_severemh = (
+    (clinical_events.where(
+        ((clinical_events.snomedct_code.is_in(serious_mental_illness_snomed_clinical))) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (medications.where(
+        ((medications.dmd_code.is_in(antipsychotics_dmd + prochlorperazine_dmd))) &
+        (medications.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10)) |
+        (apcs.secondary_diagnosis.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+            (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 
 ## Self-harm
-
+dataset.had_selfharm = (
+    (clinical_events.where(
+        ((clinical_events.snomedct_code.is_in(self_harm_15_10_combined_snomed))) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(self_harm_15_10_combined_icd10)) |
+        (apcs.secondary_diagnosis.is_in(self_harm_15_10_combined_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+            (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(self_harm_15_10_combined_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(self_harm_15_10_combined_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 
 
 
@@ -188,57 +222,147 @@ dataset.out_ast_exacerbation_ct_opc=opa_diag.where(
     ).count_for_patient()
 
 ## Pneumonia due to [asthma or COPD]
-pneu_icd10 = codelist_from_csv(
-    "codelists/opensafely-pneumonia-secondary-care.csv", 
-    column="ICD code"
-)
+dataset.out_pneumonia_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(pneu_icd10)) |
+        (apcs.secondary_diagnosis.is_in(pneu_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_pneumonia_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(pneu_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(pneu_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
 
-# Coronary Artery Disease due to [diabetes or hypertension]
-cad_icd10 = codelist_from_csv(
-    "codelists/bristol-coronary-artery-disease.csv", 
-    column="code"
-)
+
+## Coronary Artery Disease due to [diabetes or hypertension]
+dataset.out_cad_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(cad_icd10)) |
+        (apcs.secondary_diagnosis.is_in(cad_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_cad_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(cad_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(cad_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
 
 # Peripheral Artery Disease due to [diabetes or hypertension]
-pad_icd10 = codelist_from_csv(
-    "codelists/bristol-peripheral-artery-diseases.csv", 
-    column="code"
-)
+dataset.out_pad_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(pad_icd10)) |
+        (apcs.secondary_diagnosis.is_in(pad_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_pad_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(pad_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(pad_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
 
-# Acute Ischaemic Stroke due to [diabetes or hypertension]
-stroke_icd10 = codelist_from_csv(
-    "codelists/opensafely-stroke-secondary-care.csv", 
-    column="icd"
-)
-stroke_isch_icd10 = codelist_from_csv(
-    "codelists/user-RochelleKnight-stroke_isch_icd10.csv",
-    column="code",
-)
-# Chronic Kidney Disease due to [diabetes]
-ckd_icd10 = codelist_from_csv(
-    "codelists/user-elsie_horne-ckd_icd10.csv",
-    column="code"
-)
 
-# Cardiovascular including MI and Heart failure
-cardiovascular_icd10 = codelist_from_csv(
-    "codelists/opensafely-cardiovascular-secondary-care.csv", 
-    column="icd"
-)
+## Acute Ischaemic Stroke due to [diabetes or hypertension]
+dataset.out_stroke_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(stroke_icd10)) |
+        (apcs.secondary_diagnosis.is_in(stroke_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_stroke_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(stroke_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(stroke_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
 
-# Suicide
-suicide_icd10 = codelist_from_csv(
-    "codelists/user-hjforbes-suicide-icd-10.csv",
-    column="code"
-)
+dataset.out_ischstroke_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(stroke_isch_icd10)) |
+        (apcs.secondary_diagnosis.is_in(stroke_isch_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_ischstroke_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(stroke_isch_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(stroke_isch_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
 
-# Negative Control Outcome-Fractures
-fracture_icd10 = codelist_from_csv(
-    "codelists/bristol-fractures.csv",
-    column="code"
-)
-# Negative Control Outcome-Concussion
-concussion_icd10 = codelist_from_csv(
-    "codelists/bristol-concussion.csv",
-    column="code"
-)
+## Chronic Kidney Disease due to [diabetes]
+dataset.out_ckd_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(ckd_icd10)) |
+        (apcs.secondary_diagnosis.is_in(ckd_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_ckd_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(ckd_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(ckd_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+
+## Cardiovascular including MI and Heart failure
+dataset.out_mi_and_heartfailure_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(cardiovascular_icd10)) |
+        (apcs.secondary_diagnosis.is_in(cardiovascular_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_mi_and_heartfailure_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(cardiovascular_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(cardiovascular_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+
+## Severe mental health
+dataset.out_severemh_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10)) |
+        (apcs.secondary_diagnosis.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_severemh_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(bipolar_other_mood_icd10 + psychotic_disorders_other_icd10 + schizophrenia_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+
+## Suicide
+dataset.out_suicide_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(suicide_icd10)) |
+        (apcs.secondary_diagnosis.is_in(suicide_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_suicide_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(suicide_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(suicide_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+
+
+## Negative Control Outcome-Fractures
+dataset.out_fractures_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(fracture_icd10)) |
+        (apcs.secondary_diagnosis.is_in(fracture_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_fractures_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(fracture_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(fracture_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+
+
+## Negative Control Outcome-Concussion
+dataset.out_concussion_ct_apc=apcs.where(
+        ((apcs.primary_diagnosis.is_in(concussion_icd10)) |
+        (apcs.secondary_diagnosis.is_in(concussion_icd10))) &
+        (apcs.admission_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
+    
+dataset.out_concussion_ct_opc=opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(concussion_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(concussion_icd10))) &
+        (opa_diag.appointment_date.is_on_or_between(study_start_date, study_end_date))
+    ).count_for_patient()
