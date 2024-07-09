@@ -368,17 +368,18 @@ dataset.cov_cat_imd = case(
 ## Region
 dataset.cov_cat_region = practice_registrations.for_patient_on(study_start_date).practice_nuts1_region_name
 
-## Consultation rate
-dataset.cov_num_consultation_rate = appointments.where(
-    appointments.status.is_in([
-        "Arrived",
-        "In Progress",
-        "Finished",
-        "Visit",
-        "Waiting",
-        "Patient Walked Out",
-    ]) & appointments.start_date.is_on_or_between(study_start_date - days(365), study_start_date)
-).count_for_patient()
+## Consultation rate (these codes can run locally but fail in GitHub action test, details see https://docs.opensafely.org/ehrql/reference/schemas/tpp/#appointments)
+#dataset.cov_num_consultation_rate = appointments.where(
+#    appointments.status.is_in([
+#        "Arrived",
+#        "In Progress",
+#        "Finished",
+#        "Visit",
+#        "Waiting",
+#        "Patient Walked Out",
+#    ]) & appointments.start_date.is_on_or_between(study_start_date - days(365), study_start_date)
+#).count_for_patient()
+
 ## Smoking status
 dataset.cov_cat_smoking = (
     clinical_events.where(
@@ -417,27 +418,238 @@ dataset.cov_bin_healthcare_worker = occupation_on_covid_vaccine_record.where(
     (occupation_on_covid_vaccine_record.is_healthcare_worker == True)
 ).exists_for_patient()
 ## Care home status
-dataset.cov_bin_carehome_1 = addresses.for_patient_on(study_start_date).care_home_is_potential_match
-dataset.cov_bin_carehome_2 = addresses.for_patient_on(study_start_date).care_home_requires_nursing
-dataset.cov_bin_carehome_3 = addresses.for_patient_on(study_start_date).care_home_does_not_require_nursing
-
+dataset.cov_bin_carehome = (    
+    addresses.for_patient_on(study_start_date).care_home_is_potential_match |
+    addresses.for_patient_on(study_start_date).care_home_requires_nursing |
+    addresses.for_patient_on(study_start_date).care_home_does_not_require_nursing
+)
 ## Dementia
-
+dataset.cov_bin_dementia_combined = (    
+    (clinical_events.where(
+        ((clinical_events.snomedct_code.is_in(dementia_snomed_clinical + dementia_vascular_snomed_clinical)) |
+        (clinical_events.ctv3_code.is_in(dementia_codes))) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(dementia_icd10 + dementia_vascular_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(dementia_icd10 + dementia_vascular_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(dementia_icd10 + dementia_vascular_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(dementia_icd10 + dementia_vascular_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Liver disease
-## Cancer    
+dataset.cov_bin_liver_disease = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(liver_disease_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(liver_disease_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(liver_disease_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(liver_disease_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(liver_disease_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## Chronic liver disease
+dataset.cov_bin_chronic_liver_disease = clinical_events.where(
+        (clinical_events.ctv3_code.is_in(liver_disease_chronic_ctv3)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()
+## Cancer
+dataset.cov_bin_cancer = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(cancer_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(cancer_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(cancer_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(cancer_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(cancer_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Hypertension
+dataset.cov_bin_hypertension = dataset.had_hypertension
 ## Diabetes
+dataset.cov_bin_diabetes = dataset.had_diabetes
 ## COPD
-## Acute myocardial infarction 
+dataset.cov_bin_copd = dataset.had_copd
+## Acute myocardial infarction
+dataset.cov_bin_ami = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(ami_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(ami_icd10 + ami_prior_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(ami_icd10 + ami_prior_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(ami_icd10 + ami_prior_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(ami_icd10 + ami_prior_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Ischaemic stroke
+dataset.cov_bin_stroke_isch = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(stroke_isch_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(stroke_isch_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(stroke_isch_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(stroke_isch_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(stroke_isch_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## All stroke
+dataset.cov_bin_stroke = (        
+    (clinical_events.where(
+        (clinical_events.ctv3_code.is_in(stroke_codes)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(stroke_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(stroke_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(stroke_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(stroke_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Other arterial embolism
-## Venous thromboembolism events
+dataset.cov_bin_other_arterial_embolism = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(arterial_embolism_snomed)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(arterial_embolism_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(arterial_embolism_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(arterial_embolism_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(arterial_embolism_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## Pulmonary embolism
+dataset.cov_bin_pulmonary_embolism = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(pulmonary_embolism_snomed)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(pulmonary_embolism_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(pulmonary_embolism_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(pulmonary_embolism_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(pulmonary_embolism_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## Venous thromboembolism events (dvt)
+dataset.cov_bin_dvt = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(dvt_main_snomed + dvt_preg_snomed)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(dvt_main_icd10 + dvt_preg_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(dvt_main_icd10 + dvt_preg_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(dvt_main_icd10 + dvt_preg_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(dvt_main_icd10 + dvt_preg_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Chronic kidney disease
-## Pneumonia 
+dataset.cov_bin_ckd = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(ckd_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(ckd_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(ckd_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(ckd_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(ckd_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## Pneumonia
+dataset.cov_bin_pneumonia = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(pneu_snomed)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(pneu_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(pneu_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(pneu_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(pneu_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Asthma
+dataset.cov_bin_asthma = dataset.had_asthma
 ## Neuropathy (N/A)
-## Pulmonary fibrosis
+## Pulmonary fibrosis ?! (only snomed codes available)
+dataset.cov_bin_pulmonary_fibrosis = (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(ild_snomed)) &
+        (clinical_events.date.is_before(study_start_date))
+).exists_for_patient())
+
 ## Episode of depression
+dataset.cov_bin_depression = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(depression_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(depression_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(depression_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(depression_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(depression_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+
 ## Severe mental illness
+dataset.cov_bin_severemh = dataset.had_severemh
 ## Self-harm
+dataset.cov_bin_selfharm = dataset.had_selfharm
