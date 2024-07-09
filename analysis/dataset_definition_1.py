@@ -1,6 +1,7 @@
 from ehrql import (codelist_from_csv, create_dataset, days, minimum_of, case, when,)
 # Bring table definitions from the TPP backend 
-from ehrql.tables.tpp import (patients, practice_registrations, addresses, appointments, apcs, ec, opa, opa_diag, clinical_events, medications, ons_deaths,)
+from ehrql.tables.tpp import (patients, practice_registrations, addresses, appointments, occupation_on_covid_vaccine_record, apcs, ec, opa, opa_diag, clinical_events, medications, ons_deaths,)
+from ehrql.tables.raw.tpp import (isaric,)
 # Codelists from codelists.py (which pulls all variables from the codelist folder)
 from codelists import *
 # Define study start and end dates
@@ -379,12 +380,51 @@ dataset.cov_num_consultation_rate = appointments.where(
     ]) & appointments.start_date.is_on_or_between(study_start_date - days(365), study_start_date)
 ).count_for_patient()
 ## Smoking status
+dataset.cov_cat_smoking = (
+    clinical_events.where(
+        clinical_events.ctv3_code.is_in(smoking_clear)
+    )
+    .sort_by(clinical_events.date)
+    .last_for_patient()
+    .ctv3_code.to_category(smoking_clear)
+)
 ## Obesity 
+dataset.cov_bin_obesity = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(bmi_obesity_snomed_clinical)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(bmi_obesity_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(bmi_obesity_icd10))) &
+        (apcs.admission_date.is_before(study_start_date))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(bmi_obesity_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(bmi_obesity_icd10))) &
+        (opa_diag.appointment_date.is_before(study_start_date))
+    ).exists_for_patient())
+)
+## Carer
+dataset.cov_bin_carer = (
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(carer_primis)) &
+        (clinical_events.date.is_before(study_start_date))
+    ).exists_for_patient())
+)
 ## Healthcare worker
-## Care home resident
+dataset.cov_bin_healthcare_worker = occupation_on_covid_vaccine_record.where(
+    (occupation_on_covid_vaccine_record.is_healthcare_worker == True)
+).exists_for_patient()
+## Care home status
+dataset.cov_bin_carehome_1 = addresses.for_patient_on(study_start_date).care_home_is_potential_match
+dataset.cov_bin_carehome_2 = addresses.for_patient_on(study_start_date).care_home_requires_nursing
+dataset.cov_bin_carehome_3 = addresses.for_patient_on(study_start_date).care_home_does_not_require_nursing
+
 ## Dementia
+
 ## Liver disease
-## Cancer
+## Cancer    
 ## Hypertension
 ## Diabetes
 ## COPD
