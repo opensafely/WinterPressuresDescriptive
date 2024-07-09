@@ -492,3 +492,19 @@ hrt_dmd = codelist_from_csv(
     column="dmd_id"
 )
 
+# Prostate cancer
+prostate_cancer_icd10 = codelist_from_csv(
+    "codelists/user-RochelleKnight-prostate_cancer_icd10.csv",
+    column="code"
+)
+prostate_cancer_snomed = codelist_from_csv(
+    "codelists/user-RochelleKnight-prostate_cancer_snomed.csv",
+    column="code"
+)
+
+
+# Pregnancy
+preg_snomed = codelist_from_csv(
+    "codelists/user-RochelleKnight-pregnancy_and_birth_snomed.csv",
+    column="code"
+)

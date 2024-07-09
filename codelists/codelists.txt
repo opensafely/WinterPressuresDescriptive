@@ -84,3 +84,6 @@ primis-covid19-vacc-uptake/nursehome/v1
 primis-covid19-vacc-uptake/domcare/v1
 primis-covid19-vacc-uptake/longres/v1
 user/elsie_horne/hrt_dmd/19196799
+user/RochelleKnight/prostate_cancer_snomed/0437497e
+user/RochelleKnight/prostate_cancer_icd10/6b27d648
+user/RochelleKnight/pregnancy_and_birth_snomed/1d46bcb3
