@@ -653,3 +653,34 @@ dataset.cov_bin_depression = (
 dataset.cov_bin_severemh = dataset.had_severemh
 ## Self-harm
 dataset.cov_bin_selfharm = dataset.had_selfharm
+
+# Quality assurance variables----------------------------------------------------------------------------------------------------------
+## Prostate cancer
+dataset.qa_bin_prostate_cancer = (        
+    (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(prostate_cancer_snomed))
+    ).exists_for_patient()) |
+    (apcs.where(
+        ((apcs.primary_diagnosis.is_in(prostate_cancer_icd10)) | 
+        (apcs.secondary_diagnosis.is_in(prostate_cancer_icd10)))
+    ).exists_for_patient()) |
+        (opa_diag.where(
+        ((opa_diag.primary_diagnosis_code.is_in(prostate_cancer_icd10)) | 
+        (opa_diag.secondary_diagnosis_code_1.is_in(prostate_cancer_icd10)))
+    ).exists_for_patient())
+)
+
+## Pregnancy
+dataset.qa_bin_pregnancy = (clinical_events.where(
+        (clinical_events.snomedct_code.is_in(preg_snomed))
+    ).exists_for_patient())
+
+## Year of birth
+
+dataset.qa_num_birth_year = patients.date_of_birth.year
+
+
+## COCP or heart medication
+dataset.qa_bin_hrtcocp = medications.where(
+        (medications.dmd_code.is_in(cocp_dmd + hrt_dmd))
+    ).exists_for_patient()
