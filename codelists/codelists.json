@@ -222,6 +222,12 @@
       "downloaded_at": "2024-04-29 23:00:09.170026Z",
       "sha": "866ab4f0ff144330c1a0ea28116c9d2073cf379a"
     },
+    "bristol-pneumonia-snomed.csv": {
+      "id": "bristol/pneumonia-snomed/615d16bb",
+      "url": "https://www.opencodelists.org/codelist/bristol/pneumonia-snomed/615d16bb/",
+      "downloaded_at": "2024-07-09 14:04:42.893661Z",
+      "sha": "edf877d1effa6128b7afd5061d82e272575041e0"
+    },
     "bristol-coronary-artery-disease.csv": {
       "id": "bristol/coronary-artery-disease/086f1e63",
       "url": "https://www.opencodelists.org/codelist/bristol/coronary-artery-disease/086f1e63/",
@@ -443,6 +449,12 @@
       "url": "https://www.opencodelists.org/codelist/user/elsie_horne/ckd_snomed/25d9dcd5/",
       "downloaded_at": "2024-04-29 23:00:45.892538Z",
       "sha": "bff2f324ff0a1569ce7709903fd6a67b6ee5334d"
+    },
+    "bristol-ild-snomed.csv": {
+      "id": "bristol/ild-snomed/2f3e3051",
+      "url": "https://www.opencodelists.org/codelist/bristol/ild-snomed/2f3e3051/",
+      "downloaded_at": "2024-07-09 14:22:03.530827Z",
+      "sha": "9e2de5190c0081e01bffef1a56aa4431885da94e"
     },
     "user-hjforbes-depression-symptoms-and-diagnoses.csv": {
       "id": "user/hjforbes/depression-symptoms-and-diagnoses/499814eb",

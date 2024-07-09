@@ -35,6 +35,7 @@ user/kurttaylor/self_harm_undetermined_intent_15_years_icd10/0549d05c
 user/hjforbes/suicide-icd-10/3b53a18e
 opensafely/asthma-exacerbation-secondary-care/229001a8
 opensafely/pneumonia-secondary-care/2020-10-05
+bristol/pneumonia-snomed/615d16bb
 bristol/coronary-artery-disease/086f1e63
 bristol/peripheral-artery-diseases/217e9198
 opensafely/stroke-secondary-care/2020-10-05
@@ -72,6 +73,7 @@ user/tomsrenin/dvt-preg/6a57b9bc
 user/RochelleKnight/dvt_dvt_icd10/24dab358
 user/elsie_horne/dvt_pregnancy_icd10/6576830d
 user/elsie_horne/ckd_snomed/25d9dcd5
+bristol/ild-snomed/2f3e3051
 user/hjforbes/depression-symptoms-and-diagnoses/499814eb
 user/kurttaylor/depression_icd10/4dc56a05
 primis-covid19-vacc-uptake/carer/v1
