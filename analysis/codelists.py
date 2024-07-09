@@ -371,7 +371,7 @@ liver_disease_icd10 = codelist_from_csv(
     column="code"
 )
 # Chronic Liver disease codes
-liver_disease_chronic_icd10 = codelist_from_csv(
+liver_disease_chronic_ctv3 = codelist_from_csv(
     "codelists/opensafely-chronic-liver-disease.csv",
     column="CTV3ID"
 )
@@ -400,12 +400,13 @@ ami_prior_icd10 = codelist_from_csv(
     column="code"
 )
 
-# Stroke 
+# Ischaemic stroke 
 stroke_isch_snomed_clinical = codelist_from_csv(
     "codelists/user-elsie_horne-stroke_isch_snomed.csv",
     column="code"
 )
 
+# All stroke
 stroke_codes = codelist_from_csv(
     "codelists/opensafely-stroke-updated.csv",
     column="CTV3ID"
@@ -455,6 +456,16 @@ dvt_preg_icd10 = codelist_from_csv(
 # Chronic Kidney Disease
 ckd_snomed_clinical = codelist_from_csv(
     "codelists/user-elsie_horne-ckd_snomed.csv",
+    column="code"
+)
+# Pneumonia
+pneu_snomed = codelist_from_csv(
+    "codelists/bristol-pneumonia-snomed.csv", 
+    column="code"
+)
+# Pulmonary fibrosis
+ild_snomed = codelist_from_csv(
+    "codelists/bristol-ild-snomed.csv", 
     column="code"
 )
 
