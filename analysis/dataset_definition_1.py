@@ -49,14 +49,14 @@ dataset.out_num_ec=ec.where(
     )
 ).count_for_patient()
 
-dataset.out_date_death_tpp=patients.date_of_death
-dataset.out_date_death_ons=ons_deaths.date
+dataset.tmp_date_death_tpp=patients.date_of_death
+dataset.tmp_date_death_ons=ons_deaths.date
 dataset.out_date_death_min=minimum_of(patients.date_of_death, ons_deaths.date)
 
 # Cohorts indicator (return a Boolean variable to indicate T-had disease before start date; otherwise F)-----------------------------
 ## Asthma (?bnf codes not in medications table, dm+d map does not work)
 
-dataset.had_asthma = (
+dataset.sub_bin_asthma = (
     (clinical_events.where(
         (clinical_events.snomedct_code.is_in(ast_codelist)) &
         (clinical_events.date.is_before(study_start_date))
@@ -68,7 +68,7 @@ dataset.had_asthma = (
 )
 
 ## Diabetes
-dataset.had_diabetes = (
+dataset.sub_bin_diabetes = (
     (clinical_events.where(
         (clinical_events.ctv3_code.is_in(diabetes_type1_snomed_clinical + 
         diabetes_type2_snomed_clinical + 
@@ -101,7 +101,7 @@ dataset.had_diabetes = (
 )
 
 ## Hypertension
-dataset.had_hypertension = (
+dataset.sub_bin_hypertension = (
     (clinical_events.where(
         ((clinical_events.snomedct_code.is_in(hypertension_snomed_clinical)) |
         (clinical_events.ctv3_code.is_in(hypertension_codes))) &
@@ -123,7 +123,7 @@ dataset.had_hypertension = (
     ).exists_for_patient())
 )
 ## COPD (?bnf codes not in medications table, dm+d map does not work)
-dataset.had_copd = (
+dataset.sub_bin_copd = (
     (clinical_events.where(
         ((clinical_events.snomedct_code.is_in(copd_snomed_clinical))) &
         (clinical_events.date.is_before(study_start_date))
@@ -140,7 +140,7 @@ dataset.had_copd = (
     ).exists_for_patient())
 )
 ## Severe mental illness
-dataset.had_severemh = (
+dataset.sub_bin_severemh = (
     (clinical_events.where(
         ((clinical_events.snomedct_code.is_in(serious_mental_illness_snomed_clinical))) &
         (clinical_events.date.is_before(study_start_date))
@@ -162,7 +162,7 @@ dataset.had_severemh = (
 )
 
 ## Self-harm
-dataset.had_selfharm = (
+dataset.sub_bin_selfharm = (
     (clinical_events.where(
         ((clinical_events.snomedct_code.is_in(self_harm_15_10_combined_snomed))) &
         (clinical_events.date.is_before(study_start_date))
@@ -481,11 +481,11 @@ dataset.cov_bin_cancer = (
     ).exists_for_patient())
 )
 ## Hypertension
-dataset.cov_bin_hypertension = dataset.had_hypertension
+dataset.cov_bin_hypertension = dataset.sub_bin_hypertension
 ## Diabetes
-dataset.cov_bin_diabetes = dataset.had_diabetes
+dataset.cov_bin_diabetes = dataset.sub_bin_diabetes
 ## COPD
-dataset.cov_bin_copd = dataset.had_copd
+dataset.cov_bin_copd = dataset.sub_bin_copd
 ## Acute myocardial infarction
 dataset.cov_bin_ami = (        
     (clinical_events.where(
@@ -623,7 +623,7 @@ dataset.cov_bin_pneumonia = (
     ).exists_for_patient())
 )
 ## Asthma
-dataset.cov_bin_asthma = dataset.had_asthma
+dataset.cov_bin_asthma = dataset.sub_bin_asthma
 ## Neuropathy (N/A)
 ## Pulmonary fibrosis ?! (only snomed codes available)
 dataset.cov_bin_pulmonary_fibrosis = (clinical_events.where(
@@ -650,9 +650,9 @@ dataset.cov_bin_depression = (
 )
 
 ## Severe mental illness
-dataset.cov_bin_severemh = dataset.had_severemh
+dataset.cov_bin_severemh = dataset.sub_bin_severemh
 ## Self-harm
-dataset.cov_bin_selfharm = dataset.had_selfharm
+dataset.cov_bin_selfharm = dataset.sub_bin_selfharm
 
 # Quality assurance variables----------------------------------------------------------------------------------------------------------
 ## Prostate cancer
