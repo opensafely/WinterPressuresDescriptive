@@ -1,4 +1,4 @@
-cd "C:\Users\mz16609\OneDrive - University of Bristol\Documents - grp-EHR\Projects\ImpactWinterPressures\GP workforce_NHS dig"
+cd "C:\Users\mz16609\OpenSAFELY_IWP\ImpactWinterPressures\local_data"
 local csvfiles : dir . files "*.csv"
 foreach file in `csvfiles' {
 	import delimited "`file'", varnames(1) clear
@@ -7,7 +7,7 @@ foreach file in `csvfiles' {
 	save "`noextension'", replace
 }
 
-local dtafiles : dir "C:\Users\mz16609\OneDrive - University of Bristol\Documents - grp-EHR\Projects\ImpactWinterPressures\GP workforce_NHS dig" files "2*.dta"
+local dtafiles : dir "C:\Users\mz16609\OpenSAFELY_IWP\ImpactWinterPressures\local_data" files "2*.dta"
 qui foreach file in `dtafiles' {
 	use "`file'", clear
 	local date=subinstr("`file'",".dta","",.)
@@ -18,7 +18,7 @@ qui foreach file in `dtafiles' {
 	save "`date'_date", replace 
 }
 
-local files: dir "C:\Users\mz16609\OneDrive - University of Bristol\Documents - grp-EHR\Projects\ImpactWinterPressures\GP workforce_NHS dig" files "*date.dta"
+local files: dir "C:\Users\mz16609\OpenSAFELY_IWP\ImpactWinterPressures\local_data" files "*date.dta"
 	qui foreach i in `files' {
 		append using "`i'"
 		rm "`i'"
@@ -28,5 +28,4 @@ local files: dir "C:\Users\mz16609\OneDrive - University of Bristol\Documents - 
 	drop date
 	save workforce_master, replace
 	
-	
-	
+
