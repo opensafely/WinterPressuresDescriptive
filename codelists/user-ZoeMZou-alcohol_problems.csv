@@ -1,0 +1,54 @@
+code,term
+63C7.,Maternal alcohol abuse
+8BA8.,Alcohol detoxification
+E01..,Alcoholic psychoses
+E010.,Delirium tremens
+E011.,Korsakov psychosis
+E0111,Korsakov's alcoholic psychosis with peripheral neuritis
+E0112,Wernicke-Korsakov syndrome
+E011z,Alcohol amnestic syndrome NOS
+E012.,Alcoholic dementia: [other] or [NOS]
+E0120,Chronic alcoholic brain syndrome
+E013.,Alcohol withdrawal hallucinosis
+E014.,Pathological alcohol intoxication
+E015.,Alcoholic paranoia
+E01y.,Other alcoholic psychosis
+E01y0,Alcohol withdrawal syndrome
+E01yz,Other alcoholic psychosis NOS
+E01z.,Alcoholic psychosis NOS
+E23..,(Alcoh depend synd [& alcoholism]) or (alcoh prob drinking)
+E230.,Acute alcoholic intoxication in alcoholism
+E2300,"Acute alcoholic intoxication, unspecified, in alcoholism"
+E2301,Continuous acute alcoholic intoxication in alcoholism
+E2302,Episodic acute alcoholic intoxication in alcoholism
+E2303,"Acute alcoholic intoxication in remission, in alcoholism"
+E230z,Acute alcoholic intoxication in alcoholism NOS
+E231.,Chronic alcoholism (& [dipsomania])
+E2310,Unspecified chronic alcoholism
+E2311,Continuous chronic alcoholism
+E2312,Episodic chronic alcoholism
+E2313,Chronic alcoholism in remission
+E231z,Chronic alcoholism NOS
+E23z.,Alcohol dependence syndrome NOS
+E250.,(Alc intox)(hangover)(nondep alc abus)(drunk NOS)(inebr NOS)
+E2500,"Nondependent alcohol abuse, unspecified"
+E2501,"Nondependent alcohol abuse, continuous"
+E2502,"Nondependent alcohol abuse, episodic"
+E2503,Nondependent alcohol abuse in remission
+E250z,Nondependent alcohol abuse NOS
+Eu10.,[X]Mental and behavioural disorders due to use of alcohol
+Eu100,[X]Mental & behav dis due to use alcohol: acute intoxication
+Eu101,[X]Mental and behav dis due to use of alcohol: harmful use
+Eu102,"[X](Ment/beh dis,alc dep) or (chr alcoh'sm [&(addic)(dips)])"
+Eu103,[X]Mental and behav dis due to use alcohol: withdrawal state
+Eu104,[X]Men & behav dis due alcohl: withdrawl state with delirium
+Eu105,[X]Ment/beh dis due alc: psychot (& [variants][psychos NOS])
+Eu106,[X]Mental and behav dis due to use alcohol: amnesic syndrome
+Eu107,"[X](Ment/beh dis due alc, resid/late) or (chr alc brain syn)"
+Eu10y,[X]Men & behav dis due to use alcohol: oth men & behav dis
+Eu10z,[X]Ment & behav dis due use alcohol: unsp ment & behav dis
+XaJni,Alcohol disorder monitoring
+XaKvA,Hazardous alcohol use
+XaKvB,Harmful alcohol use
+XaLWu,[X]Alcohol withdrawal-induced seizure
+XaLrN,Alcohol abuse monitoring

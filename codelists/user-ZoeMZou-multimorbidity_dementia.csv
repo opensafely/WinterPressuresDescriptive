@@ -1,0 +1,57 @@
+code,term
+1461.,H/O: dementia
+E000.,Uncomplicated senile dementia
+E001.,Presenile dementia
+E0010,Uncomplicated presenile dementia
+E0011,Presenile dementia with delirium
+E0012,Presenile dementia with paranoia
+E0013,Presenile dementia with depression
+E001z,Presenile dementia NOS
+E002.,Senile dementia with depressive or paranoid features
+E0020,Senile dementia with paranoia
+E0021,Senile dementia with depression
+E002z,Senile dementia with depressive or paranoid features NOS
+E003.,Senile dementia with delirium
+E0040,Uncomplicated arteriosclerotic dementia
+E0041,Arteriosclerotic dementia with delirium
+E0042,Arteriosclerotic dementia with paranoia
+E0043,Arteriosclerotic dementia with depression
+E004z,Arteriosclerotic dementia NOS
+E041.,Dementia in conditions EC
+Eu00.,[X]Dementia in Alzheimer's disease
+Eu002,"[X]Dementia in Alzheimer's dis, atypical or mixed type"
+Eu00z,"[X]Dementia in Alzheimer's disease, unspecified"
+Eu01y,[X]Other vascular dementia
+Eu01z,"[X]Vascular dementia, unspecified"
+Eu02.,[X]Dementia in other diseases classified elsewhere
+Eu020,[X]Dementia in Pick's disease
+Eu021,[X]Dementia in Creutzfeldt-Jakob disease
+Eu022,[X]Dementia in Huntington's disease
+Eu023,[X]Dementia in Parkinson's disease
+Eu02y,[X]Dementia in other specified diseases classif elsewhere
+Eu02z,[X] Dementia: [unspecified] or [named variants (& NOS)]
+Eu041,[X]Delirium superimposed on dementia
+F110.,Alzheimer's disease
+F111.,Pick's disease
+Fyu30,[X]Other Alzheimer's disease
+X002w,Dementia
+X002x,Dementia in Alzheimer's disease with early onset
+X0030,Dementia in Alzheimer's disease with late onset
+X003A,Lewy body disease
+X003P,Acquired immune deficiency syndrome dementia complex
+X003R,Vascular dementia of acute onset
+X003T,Subcortical vascular dementia
+X003V,Mixed cortical and subcortical vascular dementia
+X00R2,Senile dementia
+X00Rk,Alcoholic dementia NOS
+XE1Xr,Senile and presenile organic psychotic conditions
+XE1Xs,Vascular dementia
+XE1Xu,Other alcoholic dementia
+XE1Z6,[X]Unspecified dementia
+XE1ZG,[X]Men & behav dis due alcoh: resid & late-onset psychot dis
+Xa0lH,Multi-infarct dementia
+Xa1GB,Cerebral degeneration presenting primarily with dementia
+Xa3ez,Other senile/presenile dementia
+XaIKB,Alzheimer's disease with early onset
+XaIKC,Alzheimer's disease with late onset
+XaKyY,[X]Lewy body dementia
