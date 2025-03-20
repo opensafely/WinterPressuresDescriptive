@@ -107,3 +107,8 @@ bristol/multimorbidity_heart-failure/4c00a3c7
 bristol/multimorbidity_irritable-bowel-syndrome/32f13092
 bristol/multimorbidity_psychosisbipolar-disorder/19e1bd5d
 bristol/multimorbidity_anxietydepression/67c2d6f2/
+user/elsie_horne/dementia_vascular_icd10/27c5e93c/
+user/elsie_horne/dementia_vascular_snomed/0eb67607/
+user/elsie_horne/ami_snomed/36d11028/
+user/elsie_horne/ami_prior_icd10/360a5c99/
+user/RochelleKnight/ami_icd10/3dea268d/

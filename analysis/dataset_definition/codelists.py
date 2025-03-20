@@ -93,7 +93,7 @@ jcvi_dict = {
     "ckd15_primis": "codelists/primis-covid19-vacc-uptake-ckd15.csv",  ## CKD (All Stages)
     "ckd35_primis": "codelists/primis-covid19-vacc-uptake-ckd35.csv",  ## CKD (Stages 3-5)
 }
-jcvi_codelists = create_codelist_dict(jcvi_dict)
+jcvi_dict = create_codelist_dict(jcvi_dict)
 
 # For multimorbidity groups
 
@@ -103,7 +103,7 @@ multimorbidity_dict = {
 
     ## Anxiety/Depression
     "MS_AnxietyDepression_ctv3": "codelists/user-ZoeMZou-multimorbidity_anxietydepression.csv",  
-    "MS_AnxietyDepression_snomed": "bristol-multimorbidity_anxietydepression.csv", 
+    "MS_AnxietyDepression_snomed": "codelists/bristol-multimorbidity_anxietydepression.csv", 
     ## Hearing Loss
     "MS_HL_ctv3": "codelists/user-ZoeMZou-multimorbidity_hearing-loss.csv",  
 
@@ -166,7 +166,7 @@ multimorbidity_dict = {
     "MS_Epilepsy_ctv3": "codelists/user-ZoeMZou-multimorbidity_epilepsy.csv", 
     "MS_Epilepsy_snomed": "codelists/bristol-multimorbidity_epilepsy.csv", 
 }
-multimorbidity_codelists = create_codelist_dict(multimorbidity_dict)
+multimorbidity_dict = create_codelist_dict(multimorbidity_dict)
 
     ## Painful Condition (Osteoarthritis)-not found in CMS
 MS_Osteoarthritis_ctv3 = codelist_from_csv(
