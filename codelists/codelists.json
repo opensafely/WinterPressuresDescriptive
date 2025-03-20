@@ -12,24 +12,6 @@
       "downloaded_at": "2024-04-29 23:00:18.876698Z",
       "sha": "0b5f3afe1db96dcce5141220e893a42ba2e5a8f7"
     },
-    "nhsd-primary-care-domain-refsets-flu_cod.csv": {
-      "id": "nhsd-primary-care-domain-refsets/flu_cod/20200812",
-      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/flu_cod/20200812/",
-      "downloaded_at": "2025-03-16 20:54:25.577978Z",
-      "sha": "fc33d0ea49931e2a2b6344a008e903738e021f31"
-    },
-    "nhsd-primary-care-domain-refsets-seasonal-flu-vaccination-codes.csv": {
-      "id": "nhsd-primary-care-domain-refsets/seasonal-flu-vaccination-codes/20241205",
-      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/seasonal-flu-vaccination-codes/20241205/",
-      "downloaded_at": "2025-03-16 20:54:25.937909Z",
-      "sha": "fc33d0ea49931e2a2b6344a008e903738e021f31"
-    },
-    "nhsd-primary-care-domain-refsets-fluinvite_cod.csv": {
-      "id": "nhsd-primary-care-domain-refsets/fluinvite_cod/20241205",
-      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/fluinvite_cod/20241205/",
-      "downloaded_at": "2025-03-16 20:54:26.302155Z",
-      "sha": "638f8592de419d50e790d61d796c40772bffb73a"
-    },
     "user-elsie_horne-bmi_obesity_snomed.csv": {
       "id": "user/elsie_horne/bmi_obesity_snomed/0764e9b4",
       "url": "https://www.opencodelists.org/codelist/user/elsie_horne/bmi_obesity_snomed/0764e9b4/",
@@ -545,6 +527,72 @@
       "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/sev_obesity/v1.2/",
       "downloaded_at": "2025-03-16 21:00:21.532029Z",
       "sha": "dfe3662bed703c590d1449e604e892cdd7a360c1"
+    },
+    "bristol-multimorbidity_copd.csv": {
+      "id": "bristol/multimorbidity_copd/11c97d7b",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_copd/11c97d7b/",
+      "downloaded_at": "2025-03-20 11:12:10.033509Z",
+      "sha": "450b4a7b2bf1e0bbba7793887cbc24e336bc0a36"
+    },
+    "bristol-multimorbidity_alcoholproblems.csv": {
+      "id": "bristol/multimorbidity_alcoholproblems/625d5706",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_alcoholproblems/625d5706/",
+      "downloaded_at": "2025-03-20 11:12:10.443164Z",
+      "sha": "dc142c184e1552b8e336085e8f65640441aac2de"
+    },
+    "bristol-multimorbidity_atrial-fibrillation.csv": {
+      "id": "bristol/multimorbidity_atrial-fibrillation/0f16bd85",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_atrial-fibrillation/0f16bd85/",
+      "downloaded_at": "2025-03-20 11:12:10.815714Z",
+      "sha": "aa15fe7ae83b7f9e711c915b1fe11185453c34a3"
+    },
+    "bristol-multimorbidity_cancer.csv": {
+      "id": "bristol/multimorbidity_cancer/7e1f8a31",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_cancer/7e1f8a31/",
+      "downloaded_at": "2025-03-20 11:12:11.796634Z",
+      "sha": "c65da230bbe59d9447f3bc2454ee86657799b41d"
+    },
+    "bristol-multimorbidity_chronic-kidney-disease.csv": {
+      "id": "bristol/multimorbidity_chronic-kidney-disease/651016fc",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_chronic-kidney-disease/651016fc/",
+      "downloaded_at": "2025-03-20 11:12:12.248302Z",
+      "sha": "6502b7582b2c614e64326970e1240c1016d2cd97"
+    },
+    "bristol-multimorbidity_dementia.csv": {
+      "id": "bristol/multimorbidity_dementia/43e863e5",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_dementia/43e863e5/",
+      "downloaded_at": "2025-03-20 11:12:12.725095Z",
+      "sha": "ed6a7c81742423f66d52561cd3417d1b200a10fb"
+    },
+    "bristol-multimorbidity_diabetes.csv": {
+      "id": "bristol/multimorbidity_diabetes/2ad8f0b0",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_diabetes/2ad8f0b0/",
+      "downloaded_at": "2025-03-20 11:12:13.128222Z",
+      "sha": "b9eb6e79ba7d1ae8afa07091bc904f14ea3ab96d"
+    },
+    "bristol-multimorbidity_epilepsy.csv": {
+      "id": "bristol/multimorbidity_epilepsy/78ba0a45",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_epilepsy/78ba0a45/",
+      "downloaded_at": "2025-03-20 11:12:13.531500Z",
+      "sha": "8b30fcbaf3706a0f6ce3a53edd60e4120256c296"
+    },
+    "bristol-multimorbidity_heart-failure.csv": {
+      "id": "bristol/multimorbidity_heart-failure/4c00a3c7",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_heart-failure/4c00a3c7/",
+      "downloaded_at": "2025-03-20 11:12:13.954786Z",
+      "sha": "05bed03484a500494aab80bed1e26823d906e36d"
+    },
+    "bristol-multimorbidity_irritable-bowel-syndrome.csv": {
+      "id": "bristol/multimorbidity_irritable-bowel-syndrome/32f13092",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_irritable-bowel-syndrome/32f13092/",
+      "downloaded_at": "2025-03-20 11:12:14.394583Z",
+      "sha": "886cc1bcb9a9729937c6930a08df1437bb22180d"
+    },
+    "bristol-multimorbidity_psychosisbipolar-disorder.csv": {
+      "id": "bristol/multimorbidity_psychosisbipolar-disorder/19e1bd5d",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_psychosisbipolar-disorder/19e1bd5d/",
+      "downloaded_at": "2025-03-20 11:12:14.782140Z",
+      "sha": "c8f8204fe3e07dfbc48d4d21f022addca8e9ddb0"
     }
   }
 }
