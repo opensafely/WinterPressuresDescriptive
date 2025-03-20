@@ -1,12 +1,39 @@
 version: '3.0'
 
-# Ignore this`expectation` block. It is required but not used, and will be removed in future versions.
 expectations:
   population_size: 1000
 
 actions:
-  generate_dataset:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition.py --output output/dataset.csv.gz
+
+  generate_measures_precovid_2018-10-01_age:
+    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
+      --output output/measures/precovid/age_measures_2018-10-01.csv.gz
+      --
+      --CS
+      --Age
+      --start_cohort 2018-10-01
     outputs:
       highly_sensitive:
-        dataset: output/dataset.csv.gz
+        dataset: output/measures/precovid/age_measures_2018-10-01.csv.gz
+
+  generate_measures_precovid_2022-10-01_age:
+    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
+      --output output/measures/precovid/age_measures_2022-10-01.csv.gz
+      --
+      --CS
+      --Age
+      --start_cohort 2022-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/precovid/age_measures_2022-10-01.csv.gz
+
+  generate_measures_precovid_2018-10-01_sex:
+    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
+      --output output/measures/precovid/sex_measures_2018-10-01.csv.gz
+      --
+      --CS
+      --Sex
+      --start_cohort 2018-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/precovid/sex_measures_2018-10-01.csv.gz
