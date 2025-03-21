@@ -4,6 +4,8 @@ parser = argparse.ArgumentParser() # Instantiate parser
 # Configuration for add measures
 
 ## Study period configuration
+parser.add_argument("--patient_measures", action= 'store_true', help = "Sets measures defaults to patient-level subgroups")
+parser.add_argument("--practice_measures", action= 'store_true', help = "Sets measures defaults to practice-level subrgoups")
 parser.add_argument("--CS", action = 'store_true', help = "The study period is cross-sectional")
 parser.add_argument("--Long", action = 'store_true', help = "The study period is longitudinal")
 ## Measures configuration
@@ -27,6 +29,8 @@ args = parser.parse_args() # Stores arguments in 'args'
 # Extract arguments into variables
 Long = args.Long
 CS = args.CS
+patient_measures = args.patient_measures
+practice_measures = args.practice_measures
 Age = args.Age
 Sex = args.Sex
 Ethnicity = args.Ethnicity
