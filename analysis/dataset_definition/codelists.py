@@ -63,6 +63,7 @@ jcvi_dict = {
     ## BMI & Obesity
     "bmi_stage_primis": "codelists/primis-covid19-vacc-uptake-bmi_stage.csv",  ## BMI Codes
     "sev_obesity_primis": "codelists/primis-covid19-vacc-uptake-sev_obesity.csv",  ## Severe Obesity
+    "bmi_primis": "codelists/primis-covid19-vacc-uptake-bmi.csv",
 
     ## Respiratory Conditions
     "ast_primis": "codelists/primis-covid19-vacc-uptake-ast.csv",  ## Asthma Diagnosis

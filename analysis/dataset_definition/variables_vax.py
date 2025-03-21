@@ -28,7 +28,7 @@ from variable_helper_functions import (
 # Define the study_dates dictionary 
 
 import json
-with open("output/study_dates.json") as f:
+with open("output/dataset_definition/study_dates.json") as f:
   study_dates = json.load(f)
 
 # Extracting all variables from the study_dates dictionary
@@ -57,12 +57,12 @@ cov_cat_sex = patients.sex  # this is required for preg_group variables
 
     ## Date of last pregnancy code in 36 weeks before ref_cev
 preg_36wks_date = last_matching_event_clinical_snomed_between(
-    preg_primis, ref_cev - days(252), ref_cev - days(1)
+    jcvi_dict["preg_primis"], ref_cev - days(252), ref_cev - days(1)
 ).date
 
     ## Date of last delivery code recorded in 36 weeks before elig_date
 pregdel_pre_date = last_matching_event_clinical_snomed_between(
-    pregdel_primis, ref_cev - days(252), ref_cev - days(1)
+    jcvi_dict["pregdel_primis"], ref_cev - days(252), ref_cev - days(1)
 ).date
 
 preg_group = (
@@ -80,17 +80,17 @@ preg_group = (
 
     ## SHIELDED GROUP - first flag all patients with "high risk" codes
 severely_clinically_vulnerable = last_matching_event_clinical_snomed_before(
-    shield_primis, ref_cev
+    jcvi_dict["shield_primis"], ref_cev
 ).exists_for_patient()
 
     ## Find date at which the high risk code was added
 severely_clinically_vulnerable_date = last_matching_event_clinical_snomed_before(
-    shield_primis, ref_cev
+    jcvi_dict["shield_primis"], ref_cev
 ).date
 
     ## NOT SHIELDED GROUP (medium and low risk) - only flag if later than 'shielded'
 less_vulnerable = last_matching_event_clinical_snomed_between(
-    nonshield_primis, severely_clinically_vulnerable_date + days(1), ref_cev - days(1)
+    jcvi_dict["nonshield_primis"], severely_clinically_vulnerable_date + days(1), ref_cev - days(1)
 ).exists_for_patient()
 
 cev_group = (
@@ -103,27 +103,27 @@ cev_group = (
     ## Derived variables for asthma_group
     ## Asthma Diagnosis codes
 astdx = last_matching_event_clinical_snomed_before(
-    ast_primis, ref_ar
+    jcvi_dict["ast_primis"], ref_ar
 ).exists_for_patient()
 
     ## Asthma Admission codes
 astadm = last_matching_event_clinical_snomed_before(
-    astadm_primis, ref_ar
+    jcvi_dict["astadm_primis"], ref_ar
 ).exists_for_patient()
 
     ## Asthma systemic steroid prescription code in month 1
 astrxm1 = last_matching_med_dmd_between(
-    astrx_primis, ref_ar - days(31), ref_ar - days(1)
+    jcvi_dict["astrx_primis"], ref_ar - days(31), ref_ar - days(1)
 ).exists_for_patient()
 
     ## Asthma systemic steroid prescription code in month 2
 astrxm2 = last_matching_med_dmd_between(
-    astrx_primis, ref_ar - days(61), ref_ar - days(32)
+    jcvi_dict["astrx_primis"], ref_ar - days(61), ref_ar - days(32)
 ).exists_for_patient()
 
     ## Asthma systemic steroid prescription code in month 3
 astrxm3 = last_matching_med_dmd_between(
-    astrx_primis, ref_ar - days(91), ref_ar - days(62)
+    jcvi_dict["astrx_primis"], ref_ar - days(91), ref_ar - days(62)
 ).exists_for_patient()
 
 asthma_group = (
@@ -132,66 +132,56 @@ asthma_group = (
 
 # resp_group (Chronic Respiratory Disease other than asthma)
 resp_group = last_matching_event_clinical_snomed_before(
-    resp_primis, ref_ar
+    jcvi_dict["resp_primis"], ref_ar
 ).exists_for_patient()
 
 # cns_group (Chronic Neurological Disease including Significant Learning Disorder)
 cns_group = last_matching_event_clinical_snomed_before(
-    cns_primis, ref_ar
+    jcvi_dict["cns_primis"], ref_ar
 ).exists_for_patient()
 
-# diab_group (Diabetes)
-    ## Derived variables for diab_group (Diabetes)
-    ## Diabetes diagnosis codes
+# Diabetes
 diab_date = last_matching_event_clinical_snomed_before(
-    diab_primis, ref_ar
+    jcvi_dict["diab_primis"], ref_ar
 ).date
 
-    ## Diabetes resolved codes
 dmres_date = last_matching_event_clinical_snomed_before(
-    dmres_primis, ref_ar
+    jcvi_dict["dmres_primis"], ref_ar
 ).date
 
 diab_group = (
     (dmres_date.is_null() & diab_date.is_not_null()) | (dmres_date < diab_date)
 )
 
-# sevment_group (severe mental illness codes)
-    ## Derived variables for sevment_group (severe mental illness codes)
-    ## Severe Mental Illness codes
+# Severe Mental Illness
 sev_mental_date = last_matching_event_clinical_snomed_before(
-    sev_mental_primis, ref_ar
+    jcvi_dict["sev_mental_primis"], ref_ar
 ).date
 
-    ## Remission codes relating to Severe Mental Illness
 smhres_date = last_matching_event_clinical_snomed_before(
-    smhres_primis, ref_ar
+    jcvi_dict["smhres_primis"], ref_ar
 ).date
 
 sevment_group = (
     (smhres_date.is_null() & sev_mental_date.is_not_null()) | (smhres_date < sev_mental_date)
 )
 
-# chd_group (Chronic heart disease codes)
+# Chronic Heart Disease
 chd_group = last_matching_event_clinical_snomed_before(
-    chd_primis, ref_ar
+    jcvi_dict["chd_primis"], ref_ar
 ).exists_for_patient()
 
-# ckd_group (Chronic kidney disease diagnostic codes)
-    ## Derived variables for ckd_group (Chronic kidney disease diagnostic codes)
-    ## Chronic kidney disease codes - all stages
+# Chronic Kidney Disease
 ckd15_date = last_matching_event_clinical_snomed_before(
-    ckd15_primis, ref_ar
+    jcvi_dict["ckd15_primis"], ref_ar
 ).date
 
-    ## Chronic kidney disease codes-stages 3 - 5
 ckd35_date = last_matching_event_clinical_snomed_before(
-    ckd35_primis, ref_ar
+    jcvi_dict["ckd35_primis"], ref_ar
 ).date
 
-    ## Chronic kidney disease diagnostic codes
 ckd = last_matching_event_clinical_snomed_before(
-    ckd_primis, ref_ar
+    jcvi_dict["ckd_primis"], ref_ar
 ).exists_for_patient()
 
 ckd_group = (
@@ -200,56 +190,47 @@ ckd_group = (
     (ckd35_date.is_not_null() & ckd15_date.is_null())
 )
 
-# cld_group (Chronic Liver disease codes)
+# Chronic Liver Disease
 cld_group = last_matching_event_clinical_snomed_before(
-    cld_primis, ref_ar
+    jcvi_dict["cld_primis"], ref_ar
 ).exists_for_patient()
 
-# immuno_group (immunosuppressed)
-    ## Derived variables for immuno_group (immunosuppressed)
-    ## Immunosuppression diagnosis codes
+# Immunosuppressed
 immdx = last_matching_event_clinical_snomed_before(
-    immdx_primis, ref_ar
+    jcvi_dict["immdx_primis"], ref_ar
 ).exists_for_patient()
 
-    ## Immunosuppression medication codes
 immrx = last_matching_med_dmd_between(
-    immrx_primis, ref_ar - days(180), ref_ar - days(1)
+    jcvi_dict["immrx_primis"], ref_ar - days(180), ref_ar - days(1)
 ).exists_for_patient()
 
 immuno_group = (immdx | immrx)
 
-
-# spln_group (Asplenia or Dysfunction of the Spleen codes)
+# Asplenia/Dysfunction of Spleen
 spln_group = last_matching_event_clinical_snomed_before(
-    spln_primis, ref_ar
+    jcvi_dict["spln_primis"], ref_ar
 ).exists_for_patient()
 
-# learndis_group (Wider Learning Disability)
+# Learning Disability
 learndis_group = last_matching_event_clinical_snomed_before(
-    learndis_primis, ref_ar
+    jcvi_dict["learndis_primis"], ref_ar
 ).exists_for_patient()
 
-# sevobese_group (Severe obesity)
-    ## Derived variables for sevobese_group (Severe obesity)
-    ## All BMI coded terms
+# Severe Obesity
 bmi_stage_date = last_matching_event_clinical_snomed_before(
-    bmi_stage_primis, ref_ar
+    jcvi_dict["bmi_stage_primis"], ref_ar
 ).date
 
-    ## Severe Obesity code recorded
 sev_obesity_date = last_matching_event_clinical_snomed_between(
-    sev_obesity_primis, bmi_stage_date, ref_ar - days(1)
+    jcvi_dict["sev_obesity_primis"], bmi_stage_date, ref_ar - days(1)
 ).date
 
-    ## BMI_primis
 bmi_date = last_matching_event_clinical_snomed_before(
-    bmi_primis, ref_ar
+    jcvi_dict["bmi_primis"], ref_ar
 ).date
 
-    ## BMI value
 bmi_value_temp = last_matching_event_clinical_snomed_before(
-    bmi_primis, ref_ar
+    jcvi_dict["bmi_primis"], ref_ar
 ).numeric_value
 
 sevobese_group = (
@@ -276,7 +257,7 @@ atrisk_group = (
 
 # longres_group (Patients in long-stay nursing and residential care)----------------------------
 longres_group = last_matching_event_clinical_snomed_before(
-    longres_primis, vax1_earliest
+    jcvi_dict["longres_primis"], vax1_earliest
 ).exists_for_patient()
 
 # jcvi_group

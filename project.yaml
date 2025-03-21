@@ -9,6 +9,7 @@ actions:
     run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
       --output output/measures/precovid/age_measures_2018-10-01.csv.gz
       --
+      --practice_measures
       --CS
       --Age
       --start_cohort 2018-10-01
@@ -20,6 +21,7 @@ actions:
     run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
       --output output/measures/precovid/age_measures_2022-10-01.csv.gz
       --
+      --practice_measures
       --CS
       --Age
       --start_cohort 2022-10-01
@@ -27,13 +29,12 @@ actions:
       highly_sensitive:
         dataset: output/measures/precovid/age_measures_2022-10-01.csv.gz
 
-  generate_measures_precovid_2018-10-01_sex:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --output output/measures/precovid/sex_measures_2018-10-01.csv.gz
+  generate_dataset_precovid_2018-10-01:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition/measures_cohorts.py
+      --output output/measures/precovid/dataset_2018-10-01.csv.gz
       --
-      --CS
-      --Sex
+      --patient_measures
       --start_cohort 2018-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/precovid/sex_measures_2018-10-01.csv.gz
+        dataset: output/measures/precovid/dataset_2018-10-01.csv.gz

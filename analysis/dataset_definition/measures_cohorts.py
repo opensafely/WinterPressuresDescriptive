@@ -10,7 +10,7 @@ if practice_measures == True:
 
     # Import longitudinal variables (focusing on time period)
     from variables_measure import generate_variables
-    variables_long = generate_variables(INTERVAL.start_date, INTERVAL.end_date)
+    variables_dynamic = generate_variables(INTERVAL.start_date, INTERVAL.end_date)
     # Extract variables from the dictionary so they can be directly used
     globals().update(variables_long)
 
@@ -108,8 +108,8 @@ if patient_measures == True:
 
     # Import multimorbidity conditions (20)
 
-    from variables_measure import generate_variables
-    variables = generate_variables(start_cohort)
+    from variables_dataset import generate_variables
+    variables_cs = generate_variables(start_cohort)
 
-    for var_name, var_value in variables.items():
+    for var_name, var_value in variables_cs.items():
         setattr(dataset, var_name, var_value)
