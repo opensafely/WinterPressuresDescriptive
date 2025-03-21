@@ -12,7 +12,7 @@ if practice_measures == True:
     from variables_measure import generate_variables
     variables_dynamic = generate_variables(INTERVAL.start_date, INTERVAL.end_date)
     # Extract variables from the dictionary so they can be directly used
-    globals().update(variables_long)
+    globals().update(variables_dynamic)
 
     # Import cross-sectional variables (focusing on a time point)
     from variables_dataset import generate_variables
