@@ -14,7 +14,7 @@ actions:
   ## Define study dates 
 
   study_dates:
-    run: "r:latest analysis/dataset_definition/study_dates.R\n  "
+    run: r:latest analysis/dataset_definition/study_dates.R
     outputs:
       highly_sensitive:
         study_dates_json: output/dataset_definition/study_dates.json
@@ -27,6 +27,8 @@ actions:
         --
         --patient_measures
         --start_cohort 2018-10-01
+    needs:
+    - study_dates
     outputs:
       highly_sensitive:
         dataset: output/dataset_definition/input_precovid.csv.gz
@@ -39,6 +41,8 @@ actions:
         --
         --patient_measures
         --start_cohort 2022-10-01
+    needs:
+    - study_dates
     outputs:
       highly_sensitive:
         dataset: output/dataset_definition/input_postcovid1.csv.gz
@@ -51,6 +55,8 @@ actions:
         --
         --patient_measures
         --start_cohort 2023-10-01
+    needs:
+    - study_dates
     outputs:
       highly_sensitive:
         dataset: output/dataset_definition/input_postcovid2.csv.gz

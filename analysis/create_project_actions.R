@@ -35,7 +35,12 @@ action <- function(
     highly_sensitive     = NULL,
     moderately_sensitive = NULL
 ){
-
+  # Only append arguments to run if not NULL
+  run_full <- if (!is.null(arguments)) {
+    paste0(run, "\n  ", paste(arguments, collapse = "\n  "))
+  } else {
+    run
+  }
   outputs <- list(
     moderately_sensitive = moderately_sensitive,
     highly_sensitive     = highly_sensitive
@@ -43,7 +48,7 @@ action <- function(
   outputs[sapply(outputs, is.null)] <- NULL
 
   actions <- list(
-    run = paste0(run, "\n  ", paste(arguments, collapse = "\n  ")),
+    run             = run_full,
     dummy_data_file = dummy_data_file,
     needs           = needs,
     outputs         = outputs
@@ -83,6 +88,7 @@ generate_cohort <- function(cohort) {
     action(
       name  = glue("generate_cohort_{cohort}"),
       run   = glue("ehrql:v1 generate-dataset analysis/dataset_definition/measures_cohorts.py --output output/dataset_definition/input_{cohort}.csv.gz"),
+      needs = list("study_dates"),
       arguments = c("--", "--patient_measures", glue("--start_cohort {date}")),
       highly_sensitive = list(
         dataset = glue("output/dataset_definition/input_{cohort}.csv.gz")
