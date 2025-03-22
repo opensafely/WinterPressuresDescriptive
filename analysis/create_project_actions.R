@@ -21,7 +21,7 @@ cohort_dates <- list(
 )
 
 # Define subgroups
-cs_args <- c("Age", "Sex", "Ethnicity", "IMD", "Rurality", "Smoking")
+cs_args <- c("Age", "Sex", "Ethnicity", "IMD", "Rurality", "Smoking", "Multimorbidity")
 long_args <- c("Consultation", "ec", "apc", "ec_ACSCs", "apc_ACSCs")
 
 # Create generic action function -----------------------------------------------
@@ -82,7 +82,7 @@ generate_cohort <- function(cohort) {
     comment(glue("Generate cohort - {cohort}")),
     action(
       name  = glue("generate_cohort_{cohort}"),
-      run   = glue("ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_{cohort}.py --output output/dataset_definition/input_{cohort}.csv.gz"),
+      run   = glue("ehrql:v1 generate-dataset analysis/dataset_definition/measures_cohorts.py --output output/dataset_definition/input_{cohort}.csv.gz"),
       arguments = c("--", "--patient_measures", glue("--start_cohort {date}")),
       highly_sensitive = list(
         dataset = glue("output/dataset_definition/input_{cohort}.csv.gz")

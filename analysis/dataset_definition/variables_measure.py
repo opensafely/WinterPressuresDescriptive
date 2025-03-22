@@ -25,7 +25,9 @@ def generate_variables(interval_start, interval_end):
         interval_start - days(90), interval_end
     )).exists_for_patient()
 
-    ### Consultation rate during follow-up of exposure
+    ## Exposure---------------------------------------------------------------------------------------------
+
+    ###  Consultation rate during follow-up of exposure
     tmp_exp_num_consrate = appointments.where(
         appointments.status.is_in([
             "Arrived",
@@ -42,33 +44,7 @@ def generate_variables(interval_start, interval_end):
         otherwise=365,
     )
 
-    ### Multimorbidity conditions (n=20)
-
-    exp_bin_hypertension = (
-        (last_matching_event_clinical_snomed_before(
-            hypertension_snomed, interval_start
-        ).exists_for_patient()) |
-        (last_matching_med_dmd_before(
-            hypertension_drugs_dmd, interval_start
-        ).exists_for_patient()) |
-        (last_matching_event_apc_before(
-            hypertension_icd10, interval_start
-        ).exists_for_patient())
-    )
-
-    exp_bin_anxdep = (
-        (last_matching_event_clinical_snomed_before(
-            multimorbidity_dict["MS_AnxietyDepression_snomed"], interval_start
-        ).exists_for_patient())
-    )
-
-    exp_bin_asthma = (
-        (last_matching_event_clinical_ctv3_before(
-            multimorbidity_dict["MS_Asthma_ctv3"], interval_start
-        ).exists_for_patient())
-    )    
-
-    ## Outcomes---------------------------------------------------------------------------------
+    ## Outcomes----------------------------------------------------------------------------------------------
     ### A&E attendance 
     out_num_ec = (
         ec.where(
@@ -83,6 +59,16 @@ def generate_variables(interval_start, interval_end):
     )
 
     ### ACSC 
+    ### COPD
+    out_num_copd_ec = ever_matching_event_ec_snomed_between(
+        multimorbidity_dict["MS_COPD_snomed"], interval_start, interval_end
+    ).count_for_patient()
+
+    out_num_copd_apc = ever_matching_event_apc_between(
+        copd_icd10, interval_start, interval_end
+    ).count_for_patient()
+
+    ### Asthma
     out_num_asthma_ec = ever_matching_event_ec_snomed_between(
         asthma_snomed, interval_start, interval_end
     ).count_for_patient()
@@ -91,11 +77,48 @@ def generate_variables(interval_start, interval_end):
         asthma_icd10, interval_start, interval_end
     ).count_for_patient()
 
+    ### Hypertension
+    out_num_hypertension_ec = ever_matching_event_ec_snomed_between(
+        hypertension_snomed, interval_start, interval_end
+    ).count_for_patient()
+
+    out_num_hypertension_apc = ever_matching_event_apc_between(
+        hypertension_icd10, interval_start, interval_end
+    ).count_for_patient()
+
+    ### Diabetes
+    out_num_diabetes_ec = ever_matching_event_ec_snomed_between(
+        diabetes_snomed, interval_start, interval_end
+    ).count_for_patient()
+
+    out_num_diabetes_apc = ever_matching_event_apc_between(
+        diabetes_icd10, interval_start, interval_end
+    ).count_for_patient()
+
+    ### Angina
+    out_num_angina_ec = ever_matching_event_ec_snomed_between(
+        angina_snomed, interval_start, interval_end
+    ).count_for_patient()
+
+    out_num_angina_apc = ever_matching_event_apc_between(
+        angina_icd10, interval_start, interval_end
+    ).count_for_patient()
+
     dynamic_variables = dict(
         inex_bin_reg_long = inex_bin_reg_long,
         exp_num_consrate = exp_num_consrate,
+        out_num_ec =out_num_ec,
         out_num_apc =out_num_apc,
-        out_num_asthma_apc = out_num_asthma_apc,
+        out_num_copd_ec = out_num_copd_ec,                   # COPD (EC)
+        out_num_copd_apc = out_num_copd_apc,                 # COPD (APC)
+        out_num_asthma_ec = out_num_asthma_ec,               # Asthma (EC)
+        out_num_asthma_apc = out_num_asthma_apc,             # Asthma (APC)
+        out_num_hypertension_ec = out_num_hypertension_ec,   # Hypertension (EC)
+        out_num_hypertension_apc = out_num_hypertension_apc, # Hypertension (APC)
+        out_num_diabetes_ec = out_num_diabetes_ec,           # Diabetes (EC)
+        out_num_diabetes_apc = out_num_diabetes_apc,         # Diabetes (APC)
+        out_num_angina_ec = out_num_angina_ec,               # Angina (EC)
+        out_num_angina_apc = out_num_angina_apc              # Angina (APC)
     )
     return dynamic_variables
 
