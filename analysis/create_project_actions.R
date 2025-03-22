@@ -43,7 +43,7 @@ action <- function(
   outputs[sapply(outputs, is.null)] <- NULL
 
   actions <- list(
-    run             = paste(c(run, arguments), collapse = " "),
+    run = paste0(run, "\n  ", paste(arguments, collapse = "\n  ")),
     dummy_data_file = dummy_data_file,
     needs           = needs,
     outputs         = outputs
@@ -83,9 +83,9 @@ generate_cohort <- function(cohort) {
     action(
       name  = glue("generate_cohort_{cohort}"),
       run   = glue("ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_{cohort}.py --output output/dataset_definition/input_{cohort}.csv.gz"),
-      arguments = c("--patient_measures", glue("--start_cohort {date}")),
+      arguments = c("--", "--patient_measures", glue("--start_cohort {date}")),
       highly_sensitive = list(
-        cohort = glue("output/dataset_definition/input_{cohort}.csv.gz")
+        dataset = glue("output/dataset_definition/input_{cohort}.csv.gz")
       )
     )
   )
@@ -127,16 +127,23 @@ for (cohort in cohorts) {
   for (flag in cs_args) {
     comment_text <- glue("Generate measures for {flag} (cross-sectional) - {cohort}")
     name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
-    file <- glue("output/measures/{cohort}/{tolower(flag)}_measures_{date}.csv.gz")
-    arguments <- c("--practice_measures", "--CS", glue("--{flag}"), glue("--start_cohort {date}"))
+    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv.gz")
+    arguments <- c(
+      "--", 
+      "--practice_measures", 
+      "--CS", 
+      glue("--{flag}"), 
+      glue("--start_cohort {date}")
+    )
     
     act <- c(
       comment(comment_text),
       action(
         name = name,
-        run = "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py",
+        run = glue("ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"),
         arguments = arguments,
-        moderately_sensitive = list(file)
+        highly_sensitive = list(
+          dataset = file)
       )
     )
     measure_actions <- append(measure_actions, act)
@@ -145,16 +152,23 @@ for (cohort in cohorts) {
   for (flag in long_args) {
     comment_text <- glue("Generate measures for {flag} (longitudinal) - {cohort}")
     name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
-    file <- glue("output/measures/{cohort}/{tolower(flag)}_measures_{date}.csv.gz")
-    arguments <- c("--practice_measures", "--Long", glue("--{flag}"), glue("--start_cohort {date}"))
+    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv.gz")
+    arguments <- c(
+      "--", 
+      "--practice_measures", 
+      "--Long", 
+      glue("--{flag}"), 
+      glue("--start_cohort {date}")
+    )
     
     act <- c(
       comment(comment_text),
       action(
         name = name,
-        run = "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py",
+        run = glue("ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"),
         arguments = arguments,
-        moderately_sensitive = list(file)
+        highly_sensitive = list(
+          dataset = file)
       )
     )
     measure_actions <- append(measure_actions, act)

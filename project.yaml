@@ -22,327 +22,498 @@ actions:
   ## Generate cohort - precovid 
 
   generate_cohort_precovid:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_precovid.py
-      --output output/dataset_definition/input_precovid.csv.gz --patient_measures
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_precovid.py --output output/dataset_definition/input_precovid.csv.gz
+      --
+      --patient_measures
       --start_cohort 2018-10-01
     outputs:
       highly_sensitive:
-        cohort: output/dataset_definition/input_precovid.csv.gz
+        dataset: output/dataset_definition/input_precovid.csv.gz
 
   ## Generate cohort - postcovid1 
 
   generate_cohort_postcovid1:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_postcovid1.py
-      --output output/dataset_definition/input_postcovid1.csv.gz --patient_measures
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_postcovid1.py --output output/dataset_definition/input_postcovid1.csv.gz
+      --
+      --patient_measures
       --start_cohort 2022-10-01
     outputs:
       highly_sensitive:
-        cohort: output/dataset_definition/input_postcovid1.csv.gz
+        dataset: output/dataset_definition/input_postcovid1.csv.gz
 
   ## Generate cohort - postcovid2 
 
   generate_cohort_postcovid2:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_postcovid2.py
-      --output output/dataset_definition/input_postcovid2.csv.gz --patient_measures
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_postcovid2.py --output output/dataset_definition/input_postcovid2.csv.gz
+      --
+      --patient_measures
       --start_cohort 2023-10-01
     outputs:
       highly_sensitive:
-        cohort: output/dataset_definition/input_postcovid2.csv.gz
+        dataset: output/dataset_definition/input_postcovid2.csv.gz
 
   ## Generate measures for Age (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_age:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Age --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_precovid.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Age
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/age_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_age_precovid.csv.gz
 
   ## Generate measures for Sex (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_sex:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Sex --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_precovid.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Sex
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/sex_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_sex_precovid.csv.gz
 
   ## Generate measures for Ethnicity (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_ethnicity:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Ethnicity --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_precovid.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Ethnicity
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/ethnicity_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ethnicity_precovid.csv.gz
 
   ## Generate measures for IMD (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_imd:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --IMD --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_precovid.csv.gz
+      --
+      --practice_measures
+      --CS
+      --IMD
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/imd_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_imd_precovid.csv.gz
 
   ## Generate measures for Rurality (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_rurality:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Rurality --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_precovid.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Rurality
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/rurality_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_rurality_precovid.csv.gz
 
   ## Generate measures for Smoking (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_smoking:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Smoking --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_precovid.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Smoking
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/smoking_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_smoking_precovid.csv.gz
 
   ## Generate measures for Consultation (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_consultation:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --Consultation --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid.csv.gz
+      --
+      --practice_measures
+      --Long
+      --Consultation
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/consultation_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_consultation_precovid.csv.gz
 
   ## Generate measures for ec (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_ec:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --ec --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_precovid.csv.gz
+      --
+      --practice_measures
+      --Long
+      --ec
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/ec_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ec_precovid.csv.gz
 
   ## Generate measures for apc (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_apc:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --apc --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_precovid.csv.gz
+      --
+      --practice_measures
+      --Long
+      --apc
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/apc_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_apc_precovid.csv.gz
 
   ## Generate measures for ec_ACSCs (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_ec_acscs:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --ec_ACSCs --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_acscs_precovid.csv.gz
+      --
+      --practice_measures
+      --Long
+      --ec_ACSCs
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/ec_acscs_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ec_acscs_precovid.csv.gz
 
   ## Generate measures for apc_ACSCs (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_apc_acscs:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --apc_ACSCs --start_cohort 2018-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_acscs_precovid.csv.gz
+      --
+      --practice_measures
+      --Long
+      --apc_ACSCs
+      --start_cohort 2018-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/precovid/apc_acscs_measures_2018-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_apc_acscs_precovid.csv.gz
 
   ## Generate measures for Age (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_age:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Age --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid1.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Age
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/age_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_age_postcovid1.csv.gz
 
   ## Generate measures for Sex (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_sex:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Sex --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid1.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Sex
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/sex_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_sex_postcovid1.csv.gz
 
   ## Generate measures for Ethnicity (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_ethnicity:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Ethnicity --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid1.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Ethnicity
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/ethnicity_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid1.csv.gz
 
   ## Generate measures for IMD (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_imd:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --IMD --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid1.csv.gz
+      --
+      --practice_measures
+      --CS
+      --IMD
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/imd_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_imd_postcovid1.csv.gz
 
   ## Generate measures for Rurality (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_rurality:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Rurality --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid1.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Rurality
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/rurality_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_rurality_postcovid1.csv.gz
 
   ## Generate measures for Smoking (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_smoking:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Smoking --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid1.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Smoking
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/smoking_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_smoking_postcovid1.csv.gz
 
   ## Generate measures for Consultation (longitudinal) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_consultation:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --Consultation --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1.csv.gz
+      --
+      --practice_measures
+      --Long
+      --Consultation
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/consultation_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_consultation_postcovid1.csv.gz
 
   ## Generate measures for ec (longitudinal) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_ec:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --ec --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_postcovid1.csv.gz
+      --
+      --practice_measures
+      --Long
+      --ec
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/ec_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ec_postcovid1.csv.gz
 
   ## Generate measures for apc (longitudinal) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_apc:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --apc --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_postcovid1.csv.gz
+      --
+      --practice_measures
+      --Long
+      --apc
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/apc_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_apc_postcovid1.csv.gz
 
   ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_ec_acscs:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --ec_ACSCs --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_acscs_postcovid1.csv.gz
+      --
+      --practice_measures
+      --Long
+      --ec_ACSCs
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/ec_acscs_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ec_acscs_postcovid1.csv.gz
 
   ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_apc_acscs:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --apc_ACSCs --start_cohort 2022-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_acscs_postcovid1.csv.gz
+      --
+      --practice_measures
+      --Long
+      --apc_ACSCs
+      --start_cohort 2022-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid1/apc_acscs_measures_2022-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_apc_acscs_postcovid1.csv.gz
 
   ## Generate measures for Age (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_age:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Age --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid2.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Age
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/age_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_age_postcovid2.csv.gz
 
   ## Generate measures for Sex (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_sex:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Sex --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid2.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Sex
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/sex_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_sex_postcovid2.csv.gz
 
   ## Generate measures for Ethnicity (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_ethnicity:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Ethnicity --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid2.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Ethnicity
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/ethnicity_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid2.csv.gz
 
   ## Generate measures for IMD (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_imd:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --IMD --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid2.csv.gz
+      --
+      --practice_measures
+      --CS
+      --IMD
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/imd_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_imd_postcovid2.csv.gz
 
   ## Generate measures for Rurality (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_rurality:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Rurality --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid2.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Rurality
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/rurality_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_rurality_postcovid2.csv.gz
 
   ## Generate measures for Smoking (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_smoking:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --CS --Smoking --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid2.csv.gz
+      --
+      --practice_measures
+      --CS
+      --Smoking
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/smoking_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_smoking_postcovid2.csv.gz
 
   ## Generate measures for Consultation (longitudinal) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_consultation:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --Consultation --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2.csv.gz
+      --
+      --practice_measures
+      --Long
+      --Consultation
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/consultation_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_consultation_postcovid2.csv.gz
 
   ## Generate measures for ec (longitudinal) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_ec:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --ec --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_postcovid2.csv.gz
+      --
+      --practice_measures
+      --Long
+      --ec
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/ec_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ec_postcovid2.csv.gz
 
   ## Generate measures for apc (longitudinal) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_apc:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --apc --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_postcovid2.csv.gz
+      --
+      --practice_measures
+      --Long
+      --apc
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/apc_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_apc_postcovid2.csv.gz
 
   ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_ec_acscs:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --ec_ACSCs --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_acscs_postcovid2.csv.gz
+      --
+      --practice_measures
+      --Long
+      --ec_ACSCs
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/ec_acscs_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_ec_acscs_postcovid2.csv.gz
 
   ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_apc_acscs:
-    run: ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py
-      --practice_measures --Long --apc_ACSCs --start_cohort 2023-10-01
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_acscs_postcovid2.csv.gz
+      --
+      --practice_measures
+      --Long
+      --apc_ACSCs
+      --start_cohort 2023-10-01
     outputs:
-      moderately_sensitive:
-      - output/measures/postcovid2/apc_acscs_measures_2023-10-01.csv.gz
+      highly_sensitive:
+        dataset: output/measures/measures_apc_acscs_postcovid2.csv.gz
 
