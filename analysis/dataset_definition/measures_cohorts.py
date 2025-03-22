@@ -1,7 +1,7 @@
 from module_table_imports import *
 from config_setup import *
 
-if practice_measures == True:
+if practice_measures:
 
     # Import variables function
     measures = create_measures()
@@ -32,7 +32,7 @@ if practice_measures == True:
         "out_count_apc_asthma_w": out_num_asthma_apc
     }
     # ---------------------- Cross-Sectional Measures ----------------------
-    if CS == True:
+    if CS:
         measures.define_defaults(
             denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_age & 
                         inex_bin_sex & inex_bin_ethinicity & inex_bin_imd & inex_bin_region,
@@ -41,19 +41,19 @@ if practice_measures == True:
             },
             intervals=months(1).starting_on(start_cohort),
         )  
-        if Age == True:
+        if Age:
             for measure in measures_age.keys():
                 measures.define_measure(
                     name = measure,
                     numerator = measures_age[measure]
             )
-        if Sex == True:
+        if Sex:
             measures.define_measure(
                 name = "exp_prop_female",
                 numerator = exp_bin_female
             ) 
     # ---------------------- Longitudinal Measures ----------------------
-    if Long == True:
+    if Long:
         measures.define_defaults(
             denominator= inex_bin_reg_long & inex_bin_alive & inex_bin_age & 
                         inex_bin_sex & inex_bin_ethinicity & inex_bin_imd & inex_bin_region,
@@ -62,24 +62,24 @@ if practice_measures == True:
             },
             intervals=weeks(20).starting_on(start_cohort),
         )
-        if Consultation == True:
+        if Consultation:
             measures.define_measure(
                 name = "exp_count_consultation_m",
                 numerator = exp_num_consrate,
                 intervals = months(12).ending_on(start_cohort)
             )     
-        if apc == True:
+        if apc:
             measures.define_measure(
                 name = "out_count_apc_w",
                 numerator = out_num_apc
             )
-        if apc_ACSCs == True:
+        if apc_ACSCs:
             for measure in measures_hospital_ACSC.keys():
                 measures.define_measure(
                     name = measure,
                     numerator = measures_hospital_ACSC[measure]
             )
-if patient_measures == True:
+if patient_measures:
 # create dataset for different cohorts based on different start_cohort date
 
     dataset = create_dataset()

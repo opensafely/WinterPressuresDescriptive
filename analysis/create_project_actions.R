@@ -1,5 +1,4 @@
 # Load libraries ---------------------------------------------------------------
-
 library(tidyverse)
 library(yaml)
 library(here)
@@ -8,12 +7,22 @@ library(readr)
 library(dplyr)
 
 # Specify defaults -------------------------------------------------------------
-
 defaults_list <- list(
   version = "3.0",
   expectations = list(population_size = 1000L)
 )
+
+# Define cohorts and cohort start dates
 cohorts <- c("precovid", "postcovid1", "postcovid2")
+cohort_dates <- list(
+  precovid = "2018-10-01",
+  postcovid1 = "2022-10-01",
+  postcovid2 = "2023-10-01"
+)
+
+# Define subgroups
+cs_args <- c("Age", "Sex", "Ethnicity", "IMD", "Rurality", "Smoking")
+long_args <- c("Consultation", "ec", "apc", "ec_ACSCs", "apc_ACSCs")
 
 # Create generic action function -----------------------------------------------
 
@@ -66,70 +75,94 @@ convert_comment_actions <- function(yaml.txt) {
     str_replace_all("\\#\\#\\'\\\n", "\n")
 }
 
-# Create function to generate study population ---------------------------------
-
+# Add cohort-specific measure actions ------------------------------------------
 generate_cohort <- function(cohort) {
+  date <- cohort_dates[[cohort]]  # extract date for the cohort
   splice(
     comment(glue("Generate cohort - {cohort}")),
     action(
       name  = glue("generate_cohort_{cohort}"),
       run   = glue("ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_{cohort}.py --output output/dataset_definition/input_{cohort}.csv.gz"),
-      needs = list("generate_dates"),
+      arguments = c("--patient_measures", glue("--start_cohort {date}")),
       highly_sensitive = list(
         cohort = glue("output/dataset_definition/input_{cohort}.csv.gz")
       )
     )
   )
 }
-
-
-# Define and combine all actions into a list of actions ------------------------
-
-actions_list <- splice(
-
+# Start building the actions list ----------------------------------------------
+actions_list <- c(
+  
   ## Post YAML disclaimer ------------------------------------------------------
-
   comment("# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #",
           "DO NOT EDIT project.yaml DIRECTLY",
           "This file is created by create_project_actions.R",
           "Edit and run create_project_actions.R to update the project.yaml",
           "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
   ),
-
+  
   ## Define study dates --------------------------------------------------------
   comment("Define study dates"),
-
+  
   action(
-    name = glue("study_dates"),
+    name = "study_dates",
     run  = "r:latest analysis/dataset_definition/study_dates.R",
     highly_sensitive = list(
-      study_dates_json = glue("output/dataset_definition/study_dates.json")
-    )
-  ),
-
-  ## Generate index dates for all study cohorts --------------------------------
-  comment("Generate dates for all cohorts"),
-
-  action(
-    name  = "generate_dates",
-    run   = "ehrql:v1 generate-dataset analysis/dataset_definition/dataset_definition_dates.py --output output/dataset_definition/index_dates.csv.gz",
-    needs = list("study_dates"),
-    highly_sensitive = list(
-      dataset = glue("output/dataset_definition/index_dates.csv.gz")
-    )
-  ),
-
-  ## Generate study population -------------------------------------------------
-
-  splice(
-    unlist(lapply(cohorts,
-                  function(x) generate_cohort(cohort = x)),
-           recursive = FALSE
+      study_dates_json = "output/dataset_definition/study_dates.json"
     )
   )
-
 )
 
+# Add cohort generation actions ------------------------------------------------
+for (cohort in cohorts) {
+  actions_list <- c(actions_list, generate_cohort(cohort))
+}
+
+# Add measure generation actions -----------------------------------------------
+measure_actions <- list()
+
+for (cohort in cohorts) {
+  date <- cohort_dates[[cohort]]
+  
+  for (flag in cs_args) {
+    comment_text <- glue("Generate measures for {flag} (cross-sectional) - {cohort}")
+    name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
+    file <- glue("output/measures/{cohort}/{tolower(flag)}_measures_{date}.csv.gz")
+    arguments <- c("--practice_measures", "--CS", glue("--{flag}"), glue("--start_cohort {date}"))
+    
+    act <- c(
+      comment(comment_text),
+      action(
+        name = name,
+        run = "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py",
+        arguments = arguments,
+        moderately_sensitive = list(file)
+      )
+    )
+    measure_actions <- append(measure_actions, act)
+  }
+  
+  for (flag in long_args) {
+    comment_text <- glue("Generate measures for {flag} (longitudinal) - {cohort}")
+    name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
+    file <- glue("output/measures/{cohort}/{tolower(flag)}_measures_{date}.csv.gz")
+    arguments <- c("--practice_measures", "--Long", glue("--{flag}"), glue("--start_cohort {date}"))
+    
+    act <- c(
+      comment(comment_text),
+      action(
+        name = name,
+        run = "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py",
+        arguments = arguments,
+        moderately_sensitive = list(file)
+      )
+    )
+    measure_actions <- append(measure_actions, act)
+  }
+}
+
+# Append measure actions to main action list -----------------------------------
+actions_list <- c(actions_list, measure_actions)
 
 # Combine actions into project list --------------------------------------------
 
