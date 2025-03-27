@@ -8,18 +8,13 @@ from variable_helper_functions import (
     ever_matching_event_clinical_ctv3_before,
     last_matching_event_clinical_ctv3_before,
     last_matching_event_clinical_snomed_before,
-    last_matching_med_dmd_before,
-    last_matching_event_apc_before,
     filter_codes_by_category,
-
 )
 
 # Define generate variables function
 def generate_variables(cohort_start):  
-    ### Registered 90 days before the start of winter/flu months for each cohort (for cross-sectional measures, i.e. patient  sociodemographic/case-mix )
-    inex_bin_reg_cs = (practice_registrations.spanning(
-    cohort_start - days(90), cohort_start
-    )).exists_for_patient()
+    ### Registered on the start date of winter/flu months for each cohort (for cross-sectional measures, i.e. patient  sociodemographic/case-mix )
+    inex_bin_reg_cs = practice_registrations.exists_for_patient_on(cohort_start)
 
     ### Alive on index date
     inex_bin_alive = (((patients.date_of_death.is_null()) | (patients.date_of_death.is_after(cohort_start))) & 

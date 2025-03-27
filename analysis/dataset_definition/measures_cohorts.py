@@ -156,8 +156,7 @@ if practice_measures:
     # ---------------------- Cross-Sectional Measures ----------------------
     if CS:
         measures.define_defaults(
-            denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_age & 
-                        inex_bin_sex & inex_bin_ethinicity & inex_bin_imd & inex_bin_region,
+            denominator= inex_bin_reg_cs & inex_bin_alive,
             group_by={
                 "practice_pseudo_id": practice_id
             },
@@ -218,8 +217,7 @@ if practice_measures:
     # ----------------------
     if Long:
         measures.define_defaults(
-            denominator= inex_bin_reg_long & inex_bin_alive & inex_bin_age & 
-                        inex_bin_sex & inex_bin_ethinicity & inex_bin_imd & inex_bin_region,
+            denominator= inex_bin_reg_cs & inex_bin_alive,
             group_by={
                 "practice_pseudo_id": practice_id
             },

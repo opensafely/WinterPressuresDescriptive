@@ -5,24 +5,17 @@ from codelists import *
 
 # Call functions from variable_helper_functions
 from variable_helper_functions import (
-    ever_matching_event_clinical_ctv3_before,
     ever_matching_event_apc_between,
     ever_matching_event_ec_snomed_between,
-    last_matching_event_clinical_ctv3_before,
-    last_matching_event_clinical_snomed_before,
-    last_matching_med_dmd_before,
-    last_matching_event_apc_before,
-    filter_codes_by_category,
-
 )
 
 # Define generate variables function
 def generate_variables(interval_start, interval_end):  
     ## Inclusion/exclusion criteria-------------------------------------------------------------------------
 
-    ### Registered throughout the study period and 90 days before for each cohort (for longitudinal measures, i.e. consultation rate/hospital admission)
+    ### Registered throughout the study period (for longitudinal measures, i.e. consultation rate/hospital admission)
     inex_bin_reg_long = (practice_registrations.spanning(
-        interval_start - days(90), interval_end
+        interval_start, interval_end
     )).exists_for_patient()
 
     ## Exposure---------------------------------------------------------------------------------------------
