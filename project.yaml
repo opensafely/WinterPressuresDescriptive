@@ -572,4 +572,5 @@ actions:
     needs:
     outputs:
       highly_sensitive:
-        dataset: output/merged_measures.csv.gz
+        dataset1: output/merged_exp_measures.csv
+        dataset2: output/merged_out_measures.csv
