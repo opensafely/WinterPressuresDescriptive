@@ -565,3 +565,11 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2.csv.gz
 
+
+#Generate the MERGED measures dataset
+  generate_merged_measures:
+    run: r:latest analysis/data_cleaning.R
+    needs:
+    outputs:
+      highly_sensitive:
+        dataset: output/merged_measures.csv.gz
