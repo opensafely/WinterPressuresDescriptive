@@ -37,6 +37,17 @@ def generate_variables(interval_start, interval_end):
         otherwise=365,
     )
 
+    ### Vaccination against flu in the last 12 months
+    exp_bin_vax = {}
+    for disease in ['INFLUENZA', 'SARS-2 CORONAVIRUS', 'PNEUMOCOCCAL']:
+        exp_bin_vax[disease] = (vaccinations.where((vaccinations
+                                            .target_disease
+                                            .is_in([disease])) &
+                                            vaccinations
+                                            .date
+                                            .is_on_or_between(interval_start, interval_end))
+                                            .exists_for_patient())
+
     ## Outcomes----------------------------------------------------------------------------------------------
     ### A&E attendance 
     out_num_ec = (

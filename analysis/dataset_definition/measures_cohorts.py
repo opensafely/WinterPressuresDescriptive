@@ -230,7 +230,7 @@ if practice_measures:
             group_by={
                 "practice_pseudo_id": practice_id
             },
-            intervals=weeks(20).starting_on(start_cohort),
+            intervals = weeks(20).starting_on(start_cohort),
         )
 
         if Consultation:

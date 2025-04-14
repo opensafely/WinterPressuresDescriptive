@@ -132,17 +132,6 @@ def generate_variables(cohort_start):
         when(tmp_exp_num_consrate2019 <= 365).then(tmp_exp_num_consrate2019),
         otherwise=365,
     )
-
-    ### Vaccination against flu in the last 12 months
-    exp_bin_vax = {}
-    for disease in ['INFLUENZA', 'SARS-2 CORONAVIRUS', 'PNEUMOCOCCAL']:
-        exp_bin_vax[disease] = (vaccinations.where((vaccinations
-                                            .target_disease
-                                            .is_in([disease])) &
-                                            vaccinations
-                                            .date
-                                            .is_on_or_between(cohort_start - years(1), cohort_start))
-                                            .exists_for_patient())
     
     ## Multimorbidity conditions (n=20)----------------------------------------------------------------------
 
