@@ -259,7 +259,7 @@ if practice_measures:
             measures.define_measure(
                 name = "exp_count_consultation_m",
                 numerator = exp_num_consrate,
-                intervals = months(12).ending_on(start_cohort)
+                intervals = months(12).ending_on(start_cohort - days(1))
             )
 
         if Vax:
@@ -268,7 +268,7 @@ if practice_measures:
                     name = measure,
                     numerator = measures_vax[measure],
                     denominator = inex_bin_reg_cs & inex_bin_alive & (exp_num_age >= 65),
-                    intervals = years(1).ending_on(start_cohort)
+                    intervals = years(1).ending_on(start_cohort - days(1))
                 )
 
         if ec_all:
