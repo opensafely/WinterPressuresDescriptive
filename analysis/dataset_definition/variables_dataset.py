@@ -320,6 +320,7 @@ def generate_variables(cohort_start):
         exp_bin_85y_plus = exp_bin_85y_plus,
         exp_bin_age_missing =exp_bin_age_missing,
         # Ethnicity binary flags
+        tmp_exp_cat_ethnicity = tmp_exp_cat_ethnicity,
         exp_bin_eth_white = exp_bin_eth_white,
         exp_bin_eth_mixed = exp_bin_eth_mixed,
         exp_bin_eth_asian = exp_bin_eth_asian,
@@ -328,7 +329,8 @@ def generate_variables(cohort_start):
         exp_bin_eth_missing = exp_bin_eth_missing,
         # Practice region
         exp_cat_region =exp_cat_region,
-        # Rurality binary flags 
+        # Rurality binary flags
+        tmp_exp_cat_rur_urb = tmp_exp_cat_rur_urb,
         exp_bin_urb_major = exp_bin_urb_major,
         exp_bin_urb_minor = exp_bin_urb_minor,
         exp_bin_urb_town = exp_bin_urb_town,
@@ -339,6 +341,7 @@ def generate_variables(cohort_start):
         exp_bin_rural_village_sp = exp_bin_rural_village_sp,
         exp_bin_rurality_missing = exp_bin_rurality_missing,
         # IMD binary flags   
+        tmp_exp_cat_imd = tmp_exp_cat_imd,
         exp_bin_imd_1_most = exp_bin_imd_1_most,
         exp_bin_imd_2 = exp_bin_imd_2,
         exp_bin_imd_3 = exp_bin_imd_3,
