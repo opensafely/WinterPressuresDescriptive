@@ -21,14 +21,16 @@ from ehrql import (
 from ehrql.tables.tpp import (
     patients, 
     practice_registrations,
-    clinical_events, 
-    ons_deaths,
-    ec,
     addresses, 
     appointments, 
     occupation_on_covid_vaccine_record,
     sgss_covid_all_tests,
+    vaccinations,
     apcs, 
+    ec, 
+    clinical_events, 
+    ons_deaths,
+    emergency_care_attendances,
 )
 
 from ehrql.tables.core import medications

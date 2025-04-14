@@ -30,39 +30,43 @@ if practice_measures:
         "exp_prop_65_to_74": exp_bin_65_74y,
         "exp_prop_75_to_84": exp_bin_75_84y,
         "exp_prop_age_85_plus": exp_bin_85y_plus,
+        "exp_prop_age_missing": exp_bin_age_missing,
     }
 
     # =========================
     # Sex-related measures
     # =========================
     measures_sex = {
+        "exp_prop_male": exp_bin_male,
         "exp_prop_female": exp_bin_female,
+        "exp_prop_sex_missing": exp_bin_sex_missing,
     }
 
     # =========================
     # Ethnicity-related measures
     # =========================
     measures_ethnicity = {
-        "exp_prop_eth_missing": exp_bin_eth_missing,
         "exp_prop_eth_white": exp_bin_eth_white,
         "exp_prop_eth_mixed": exp_bin_eth_mixed,
-        "exp_prop_eth_southasian": exp_bin_eth_southasian,
+        "exp_prop_eth_asian": exp_bin_eth_asian,
         "exp_prop_eth_black": exp_bin_eth_black,
         "exp_prop_eth_other": exp_bin_eth_other,
+        "exp_prop_eth_missing": exp_bin_eth_missing,
     }
 
     # =========================
     # Rurality-related measures
     # =========================
     measures_rurality = {
-        "exp_prop_urb_major": urb_major,
-        "exp_prop_urb_minor": urb_minor,
-        "exp_prop_urb_town": urb_town,
-        "exp_prop_urb_town_sp": urb_town_sp,
-        "exp_prop_rural_fringe": rural_fringe,
-        "exp_prop_rural_fringe_sp": rural_fringe_sp,
-        "exp_prop_rural_village": rural_village,
-        "exp_prop_rural_village_sp": rural_village_sp,
+        "exp_prop_urb_major": exp_bin_urb_major,
+        "exp_prop_urb_minor": exp_bin_urb_minor,
+        "exp_prop_urb_town": exp_bin_urb_town,
+        "exp_prop_urb_town_sp": exp_bin_urb_town_sp,
+        "exp_prop_rural_fringe": exp_bin_rural_fringe,
+        "exp_prop_rural_fringe_sp": exp_bin_rural_fringe_sp,
+        "exp_prop_rural_village": exp_bin_rural_village,
+        "exp_prop_rural_village_sp": exp_bin_rural_village_sp,
+        "exp_prop_rurality_missing": exp_bin_rurality_missing,
     }
 
     # =========================
@@ -74,13 +78,24 @@ if practice_measures:
         "exp_prop_imd_3": exp_bin_imd_3,
         "exp_prop_imd_4": exp_bin_imd_4,
         "exp_prop_imd_5_least": exp_bin_imd_5_least,
+        "exp_prop_imd_missing": exp_bin_imd_missing,
     }
 
     # =========================
     # Smoking-related measures
     # =========================
     measures_smoking = {
-        "exp_prop_smoker": exp_bin_smoker,
+        "exp_prop_smoker_current": exp_bin_smoker_current,
+        "exp_prop_smoker_ever": exp_bin_smoker_ever,
+        "exp_prop_smoker_never": exp_bin_smoker_never,
+        "exp_prop_smoker_missing": exp_bin_smoker_missing,
+    }
+
+    # =========================
+    # Obesity measures
+    # =========================
+    measures_obesity = {
+        "exp_prop_obesity": exp_bin_obesity,
     }
 
     # =========================
@@ -121,9 +136,9 @@ if practice_measures:
     # Vaccination-related measures
     # =========================
     measures_vax = {
-        "exp_bin_covid_y": exp_bin_vax["SARS-2 CORONAVIRUS"],
-        "exp_bin_flu_y": exp_bin_vax["INFLUENZA"],
-        "exp_bin_pneum_y": exp_bin_vax["PNEUMOCOCCAL"],    
+        "exp_prop_vax_covid_y": exp_bin_vax_covid,
+        "exp_prop_vax_flu_y": exp_bin_vax_flu,
+        "exp_prop_vax_pneum_y": exp_bin_vax_pneumo,    
     }
 
     # =========================
@@ -214,6 +229,13 @@ if practice_measures:
                     numerator = measures_smoking[measure]
                 )
 
+        if Obesity:
+            for measure in measures_obesity.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_obesity[measure]
+                )
+
         if Multimorbidity:
             for measure in measures_multimorbidity.keys():
                 measures.define_measure(
@@ -245,20 +267,23 @@ if practice_measures:
                 measures.define_measure(
                     name = measure,
                     numerator = measures_vax[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & (exp_num_age >= 65),
                     intervals = years(1).ending_on(start_cohort)
-            )
+                )
 
         if ec_all:
-            measures.define_measure(
-                name = "out_count_ec_w",
-                numerator = out_num_ec
-            )
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_ec[measure]
+                )
 
         if apc_all:
-            measures.define_measure(
-                name = "out_count_apc_w",
-                numerator = out_num_apc
-            )
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_apc[measure]
+                )
 
         if ec_ACSCs:
             for measure in measures_ec_acsc.keys():

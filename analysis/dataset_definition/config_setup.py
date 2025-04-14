@@ -15,6 +15,7 @@ parser.add_argument("--Ethnicity", action = 'store_true', help = "Gets measures 
 parser.add_argument("--IMD", action= 'store_true', help = "Gets measures for IMD if flag is added to action.")
 parser.add_argument("--Rurality", action= 'store_true', help = "Gets measures for rurality if flag is added to action.")
 parser.add_argument("--Smoking", action= 'store_true', help = "Gets measures for smoking if flag is added to action.")
+parser.add_argument("--Obesity", action= 'store_true', help = "Gets measures for obesity if flag is added to action.")
 parser.add_argument("--Vax", action= 'store_true', help = "Gets measures for vax_status if flag is added to action.")
 parser.add_argument("--Multimorbidity", action= 'store_true', help = "Gets measures for Multimorbidity if flag is added to action.")
 parser.add_argument("--Consultation", action= 'store_true', help = "Gets measures for consultation rate if flag is added to action.")
@@ -39,6 +40,7 @@ Ethnicity = args.Ethnicity
 IMD = args.IMD
 Rurality = args.Rurality
 Smoking = args.Smoking
+Obesity = args.Obesity
 Vax = args.Vax
 Multimorbidity = args.Multimorbidity
 Consultation = args.Consultation

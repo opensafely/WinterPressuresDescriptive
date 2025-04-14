@@ -145,6 +145,20 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_smoking_precovid.csv.gz
 
+  ## Generate measures for Obesity (cross-sectional) - precovid 
+
+  generate_measures_precovid_2018-10-01_obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_precovid.csv.gz
+        --
+        --practice_measures
+        --CS
+        --Obesity
+        --start_cohort 2018-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/measures_obesity_precovid.csv.gz
+
   ## Generate measures for Multimorbidity (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_multimorbidity:
@@ -158,6 +172,20 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/measures/measures_multimorbidity_precovid.csv.gz
+
+  ## Generate measures for Vax (longitudinal) - precovid 
+
+  generate_measures_precovid_2018-10-01_vax:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_precovid.csv.gz
+        --
+        --practice_measures
+        --Long
+        --Vax
+        --start_cohort 2018-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/measures_vax_precovid.csv.gz
 
   ## Generate measures for Consultation (longitudinal) - precovid 
 
@@ -173,33 +201,33 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_consultation_precovid.csv.gz
 
-  ## Generate measures for ec (longitudinal) - precovid 
+  ## Generate measures for ec_all (longitudinal) - precovid 
 
-  generate_measures_precovid_2018-10-01_ec:
+  generate_measures_precovid_2018-10-01_ec_all:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_precovid.csv.gz
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_all_precovid.csv.gz
         --
         --practice_measures
         --Long
-        --ec
+        --ec_all
         --start_cohort 2018-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/measures_ec_precovid.csv.gz
+        dataset: output/measures/measures_ec_all_precovid.csv.gz
 
-  ## Generate measures for apc (longitudinal) - precovid 
+  ## Generate measures for apc_all (longitudinal) - precovid 
 
-  generate_measures_precovid_2018-10-01_apc:
+  generate_measures_precovid_2018-10-01_apc_all:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_precovid.csv.gz
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_all_precovid.csv.gz
         --
         --practice_measures
         --Long
-        --apc
+        --apc_all
         --start_cohort 2018-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/measures_apc_precovid.csv.gz
+        dataset: output/measures/measures_apc_all_precovid.csv.gz
 
   ## Generate measures for ec_ACSCs (longitudinal) - precovid 
 
@@ -313,6 +341,20 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_smoking_postcovid1.csv.gz
 
+  ## Generate measures for Obesity (cross-sectional) - postcovid1 
+
+  generate_measures_postcovid1_2022-10-01_obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid1.csv.gz
+        --
+        --practice_measures
+        --CS
+        --Obesity
+        --start_cohort 2022-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/measures_obesity_postcovid1.csv.gz
+
   ## Generate measures for Multimorbidity (cross-sectional) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_multimorbidity:
@@ -326,6 +368,20 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/measures/measures_multimorbidity_postcovid1.csv.gz
+
+  ## Generate measures for Vax (longitudinal) - postcovid1 
+
+  generate_measures_postcovid1_2022-10-01_vax:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_postcovid1.csv.gz
+        --
+        --practice_measures
+        --Long
+        --Vax
+        --start_cohort 2022-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/measures_vax_postcovid1.csv.gz
 
   ## Generate measures for Consultation (longitudinal) - postcovid1 
 
@@ -341,33 +397,33 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_consultation_postcovid1.csv.gz
 
-  ## Generate measures for ec (longitudinal) - postcovid1 
+  ## Generate measures for ec_all (longitudinal) - postcovid1 
 
-  generate_measures_postcovid1_2022-10-01_ec:
+  generate_measures_postcovid1_2022-10-01_ec_all:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_postcovid1.csv.gz
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_all_postcovid1.csv.gz
         --
         --practice_measures
         --Long
-        --ec
+        --ec_all
         --start_cohort 2022-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/measures_ec_postcovid1.csv.gz
+        dataset: output/measures/measures_ec_all_postcovid1.csv.gz
 
-  ## Generate measures for apc (longitudinal) - postcovid1 
+  ## Generate measures for apc_all (longitudinal) - postcovid1 
 
-  generate_measures_postcovid1_2022-10-01_apc:
+  generate_measures_postcovid1_2022-10-01_apc_all:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_postcovid1.csv.gz
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_all_postcovid1.csv.gz
         --
         --practice_measures
         --Long
-        --apc
+        --apc_all
         --start_cohort 2022-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/measures_apc_postcovid1.csv.gz
+        dataset: output/measures/measures_apc_all_postcovid1.csv.gz
 
   ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 
 
@@ -481,6 +537,20 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_smoking_postcovid2.csv.gz
 
+  ## Generate measures for Obesity (cross-sectional) - postcovid2 
+
+  generate_measures_postcovid2_2023-10-01_obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid2.csv.gz
+        --
+        --practice_measures
+        --CS
+        --Obesity
+        --start_cohort 2023-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/measures_obesity_postcovid2.csv.gz
+
   ## Generate measures for Multimorbidity (cross-sectional) - postcovid2 
 
   generate_measures_postcovid2_2023-10-01_multimorbidity:
@@ -494,6 +564,20 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/measures/measures_multimorbidity_postcovid2.csv.gz
+
+  ## Generate measures for Vax (longitudinal) - postcovid2 
+
+  generate_measures_postcovid2_2023-10-01_vax:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_postcovid2.csv.gz
+        --
+        --practice_measures
+        --Long
+        --Vax
+        --start_cohort 2023-10-01
+    outputs:
+      highly_sensitive:
+        dataset: output/measures/measures_vax_postcovid2.csv.gz
 
   ## Generate measures for Consultation (longitudinal) - postcovid2 
 
@@ -509,33 +593,33 @@ actions:
       highly_sensitive:
         dataset: output/measures/measures_consultation_postcovid2.csv.gz
 
-  ## Generate measures for ec (longitudinal) - postcovid2 
+  ## Generate measures for ec_all (longitudinal) - postcovid2 
 
-  generate_measures_postcovid2_2023-10-01_ec:
+  generate_measures_postcovid2_2023-10-01_ec_all:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_postcovid2.csv.gz
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_all_postcovid2.csv.gz
         --
         --practice_measures
         --Long
-        --ec
+        --ec_all
         --start_cohort 2023-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/measures_ec_postcovid2.csv.gz
+        dataset: output/measures/measures_ec_all_postcovid2.csv.gz
 
-  ## Generate measures for apc (longitudinal) - postcovid2 
+  ## Generate measures for apc_all (longitudinal) - postcovid2 
 
-  generate_measures_postcovid2_2023-10-01_apc:
+  generate_measures_postcovid2_2023-10-01_apc_all:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_postcovid2.csv.gz
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_all_postcovid2.csv.gz
         --
         --practice_measures
         --Long
-        --apc
+        --apc_all
         --start_cohort 2023-10-01
     outputs:
       highly_sensitive:
-        dataset: output/measures/measures_apc_postcovid2.csv.gz
+        dataset: output/measures/measures_apc_all_postcovid2.csv.gz
 
   ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 
 

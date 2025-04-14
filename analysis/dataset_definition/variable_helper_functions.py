@@ -1,20 +1,6 @@
 import operator
 from functools import reduce # for function building, e.g. any_of
-from ehrql.tables.tpp import (
-    patients, 
-    practice_registrations, 
-    addresses, 
-    appointments, 
-    occupation_on_covid_vaccine_record,
-    vaccinations,
-    sgss_covid_all_tests,
-    apcs, 
-    ec, 
-    clinical_events, 
-    medications, 
-    ons_deaths,
-    emergency_care_attendances,
-)
+from module_table_imports import *
 
 def ever_matching_event_clinical_ctv3_before(codelist, start_date, where=True):
     return(

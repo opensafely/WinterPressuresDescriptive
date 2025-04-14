@@ -28,9 +28,17 @@ cs_args <- c(
   "IMD",
   "Rurality",
   "Smoking",
+  "Obesity",
   "Multimorbidity"
 )
-long_args <- c("Vax", "Consultation", "ec_all", "apc_all", "ec_ACSCs", "apc_ACSCs")
+long_args <- c(
+  "Vax",
+  "Consultation",
+  "ec_all",
+  "apc_all",
+  "ec_ACSCs",
+  "apc_ACSCs"
+)
 
 # Create generic action function -----------------------------------------------
 

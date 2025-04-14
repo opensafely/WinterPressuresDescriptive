@@ -1,21 +1,5 @@
-from ehrql import (
-    days,
-    case,
-    when,
-    minimum_of,
-)
-
-# Bring table definitions from the TPP backend 
-from ehrql.tables.tpp import ( 
-    patients, 
-    vaccinations,
-    ons_deaths,
-)
-
-# Codelists from codelists.py (which pulls all variables from the codelist folder)
-
+from module_table_imports import *
 from codelists import *
-
 from datetime import date
 
 # Call functions from variable_helper_functions

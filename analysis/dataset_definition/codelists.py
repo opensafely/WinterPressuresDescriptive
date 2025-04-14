@@ -19,7 +19,7 @@ def create_codelist_dict(dic: dict) -> dict:
 
 # Ethnicity
 ethnicity_snomed = codelist_from_csv(
-    "codelists/opensafely-ethnicity.csv",
+    "codelists/opensafely-ethnicity-snomed-0removed.csv",
     column="code",
     category_column="Label_6"
 )
