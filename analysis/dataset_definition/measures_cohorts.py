@@ -114,7 +114,16 @@ if practice_measures:
     # =========================
     measures_consultation = {
         "exp_num_consrate2019": exp_num_consrate2019,
-        "exp_num_consrate": exp_num_consrate,
+        "exp_num_consrate_m": exp_num_consrate,
+    }
+
+    # =========================
+    # Vaccination-related measures
+    # =========================
+    measures_vax = {
+        "exp_bin_covid_y": exp_bin_vax["SARS-2 CORONAVIRUS"],
+        "exp_bin_flu_y": exp_bin_vax["INFLUENZA"],
+        "exp_bin_pneum_y": exp_bin_vax["PNEUMOCOCCAL"],    
     }
 
     # =========================
@@ -231,13 +240,21 @@ if practice_measures:
                 intervals = months(12).ending_on(start_cohort)
             )
 
-        if ec:
+        if Vax:
+            for measure in measures_vax.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_vax[measure],
+                    intervals = years(1).ending_on(start_cohort)
+            )
+
+        if ec_all:
             measures.define_measure(
                 name = "out_count_ec_w",
                 numerator = out_num_ec
             )
 
-        if apc:
+        if apc_all:
             measures.define_measure(
                 name = "out_count_apc_w",
                 numerator = out_num_apc
@@ -269,7 +286,7 @@ if patient_measures:
 
     # Import preliminary date variables (death date, vax dates)
 
-    from variables_vax import prelim_date_variables
+    from analysis.dataset_definition.variables_vax_covid import prelim_date_variables
 
     ## Add the imported variables to the dataset
 
@@ -277,7 +294,7 @@ if patient_measures:
         setattr(dataset, var_name, var_value)
 
     # Import jcvi variables ( JCVI group and derived variables; eligible date for vaccination based on JCVI group)
-    from variables_vax import jcvi_variables
+    from analysis.dataset_definition.variables_vax_covid import jcvi_variables
 
     ## Add the imported variables to the dataset
     for var_name, var_value in jcvi_variables.items():

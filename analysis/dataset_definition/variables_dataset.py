@@ -29,7 +29,11 @@ def generate_variables(cohort_start):
     inex_bin_sex = patients.sex.is_in(["female", "male"])
 
     ### Ethnicity is known
-    inex_bin_ethinicity = clinical_events.where(clinical_events.ctv3_code.is_in(opensafely_ethnicity_codes_6)).exists_for_patient()
+    inex_bin_ethinicity = (
+        clinical_events.where(clinical_events.snomedct_code.is_in(ethnicity_snomed))
+        .where(clinical_events.date.is_on_or_before(cohort_start))
+        .exists_for_patient()
+    )
 
     ### Imd is known
     inex_bin_imd = addresses.for_patient_on(cohort_start).imd_rounded.is_not_null()
@@ -52,11 +56,11 @@ def generate_variables(cohort_start):
     ### Ethnicity (need to decide category for calculating proportion)
     tmp_exp_cat_ethnicity = (
         clinical_events.where(
-            clinical_events.ctv3_code.is_in(opensafely_ethnicity_codes_6)
+            clinical_events.snomedct_code.is_in(ethnicity_snomed)
         )
         .sort_by(clinical_events.date)
         .last_for_patient()
-        .ctv3_code.to_category(opensafely_ethnicity_codes_6)
+        .to_category(ethnicity_snomed)
     )
     exp_bin_eth_missing = (tmp_exp_cat_ethnicity == "0")
     exp_bin_eth_white = (tmp_exp_cat_ethnicity == "1")
@@ -128,6 +132,17 @@ def generate_variables(cohort_start):
         when(tmp_exp_num_consrate2019 <= 365).then(tmp_exp_num_consrate2019),
         otherwise=365,
     )
+
+    ### Vaccination against flu in the last 12 months
+    exp_bin_vax = {}
+    for disease in ['INFLUENZA', 'SARS-2 CORONAVIRUS', 'PNEUMOCOCCAL']:
+        exp_bin_vax[disease] = (vaccinations.where((vaccinations
+                                            .target_disease
+                                            .is_in([disease])) &
+                                            vaccinations
+                                            .date
+                                            .is_on_or_between(cohort_start - years(1), cohort_start))
+                                            .exists_for_patient())
     
     ## Multimorbidity conditions (n=20)----------------------------------------------------------------------
 
