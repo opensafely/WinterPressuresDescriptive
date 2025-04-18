@@ -1,0 +1,98 @@
+code,term
+21260,Epilepsy resolved
+667..,Epilepsy monitoring
+6672.,Follow-up epilepsy assessment
+6674.,Epilepsy associated problems
+6675.,Fit frequency
+6676.,Last fit
+6678.,Epilepsy treatment changed
+6679.,Epilepsy treatment started
+667A.,Epilepsy treatment stopped
+E03y0,Organic delusional disorder
+E2A1.,Organic personality disorder
+F25..,Epilepsy
+F250.,Generalised non-convulsive epilepsy
+F2500,(Childhood absence epilepsy) or (Petit mal epilepsy)
+F2502,Epileptic seizures - atonic
+F2503,Epileptic seizures - akinetic
+F250y,Other specified generalised non-convulsive epilepsy
+F250z,Generalised non-convulsive epilepsy NOS
+F251.,Generalised convulsive epilepsy
+F2510,Generalised epilepsy
+F2511,Benign myoclonic epilepsy in infancy
+F2512,Epileptic seizures - clonic
+F2513,Epileptic seizures - myoclonic
+F2514,Epileptic seizures - tonic
+F251y,Other specified generalised convulsive epilepsy
+F251z,Generalised convulsive epilepsy NOS
+F252.,Non-convulsive status epilepticus wth impaired consciousness
+F254.,Partial epilepsy with impairment of consciousness
+F2540,Temporal lobe epilepsy
+F2542,Psychosensory epilepsy
+F2543,Mesiobasal limbic epilepsy
+F2544,Epileptic automatism
+F254z,Partial epilepsy with impairment of consciousness NOS
+F255.,Partial epilepsy without impairment of consciousness
+F2551,Epilepsy associated with specific stimuli
+F2552,Somatosensory epilepsy
+F2553,Partial epilepsy with autonomic symptoms
+F2554,Visual reflex epilepsy
+F2555,Unilateral epilepsy
+F255y,Partial epilepsy without impairment of consciousness OS
+F255z,Partial epilepsy without impairment of consciousness NOS
+F257.,Kojevnikov's epilepsy
+F25y.,Other forms of epilepsy
+F25y0,Cursive (running) epilepsy
+F25y1,Gelastic seizure
+F25y2,Locl-rlt(foc)(part)idiop epilep&epilptic syn seiz locl onset
+F25yz,Other forms of epilepsy NOS
+Fyu59,"[X]Status epilepticus, unspecified"
+SC200,Traumatic epilepsy
+X005m,Localisation-related epilepsy
+X005o,Benign childhood epilepsy with centrotemporal spike
+X006Q,Lennox-Gastaut syndrome
+X006o,Acquired epileptic aphasia
+X006t,Drug-induced epilepsy
+X006u,Alcohol-induced epilepsy
+X006w,Menstrual epilepsy
+X006x,Nocturnal epilepsy
+X006y,Photosensitive epilepsy
+X007B,Status epilepticus
+X007G,Complex partial status epilepticus
+XE15I,Progressive myoclonic epilepsy
+XE15Y,Convulsive status epilepticus
+XE15a,Epilepsy NOS
+XE1Z9,[X]Oth sp mental disord brain damag/dysfunction/physcal disd
+XaB4R,Motor epilepsy
+XaB4S,"Jacksonian, focal or motor epilepsy"
+XaB4T,Psychomotor epilepsy
+XaC34,Fit (in known epileptic) NOS
+XaFjh,Epilepsy control good
+XaFji,Epilepsy control poor
+XaIt0,Transient epileptic amnesia
+XaIu1,Epilepsy care arrangement
+XaIyV,Epilepsy medication review
+XaJ5k,Patient on maximal tolerated anticonvulsant therapy
+XaJ7s,Seizure free >12 months
+XaJB4,Epilepsy restricts employment
+XaJB5,Epilepsy prevents employment
+XaJB6,Epilepsy impairs education
+XaJBY,Epilepsy limits activities
+XaJBZ,Epilepsy does not limit activities
+XaJBa,Epilepsy management plan given
+XaJBb,Epilepsy severity
+XaJBc,No seizures on treatment
+XaJBd,1 to 12 seizures a year
+XaJBe,2 to 4 seizures a month
+XaJBf,1 to 7 seizures a week
+XaJBg,Daily seizures
+XaJBh,Many seizures a day
+XaJBi,Emergency epilepsy treatment since last appointment
+XaJDV,Did not attend epilepsy clinic
+XaJFI,Complex partial epileptic seizure
+XaJgP,Stress-induced epilepsy
+XaJtH,No epilepsy drug side effects
+XaL2B,Simple partial epileptic seizure
+XaM9q,Seen in epilepsy clinic
+XaQbJ,Petit mal (minor) epilepsy
+XaRGS,Childhood absence epilepsy

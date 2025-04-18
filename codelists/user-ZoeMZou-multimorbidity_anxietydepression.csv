@@ -1,0 +1,259 @@
+code,term
+1465.,H/O: depression
+1B17.,(Depressed) or (C/O feeling: [depressed] or [unhappy])
+2257.,O/E - depressed
+62T1.,Postnatal depressive disorder
+E0013,Presenile dementia with depression
+E0021,Senile dementia with depression
+E0043,Arteriosclerotic dementia with depression
+E1120,"Single major depressive episode, unspecified"
+E1121,"Single major depressive episode, mild"
+E1122,"Single major depressive episode, moderate"
+E1123,"Single major depressive episode, severe, without psychosis"
+E1125,"Single major depressive episode, partial or unspec remission"
+E1126,"Single major depressive episode, in full remission"
+E112z,Single major depressive episode NOS
+E1130,"Recurrent major depressive episodes, unspecified"
+E1131,"Recurrent major depressive episodes, mild"
+E1132,"Recurrent major depressive episodes, moderate"
+E1133,"Recurrent major depressive episodes, severe, no psychosis"
+E1135,"Recurrent major depressive episodes,partial/unspec remission"
+E1136,"Recurrent major depressive episodes, in full remission"
+E1137,Recurrent depression
+E113z,Recurrent major depressive episode NOS
+E11y2,Atypical depressive disorder
+E130.,Reactive depressive psychosis
+E2...,"Neurotic, personality and other nonpsychotic disorders"
+E20..,Neurotic disorder
+E200.,Anxiety disorder
+E2000,Anxiety state unspecified
+E2002,Generalised anxiety disorder
+E2004,Chronic anxiety
+E2005,Recurrent anxiety
+E200z,Anxiety state NOS
+E201.,Dissociative disorder
+E2010,Hysteria unspecified
+E2011,Dissociative blindness
+E2012,Dissociative deafness
+E2013,Dissociative tremor
+E2014,Dissociative paralysis
+E2015,Dissociative convulsions
+E2018,Dissociative fugue
+E2019,Multiple personality disorder
+E201A,Dissociative reaction unspecified
+E201B,Compensation neurosis
+E201C,Pseudocyesis
+E2020,Phobia unspecified
+E2021,Agoraphobia with panic attacks
+E2022,Agoraphobia without mention of panic attacks
+E2023,"Social phobia, fear of eating in public"
+E2024,"Social phobia, fear of public speaking"
+E2025,"Social phobia, fear of public washing"
+E2026,Acrophobia
+E2027,Animal phobia
+E2028,Claustrophobia
+E2029,Fear of crowds
+E202C,Dental phobia
+E202E,Fear of pregnancy
+E203.,Obsessive-compulsive disorder
+E2030,Compulsive neurosis
+E2031,Obsessional neurosis
+E203z,Obsessive-compulsive disorder NOS
+E206.,Depersonalisation syndrome
+E207.,Hypochondriacal disorder
+E20y.,Other neurotic disorders
+E20y0,Somatization disorder
+E20y1,Writer's cramp neurosis
+E20y2,Other occupational neurosis
+E20y3,Psychasthenic neurosis
+E20yz,Other neurotic disorder NOS
+E2110,Unspecified affective personality disorder
+E2111,Hypomanic personality disorder
+E2112,Dysthymia
+E2113,Cyclothymia
+E211z,Affective personality disorder NOS
+E26..,Somatoform disorder
+E260.,Psychosomatic musculoskeletal symptoms
+E2601,Psychosomatic torticollis
+E260z,Psychogenic musculoskeletal symptoms NOS
+E261.,Somatoform autonomic dysfunction - respiratory tract
+E2610,Psychogenic air hunger
+E2611,Psychogenic cough
+E2612,Psychogenic hiccough
+E2613,Psychogenic hyperventilation
+E2614,Psychogenic yawning
+E261z,Psychogenic respiratory symptom NOS
+E262.,Cardiac neurosis
+E2622,Neurocirculatory asthenia
+E262z,Psychogenic cardiovascular symptom NOS
+E263.,Psychogenic skin symptoms
+E2630,Psychogenic pruritus
+E263z,Psychogenic skin symptoms NOS
+E2642,Cyclical vomiting - psychogenic
+E2644,Psychogenic dyspepsia
+E2645,Psychogenic constipation
+E264z,Psychogenic gastrointestinal tract symptom NOS
+E265.,Psychogenic genitourinary tract symptoms
+E2651,Non-organic vaginismus
+E2652,Psychogenic dysmenorrhea
+E2653,Psychogenic dysuria
+E265z,Psychogenic genitourinary tract symptom NOS
+E267.,Psychogenic symptom of special sense organ
+E26y.,Other psychogenic malfunction
+E26y0,Bruxism (teeth grinding)
+E26yz,Other psychogenic malfunction NOS
+E26z.,Psychosomatic disorder NOS
+E278.,Somatoform pain disorder
+E2780,Psychogenic pain unspecified
+E2782,Psychogenic backache
+E278z,Psychalgia NOS
+E280.,Acute panic state due to acute stress reaction
+E281.,Acute fugue state due to acute stress reaction
+E282.,Acute stupor state due to acute stress reaction
+E283.,Other acute stress reactions
+E2830,Acute situational disturbance
+E2831,Acute post-trauma stress state
+E283z,Other acute stress reaction NOS
+E284.,Stress reaction causing mixed disturbance of emotion/conduct
+E29..,Adjustment disorder
+E290.,Brief depressive adjustment reaction
+E290z,Brief depressive reaction NOS
+E291.,Prolonged depressive adjustment reaction
+E292.,"Adjustment reaction, predominant disturbance other emotions"
+E2920,Separation anxiety disorder
+E2921,Adolescent emancipation disorder
+E2922,Early adult emancipation disorder
+E2924,Adjustment reaction with anxious mood
+E2925,Culture shock
+E292y,Adjustment reaction with mixed disturbance of emotion
+E292z,Adjustment reaction with disturbance of other emotion NOS
+E293.,Adjustment reaction with predominant disturbance of conduct
+E2930,Adjustment reaction with aggression
+E2931,Adjustment reaction with antisocial behaviour
+E2932,Adjustment reaction with destructiveness
+E293z,Adjustment reaction with predominant disturbance conduct NOS
+E294.,Adjustment reaction with disturbance emotion and conduct
+E29y.,Other adjustment reactions
+E29y0,Concentration camp syndrome
+E29y1,Other post-traumatic stress disorder
+E29y2,Adjustment reaction with physical symptoms
+E29y3,Elective mutism due to an adjustment reaction
+E29y4,Hospitalism
+E29y5,Other adjustment reaction with withdrawal
+E29yz,Other adjustment reactions NOS
+E29z.,Adjustment reaction NOS
+E2B..,Depressive disorder NEC
+E2B0.,Postviral depression
+E2B1.,Chronic depression
+Eu320,[X]Mild depressive episode
+Eu321,[X]Moderate depressive episode
+Eu322,"[X]Sev depress epis, no psych: (& single [agit][maj][vital])"
+Eu32y,[X]Depression: [oth episode][atypic][single epis masked NOS]
+Eu32z,[X](Depressn: [episode unsp][NOS (& react)][depress dis NOS]
+Eu33.,[X]Recurrent depressive disorder (& [named variants])
+Eu330,"[X]Recurrent depressive disorder, current episode mild"
+Eu331,"[X]Recurrent depressive disorder, current episode moderate"
+Eu332,"[X]Depressn, no psych symp: [recurr: (named var)]/[endogen]"
+Eu334,"[X]Recurrent depressive disorder, currently in remission"
+Eu33y,[X]Other recurrent depressive disorders
+Eu33z,[X] Depression recurrent: [unspecified] or [monopolar NOS]
+Eu3y1,[X]Recurr mood affect disords: [brief episodes] or [other]
+Eu4..,"[X]Neurotic, stress-related and somatoform disorders"
+Eu40.,[X]Phobic anxiety disorders
+Eu40y,[X]Other phobic anxiety disorders
+Eu40z,"[X]Phobic anxiety disorder, unspecified"
+Eu41.,[X]Other anxiety disorders
+Eu410,[X]Panic disorder [episodic paroxysmal anxiety]
+Eu413,[X]Other mixed anxiety disorders
+Eu41z,"[X]Anxiety disorder, unspecified"
+Eu420,[X]Predominantly obsessional thoughts or ruminations
+Eu421,[X]Predominantly compulsive acts [obsessional rituals]
+Eu422,[X]Mixed obsessional thoughts and acts
+Eu42y,[X]Other obsessive-compulsive disorders
+Eu42z,"[X]Obsessive-compulsive disorder, unspecified"
+Eu43y,[X]Other reactions to severe stress
+Eu43z,"[X]Reaction to severe stress, unspecified"
+Eu44.,[X]Dissociative [conversion] disorders
+Eu443,[X]Trance and possession disorders
+Eu447,[X]Mixed dissociative [conversion] disorders
+Eu44z,"[X]Dissociative [conversion] disorder, unspecified"
+Eu45z,"[X]Somatoform disorder, unspecified"
+Eu46.,[X]Other neurotic disorders
+Eu46z,"[X]Neurotic disorder, unspecified"
+Eu530,"[X]Ment/behav dis, puerperp:[mild NEC][postnat depressn NOS]"
+Ub0qs,Anxiety management training
+Ub1T9,Post-traumatic mutism
+X00SO,Depressive disorder
+X00SQ,Agitated depression
+X00SR,Endogenous depression
+X00SS,Endogenous depression first episode
+X00SU,Masked depression
+X00SV,Agoraphobia
+X00SW,Social phobia
+X00SX,Specific phobia
+X00SY,Needle phobia
+X00Sb,Mixed anxiety and depressive disorder
+X00Sf,Post-traumatic stress disorder
+X00Si,Dissociative aphonia
+X00So,Undifferentiated somatoform disorder
+X00Ss,Somatoform autonomic dysfunction
+X00Su,Globus hystericus
+X00Sv,Depersonalisation-derealisation syndrome
+X00TX,Depressive conduct disorder
+X75xa,Dissociative amnesia
+X761L,Seasonal affective disorder
+X762G,Fear of flying
+X762T,Fear of death
+XE0re,Depressed mood
+XE1Y0,Single major depressive episode
+XE1Y1,Recurrent major depressive episodes
+XE1Y7,Panic disorder
+XE1Y8,Other conversion disorder
+XE1Y9,Hysteria NOS
+XE1YA,Phobic anxiety disorder
+XE1YB,Phobic disorder NOS
+XE1YC,Reactive depression
+XE1YD,Neurasthenia
+XE1YE,Neurotic disorder NOS
+XE1YF,Paranoid personality disorder
+XE1Yc,Somatoform autonomic dysfunction - gastrointestinal tract
+XE1Yd,Psychogenic aerophagy
+XE1Ye,Psychogenic diarrhoea
+XE1Yl,Tension-type headache
+XE1Ym,Acute stress reaction
+XE1Yn,Acute stress reaction NOS
+XE1Yo,Grief reaction
+XE1Yp,Specific academic or work inhibition
+XE1ZY,[X]Severe depressive episode without psychotic symptoms
+XE1Za,[X]Other depressive episodes
+XE1Zb,"[X]Depressive episode, unspecified"
+XE1Zc,[X]Recurrent depressive disorder
+XE1Zd,[X]Recurr depress disorder cur epi severe without psyc sympt
+XE1Zf,"[X]Recurrent depressive disorder, unspecified"
+XE1Zj,[X]Other specified anxiety disorders
+XE1Zk,Dissociative motor disorder
+XE1Zl,[X]Dissociative anaesthesia and sensory loss
+XE1Zm,[X]Other dissociative [conversion] disorders
+XE1Zn,[X]Persistent somatoform pain disorder
+XE1Zo,[X]Other somatoform disorders
+XE1Zp,[X]Other specified neurotic disorders
+XE2b6,Personality disorder
+XM0As,Stress and adjustment reaction
+XM0CR,C/O - feeling depressed
+XM1GC,Endogenous depression - recurrent
+Xa028,Dissociative stupor
+Xa0wV,Recurrent brief depressive disorder
+Xa7lj,Cancer phobia
+XaB9J,Depression NOS
+XaCHr,[X]Single episode agitated depressn w'out psychotic symptoms
+XaCHs,[X]Single episode major depression w'out psychotic symptoms
+XaCIs,Mild depression
+XaImU,Symptoms of depression
+XaJWh,On depression register
+XaJWi,Removed from depression register
+XaK6d,Depression annual review
+XaK6e,Depression medication review
+XaK6f,Depression interim review
+XaKEz,Patient given advice about management of depression
+XaL0r,Referral for guided self-help for depression
+XaLG0,Depression resolved
