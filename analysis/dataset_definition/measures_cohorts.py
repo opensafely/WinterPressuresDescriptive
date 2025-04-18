@@ -135,12 +135,15 @@ if practice_measures:
     # =========================
     # Vaccination-related measures
     # =========================
-    measures_vax = {
+    measures_covid = {
         "exp_prop_vax_covid_y": exp_bin_vax_covid,
+    }
+    measures_flu = {
         "exp_prop_vax_flu_y": exp_bin_vax_flu,
+    }
+    measures_pneumococcal = {
         "exp_prop_vax_pneum_y": exp_bin_vax_pneumo,    
     }
-
     # =========================
     # Emergency care (EC) measures
     # =========================
@@ -262,15 +265,33 @@ if practice_measures:
                 intervals = months(12).ending_on(start_cohort - days(1))
             )
 
-        if Vax:
-            for measure in measures_vax.keys():
+        if vax_flu:
+            for measure in measures_flu.keys():
                 measures.define_measure(
                     name = measure,
-                    numerator = measures_vax[measure],
-                    denominator = inex_bin_reg_cs & inex_bin_alive & (exp_num_age >= 65),
+                    numerator = measures_flu[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & (inex_bin_elig_flu_65y | inex_bin_elig_flu_2_3y | inex_bin_elig_flu_pregnancy),
                     intervals = years(1).ending_on(start_cohort - days(1))
                 )
 
+        if vax_pneum:        
+            for measure in measures_pneumococcal.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_pneumococcal[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & inex_bin_elig_pneum_65y,
+                    intervals = years(1).ending_on(start_cohort - days(1))
+                )
+
+        if vax_covid:
+            for measure in measures_covid.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_covid[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & inex_bin_elig_covid_75y,
+                    intervals = years(1).ending_on(start_cohort - days(1))
+                )
+ 
         if ec_all:
             for measure in measures_ec.keys():
                 measures.define_measure(
@@ -311,7 +332,7 @@ if patient_measures:
 
     # Import preliminary date variables (death date, vax dates)
 
-    from analysis.dataset_definition.variables_vax_covid import prelim_date_variables
+    from variables_vax_covid import prelim_date_variables
 
     ## Add the imported variables to the dataset
 
@@ -319,7 +340,7 @@ if patient_measures:
         setattr(dataset, var_name, var_value)
 
     # Import jcvi variables ( JCVI group and derived variables; eligible date for vaccination based on JCVI group)
-    from analysis.dataset_definition.variables_vax_covid import jcvi_variables
+    from variables_vax_covid import jcvi_variables
 
     ## Add the imported variables to the dataset
     for var_name, var_value in jcvi_variables.items():

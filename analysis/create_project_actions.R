@@ -13,7 +13,9 @@ defaults_list <- list(
 )
 
 # Define cohorts and cohort start dates
-cohorts <- c("precovid", "postcovid1", "postcovid2")
+cohorts_postcovid <- c("postcovid1", "postcovid2")
+cohorts_all <- c("precovid", cohorts_postcovid)
+
 cohort_dates <- list(
   precovid = "2018-10-01",
   postcovid1 = "2022-10-01",
@@ -31,8 +33,13 @@ cs_args <- c(
   "Obesity",
   "Multimorbidity"
 )
-long_args <- c(
-  "Vax",
+
+long_args_postcovid <- c("vax_covid")
+
+long_args_all <- c(
+  long_args_postcovid,
+  "vax_flu",
+  "vax_pneum",
   "Consultation",
   "ec_all",
   "apc_all",
@@ -138,22 +145,21 @@ actions_list <- c(
 )
 
 # Add cohort generation actions ------------------------------------------------
-for (cohort in cohorts) {
+for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_cohort(cohort))
 }
 
 # Add measure generation actions -----------------------------------------------
 measure_actions <- list()
 
-for (cohort in cohorts) {
-  date <- cohort_dates[[cohort]]
-
-  for (flag in cs_args) {
+for (flag in cs_args) {
+  for (cohort in cohorts_all) {
+    date <- cohort_dates[[cohort]]
     comment_text <- glue(
       "Generate measures for {flag} (cross-sectional) - {cohort}"
     )
     name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
-    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv.gz")
+    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv")
     arguments <- c(
       "--",
       "--practice_measures",
@@ -170,20 +176,24 @@ for (cohort in cohorts) {
           "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"
         ),
         arguments = arguments,
-        highly_sensitive = list(
+        moderately_sensitive = list(
           dataset = file
         )
       )
     )
     measure_actions <- append(measure_actions, act)
   }
+}
 
-  for (flag in long_args) {
+for (flag in long_args_all) {
+  cohorts <- if (flag %in% long_args_postcovid) cohorts_postcovid else cohorts_all
+  for (cohort in cohorts) {
+    date <- cohort_dates[[cohort]]
     comment_text <- glue(
       "Generate measures for {flag} (longitudinal) - {cohort}"
     )
     name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
-    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv.gz")
+    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv")
     arguments <- c(
       "--",
       "--practice_measures",
@@ -200,7 +210,7 @@ for (cohort in cohorts) {
           "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"
         ),
         arguments = arguments,
-        highly_sensitive = list(
+        moderately_sensitive = list(
           dataset = file
         )
       )

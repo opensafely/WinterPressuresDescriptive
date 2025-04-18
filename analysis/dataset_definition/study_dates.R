@@ -31,7 +31,6 @@ study_dates <-
     start_precovid                = "2018-10-01", # Outcome follow-up in start date for pre-covid cohort
     start_postcovid1              = "2022-10-01", # Outcome follow-up in start date for post-covid cohort1
     start_postcovid2              = "2023-10-01"  # Outcome follow-up in start date for post-covid cohort2
-    # We do not need to define end date as it will be defined by intervals in measures
   )
 # Save study_dates ----
 print("Save study_dates")

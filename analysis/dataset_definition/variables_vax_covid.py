@@ -24,7 +24,6 @@ pandemic_start = study_dates["pandemic_start"]  # rough start date for pandemic 
 vax1_earliest = study_dates["vax1_earliest"]  # earliest expectation date for first vaccination
 vax2_earliest = study_dates["vax2_earliest"]  # earliest expectation date for 2nd vaccination
 vax3_earliest = study_dates["vax3_earliest"]  # earliest expectation date for 3rd vaccination
-
 # JCVI VARIABLES-------------------------------------------------------------------------------------------------------------------
 
 # Age on phase 1 reference date

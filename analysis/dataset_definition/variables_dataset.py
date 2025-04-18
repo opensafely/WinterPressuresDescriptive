@@ -6,6 +6,7 @@ from variable_helper_functions import (
     ever_matching_event_clinical_ctv3_before,
     last_matching_event_clinical_ctv3_before,
     last_matching_event_clinical_snomed_before,
+    last_matching_event_clinical_snomed_on_or_before,
     last_matching_event_apc_before,
     filter_codes_by_category,
 )
@@ -40,6 +41,20 @@ def generate_variables(cohort_start):
     ### Region is known
     inex_bin_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name.is_not_null()
 
+    ### inclusion and exclusion criteria for flu and pneumococcal vax (https://www.gov.uk/government/publications/flu-vaccination-programme-information-for-healthcare-practitioners/flu-vaccination-programme-2023-to-2024-information-for-healthcare-practitioners)
+    tmp_num_flu_age_child = patients.age_on(cohort_start - days(31))   #all children aged 2 or 3 years on 31 August {cohort year-1}
+    tmp_num_flu_age_elder = patients.age_on(cohort_start + months(6))  #those aged 65 years and over (including those who are 64 but will be 65 on or before 31 March {cohort year})
+    tmp_num_covid_age_elder = patients.age_on(cohort_start + months(9))#those aged 75 years and over (including those who are 74 but will be 75 on or before 30 June {cohort year})
+    
+    inex_bin_elig_pneum_65y = exp_num_age >= 65
+    inex_bin_elig_flu_65y = tmp_num_flu_age_elder >= 65
+    inex_bin_elig_flu_2_3y = (tmp_num_flu_age_child <4) & (tmp_num_flu_age_child >= 2) 
+    ### Pregnancy
+    inex_bin_elig_flu_pregnancy = last_matching_event_clinical_snomed_on_or_before(
+        pregnancy_snomed, cohort_start
+    ).exists_for_patient()
+    inex_bin_elig_covid_75y = tmp_num_covid_age_elder >= 75
+    
     ## Exposures--------------------------------------------------------------------------------------------
 
     ### Age
@@ -297,7 +312,7 @@ def generate_variables(cohort_start):
     )
 
     dynamic_variables = dict(
-        # Inclusion/exclusion binary flags
+        # Inclusion/exclusion binary flags (GENERAL)
         inex_bin_reg_cs = inex_bin_reg_cs,
         inex_bin_alive = inex_bin_alive,
         inex_bin_age = inex_bin_age,
@@ -305,6 +320,12 @@ def generate_variables(cohort_start):
         inex_bin_ethinicity = inex_bin_ethinicity,
         inex_bin_imd = inex_bin_imd,
         inex_bin_region = inex_bin_region,
+        # Inclusion/exclusion binary flags (VAX eligibility)
+        inex_bin_elig_pneum_65y = inex_bin_elig_pneum_65y,      #Pneumococcal vaccine
+        inex_bin_elig_flu_65y = inex_bin_elig_flu_65y,          #Flu vaccine
+        inex_bin_elig_flu_2_3y = inex_bin_elig_flu_2_3y,
+        inex_bin_elig_flu_pregnancy = inex_bin_elig_flu_pregnancy,
+        inex_bin_elig_covid_75y = inex_bin_elig_covid_75y,      #COVID SPRING vaccine
         # Practice ID
         practice_id = practice_id,
         # Sex binary flags

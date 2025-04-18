@@ -27,6 +27,15 @@ def last_matching_event_clinical_snomed_before(codelist, start_date, where=True)
         .last_for_patient()
     )
 
+def last_matching_event_clinical_snomed_on_or_before(codelist, start_date, where=True):
+    return(
+        clinical_events.where(where)
+        .where(clinical_events.snomedct_code.is_in(codelist))
+        .where(clinical_events.date.is_on_or_before(start_date))
+        .sort_by(clinical_events.date)
+        .last_for_patient()
+    )
+
 def last_matching_med_dmd_before(codelist, start_date, where=True):
     return(
         medications.where(where)

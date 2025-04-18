@@ -47,6 +47,12 @@ bmi_primis = codelist_from_csv(
     column="code"
 )
 
+# Pregnancy
+pregnancy_snomed = codelist_from_csv(
+    "codelists/user-RochelleKnight-pregnancy_and_birth_snomed.csv",
+    column="code"
+)
+
 # For JCVI groups
 
 jcvi_dict = {
