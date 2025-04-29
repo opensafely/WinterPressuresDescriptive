@@ -25,12 +25,16 @@ measures_path <-"output/"
     #Other functions used when defining "var_consistency_check"
         #message: apparently a better way to print text than "print"  
 
-var_consistency_check <- function(file_list, var_list) {
-    #Make sure the second argument in the function is a character vector of column names
+var_consistency_check <- function(file_list, var_list, type = c("CS", "Long")) {
+    #Makes sure that "type" is one of the allowed values
+    type <- match.arg(type) 
+    #Makes sure the second argument in the function is a character vector of column names
         if (!is.character(var_list)) stop("`var_list` must be a character vector of column names.") 
+    
     #Store reference values (from the first file)
         ref_values <- list()
         result <- TRUE #Add a function "result", start assuming the result = TRUE
+   
     #Sequentially upload each .csv file in the file_list
         for (i in seq_along(file_list)) {
             df <- file_list[[i]]
@@ -40,11 +44,13 @@ var_consistency_check <- function(file_list, var_list) {
                   result <- FALSE
                   next                        #Allows the loop to continue?
               }
-              # Variable - internal consistency: values are the same for each ROW
+            if (type == "CS")  
+              # Variable - internal consistency: Check values are the same for each ROW in the dataset
               if (length(unique(df[[var]])) != 1) { #If the number of unique values in this var !=1
                   warning("Error - var: '", var, "' has multiple values in dataset: ", i)
                   result <- FALSE
               }
+            
               #Variable - cross-file consistency, as compared to reference: 
               if (i == 1) {   #If it's the first file, set the reference values = the values from the first file
                   ref_values[[var]] <- unique(df[[var]])
@@ -54,41 +60,87 @@ var_consistency_check <- function(file_list, var_list) {
                   result <- FALSE
                   }
               }
-              
+            
+            
+            
+            
+              # Check 
     }
     }
 return(result)
 }
 
+date_check_cs
+  #Check date variable exists
+  #Check that the date variable = specific value
+  #Check that the date value is the same for all rows
+  #check that the date value is the same across datasets
+
+date_check_long
+  #Check date variable exists
+  #Check that the date values = specific SET of SEQUENTIAL values, BY certain variables
+  #Check that the date values are the same across datasets
+
+
+
+library(lubridate)
+date_check_long <- function(file_list, date_var_list, group_vars = NULL,
+                            start_date = NULL, n_weeks = NULL) {
+  #Makes sure the 'var_list' argument is a character vector of column names
+  if (!is.character(var_list)) stop("`var_list` must be a character vector of column names.") 
+  
+  #Store reference values (from the first file)
+  ref_values <- list()
+  result <- TRUE #Add a function "result", start assuming the result = TRUE
+  
+  #Sequentially upload each .csv file in the file_list
+  for (i in seq_along(file_list)) {
+    df <- file_list[[i]]
+    for (date_var in date_var_list) {             #Then, sequentially go through each variable in `var_list'
+      if (!date_var %in% colnames(df)) {       #Check that the variable exists in the dataset
+        warning("Variable '", var, "' not found in dataset: ", i)
+        result <- FALSE
+        next                            #Allows the loop to continue?
+      }
+      
+      df[[date_var]] <- as.Date(df[[date_var]]) #Converts date_var into date format (extra step - most dates will already be in date format, but just in case)
+      
+      
+      df %>% group_by(across(all_of(group_vars))) %.% #groups the data by the variables specified in the group_vars argument
+        summarise(   #For each group, calculates the following 
+          min_date = min(.data[[date_var]]),       #The earliest date in the group. Note '.data' is from rlang (used by dyplr) and says "Look inside whatever the current data frame is"
+          max_date = max(.data[[date_var]]),       #The latest date in the group
+          n_dates = n_distinct(.data[[date_var]]), #Distinct rows aka dates in each group
+          expected_dates = list(seq(               #Creates an item-list column to store the vectors
+                                    min(.data[[date_var]]), 
+                                    max(.data[[date_var]]), 
+                                    by = "1 week")),
+          actual_dates = list(sort(unique(.data[[date_var]])))
+        )
+                    
+      
+      
+        
+}  
+  } 
+}
+}
+
+#Q's for chat gpt
+# what does .data specify in min(.data[[date_var]])?
+# why do you have to create an item-list to store the vectors, e.g. through: expected_dates = list(seq(? What is the issue with comparing a volumn vector?
+
+
+if (type == "Long")
+  
+  
+date_check_acsc
+
+
 
 ##merge_and_drop:
     ##Runs var_consistency_check (prev function), and merges + drops the same variables IF they are consistent: 
-merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged_df") {
-        if (var_consistency_check(df_list, var_list)) { #Runs var_consistency_check & only proceeds if the function = TRUE
-            merged_df <- reduce(df_list, full_join, by = join_var) 
-              #Identify if any of the vars in var_list are now duplicates, post-merge
-                duplicate_vars <- grep(paste0("^(", paste(var_list, collapse = "|"), ")"), colnames(merged_df), value = TRUE)
-              #Create a list of vars to remove, making sure to exclude the first instance of each var
-                  #keep_vars <- unique(duplicate_vars)
-                  #remove_vars <- duplicate_vars[duplicate_vars != keep_vars[1]]
-    
-                  remove_vars <- unlist(lapply(var_list, function(v) {
-                    matches <- grep(paste0("^", v), duplicate_vars, value = TRUE)
-                    if (length(matches) > 1) matches[-1] else character(0)
-                  }))      
-                  
-            merged_df <- merged_df %>% select(-all_of(remove_vars))      
-            #%>%
-                #select(-starts_with(var_list))
-                #select(-starts_with(var_list[1]), -starts_with(var_list[2]))  # Remove all but the first occurrence
-            
-            message("Consistency check passed, dataset merged, and duplicates removed successfully")  
-            assign(merged_df_name, merged_df, envir = .GlobalEnv) #adds new dataframe to the global environment
-        }
-        else {
-            stop("Inconsistent variables found - merging and duplication not run")
-        } 
-    }
+
 
 
 ##Identical_vector_check: 
@@ -179,6 +231,10 @@ measures_csv <- list.files(path = measures_path, pattern = "\\precovid.csv$", fu
     var_consistency_check(wide_exp_measures, var_list = c("interval_start", "interval_end"))
         
 #Checking variables for consistency, merging datafiles, and dropping duplicate variables
+    #Dates - cross-sectional exposures
+    
+    
+    
     merge_and_drop(
       wide_exp_measures, 
       var_list = c("interval_start", "interval_end"), 
@@ -186,16 +242,55 @@ measures_csv <- list.files(path = measures_path, pattern = "\\precovid.csv$", fu
       merged_df_name = "merged_exp_measures")
     
     
-
-    
     merge_and_drop(
       wide_out_measures, 
       var_list = c("interval_start", "interval_end"), 
       c("practice_pseudo_id"), 
       merged_df_name = "")
     
+    #If it's a cross-sectional variable, we want to check that all the dates are the same
+    #If it's a longitudinal variable, we want to check that all the row dates are the same when transformed wide
+    
+    
+    merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged_df") {
+      if (var_consistency_check(df_list, var_list)) { #Runs var_consistency_check & only proceeds if the function = TRUE
+        merged_df <- reduce(df_list, full_join, by = join_var) 
+        #Identify if any of the vars in var_list are now duplicates, post-merge
+        duplicate_vars <- grep(paste0("^(", paste(var_list, collapse = "|"), ")"), colnames(merged_df), value = TRUE)
+        #Create a list of vars to remove, but make sure to KEEP the first instance of each var
+        
+        remove_vars <- unlist(lapply(var_list, function(v) {
+          matches <- grep(paste0("^", v), duplicate_vars, value = TRUE)
+          if (length(matches) > 1) matches[-1] else character(0)
+        }))      
+        
+        merged_df <- merged_df %>% select(-all_of(remove_vars))      
+        #%>%
+        #select(-starts_with(var_list))
+        #select(-starts_with(var_list[1]), -starts_with(var_list[2]))  # Remove all but the first occurrence
+        
+        message("Consistency check passed, dataset merged, and duplicates removed successfully")  
+        assign(merged_df_name, merged_df, envir = .GlobalEnv) #adds new dataframe to the global environment
+      }
+      else {
+        stop("Inconsistent variables found - merging and duplication not run")
+      } 
+    }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     merged_out_measures <- reduce(wide_out_measures, full_join, by = "practice_pseudo_id") 
-   
     merged_out_acscs_measures <- reduce(wide_out_acscs_measures, full_join, by = "practice_pseudo_id") 
     
     
@@ -316,6 +411,7 @@ write_csv(merged_out_measures, "merged_out_measures.csv")
 
 
 ##TO DO 
+#Check that the interval start and end dates match what we expect, given the start_cohort date
 #Add the number of registered patients used to calculate each proportion variable
     #CHECK that this number is consistent within each dataset, and for each category variable 
 
