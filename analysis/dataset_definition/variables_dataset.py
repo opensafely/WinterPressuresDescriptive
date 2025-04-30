@@ -72,12 +72,7 @@ def generate_variables(cohort_start):
 
     ### Ethnicity (need to decide category for calculating proportion)
     tmp_exp_cat_ethnicity = (
-        clinical_events.where(
-            clinical_events.snomedct_code.is_in(ethnicity_snomed)
-        )
-        .where(clinical_events.date.is_on_or_before(cohort_start))
-        .sort_by(clinical_events.date)
-        .last_for_patient()
+        last_matching_event_clinical_snomed_on_or_before(ethnicity_snomed, cohort_start)
         .snomedct_code.to_category(ethnicity_snomed, default="Missing")
     )
     exp_bin_eth_missing = (tmp_exp_cat_ethnicity == "Missing")
