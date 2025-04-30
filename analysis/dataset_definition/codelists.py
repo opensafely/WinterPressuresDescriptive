@@ -21,7 +21,7 @@ def create_codelist_dict(dic: dict) -> dict:
 ethnicity_snomed = codelist_from_csv(
     "codelists/opensafely-ethnicity-snomed-0removed.csv",
     column="code",
-    category_column="Label_6"
+    category_column="Grouping_6"
 )
 
 # Smoking

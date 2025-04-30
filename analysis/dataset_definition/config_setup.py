@@ -11,7 +11,7 @@ parser.add_argument("--Long", action = 'store_true', help = "The study period is
 ## Measures configuration
 parser.add_argument("--Age", action = 'store_true', help = "Gets measures for age if flag is added to action.")
 parser.add_argument("--Sex", action = 'store_true', help = "Gets measures for sex if flag is added to action.") 
-parser.add_argument("--Ethnicity", action = 'store_true', help = "Gets measures for ethnicity if flag is added to action..") 
+parser.add_argument("--Ethnicity", action = 'store_true', help = "Gets measures for ethnicity if flag is added to action.") 
 parser.add_argument("--IMD", action= 'store_true', help = "Gets measures for IMD if flag is added to action.")
 parser.add_argument("--Rurality", action= 'store_true', help = "Gets measures for rurality if flag is added to action.")
 parser.add_argument("--Smoking", action= 'store_true', help = "Gets measures for smoking if flag is added to action.")

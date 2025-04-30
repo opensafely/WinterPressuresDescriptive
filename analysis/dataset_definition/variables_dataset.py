@@ -72,20 +72,15 @@ def generate_variables(cohort_start):
 
     ### Ethnicity (need to decide category for calculating proportion)
     tmp_exp_cat_ethnicity = (
-        clinical_events.where(
-            clinical_events.snomedct_code.is_in(ethnicity_snomed)
-        )
-        .where(clinical_events.date.is_on_or_before(cohort_start))
-        .sort_by(clinical_events.date)
-        .last_for_patient()
+        last_matching_event_clinical_snomed_on_or_before(ethnicity_snomed, cohort_start)
         .snomedct_code.to_category(ethnicity_snomed, default="Missing")
     )
-    exp_bin_eth_missing = tmp_exp_cat_ethnicity == "Missing"
-    exp_bin_eth_white = (tmp_exp_cat_ethnicity == "White")
-    exp_bin_eth_mixed = (tmp_exp_cat_ethnicity == "Mixed")
-    exp_bin_eth_asian = (tmp_exp_cat_ethnicity == "Asian or Asian British")
-    exp_bin_eth_black = (tmp_exp_cat_ethnicity == "Black or Black British")
-    exp_bin_eth_other = (tmp_exp_cat_ethnicity == "Chinese or Other Ethnic Groups")
+    exp_bin_eth_missing = (tmp_exp_cat_ethnicity == "Missing")
+    exp_bin_eth_white = (tmp_exp_cat_ethnicity == "1")
+    exp_bin_eth_mixed = (tmp_exp_cat_ethnicity == "2")
+    exp_bin_eth_asian = (tmp_exp_cat_ethnicity == "3")
+    exp_bin_eth_black = (tmp_exp_cat_ethnicity == "4")
+    exp_bin_eth_other = (tmp_exp_cat_ethnicity == "5")
 
     ### Region
     exp_cat_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name
