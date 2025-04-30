@@ -78,9 +78,9 @@ def generate_variables(cohort_start):
         .where(clinical_events.date.is_on_or_before(cohort_start))
         .sort_by(clinical_events.date)
         .last_for_patient()
-        .snomedct_code.to_category(ethnicity_snomed)
+        .snomedct_code.to_category(ethnicity_snomed, default="Missing")
     )
-    exp_bin_eth_missing = tmp_exp_cat_ethnicity.is_null()
+    exp_bin_eth_missing = tmp_exp_cat_ethnicity == "Missing"
     exp_bin_eth_white = (tmp_exp_cat_ethnicity == "White")
     exp_bin_eth_mixed = (tmp_exp_cat_ethnicity == "Mixed")
     exp_bin_eth_asian = (tmp_exp_cat_ethnicity == "Asian or Asian British")
