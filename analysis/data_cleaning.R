@@ -7,6 +7,7 @@ library(haven)      # Allows you to import STATA .dta files
 library(stringr)    # Allows you to replace strings, useful for renaming vars
 library(tidyverse)
 library(glue)
+library(lubridate)
 #library(arrow)
 
 
@@ -25,9 +26,7 @@ measures_path <-"output/"
     #Other functions used when defining "var_consistency_check"
         #message: apparently a better way to print text than "print"  
 
-var_consistency_check <- function(file_list, var_list, type = c("CS", "Long")) {
-    #Makes sure that "type" is one of the allowed values
-    type <- match.arg(type) 
+var_consistency_check <- function(file_list, var_list) {
     #Makes sure the second argument in the function is a character vector of column names
         if (!is.character(var_list)) stop("`var_list` must be a character vector of column names.") 
     
@@ -37,21 +36,19 @@ var_consistency_check <- function(file_list, var_list, type = c("CS", "Long")) {
    
     #Sequentially upload each .csv file in the file_list
         for (i in seq_along(file_list)) {
-            df <- file_list[[i]]
+          df <-  readr::read_csv(file_list[[i]], show_col_types = FALSE)
           for (var in var_list) {             #Then, sequentially go through each variable in the var_list
               if (!var %in% colnames(df)) {   #Check whether each variable is actually in the dataset
                   warning("Variable '", var, "' not found in dataset: ", i)
                   result <- FALSE
                   next                        #Allows the loop to continue?
               }
-            if (type == "CS")  
-              # Variable - internal consistency: Check values are the same for each ROW in the dataset
+          # Variable - internal consistency: Check values are the same for each ROW in the dataset
               if (length(unique(df[[var]])) != 1) { #If the number of unique values in this var !=1
                   warning("Error - var: '", var, "' has multiple values in dataset: ", i)
                   result <- FALSE
               }
-            
-              #Variable - cross-file consistency, as compared to reference: 
+          #Variable - cross-file consistency, as compared to reference: 
               if (i == 1) {   #If it's the first file, set the reference values = the values from the first file
                   ref_values[[var]] <- unique(df[[var]])
               } else {        #If it's not the first file
@@ -60,112 +57,93 @@ var_consistency_check <- function(file_list, var_list, type = c("CS", "Long")) {
                   result <- FALSE
                   }
               }
-            
-            
-            
-            
-              # Check 
     }
     }
 return(result)
 }
 
-date_check_cs
-  #Check date variable exists
-  #Check that the date variable = specific value
-  #Check that the date value is the same for all rows
-  #check that the date value is the same across datasets
 
-date_check_long
+##date_check_long
   #Check date variable exists
   #Check that the date values = specific SET of SEQUENTIAL values, BY certain variables
   #Check that the date values are the same across datasets
 
-
-
-library(lubridate)
 date_check_long <- function(file_list, date_var_list, group_vars = NULL,
                             start_date = NULL, n_weeks = NULL) {
   #Makes sure the 'var_list' argument is a character vector of column names
-  if (!is.character(var_list)) stop("`var_list` must be a character vector of column names.") 
+  if (!is.character(date_var_list)) stop("`var_list` must be a character vector of column names.") 
   
   #Store reference values (from the first file)
   ref_values <- list()
   result <- TRUE #Add a function "result", start assuming the result = TRUE
+  result_list <- list()  # store all results
   
   #Sequentially upload each .csv file in the file_list
   for (i in seq_along(file_list)) {
-    df <- file_list[[i]]
+    df <- readr::read_csv(file_list[[i]], show_col_types = FALSE)
     for (date_var in date_var_list) {             #Then, sequentially go through each variable in `var_list'
       if (!date_var %in% colnames(df)) {       #Check that the variable exists in the dataset
-        warning("Variable '", var, "' not found in dataset: ", i)
+        warning("Variable '", date_var, "' not found in dataset: ", i)
         result <- FALSE
         next                            #Allows the loop to continue?
       }
       
       df[[date_var]] <- as.Date(df[[date_var]]) #Converts date_var into date format (extra step - most dates will already be in date format, but just in case)
       
-      
-      df %>% group_by(across(all_of(group_vars))) %.% #groups the data by the variables specified in the group_vars argument
-        summarise(   #For each group, calculates the following 
+      date_check_summary <- df %>% group_by(across(all_of(group_vars))) %>% #groups the data by the variables specified in the group_vars argument
+        summarise(   #Summarise creates a summary dataset containing the below specified columns (min_date, max_date, etc)  
+          dataset = i,
           min_date = min(.data[[date_var]]),       #The earliest date in the group. Note '.data' is from rlang (used by dyplr) and says "Look inside whatever the current data frame is"
           max_date = max(.data[[date_var]]),       #The latest date in the group
           n_dates = n_distinct(.data[[date_var]]), #Distinct rows aka dates in each group
-          expected_dates = list(seq(               #Creates an item-list column to store the vectors
+          expected_dates = list(seq(               #Creates an item-list column to store the multiple values . Specifying that the multiple values are a list allows dyplyr You need to store them as a list bc it helps summarise!? 
                                     min(.data[[date_var]]), 
                                     max(.data[[date_var]]), 
                                     by = "1 week")),
-          actual_dates = list(sort(unique(.data[[date_var]])))
+          actual_dates = list(sort(unique(.data[[date_var]]))),
+          date_check = identical(    #The actual check - are the actual dates in the data = the expected dates?
+            sort(unique(.data[[date_var]])), #Sorts the dataset, retrieves the distinct dates
+            seq(min(.data[[date_var]]), max(.data[[date_var]]), by = "1 week")
+          ),
+          start_check = if (!is.null(start_date)) min(.data[[date_var]]) == as.Date(start_date) else NA, #Checks whether the earliest date in the group is the same as the expected start date
+          n_check = if (!is.null(n_weeks)) n_distinct(.data[[date_var]]) == n_weeks else NA, #Checks if the number of unique weekly dates is what you'd expect
+          .groups = "drop"
         )
-                    
-      
-      
-        
-}  
-  } 
-}
-}
-
-#Q's for chat gpt
-# what does .data specify in min(.data[[date_var]])?
-# why do you have to create an item-list to store the vectors, e.g. through: expected_dates = list(seq(? What is the issue with comparing a volumn vector?
-
-
-if (type == "Long")
-  
-  
-date_check_acsc
-
-
-
-##merge_and_drop:
-    ##Runs var_consistency_check (prev function), and merges + drops the same variables IF they are consistent: 
-
+      result_list[[length(result_list) + 1]] <- date_check_summary
+    }
+  }  
+  final_result <- dplyr::bind_rows(result_list)
+  return(final_result)
+} 
 
 
 ##Identical_vector_check: 
-    ##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes 
-  identical_vector_check <- function(df_list, var_list) {
-    for (i in seq_along(df_list)) {
-      for (var in var_list) {
-        result <- identical(df_list[[1]][[var]], df_list[[i]][[var]])
-          if (!(result == "TRUE")) {
-            warning("Variable '", var, "'in dataset '", i , "' is NOT identical to dataset 1")
-          }
-          else {
-            print("All good!")
-          }
+##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes 
+identical_vector_check <- function(df_list, var_list) {
+  for (i in seq_along(df_list)) {
+    for (var in var_list) {
+      result <- identical(df_list[[1]][[var]], df_list[[i]][[var]])
+      if (!(result == "TRUE")) {
+        warning("Variable '", var, "'in dataset '", i , "' is NOT identical to dataset 1")
+      }
+      else {
+        print("All good!")
       }
     }
   }
+}
 
   
-#Rename if var exists: renames multiple variables across multiple files
+##Rename if var exists: renames multiple variables across multiple files
 rename_if_var_exists <- function(file_list, rename_rules) {
   lapply(file_list, function(df) {
     df %>% rename_with(~ str_replace_all(., rename_rules))
   })
 }
+
+
+##merge_and_drop:
+##Runs var_consistency_check (prev function), and merges + drops the same variables IF they are consistent: 
 
 
 
@@ -185,6 +163,8 @@ measures_csv <- list.files(path = measures_path, pattern = "\\precovid.csv$", fu
 
 
 #CLEANING THE DATA 
+
+  #If checks have passed, can re-shape the data to wide
 #Reshape so there's one column per proportion category variable
     wide_exp_measures <- vector("list", length(exp_measures_csv))  # pre-allocate list, set length = length of exp_measures_csv
     wide_out_measures <- vector("list", length(out_measures_csv))
@@ -228,8 +208,11 @@ measures_csv <- list.files(path = measures_path, pattern = "\\precovid.csv$", fu
     #Note: interval_start/end will be the same because all the measures were defined using cohort_start     
     #NOTE: warnings do not automatically clear once a function is fixed!
         #Will continue to display the last set of errors, until a NEW set of errors replaces them            
-    var_consistency_check(wide_exp_measures, var_list = c("interval_start", "interval_end"))
-        
+    var_consistency_check(exp_measures_csv, var_list = c("interval_start", "interval_end"))
+    
+    var_consistency_check(exp_measures_csv, var_list = c("interval_start", "interval_end"))   
+    
+    
 #Checking variables for consistency, merging datafiles, and dropping duplicate variables
     #Dates - cross-sectional exposures
     
@@ -278,6 +261,21 @@ measures_csv <- list.files(path = measures_path, pattern = "\\precovid.csv$", fu
     }    
     
     
+    date_check_out <- date_check_long(
+      out_measures_csv, 
+      date_var_list = c("interval_start", "interval_end"), 
+      group_vars = NULL, 
+      start_date = "2018-10-01", 
+      n_weeks = 20
+    )
+    
+    date_check_out_acscs <- date_check_long(
+      out_measures_csv, 
+      date_var_list = c("interval_start", "interval_end"), 
+      group_vars = c("measure"), 
+      start_date = "2018-10-01", 
+      n_weeks = 20
+    )
     
     
     
@@ -419,6 +417,10 @@ write_csv(merged_out_measures, "merged_out_measures.csv")
 ## Figure out a way to create 3 different datasets, one for each cohort....\
 #Create the CMS
 #Remove the interval_start.x, interval_end.x for each merged dataset
+
+#Q's for chat gpt
+# what does .data specify in min(.data[[date_var]])?
+# why do you have to create an item-list to store the vectors, e.g. through: expected_dates = list(seq(? What is the issue with comparing a volumn vector?
 
 
 
