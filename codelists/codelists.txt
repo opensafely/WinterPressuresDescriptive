@@ -1,4 +1,4 @@
-opensafely/ethnicity/2020-04-27
+opensafely/ethnicity-snomed-0removed/22911876
 opensafely/smoking-clear/2020-04-29
 #nhsd-primary-care-domain-refsets/flu_cod/20200812
 #nhsd-primary-care-domain-refsets/seasonal-flu-vaccination-codes/20241205
@@ -112,3 +112,4 @@ user/elsie_horne/dementia_vascular_snomed/0eb67607/
 user/elsie_horne/ami_snomed/36d11028/
 user/elsie_horne/ami_prior_icd10/360a5c99/
 user/RochelleKnight/ami_icd10/3dea268d/
+user/RochelleKnight/pregnancy_and_birth_snomed/1d46bcb3/

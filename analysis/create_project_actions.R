@@ -13,7 +13,9 @@ defaults_list <- list(
 )
 
 # Define cohorts and cohort start dates
-cohorts <- c("precovid", "postcovid1", "postcovid2")
+cohorts_postcovid <- c("postcovid1", "postcovid2")
+cohorts_all <- c("precovid", cohorts_postcovid)
+
 cohort_dates <- list(
   precovid = "2018-10-01",
   postcovid1 = "2022-10-01",
@@ -21,20 +23,41 @@ cohort_dates <- list(
 )
 
 # Define subgroups
-cs_args <- c("Age", "Sex", "Ethnicity", "IMD", "Rurality", "Smoking", "Multimorbidity")
-long_args <- c("Consultation", "ec", "apc", "ec_ACSCs", "apc_ACSCs")
+cs_args <- c(
+  "Age",
+  "Sex",
+  "Ethnicity",
+  "IMD",
+  "Rurality",
+  "Smoking",
+  "Obesity",
+  "Multimorbidity"
+)
+
+long_args_postcovid <- c("vax_covid")
+
+long_args_all <- c(
+  long_args_postcovid,
+  "vax_flu",
+  "vax_pneum",
+  "Consultation",
+  "ec_all",
+  "apc_all",
+  "ec_ACSCs",
+  "apc_ACSCs"
+)
 
 # Create generic action function -----------------------------------------------
 
 action <- function(
-    name,
-    run,
-    dummy_data_file      = NULL,
-    arguments            = NULL,
-    needs                = NULL,
-    highly_sensitive     = NULL,
-    moderately_sensitive = NULL
-){
+  name,
+  run,
+  dummy_data_file = NULL,
+  arguments = NULL,
+  needs = NULL,
+  highly_sensitive = NULL,
+  moderately_sensitive = NULL
+) {
   # Only append arguments to run if not NULL
   run_full <- if (!is.null(arguments)) {
     paste0(run, "\n  ", paste(arguments, collapse = "\n  "))
@@ -43,19 +66,19 @@ action <- function(
   }
   outputs <- list(
     moderately_sensitive = moderately_sensitive,
-    highly_sensitive     = highly_sensitive
+    highly_sensitive = highly_sensitive
   )
   outputs[sapply(outputs, is.null)] <- NULL
 
   actions <- list(
-    run             = run_full,
+    run = run_full,
     dummy_data_file = dummy_data_file,
-    needs           = needs,
-    outputs         = outputs
+    needs = needs,
+    outputs = outputs
   )
   actions[sapply(actions, is.null)] <- NULL
 
-  action_list        <- list(name = actions)
+  action_list <- list(name = actions)
   names(action_list) <- name
 
   action_list
@@ -65,7 +88,7 @@ action <- function(
 
 comment <- function(...) {
   list_comments <- list(...)
-  comments      <- map(list_comments, ~paste0("## ", ., " ##"))
+  comments <- map(list_comments, ~ paste0("## ", ., " ##"))
   comments
 }
 
@@ -74,7 +97,7 @@ comment <- function(...) {
 
 convert_comment_actions <- function(yaml.txt) {
   yaml.txt %>%
-    str_replace_all("\\\n(\\s*)\\'\\'\\:(\\s*)\\'", "\n\\1")  %>%
+    str_replace_all("\\\n(\\s*)\\'\\'\\:(\\s*)\\'", "\n\\1") %>%
     #str_replace_all("\\\n(\\s*)\\'", "\n\\1") %>%
     str_replace_all("([^\\'])\\\n(\\s*)\\#\\#", "\\1\n\n\\2\\#\\#") %>%
     str_replace_all("\\#\\#\\'\\\n", "\n")
@@ -82,12 +105,14 @@ convert_comment_actions <- function(yaml.txt) {
 
 # Add cohort-specific measure actions ------------------------------------------
 generate_cohort <- function(cohort) {
-  date <- cohort_dates[[cohort]]  # extract date for the cohort
+  date <- cohort_dates[[cohort]] # extract date for the cohort
   splice(
     comment(glue("Generate cohort - {cohort}")),
     action(
-      name  = glue("generate_cohort_{cohort}"),
-      run   = glue("ehrql:v1 generate-dataset analysis/dataset_definition/measures_cohorts.py --output output/dataset_definition/input_{cohort}.csv.gz"),
+      name = glue("generate_cohort_{cohort}"),
+      run = glue(
+        "ehrql:v1 generate-dataset analysis/dataset_definition/measures_cohorts.py --output output/dataset_definition/input_{cohort}.csv.gz"
+      ),
       needs = list("study_dates"),
       arguments = c("--", "--patient_measures", glue("--start_cohort {date}")),
       highly_sensitive = list(
@@ -98,21 +123,21 @@ generate_cohort <- function(cohort) {
 }
 # Start building the actions list ----------------------------------------------
 actions_list <- c(
-  
   ## Post YAML disclaimer ------------------------------------------------------
-  comment("# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #",
-          "DO NOT EDIT project.yaml DIRECTLY",
-          "This file is created by create_project_actions.R",
-          "Edit and run create_project_actions.R to update the project.yaml",
-          "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+  comment(
+    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #",
+    "DO NOT EDIT project.yaml DIRECTLY",
+    "This file is created by create_project_actions.R",
+    "Edit and run create_project_actions.R to update the project.yaml",
+    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
   ),
-  
+
   ## Define study dates --------------------------------------------------------
   comment("Define study dates"),
-  
+
   action(
     name = "study_dates",
-    run  = "r:latest analysis/dataset_definition/study_dates.R",
+    run = "r:latest analysis/dataset_definition/study_dates.R",
     highly_sensitive = list(
       study_dates_json = "output/dataset_definition/study_dates.json"
     )
@@ -120,61 +145,74 @@ actions_list <- c(
 )
 
 # Add cohort generation actions ------------------------------------------------
-for (cohort in cohorts) {
+for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_cohort(cohort))
 }
 
 # Add measure generation actions -----------------------------------------------
 measure_actions <- list()
 
-for (cohort in cohorts) {
-  date <- cohort_dates[[cohort]]
-  
-  for (flag in cs_args) {
-    comment_text <- glue("Generate measures for {flag} (cross-sectional) - {cohort}")
+for (flag in cs_args) {
+  for (cohort in cohorts_all) {
+    date <- cohort_dates[[cohort]]
+    comment_text <- glue(
+      "Generate measures for {flag} (cross-sectional) - {cohort}"
+    )
     name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
-    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv.gz")
+    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv")
     arguments <- c(
-      "--", 
-      "--practice_measures", 
-      "--CS", 
-      glue("--{flag}"), 
+      "--",
+      "--practice_measures",
+      "--CS",
+      glue("--{flag}"),
       glue("--start_cohort {date}")
     )
-    
+
     act <- c(
       comment(comment_text),
       action(
         name = name,
-        run = glue("ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"),
+        run = glue(
+          "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"
+        ),
         arguments = arguments,
-        highly_sensitive = list(
-          dataset = file)
+        moderately_sensitive = list(
+          dataset = file
+        )
       )
     )
     measure_actions <- append(measure_actions, act)
   }
-  
-  for (flag in long_args) {
-    comment_text <- glue("Generate measures for {flag} (longitudinal) - {cohort}")
+}
+
+for (flag in long_args_all) {
+  cohorts <- if (flag %in% long_args_postcovid) cohorts_postcovid else cohorts_all
+  for (cohort in cohorts) {
+    date <- cohort_dates[[cohort]]
+    comment_text <- glue(
+      "Generate measures for {flag} (longitudinal) - {cohort}"
+    )
     name <- glue("generate_measures_{cohort}_{date}_{tolower(flag)}")
-    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv.gz")
+    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv")
     arguments <- c(
-      "--", 
-      "--practice_measures", 
-      "--Long", 
-      glue("--{flag}"), 
+      "--",
+      "--practice_measures",
+      "--Long",
+      glue("--{flag}"),
       glue("--start_cohort {date}")
     )
-    
+
     act <- c(
       comment(comment_text),
       action(
         name = name,
-        run = glue("ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"),
+        run = glue(
+          "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"
+        ),
         arguments = arguments,
-        highly_sensitive = list(
-          dataset = file)
+        moderately_sensitive = list(
+          dataset = file
+        )
       )
     )
     measure_actions <- append(measure_actions, act)
@@ -204,7 +242,6 @@ as.yaml(project_list, indent = 2) %>%
 # Return number of actions -----------------------------------------------------
 
 count_run_elements <- function(x) {
-
   if (!is.list(x)) {
     return(0)
   }
@@ -214,7 +251,10 @@ count_run_elements <- function(x) {
 
   # Recursively check all elements in the list
   return(current_count + sum(sapply(x, count_run_elements)))
-
 }
 
-print(paste0("YAML created with ", count_run_elements(actions_list), " actions."))
+print(paste0(
+  "YAML created with ",
+  count_run_elements(actions_list),
+  " actions."
+))

@@ -11,14 +11,18 @@ parser.add_argument("--Long", action = 'store_true', help = "The study period is
 ## Measures configuration
 parser.add_argument("--Age", action = 'store_true', help = "Gets measures for age if flag is added to action.")
 parser.add_argument("--Sex", action = 'store_true', help = "Gets measures for sex if flag is added to action.") 
-parser.add_argument("--Ethnicity", action = 'store_true', help = "Gets measures for ethnicity if flag is added to action..") 
+parser.add_argument("--Ethnicity", action = 'store_true', help = "Gets measures for ethnicity if flag is added to action.") 
 parser.add_argument("--IMD", action= 'store_true', help = "Gets measures for IMD if flag is added to action.")
 parser.add_argument("--Rurality", action= 'store_true', help = "Gets measures for rurality if flag is added to action.")
 parser.add_argument("--Smoking", action= 'store_true', help = "Gets measures for smoking if flag is added to action.")
+parser.add_argument("--Obesity", action= 'store_true', help = "Gets measures for obesity if flag is added to action.")
+parser.add_argument("--vax_flu", action= 'store_true', help = "Gets measures for vaccination status for flu if flag is added to action.")
+parser.add_argument("--vax_pneum", action= 'store_true', help = "Gets measures for vaccination status for pneumococcal if flag is added to action.")
+parser.add_argument("--vax_covid", action= 'store_true', help = "Gets measures for vaccination status for covid if flag is added to action.")
 parser.add_argument("--Multimorbidity", action= 'store_true', help = "Gets measures for Multimorbidity if flag is added to action.")
 parser.add_argument("--Consultation", action= 'store_true', help = "Gets measures for consultation rate if flag is added to action.")
-parser.add_argument("--ec", action= 'store_true', help = "Gets measures for A&E attendance if flag is added to action.")
-parser.add_argument("--apc", action= 'store_true', help = "Gets measures for hospital admission if flag is added to action.")
+parser.add_argument("--ec_all", action= 'store_true', help = "Gets measures for A&E attendance if flag is added to action.")
+parser.add_argument("--apc_all", action= 'store_true', help = "Gets measures for hospital admission if flag is added to action.")
 parser.add_argument("--ec_ACSCs", action= 'store_true', help = "Gets measures for A&E due to ACSCs if flag is added to action.")
 parser.add_argument("--apc_ACSCs", action= 'store_true', help = "Gets measures for hospitcal admission due to ACSCs if flag is added to action.")
 
@@ -38,10 +42,14 @@ Ethnicity = args.Ethnicity
 IMD = args.IMD
 Rurality = args.Rurality
 Smoking = args.Smoking
+Obesity = args.Obesity
+vax_flu = args.vax_flu
+vax_pneum = args.vax_pneum
+vax_covid = args.vax_covid
 Multimorbidity = args.Multimorbidity
 Consultation = args.Consultation
-ec = args.ec
-apc = args.apc
+ec_all = args.ec_all
+apc_all = args.apc_all
 ec_ACSCs = args.ec_ACSCs
 apc_ACSCs = args.apc_ACSCs
 start_cohort = args.start_cohort

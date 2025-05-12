@@ -18,9 +18,9 @@ def create_codelist_dict(dic: dict) -> dict:
 # Exposure(s)
 
 # Ethnicity
-opensafely_ethnicity_codes_6 = codelist_from_csv(
-    "codelists/opensafely-ethnicity.csv",
-    column="Code",
+ethnicity_snomed = codelist_from_csv(
+    "codelists/opensafely-ethnicity-snomed-0removed.csv",
+    column="code",
     category_column="Grouping_6"
 )
 
@@ -44,6 +44,12 @@ bmi_obesity_icd10 = codelist_from_csv(
 
 bmi_primis = codelist_from_csv(
     "codelists/primis-covid19-vacc-uptake-bmi.csv",
+    column="code"
+)
+
+# Pregnancy
+pregnancy_snomed = codelist_from_csv(
+    "codelists/user-RochelleKnight-pregnancy_and_birth_snomed.csv",
     column="code"
 )
 

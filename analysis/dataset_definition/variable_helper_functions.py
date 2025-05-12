@@ -1,20 +1,6 @@
 import operator
 from functools import reduce # for function building, e.g. any_of
-from ehrql.tables.tpp import (
-    patients, 
-    practice_registrations, 
-    addresses, 
-    appointments, 
-    occupation_on_covid_vaccine_record,
-    vaccinations,
-    sgss_covid_all_tests,
-    apcs, 
-    ec, 
-    clinical_events, 
-    medications, 
-    ons_deaths,
-    emergency_care_attendances,
-)
+from module_table_imports import *
 
 def ever_matching_event_clinical_ctv3_before(codelist, start_date, where=True):
     return(
@@ -37,6 +23,15 @@ def last_matching_event_clinical_snomed_before(codelist, start_date, where=True)
         clinical_events.where(where)
         .where(clinical_events.snomedct_code.is_in(codelist))
         .where(clinical_events.date.is_before(start_date))
+        .sort_by(clinical_events.date)
+        .last_for_patient()
+    )
+
+def last_matching_event_clinical_snomed_on_or_before(codelist, start_date, where=True):
+    return(
+        clinical_events.where(where)
+        .where(clinical_events.snomedct_code.is_in(codelist))
+        .where(clinical_events.date.is_on_or_before(start_date))
         .sort_by(clinical_events.date)
         .last_for_patient()
     )

@@ -30,39 +30,43 @@ if practice_measures:
         "exp_prop_65_to_74": exp_bin_65_74y,
         "exp_prop_75_to_84": exp_bin_75_84y,
         "exp_prop_age_85_plus": exp_bin_85y_plus,
+        "exp_prop_age_missing": exp_bin_age_missing,
     }
 
     # =========================
     # Sex-related measures
     # =========================
     measures_sex = {
+        "exp_prop_male": exp_bin_male,
         "exp_prop_female": exp_bin_female,
+        "exp_prop_sex_missing": exp_bin_sex_missing,
     }
 
     # =========================
     # Ethnicity-related measures
     # =========================
     measures_ethnicity = {
-        "exp_prop_eth_missing": exp_bin_eth_missing,
         "exp_prop_eth_white": exp_bin_eth_white,
         "exp_prop_eth_mixed": exp_bin_eth_mixed,
-        "exp_prop_eth_southasian": exp_bin_eth_southasian,
+        "exp_prop_eth_asian": exp_bin_eth_asian,
         "exp_prop_eth_black": exp_bin_eth_black,
         "exp_prop_eth_other": exp_bin_eth_other,
+        "exp_prop_eth_missing": exp_bin_eth_missing,
     }
 
     # =========================
     # Rurality-related measures
     # =========================
     measures_rurality = {
-        "exp_prop_urb_major": urb_major,
-        "exp_prop_urb_minor": urb_minor,
-        "exp_prop_urb_town": urb_town,
-        "exp_prop_urb_town_sp": urb_town_sp,
-        "exp_prop_rural_fringe": rural_fringe,
-        "exp_prop_rural_fringe_sp": rural_fringe_sp,
-        "exp_prop_rural_village": rural_village,
-        "exp_prop_rural_village_sp": rural_village_sp,
+        "exp_prop_urb_major": exp_bin_urb_major,
+        "exp_prop_urb_minor": exp_bin_urb_minor,
+        "exp_prop_urb_town": exp_bin_urb_town,
+        "exp_prop_urb_town_sp": exp_bin_urb_town_sp,
+        "exp_prop_rural_fringe": exp_bin_rural_fringe,
+        "exp_prop_rural_fringe_sp": exp_bin_rural_fringe_sp,
+        "exp_prop_rural_village": exp_bin_rural_village,
+        "exp_prop_rural_village_sp": exp_bin_rural_village_sp,
+        "exp_prop_rurality_missing": exp_bin_rurality_missing,
     }
 
     # =========================
@@ -74,13 +78,24 @@ if practice_measures:
         "exp_prop_imd_3": exp_bin_imd_3,
         "exp_prop_imd_4": exp_bin_imd_4,
         "exp_prop_imd_5_least": exp_bin_imd_5_least,
+        "exp_prop_imd_missing": exp_bin_imd_missing,
     }
 
     # =========================
     # Smoking-related measures
     # =========================
     measures_smoking = {
-        "exp_prop_smoker": exp_bin_smoker,
+        "exp_prop_smoker_current": exp_bin_smoker_current,
+        "exp_prop_smoker_ever": exp_bin_smoker_ever,
+        "exp_prop_smoker_never": exp_bin_smoker_never,
+        "exp_prop_smoker_missing": exp_bin_smoker_missing,
+    }
+
+    # =========================
+    # Obesity measures
+    # =========================
+    measures_obesity = {
+        "exp_prop_obesity": exp_bin_obesity,
     }
 
     # =========================
@@ -114,9 +129,21 @@ if practice_measures:
     # =========================
     measures_consultation = {
         "exp_num_consrate2019": exp_num_consrate2019,
-        "exp_num_consrate": exp_num_consrate,
+        "exp_num_consrate_m": exp_num_consrate,
     }
 
+    # =========================
+    # Vaccination-related measures
+    # =========================
+    measures_covid = {
+        "exp_prop_vax_covid_y": exp_bin_vax_covid,
+    }
+    measures_flu = {
+        "exp_prop_vax_flu_y": exp_bin_vax_flu,
+    }
+    measures_pneumococcal = {
+        "exp_prop_vax_pneum_y": exp_bin_vax_pneumo,    
+    }
     # =========================
     # Emergency care (EC) measures
     # =========================
@@ -205,6 +232,13 @@ if practice_measures:
                     numerator = measures_smoking[measure]
                 )
 
+        if Obesity:
+            for measure in measures_obesity.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_obesity[measure]
+                )
+
         if Multimorbidity:
             for measure in measures_multimorbidity.keys():
                 measures.define_measure(
@@ -221,27 +255,56 @@ if practice_measures:
             group_by={
                 "practice_pseudo_id": practice_id
             },
-            intervals=weeks(20).starting_on(start_cohort),
+            intervals = weeks(20).starting_on(start_cohort),
         )
 
         if Consultation:
             measures.define_measure(
                 name = "exp_count_consultation_m",
                 numerator = exp_num_consrate,
-                intervals = months(12).ending_on(start_cohort)
+                intervals = months(12).ending_on(start_cohort - days(1))
             )
 
-        if ec:
-            measures.define_measure(
-                name = "out_count_ec_w",
-                numerator = out_num_ec
-            )
+        if vax_flu:
+            for measure in measures_flu.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_flu[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & (inex_bin_elig_flu_65y | inex_bin_elig_flu_2_3y | inex_bin_elig_flu_pregnancy),
+                    intervals = years(1).ending_on(start_cohort - days(1))
+                )
 
-        if apc:
-            measures.define_measure(
-                name = "out_count_apc_w",
-                numerator = out_num_apc
-            )
+        if vax_pneum:        
+            for measure in measures_pneumococcal.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_pneumococcal[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & inex_bin_elig_pneum_65y,
+                    intervals = years(1).ending_on(start_cohort - days(1))
+                )
+
+        if vax_covid:
+            for measure in measures_covid.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_covid[measure],
+                    denominator = inex_bin_reg_cs & inex_bin_alive & inex_bin_elig_covid_75y,
+                    intervals = years(1).ending_on(start_cohort - days(1))
+                )
+ 
+        if ec_all:
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_ec[measure]
+                )
+
+        if apc_all:
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_apc[measure]
+                )
 
         if ec_ACSCs:
             for measure in measures_ec_acsc.keys():
@@ -269,7 +332,7 @@ if patient_measures:
 
     # Import preliminary date variables (death date, vax dates)
 
-    from variables_vax import prelim_date_variables
+    from variables_vax_covid import prelim_date_variables
 
     ## Add the imported variables to the dataset
 
@@ -277,7 +340,7 @@ if patient_measures:
         setattr(dataset, var_name, var_value)
 
     # Import jcvi variables ( JCVI group and derived variables; eligible date for vaccination based on JCVI group)
-    from variables_vax import jcvi_variables
+    from variables_vax_covid import jcvi_variables
 
     ## Add the imported variables to the dataset
     for var_name, var_value in jcvi_variables.items():

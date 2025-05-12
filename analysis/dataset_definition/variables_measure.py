@@ -1,6 +1,4 @@
 from module_table_imports import *
-
-# Codelists from codelists.py (which pulls all variables from the codelist folder)
 from codelists import *
 
 # Call functions from variable_helper_functions
@@ -36,6 +34,17 @@ def generate_variables(interval_start, interval_end):
         when(tmp_exp_num_consrate <= 365).then(tmp_exp_num_consrate),
         otherwise=365,
     )
+
+    ### Vaccination against flu in the last 12 months
+    exp_bin_vax = {}
+    for disease in ['INFLUENZA', 'SARS-2 CORONAVIRUS', 'PNEUMOCOCCAL']:
+        exp_bin_vax[disease] = (vaccinations.where((vaccinations
+                                            .target_disease
+                                            .is_in([disease])) &
+                                            vaccinations
+                                            .date
+                                            .is_on_or_between(interval_start, interval_end))
+                                            .exists_for_patient())
 
     ## Outcomes----------------------------------------------------------------------------------------------
     ### A&E attendance 
@@ -100,6 +109,9 @@ def generate_variables(interval_start, interval_end):
     dynamic_variables = dict(
         inex_bin_reg_long = inex_bin_reg_long,
         exp_num_consrate = exp_num_consrate,
+        exp_bin_vax_flu = exp_bin_vax["INFLUENZA"],
+        exp_bin_vax_covid = exp_bin_vax["SARS-2 CORONAVIRUS"],
+        exp_bin_vax_pneumo = exp_bin_vax["PNEUMOCOCCAL"],
         out_num_ec =out_num_ec,
         out_num_apc =out_num_apc,
         out_num_copd_ec = out_num_copd_ec,                   # COPD (EC)

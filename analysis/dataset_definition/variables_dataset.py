@@ -1,6 +1,4 @@
 from module_table_imports import *
-
-# Codelists from codelists.py (which pulls all variables from the codelist folder)
 from codelists import *
 
 # Call functions from variable_helper_functions
@@ -8,6 +6,8 @@ from variable_helper_functions import (
     ever_matching_event_clinical_ctv3_before,
     last_matching_event_clinical_ctv3_before,
     last_matching_event_clinical_snomed_before,
+    last_matching_event_clinical_snomed_on_or_before,
+    last_matching_event_apc_before,
     filter_codes_by_category,
 )
 
@@ -21,15 +21,19 @@ def generate_variables(cohort_start):
     ((ons_deaths.date.is_null()) | (ons_deaths.date.is_after(cohort_start))))
 
     ### Age is known and valid
-    tmp_exp_num_age = patients.age_on(cohort_start)
-    inex_bin_age = (tmp_exp_num_age >= 0) & (
-    tmp_exp_num_age <= 110)
+    exp_num_age = patients.age_on(cohort_start)
+    inex_bin_age = (exp_num_age >= 0) & (
+    exp_num_age <= 110)
 
     ### Sex is known (female or male)
     inex_bin_sex = patients.sex.is_in(["female", "male"])
 
     ### Ethnicity is known
-    inex_bin_ethinicity = clinical_events.where(clinical_events.ctv3_code.is_in(opensafely_ethnicity_codes_6)).exists_for_patient()
+    inex_bin_ethinicity = (
+        clinical_events.where(clinical_events.snomedct_code.is_in(ethnicity_snomed))
+        .where(clinical_events.date.is_on_or_before(cohort_start))
+        .exists_for_patient()
+    )
 
     ### Imd is known
     inex_bin_imd = addresses.for_patient_on(cohort_start).imd_rounded.is_not_null()
@@ -37,33 +41,47 @@ def generate_variables(cohort_start):
     ### Region is known
     inex_bin_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name.is_not_null()
 
+    ### inclusion and exclusion criteria for flu and pneumococcal vax (https://www.gov.uk/government/publications/flu-vaccination-programme-information-for-healthcare-practitioners/flu-vaccination-programme-2023-to-2024-information-for-healthcare-practitioners)
+    tmp_num_flu_age_child = patients.age_on(cohort_start - days(31))   #all children aged 2 or 3 years on 31 August {cohort year-1}
+    tmp_num_flu_age_elder = patients.age_on(cohort_start + months(6))  #those aged 65 years and over (including those who are 64 but will be 65 on or before 31 March {cohort year})
+    tmp_num_covid_age_elder = patients.age_on(cohort_start + months(9))#those aged 75 years and over (including those who are 74 but will be 75 on or before 30 June {cohort year})
+    
+    inex_bin_elig_pneum_65y = exp_num_age >= 65
+    inex_bin_elig_flu_65y = tmp_num_flu_age_elder >= 65
+    inex_bin_elig_flu_2_3y = (tmp_num_flu_age_child <4) & (tmp_num_flu_age_child >= 2) 
+    ### Pregnancy
+    inex_bin_elig_flu_pregnancy = last_matching_event_clinical_snomed_on_or_before(
+        pregnancy_snomed, cohort_start
+    ).exists_for_patient()
+    inex_bin_elig_covid_75y = tmp_num_covid_age_elder >= 75
+    
     ## Exposures--------------------------------------------------------------------------------------------
 
     ### Age
-    exp_bin_under_5y = tmp_exp_num_age <5    
-    exp_bin_5_16y = (tmp_exp_num_age >= 5) & (tmp_exp_num_age <= 16)      
-    exp_bin_65_74y = (tmp_exp_num_age >= 65) & (tmp_exp_num_age <= 74)
-    exp_bin_75_84y = (tmp_exp_num_age >= 75) & (tmp_exp_num_age <= 84)
-    exp_bin_85y_plus = tmp_exp_num_age >= 85 
+    exp_bin_age_missing = (exp_num_age.is_null()) | (exp_num_age < 0)
+    exp_bin_under_5y    = (exp_num_age <5) & (exp_num_age >= 0)  
+    exp_bin_5_16y       = (exp_num_age >= 5) & (exp_num_age <= 16)      
+    exp_bin_65_74y      = (exp_num_age >= 65) & (exp_num_age <= 74)
+    exp_bin_75_84y      = (exp_num_age >= 75) & (exp_num_age <= 84)
+    exp_bin_85y_plus    = exp_num_age >= 85 
 
     ### Sex
+    exp_bin_male = (patients.sex == "male")
     exp_bin_female = (patients.sex == "female")
+    exp_bin_sex_missing = (inex_bin_sex == False)
 
     ### Ethnicity (need to decide category for calculating proportion)
     tmp_exp_cat_ethnicity = (
-        clinical_events.where(
-            clinical_events.ctv3_code.is_in(opensafely_ethnicity_codes_6)
-        )
-        .sort_by(clinical_events.date)
-        .last_for_patient()
-        .ctv3_code.to_category(opensafely_ethnicity_codes_6)
+        last_matching_event_clinical_snomed_on_or_before(ethnicity_snomed, cohort_start)
+        .snomedct_code.to_category(ethnicity_snomed, default="Missing")
     )
-    exp_bin_eth_missing = (tmp_exp_cat_ethnicity == "0")
+    exp_bin_eth_missing = (tmp_exp_cat_ethnicity == "Missing")
     exp_bin_eth_white = (tmp_exp_cat_ethnicity == "1")
     exp_bin_eth_mixed = (tmp_exp_cat_ethnicity == "2")
-    exp_bin_eth_southasian = (tmp_exp_cat_ethnicity == "3")
+    exp_bin_eth_asian = (tmp_exp_cat_ethnicity == "3")
     exp_bin_eth_black = (tmp_exp_cat_ethnicity == "4")
     exp_bin_eth_other = (tmp_exp_cat_ethnicity == "5")
+
     ### Region
     exp_cat_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name
 
@@ -72,14 +90,15 @@ def generate_variables(cohort_start):
 
     ### Patient urban-rural classification
     tmp_exp_cat_rur_urb = (addresses.for_patient_on(cohort_start).rural_urban_classification)
-    urb_major        = (tmp_exp_cat_rur_urb == 1)  # Urban major conurbation
-    urb_minor        = (tmp_exp_cat_rur_urb == 2)  # Urban minor conurbation
-    urb_town         = (tmp_exp_cat_rur_urb == 3)  # Urban city and town
-    urb_town_sp      = (tmp_exp_cat_rur_urb == 4)  # Urban city and town in sparse setting
-    rural_fringe     = (tmp_exp_cat_rur_urb == 5)  # Rural town and fringe
-    rural_fringe_sp  = (tmp_exp_cat_rur_urb == 6)  # Rural town and fringe in sparse setting
-    rural_village    = (tmp_exp_cat_rur_urb == 7)  # Rural village and dispersed
-    rural_village_sp = (tmp_exp_cat_rur_urb == 8)  # Rural village and dispersed in sparse setting
+    exp_bin_rurality_missing = tmp_exp_cat_rur_urb.is_null()
+    exp_bin_urb_major        = (tmp_exp_cat_rur_urb == 1)  # Urban major conurbation
+    exp_bin_urb_minor        = (tmp_exp_cat_rur_urb == 2)  # Urban minor conurbation
+    exp_bin_urb_town         = (tmp_exp_cat_rur_urb == 3)  # Urban city and town
+    exp_bin_urb_town_sp      = (tmp_exp_cat_rur_urb == 4)  # Urban city and town in sparse setting
+    exp_bin_rural_fringe     = (tmp_exp_cat_rur_urb == 5)  # Rural town and fringe
+    exp_bin_rural_fringe_sp  = (tmp_exp_cat_rur_urb == 6)  # Rural town and fringe in sparse setting
+    exp_bin_rural_village    = (tmp_exp_cat_rur_urb == 7)  # Rural village and dispersed
+    exp_bin_rural_village_sp = (tmp_exp_cat_rur_urb == 8)  # Rural village and dispersed in sparse setting
     ### Deprivation
     tmp_exp_cat_imd = case(
         when((addresses.for_patient_on(cohort_start).imd_rounded >= 0) & 
@@ -90,6 +109,7 @@ def generate_variables(cohort_start):
         when(addresses.for_patient_on(cohort_start).imd_rounded < int(32844 * 5 / 5)).then("5 (least deprived)"),
         otherwise="unknown",
     )
+    exp_bin_imd_missing  = (tmp_exp_cat_imd == "unknown")
     exp_bin_imd_1_most   = (tmp_exp_cat_imd == "1 (most deprived)")
     exp_bin_imd_2        = (tmp_exp_cat_imd == "2")
     exp_bin_imd_3        = (tmp_exp_cat_imd == "3")
@@ -102,7 +122,8 @@ def generate_variables(cohort_start):
         .ctv3_code.to_category(smoking_clear)
     )
     tmp_ever_smoked = ever_matching_event_clinical_ctv3_before(
-        (filter_codes_by_category(smoking_clear, include=["S", "E"])), cohort_start)
+        (filter_codes_by_category(smoking_clear, include=["S", "E"])), cohort_start
+        ).exists_for_patient()
 
     tmp_cat_smoking = case(
         when(tmp_most_recent_smoking_cat == "S").then("S"),
@@ -110,7 +131,21 @@ def generate_variables(cohort_start):
         when((tmp_most_recent_smoking_cat == "N") & (tmp_ever_smoked == False)).then("N"),
         otherwise="M"
     )
-    exp_bin_smoker = (tmp_cat_smoking == "S")
+    exp_bin_smoker_current = (tmp_cat_smoking == "S")
+    exp_bin_smoker_ever = (tmp_cat_smoking == "E")
+    exp_bin_smoker_never = (tmp_cat_smoking == "N")
+    exp_bin_smoker_missing = (tmp_cat_smoking == "M")
+
+    ### Obesity
+    exp_bin_obesity = (
+        last_matching_event_clinical_snomed_before(
+            bmi_obesity_snomed, cohort_start
+        ).exists_for_patient()
+        |
+        last_matching_event_apc_before(
+            bmi_obesity_icd10, cohort_start
+        ).exists_for_patient()
+    )
 
     ### Consultation rate in 2019 (using seen maybe)
     tmp_exp_num_consrate2019 = appointments.where(
@@ -272,7 +307,7 @@ def generate_variables(cohort_start):
     )
 
     dynamic_variables = dict(
-        # Inclusion/exclusion binary flags
+        # Inclusion/exclusion binary flags (GENERAL)
         inex_bin_reg_cs = inex_bin_reg_cs,
         inex_bin_alive = inex_bin_alive,
         inex_bin_age = inex_bin_age,
@@ -280,40 +315,63 @@ def generate_variables(cohort_start):
         inex_bin_ethinicity = inex_bin_ethinicity,
         inex_bin_imd = inex_bin_imd,
         inex_bin_region = inex_bin_region,
+        # Inclusion/exclusion binary flags (VAX eligibility)
+        inex_bin_elig_pneum_65y = inex_bin_elig_pneum_65y,      #Pneumococcal vaccine
+        inex_bin_elig_flu_65y = inex_bin_elig_flu_65y,          #Flu vaccine
+        inex_bin_elig_flu_2_3y = inex_bin_elig_flu_2_3y,
+        inex_bin_elig_flu_pregnancy = inex_bin_elig_flu_pregnancy,
+        inex_bin_elig_covid_75y = inex_bin_elig_covid_75y,      #COVID SPRING vaccine
         # Practice ID
         practice_id = practice_id,
         # Sex binary flags
+        exp_bin_male = exp_bin_male,
         exp_bin_female = exp_bin_female,
+        exp_bin_sex_missing = exp_bin_sex_missing,
         # Age binary flags
+        exp_num_age = exp_num_age,
         exp_bin_under_5y = exp_bin_under_5y,
         exp_bin_5_16y = exp_bin_5_16y,
         exp_bin_65_74y = exp_bin_65_74y,
         exp_bin_75_84y = exp_bin_75_84y,
         exp_bin_85y_plus = exp_bin_85y_plus,
+        exp_bin_age_missing =exp_bin_age_missing,
         # Ethnicity binary flags
-        exp_bin_eth_missing = exp_bin_eth_missing,
+        tmp_exp_cat_ethnicity = tmp_exp_cat_ethnicity,
         exp_bin_eth_white = exp_bin_eth_white,
         exp_bin_eth_mixed = exp_bin_eth_mixed,
-        exp_bin_eth_southasian = exp_bin_eth_southasian,
+        exp_bin_eth_asian = exp_bin_eth_asian,
         exp_bin_eth_black = exp_bin_eth_black,
         exp_bin_eth_other = exp_bin_eth_other,
+        exp_bin_eth_missing = exp_bin_eth_missing,
+        # Practice region
         exp_cat_region =exp_cat_region,
-        # Rurality binary flags 
-        urb_major = urb_major,
-        urb_minor = urb_minor,
-        urb_town = urb_town,
-        urb_town_sp = urb_town_sp,
-        rural_fringe = rural_fringe,
-        rural_fringe_sp = rural_fringe_sp,
-        rural_village = rural_village,
-        rural_village_sp = rural_village_sp,
+        # Rurality binary flags
+        tmp_exp_cat_rur_urb = tmp_exp_cat_rur_urb,
+        exp_bin_urb_major = exp_bin_urb_major,
+        exp_bin_urb_minor = exp_bin_urb_minor,
+        exp_bin_urb_town = exp_bin_urb_town,
+        exp_bin_urb_town_sp = exp_bin_urb_town_sp,
+        exp_bin_rural_fringe = exp_bin_rural_fringe,
+        exp_bin_rural_fringe_sp = exp_bin_rural_fringe_sp,
+        exp_bin_rural_village = exp_bin_rural_village,
+        exp_bin_rural_village_sp = exp_bin_rural_village_sp,
+        exp_bin_rurality_missing = exp_bin_rurality_missing,
         # IMD binary flags   
+        tmp_exp_cat_imd = tmp_exp_cat_imd,
         exp_bin_imd_1_most = exp_bin_imd_1_most,
         exp_bin_imd_2 = exp_bin_imd_2,
         exp_bin_imd_3 = exp_bin_imd_3,
         exp_bin_imd_4 = exp_bin_imd_4,
         exp_bin_imd_5_least = exp_bin_imd_5_least,
-        exp_bin_smoker = exp_bin_smoker,
+        exp_bin_imd_missing = exp_bin_imd_missing,
+        # Smoking status
+        exp_bin_smoker_current = exp_bin_smoker_current,
+        exp_bin_smoker_ever = exp_bin_smoker_ever,
+        exp_bin_smoker_never = exp_bin_smoker_never,
+        exp_bin_smoker_missing = exp_bin_smoker_missing,
+        # Obesity
+        exp_bin_obesity = exp_bin_obesity,
+        #Consultation-2019
         exp_num_consrate2019 = exp_num_consrate2019,
         # Multimorbidity conditions
         exp_bin_af = exp_bin_af,                         # Atrial Fibrillation
@@ -338,4 +396,3 @@ def generate_variables(cohort_start):
         exp_bin_osteoarthritis = exp_bin_osteoarthritis  # Osteoarthritis (Painful Condition)
     )
     return dynamic_variables
-
