@@ -719,3 +719,28 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2.csv
 
+
+## Generate the MERGED measures dataset
+  generate_merged_measures:
+    run: r:latest analysis/data_cleaning.R
+    needs:
+    - generate_measures_precovid_2018-10-01_age
+    - generate_measures_precovid_2018-10-01_sex
+    - generate_measures_precovid_2018-10-01_ethnicity
+    - generate_measures_precovid_2018-10-01_imd
+    - generate_measures_precovid_2018-10-01_rurality
+    - generate_measures_precovid_2018-10-01_smoking
+    - generate_measures_precovid_2018-10-01_obesity
+    - generate_measures_precovid_2018-10-01_multimorbidity
+    - generate_measures_precovid_2018-10-01_vax_flu
+    - generate_measures_precovid_2018-10-01_vax_pneum
+    - generate_measures_precovid_2018-10-01_consultation
+    - generate_measures_precovid_2018-10-01_ec_all
+    - generate_measures_precovid_2018-10-01_apc_all
+    - generate_measures_precovid_2018-10-01_ec_acscs
+    - generate_measures_precovid_2018-10-01_apc_acscs
+    outputs:
+      highly_sensitive:
+        dataset1: output/analytic_data_precovid.csv
+        dataset2: output/exp_data_precovid.csv
+        dataset3: output/out_data_precovid.csv
