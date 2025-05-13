@@ -248,24 +248,27 @@ merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged
 ##SD own laptop, locally
   #setwd("C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output")
   #measures_path <-"C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output/measures"
-##SD own laptop, through OneDrive
-  #setwd("C:/Users/61487/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output")
-  #measures_path <- "C:/Users/61487/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output/measures"
 
 #SD work laptop
-  #setwd("C:/Users/ShrinkhalaDawadi/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output")
-  #measures_path <-"C:/Users/ShrinkhalaDawadi/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output/measures"
+  #setwd("C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output")
+  #measures_path <-"C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/measures"
+  #output_path <- "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output"
 
 #OS 
-  fs::dir_create(here::here("output", "measures"))
-  measures_path <-"output/measures"
-  
   print("This should be the working directory")
-  wd <- getwd()
-  print(wd)
+    wd <- getwd() 
+    print(wd)
+  
+  fs::dir_create(here::here("output", "measures"))
+    print("This is what here::here('output', 'measures')shows")
+      print(here::here("output", "measures"))
+      
+  measures_path <-"/workspace/output/measures"
+  output_path <- "/workspace/output/"
+    
+  
 
-  print("This is what here::here('output', 'measures')shows")
-  print(here::here("output", "measures"))
+  
 
 
 ##IMPORTING FILES
@@ -274,10 +277,10 @@ merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged
   #grepl: an easier way to identify strings, b/c list.files doesn't support full regex in pattern (I think)
 
 test <- list.files(path = "/workspace/output/measures", full.names = TRUE) 
-print("This is the test list")
-print(test)
+  print("This is the test list")
+    print(test)
 
-measures_csv <- list.files(path = "/workspace/output/measures", pattern = "precovid\\.csv$", full.names = TRUE) 
+measures_csv <- list.files(path = measures_path, pattern = "precovid\\.csv$", full.names = TRUE) 
   exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
   exp_vax_measures_csv <-grep("_vax", measures_csv,value=TRUE) 
   exp_cons_measures_csv <-grep("_consultation", measures_csv,value=TRUE) 
@@ -286,13 +289,22 @@ measures_csv <- list.files(path = "/workspace/output/measures", pattern = "preco
   out_acscs_measures_csv <- grep("acscs", (grep("_apc|_ec", measures_csv, value=TRUE)), value = TRUE)
   
   print("This should be the list of ALL the CSV files (measures_csv)")
-  print(measures_csv)
-  print("This should be the exp_measures_csv list")
-  print(exp_measures_csv)
-  print("This should be the out_measures_csv list")
-  print(out_measures_csv)
+    print(measures_csv)
   
+    print("This should be the list of exp_measures_csv files")
+      print(exp_measures_csv)
+    
+    print("This should be the list of exp_vax_measures_csv files")  
+      print(exp_vax_measures_csv)
+      
+    print("This should be the list of exp_cons_measures_csv files")  
+      print(exp_vax_measures_csv)
+      
+    print("This should be the list of out_measures_csv files")
+      print(out_measures_csv)
   
+    print("This should be the list of out_acscs_measures_csv files")
+      print(out_acscs_measures_csv)
 
 ##CLEANING THE DATA 
 #Exposures (cross-sectional):
@@ -310,12 +322,13 @@ measures_csv <- list.files(path = "/workspace/output/measures", pattern = "preco
       for(i in seq_along(exp_measures_csv)) {
         print("For-loop started - seq along exp_measures_csv")
         df <- readr::read_csv(exp_measures_csv[[i]])
-        print("import csv into df")
-        wide_exp_measures[[i]] <- df %>%
-          pivot_wider(       #Transform the dataset to "wide', i.e. one column per measure
-            names_from = measure,
-            values_from = c(numerator, denominator, ratio)) %>%
-          rename_with(~ str_replace_all(., rename_list))    #Renaming the variables
+          print("import csv into df")
+        
+          wide_exp_measures[[i]] <- df %>%
+            pivot_wider(       #Transform the dataset to "wide', i.e. one column per measure
+              names_from = measure,
+              values_from = c(numerator, denominator, ratio)) %>%
+            rename_with(~ str_replace_all(., rename_list))    #Renaming the variables
        
         #Check that each wide dataset now has one row per practice
           if(one_row_check(wide_exp_measures[[i]], "practice_pseudo_id")){
@@ -349,38 +362,62 @@ measures_csv <- list.files(path = "/workspace/output/measures", pattern = "preco
   #"Transform" so that each vax proportion variable is it's own column
   
   if (var_consistency_check(exp_vax_measures_csv, var_list = c("interval_start", "interval_end"))) {
-    message("Variable consistency check passed for each dataset")
-    
+    message("Variable consistency check passed for each dataset in ", exp_vax_measures_csv)
+  
     #Pre-allocating objects
+      wide_exp_vax_measures <- vector("list", length(exp_vax_measures_csv))   #list containing transformed datasets
       rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
-    
-    print(exp_vax_measures_csv)
-    #Transform the dataset to "wide', i.e. one column per measure
-      wide_exp_vax_measures<- readr::read_csv(exp_vax_measures_csv) %>%
-        pivot_wider(  
-          names_from = measure,
-          values_from = c(numerator, denominator, ratio)) %>%
-        rename_with(~ str_replace_all(., rename_list))    #Renaming the variables
+        print("Pre-allocation done")
       
-      #Check that each wide dataset now has one row per practice
-        if(one_row_check(wide_exp_vax_measures, "practice_pseudo_id")){
-        } else {
-          stop()
-        }
+    #For-loop of the data management steps 
+      for(i in seq_along(exp_vax_measures_csv)) {
+        print("Data management for-loop started: seq along files in exp_vax_measures_csv")
+        df <- readr::read_csv(exp_vax_measures_csv[[i]])
+          print(".csv files imported into R as dataframe object,  df")
+        
       
-      #Check that each numerical variable is non-negative
-        if(all(positive_var_check(wide_exp_vax_measures))) {
-        }else{
-          stop()
-        }
-      
-      #Checking that each proportion variable goes between 0 and 1 
-        prop_vars <- names(wide_exp_vax_measures)[grepl("prop", names(wide_exp_vax_measures))]
-        range_check(wide_exp_vax_measures, var_list = prop_vars, min = 0.000000000000000000, max= 1.00000000000000000000000)
+        print("Starting reshape to wide & rename")
+        wide_exp_vax_measures[[i]] <- df %>%   #Transform the dataset to "wide', i.e. one column per measure
+           pivot_wider(  
+            names_from = measure,
+            values_from = c(numerator, denominator, ratio)) %>%
+          rename_with(~ str_replace_all(., rename_list))    #Renaming the variables
+          
+        #Check that each wide dataset now has one row per practice
+          if(one_row_check(wide_exp_vax_measures[[i]], "practice_pseudo_id")){
+          }else {
+              stop()
+          }
+          
+        #Check that each numerical variable is non-negative
+          if(all(positive_var_check(wide_exp_vax_measures[[i]]))) {
+          }else{
+            stop()
+          }
+      }  
+  
+    #Merging each dataset, dropping repeat variables
+      print("Starting to merge all the reshaped files in wide_exp_vax_measures")
+      merge_and_drop(
+        wide_exp_vax_measures, 
+        var_list = c("interval_start", "interval_end"), 
+        c("practice_pseudo_id"), 
+        merged_df_name = "merged_exp_vax_measures")
+        
+        #Once again, checking that data are one row per practice
+          if(one_row_check(merged_exp_vax_measures, "practice_pseudo_id")) {
+          } else {
+            message("merged_exp_vax_measures is NOT one row per practice")
+          }
+        
+        #Checking that each proportion variable goes between 0 and 1 
+          prop_vars <- names(merged_exp_vax_measures)[grepl("prop", names(merged_exp_vax_measures))]
+          range_check(merged_exp_vax_measures, var_list = prop_vars, min = 0.000000000000000000, max= 1.00000000000000000000000)
     }
 
+      
 #Exposures (consultations, longitudinal)  
-   print("date_check_long for longitudinal exposure - consultation")
+  print("date_check_long for longitudinal exposure - consultation")
   date_check_cons <-date_check_long(
     exp_cons_measures_csv,
     date_var_list = c("interval_start", "interval_end"), 
@@ -528,18 +565,16 @@ measures_csv <- list.files(path = "/workspace/output/measures", pattern = "preco
 
   
 #Merging the exposures, exposures_vax, outcomes, and outcomes_acscs data together
-  exp_data_precovid <-left_join(merged_exp_measures, wide_exp_vax_measures, by ="practice_pseudo_id") %>%
+  exp_data_precovid <-left_join(merged_exp_measures, merged_exp_vax_measures, by ="practice_pseudo_id") %>%
     rename(interval_start_exp = interval_start.x,
            interval_end_exp = interval_end.x,
            interval_start_exp_vax = interval_start.y,
            interval_end_exp_vax =interval_end.y)
 
-  
   out_data_precovid <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
   
-  
   analytic_data_precovid <- left_join(out_data_precovid, merged_exp_measures, by = "practice_pseudo_id") #Merging the exp data to the longitudinal outcomes
-  analytic_data_precovid <- left_join(analytic_data_precovid, wide_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
+  analytic_data_precovid <- left_join(analytic_data_precovid, merged_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
     rename(interval_start_out = interval_start.x,
            interval_end_out = interval_end.x,
            interval_start_exp = interval_start.y,
@@ -554,9 +589,9 @@ measures_csv <- list.files(path = "/workspace/output/measures", pattern = "preco
   data.table::fwrite(out_data_precovid, "/workspace/output/out_data_precovid.csv") #Out + out_acscs
   
   
-  #data.table::fwrite(analytic_data_precovid, "C:/Users/61487/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output/analytic_data_precovid.csv") 
-  #data.table::fwrite(exp_data_precovid, "C:/Users/61487/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output/exp_data_precovid.csv")
-  #data.table::fwrite(out_data_precovid, "C:/Users/61487/OneDrive - London School of Hygiene and Tropical Medicine/GitHub/WinterPressuresDescriptive/output/out_data_precovid.csv")
+  #data.table::fwrite(analytic_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/analytic_data_precovid.csv") 
+  #data.table::fwrite(exp_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/exp_data_precovid.csv")
+  #data.table::fwrite(out_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/out_data_precovid.csv")
   
   
  
