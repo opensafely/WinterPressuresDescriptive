@@ -604,12 +604,12 @@ measures_csv <- list.files(path = measures_path, pattern = "precovid\\.csv$", fu
 ## Figure out a way to create 3 different datasets, one for each cohort.
 #Create the CMS
   
-#Discuss with Zoe:
-  #The proportion of patients variable for acscs
-  #GP consultation rate - dates
-    #Also confirm that we decided to make this a cross-sectional snapshot, BUT
-      #per a couple of meetings ago, we want to visualise the variation in this variation before deciding HOW we're collapsing it
-  
+#FROM LP:
+#I've been thinking about this indicator and what it means. 
+# I think it is largely an indicator of supply of appts, driven by practice (rather than patient demand). 
+# However it is not clear cut and could also be somewhat demand driven. 
+# Thinking about how to better understand the 'demand' element, I wonder if there may be variation between a practice that provides a lot of appts to a small proportion of their population (ie to the high demand and high need cohorts) Vs those who may provide the same average number of appointments but with a more even spread e.g a university practice.  I wonder if how appointments are distributed/managed across the registered patient list therefore may have a knock on effect in secondary care due to unmet demand from patients with different case-mixes. Would it be feasible to develop an indicator that would capture this e.g. the range of number of consultations/pt, the IQR, the SD?
+
 ##Code to clear items from memory, and free unused memory
   #rm(list = ls())
   #gc()
