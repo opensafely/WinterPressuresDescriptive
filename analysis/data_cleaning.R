@@ -9,6 +9,7 @@
   #install.packages("glue")
   #install.packages("lubridate")
   #install.packages("here")
+  #install.packages("data.table")
 
 library(dplyr)
 library(tidyr)
@@ -20,9 +21,13 @@ library(tidyverse)
 library(glue)
 library(lubridate)
 library(here)
+library(data.table)  # Allows you to import .csv files, and write .csv files
 #library(arrow)
 
 
+#DEFINING ARGUMENTS 
+args <- commandArgs(trailingOnly = TRUE)
+cohort <- args[1]  # e.g., "precovid", "postcovid1", etc.
 
 
 #DEFINING FUNCTIONS   
@@ -274,14 +279,16 @@ merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged
 ##IMPORTING FILES
   #list.files: lists all the files in a specified directory
     #pattern: option, only identifies files that match a specific regular expression
-  #grepl: an easier way to identify strings, b/c list.files doesn't support full regex in pattern (I think)
+  #grepl: an easier way to identify strings, b/c list.files doesn't support full regex in pattern (I think) # nolint
 
 test <- list.files(path = "/workspace/output/measures", full.names = TRUE) 
   print("This is the test list")
     print(test)
 
-measures_csv <- list.files(path = measures_path, pattern = "precovid\\.csv$", full.names = TRUE) 
-  exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
+#FOR NOW ONLY measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
+measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
+
+exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
   exp_vax_measures_csv <-grep("_vax", measures_csv,value=TRUE) 
   exp_cons_measures_csv <-grep("_consultation", measures_csv,value=TRUE) 
   
@@ -289,7 +296,7 @@ measures_csv <- list.files(path = measures_path, pattern = "precovid\\.csv$", fu
   out_acscs_measures_csv <- grep("acscs", (grep("_apc|_ec", measures_csv, value=TRUE)), value = TRUE)
   
   print("This should be the list of ALL the CSV files (measures_csv)")
-    print(measures_csv)
+    print(measures_csv) # nolint
   
     print("This should be the list of exp_measures_csv files")
       print(exp_measures_csv)
@@ -565,16 +572,19 @@ measures_csv <- list.files(path = measures_path, pattern = "precovid\\.csv$", fu
 
   
 #Merging the exposures, exposures_vax, outcomes, and outcomes_acscs data together
-  exp_data_precovid <-left_join(merged_exp_measures, merged_exp_vax_measures, by ="practice_pseudo_id") %>%
-    rename(interval_start_exp = interval_start.x,
-           interval_end_exp = interval_end.x,
-           interval_start_exp_vax = interval_start.y,
-           interval_end_exp_vax =interval_end.y)
 
-  out_data_precovid <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
+  exp_data <- left_join(merged_exp_measures, merged_exp_vax_measures, by = "practice_pseudo_id") %>%
+    rename(
+      interval_start_exp = interval_start.x,
+      interval_end_exp = interval_end.x,
+      interval_start_exp_vax = interval_start.y,
+      interval_end_exp_vax = interval_end.y
+    )
+
+  out_data <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
   
-  analytic_data_precovid <- left_join(out_data_precovid, merged_exp_measures, by = "practice_pseudo_id") #Merging the exp data to the longitudinal outcomes
-  analytic_data_precovid <- left_join(analytic_data_precovid, merged_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
+  analytic_data <- left_join(out_data, merged_exp_measures, by = "practice_pseudo_id") #Merging the exp data to the longitudinal outcomes
+  analytic_data <- left_join(analytic_data, merged_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
     rename(interval_start_out = interval_start.x,
            interval_end_out = interval_end.x,
            interval_start_exp = interval_start.y,
@@ -583,10 +593,53 @@ measures_csv <- list.files(path = measures_path, pattern = "precovid\\.csv$", fu
            interval_end_exp_vax = interval_end)
   
   
+  #exp_data_[[cohort]] <-left_join(merged_exp_measures, merged_exp_vax_measures, by ="practice_pseudo_id") %>%
+    
+  #  rename(interval_start_exp = interval_start.x,
+  #         interval_end_exp = interval_end.x,
+  #         interval_start_exp_vax = interval_start.y,
+  #         interval_end_exp_vax =interval_end.y)
+  
+  #out_data_[[cohort]] <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
+  
+  #analytic_data_[[cohort]] <- left_join(out_data_precovid, merged_exp_measures, by = "practice_pseudo_id") #Merging the exp data to the longitudinal outcomes
+  #analytic_data_[[cohort]] <- left_join(analytic_data_precovid, merged_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
+  #  rename(interval_start_out = interval_start.x,
+  #         interval_end_out = interval_end.x,
+  #         interval_start_exp = interval_start.y,
+  #        interval_end_exp = interval_end.y,
+  #        interval_start_exp_vax = interval_start,
+  #        interval_end_exp_vax = interval_end)
+  
+  
+  
+  
 #EXPORTING ANALYTIC DATASET  
-  data.table::fwrite(analytic_data_precovid, "/workspace/output/analytic_data_precovid.csv") #Exp, exp_vax, out, out_acscs combined
-  data.table::fwrite(exp_data_precovid, "/workspace/output/exp_data_precovid.csv") #Exp + exp_vax
-  data.table::fwrite(out_data_precovid, "/workspace/output/out_data_precovid.csv") #Out + out_acscs
+  data.table::fwrite(analytic_data, glue::glue("output/analytic_data_{cohort}.csv"))
+  data.table::fwrite(exp_data, glue::glue("output/exp_data_{cohort}.csv"))
+  data.table::fwrite(out_data, glue::glue("output/out_data_{cohort}.csv"))
+  
+  
+  
+  # data.table::fwrite(
+  #    get(glue("analytic_data_{cohort}")),
+  #  glue("/workspace/output/analytic_data_{cohort}.csv")
+  #)
+  
+  # data.table::fwrite(
+  #   get(glue("exp_data_{cohort}")),
+  #   glue("/workspace/output/exp_data_{cohort}.csv")
+  #)
+  
+  # data.table::fwrite(
+  #   get(glue("out_data_{cohort}")),
+  #   glue("/workspace/output/out_data_{cohort}.csv")
+  # )
+  
+  #OLD CODE
+  #data.table::fwrite(analytic_data_{cohort}, "/workspace/output/analytic_data_{cohort}.csv") #Exp, exp_vax, out, out_acscs combined
+  #data.table::fwrite(exp_data_{cohort}, "/workspace/output/exp_data_{cohort}.csv") #Exp + exp_vax
+  #data.table::fwrite(out_data_{cohort}, "/workspace/output/out_data_{cohort}.csv") #Out + out_acscs
   
   
   #data.table::fwrite(analytic_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/analytic_data_precovid.csv") 
