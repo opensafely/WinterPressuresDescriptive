@@ -1061,9 +1061,8 @@ actions:
         dataset2: output/analytic_data_wide_postcovid3.csv
 
 
-## Generate the MERGED measures dataset
-  generate_merged_measures:
-    run: r:latest analysis/data_cleaning.R
+  generate_merged_precovid:
+    run: r:latest analysis/data_cleaning.R precovid
     needs:
     - generate_measures_precovid_2018-10-01_age
     - generate_measures_precovid_2018-10-01_sex
@@ -1085,3 +1084,58 @@ actions:
         dataset1: output/analytic_data_precovid.csv
         dataset2: output/exp_data_precovid.csv
         dataset3: output/out_data_precovid.csv
+
+  ## Check measures files & generate merged datasets for cohort: postcovid1 
+
+  generate_merged_postcovid1:
+    run: r:latest analysis/data_cleaning.R postcovid1
+    needs:
+    - generate_measures_postcovid1_2022-10-01_age
+    - generate_measures_postcovid1_2022-10-01_sex
+    - generate_measures_postcovid1_2022-10-01_ethnicity
+    - generate_measures_postcovid1_2022-10-01_imd
+    - generate_measures_postcovid1_2022-10-01_rurality
+    - generate_measures_postcovid1_2022-10-01_smoking
+    - generate_measures_postcovid1_2022-10-01_obesity
+    - generate_measures_postcovid1_2022-10-01_multimorbidity
+    - generate_measures_postcovid1_2022-10-01_vax_covid
+    - generate_measures_postcovid1_2022-10-01_vax_flu
+    - generate_measures_postcovid1_2022-10-01_vax_pneum
+    - generate_measures_postcovid1_2022-10-01_consultation
+    - generate_measures_postcovid1_2022-10-01_ec_all
+    - generate_measures_postcovid1_2022-10-01_apc_all
+    - generate_measures_postcovid1_2022-10-01_ec_acscs
+    - generate_measures_postcovid1_2022-10-01_apc_acscs
+    outputs:
+      highly_sensitive:
+        dataset1: output/analytic_data_postcovid1.csv
+        dataset2: output/exp_data_postcovid1.csv
+        dataset3: output/out_data_postcovid1.csv
+
+  ## Check measures files & generate merged datasets for cohort: postcovid2 
+
+  generate_merged_postcovid2:
+    run: r:latest analysis/data_cleaning.R postcovid2
+    needs:
+    - generate_measures_postcovid2_2023-10-01_age
+    - generate_measures_postcovid2_2023-10-01_sex
+    - generate_measures_postcovid2_2023-10-01_ethnicity
+    - generate_measures_postcovid2_2023-10-01_imd
+    - generate_measures_postcovid2_2023-10-01_rurality
+    - generate_measures_postcovid2_2023-10-01_smoking
+    - generate_measures_postcovid2_2023-10-01_obesity
+    - generate_measures_postcovid2_2023-10-01_multimorbidity
+    - generate_measures_postcovid2_2023-10-01_vax_covid
+    - generate_measures_postcovid2_2023-10-01_vax_flu
+    - generate_measures_postcovid2_2023-10-01_vax_pneum
+    - generate_measures_postcovid2_2023-10-01_consultation
+    - generate_measures_postcovid2_2023-10-01_ec_all
+    - generate_measures_postcovid2_2023-10-01_apc_all
+    - generate_measures_postcovid2_2023-10-01_ec_acscs
+    - generate_measures_postcovid2_2023-10-01_apc_acscs
+    outputs:
+      highly_sensitive:
+        dataset1: output/analytic_data_postcovid2.csv
+        dataset2: output/exp_data_postcovid2.csv
+        dataset3: output/out_data_postcovid2.csv
+
