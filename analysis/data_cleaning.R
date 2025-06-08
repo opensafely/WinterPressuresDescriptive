@@ -246,13 +246,45 @@ merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged
         rename_with(~ str_replace(., "\\.x$", "")) #Removing the .x suffix
     message("Dataset merged and duplicates removed successfully")  
       assign(merged_df_name, merged_df, envir = .GlobalEnv) #adds new dataframe to the global environment
+}
+
+
+#Check how many duplicates you have, drop all duplicates
+drop_all_duplicates <- function(df, df_name = "name", var_list, new_name = "denom") {
+  # Identify which variables are duplicates (by value)
+  duplicate_vars <- duplicated(as.list(df[var_list]))
+  
+  keep_vars <- var_list[!duplicate_vars]
+  remove_vars <- var_list[duplicate_vars]
+  
+  # Warn if multiple non-duplicate variables are found
+  if (length(keep_vars) > 1) {
+    message ("The following denominator variables in ", df_name, " are NOT duplicates")
+    message ("All non-duplicates will be kept:")
+      print(keep_vars)
+    message ("The first instance ", keep_vars[1], " (renamed to '", new_name, "')")
+    message("Removed duplicates: ", paste(remove_vars, collapse = ", "))
+    
+  } else if (length(keep_vars) == 0) {
+    stop("No non-duplicate variables were found")
   }
+  # Rename the first non-duplicate
+  df <- df %>% rename(!!new_name := all_of(keep_vars[1]))
+  
+  # Drop duplicates
+  df <- df %>% select(-all_of(remove_vars))
+
+  return(df)
+}
+
+
 
 
 ##SETTING DIRECTORIES & PATHS
 ##SD own laptop, locally
   #setwd("C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output")
   #measures_path <-"C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output/measures"
+  #output_path  <-"C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output"
 
 #SD work laptop
   #setwd("C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output")
@@ -265,16 +297,10 @@ merge_and_drop <- function(df_list, var_list, join_var, merged_df_name = "merged
     print(wd)
   
   fs::dir_create(here::here("output", "measures"))
-    print("This is what here::here('output', 'measures')shows")
-      print(here::here("output", "measures"))
-      
-  measures_path <-"/workspace/output/measures"
-  output_path <- "/workspace/output/"
+  measures_path <- here::here("output", "measures")
+  output_path <- here::here("output")
     
   
-
-  
-
 
 ##IMPORTING FILES
   #list.files: lists all the files in a specified directory
@@ -285,8 +311,8 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   print("This is the test list")
     print(test)
 
-#FOR NOW ONLY measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
-measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
+ measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
+#FOR NOW ONLY measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
 
 exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
   exp_vax_measures_csv <-grep("_vax", measures_csv,value=TRUE) 
@@ -482,6 +508,7 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
       #Check that interval_start and interval_end are consistent ACROSS datasets
         if (identical_vector_check(wide_out_measures, var_list = c("interval_start", "interval_end"))) {
         }else{
+          print("Interval start and interval end are not consistent across datasets ")
           stop()
         }
       
@@ -572,7 +599,6 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
 
   
 #Merging the exposures, exposures_vax, outcomes, and outcomes_acscs data together
-
   exp_data <- left_join(merged_exp_measures, merged_exp_vax_measures, by = "practice_pseudo_id") %>%
     rename(
       interval_start_exp = interval_start.x,
@@ -580,71 +606,55 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
       interval_start_exp_vax = interval_start.y,
       interval_end_exp_vax = interval_end.y
     )
+  
+    #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
+      denom_vars <- grep("denom_", names(exp_data), value = TRUE)
+      exp_data <- drop_all_duplicates(exp_data, df_name = "exp_data", denom_vars, new_name = "denom_exp")
+    
 
   out_data <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
+    #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
+      denom_vars <- grep("denom_", names(out_data), value = TRUE)
+      out_data <- drop_all_duplicates(out_data, df_name = "out_data", denom_vars, new_name = "denom_out")
+
   
-  analytic_data <- left_join(out_data, merged_exp_measures, by = "practice_pseudo_id") #Merging the exp data to the longitudinal outcomes
-  analytic_data <- left_join(analytic_data, merged_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
-    rename(interval_start_out = interval_start.x,
-           interval_end_out = interval_end.x,
-           interval_start_exp = interval_start.y,
-           interval_end_exp = interval_end.y,
-           interval_start_exp_vax = interval_start,
-           interval_end_exp_vax = interval_end)
+  analytic_data_long <- left_join(out_data, exp_data, by = "practice_pseudo_id") %>%  #Merging the exp data to the longitudinal outcomes
+    rename(interval_start_out = interval_start,
+           interval_end_out = interval_end) %>%
+    group_by(practice_pseudo_id) %>%
+    mutate(week_number = dense_rank(interval_start_out)) %>%
+    ungroup()
+  
+  date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
+  denom_vars <- grep("denom", names(analytic_data_long), value = TRUE)
   
   
-  #exp_data_[[cohort]] <-left_join(merged_exp_measures, merged_exp_vax_measures, by ="practice_pseudo_id") %>%
-    
-  #  rename(interval_start_exp = interval_start.x,
-  #         interval_end_exp = interval_end.x,
-  #         interval_start_exp_vax = interval_start.y,
-  #         interval_end_exp_vax =interval_end.y)
+  wide_variables = analytic_data_long %>% 
+    select(-all_of(c("practice_pseudo_id", "interval_start_out", 
+                     "interval_end_out", "interval_start_exp", 
+                     "interval_end_exp", "interval_start_exp_vax", 
+                     "interval_end_exp_vax", "week_number"))) %>% 
+                    names
+
   
-  #out_data_[[cohort]] <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
-  
-  #analytic_data_[[cohort]] <- left_join(out_data_precovid, merged_exp_measures, by = "practice_pseudo_id") #Merging the exp data to the longitudinal outcomes
-  #analytic_data_[[cohort]] <- left_join(analytic_data_precovid, merged_exp_vax_measures, by = "practice_pseudo_id") %>% #Then merging the exp_vax data
-  #  rename(interval_start_out = interval_start.x,
-  #         interval_end_out = interval_end.x,
-  #         interval_start_exp = interval_start.y,
-  #        interval_end_exp = interval_end.y,
-  #        interval_start_exp_vax = interval_start,
-  #        interval_end_exp_vax = interval_end)
-  
+  analytic_data_wide <- analytic_data_long %>%
+    select(-all_of(c("interval_start_out", "interval_end_out", 
+                     "interval_start_exp", "interval_end_exp", 
+                     "interval_start_exp_vax", "interval_end_exp_vax"))) %>%
+    pivot_wider(
+      id_cols = practice_pseudo_id,
+      names_from = week_number,
+      values_from = wide_variables,
+      names_glue = "{.value}{week_number}"
+    )
   
   
   
 #EXPORTING ANALYTIC DATASET  
-  data.table::fwrite(analytic_data, glue::glue("output/analytic_data_{cohort}.csv"))
-  data.table::fwrite(exp_data, glue::glue("output/exp_data_{cohort}.csv"))
-  data.table::fwrite(out_data, glue::glue("output/out_data_{cohort}.csv"))
+  data.table::fwrite(analytic_data_long, glue::glue("output/analytic_data_long_{cohort}.csv"))
+  data.table::fwrite(analytic_data_wide, glue::glue("output/analytic_data_wide_{cohort}.csv"))
   
   
-  
-  # data.table::fwrite(
-  #    get(glue("analytic_data_{cohort}")),
-  #  glue("/workspace/output/analytic_data_{cohort}.csv")
-  #)
-  
-  # data.table::fwrite(
-  #   get(glue("exp_data_{cohort}")),
-  #   glue("/workspace/output/exp_data_{cohort}.csv")
-  #)
-  
-  # data.table::fwrite(
-  #   get(glue("out_data_{cohort}")),
-  #   glue("/workspace/output/out_data_{cohort}.csv")
-  # )
-  
-  #OLD CODE
-  #data.table::fwrite(analytic_data_{cohort}, "/workspace/output/analytic_data_{cohort}.csv") #Exp, exp_vax, out, out_acscs combined
-  #data.table::fwrite(exp_data_{cohort}, "/workspace/output/exp_data_{cohort}.csv") #Exp + exp_vax
-  #data.table::fwrite(out_data_{cohort}, "/workspace/output/out_data_{cohort}.csv") #Out + out_acscs
-  
-  
-  #data.table::fwrite(analytic_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/analytic_data_precovid.csv") 
-  #data.table::fwrite(exp_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/exp_data_precovid.csv")
-  #data.table::fwrite(out_data_precovid, "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/out_data_precovid.csv")
   
   
  

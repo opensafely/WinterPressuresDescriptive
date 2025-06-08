@@ -740,10 +740,9 @@ actions:
     - generate_measures_precovid_2018-10-01_ec_acscs
     - generate_measures_precovid_2018-10-01_apc_acscs
     outputs:
-      highly_sensitive:
-        dataset1: output/analytic_data_precovid.csv
-        dataset2: output/exp_data_precovid.csv
-        dataset3: output/out_data_precovid.csv
+      moderately_sensitive:
+        dataset1: output/analytic_data_long_precovid.csv
+        dataset2: output/analytic_data_wide_precovid.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid1 
 
@@ -767,10 +766,9 @@ actions:
     - generate_measures_postcovid1_2022-10-01_ec_acscs
     - generate_measures_postcovid1_2022-10-01_apc_acscs
     outputs:
-      highly_sensitive:
-        dataset1: output/analytic_data_postcovid1.csv
-        dataset2: output/exp_data_postcovid1.csv
-        dataset3: output/out_data_postcovid1.csv
+      moderately_sensitive:
+        dataset1: output/analytic_data_long_postcovid1.csv
+        dataset2: output/analytic_data_wide_postcovid1.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid2 
 
@@ -794,8 +792,7 @@ actions:
     - generate_measures_postcovid2_2023-10-01_ec_acscs
     - generate_measures_postcovid2_2023-10-01_apc_acscs
     outputs:
-      highly_sensitive:
-        dataset1: output/analytic_data_postcovid2.csv
-        dataset2: output/exp_data_postcovid2.csv
-        dataset3: output/out_data_postcovid2.csv
+      moderately_sensitive:
+        dataset1: output/analytic_data_long_postcovid2.csv
+        dataset2: output/analytic_data_wide_postcovid2.csv
 

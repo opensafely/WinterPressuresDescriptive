@@ -238,10 +238,9 @@ for (cohort in cohorts_all) {
       name = glue("generate_merged_{cohort}"),
       run = glue("r:latest analysis/data_cleaning.R {cohort}"),
       needs = generate_measures_list,
-      highly_sensitive = list(
-        dataset1 = glue("output/analytic_data_{cohort}.csv"),
-        dataset2 = glue("output/exp_data_{cohort}.csv"),
-        dataset3 = glue("output/out_data_{cohort}.csv")
+      moderately_sensitive = list(
+        dataset1 = glue("output/analytic_data_long_{cohort}.csv"),
+        dataset2 = glue("output/analytic_data_wide_{cohort}.csv")
     )
   )
   )
