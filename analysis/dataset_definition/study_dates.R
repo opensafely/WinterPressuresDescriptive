@@ -30,7 +30,9 @@ study_dates <-
     lcd_date                      = "2024-04-30", # last collection date for linked data (APCS; ONS_Deaths; SGSS_*)
     start_precovid                = "2018-10-01", # Outcome follow-up in start date for pre-covid cohort
     start_postcovid1              = "2022-10-01", # Outcome follow-up in start date for post-covid cohort1
-    start_postcovid2              = "2023-10-01"  # Outcome follow-up in start date for post-covid cohort2
+    start_postcovid2              = "2023-10-01",  # Outcome follow-up in start date for post-covid cohort2
+    start_postcovid3              = "2024-10-01"  # Outcome follow-up in start date for post-covid cohort3
+  
   )
 # Save study_dates ----
 print("Save study_dates")
