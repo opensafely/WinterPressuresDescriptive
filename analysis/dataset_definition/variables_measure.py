@@ -12,7 +12,7 @@ def generate_variables(interval_start, interval_end):
     ## Inclusion/exclusion criteria-------------------------------------------------------------------------
 
     ### Registered throughout the study period (for longitudinal measures, i.e. consultation rate/hospital admission)
-    inex_bin_reg_long = (practice_registrations.spanning(
+    inex_bin_reg_long = (practice_registrations.spanning_with_systmone(
         interval_start, interval_end
     )).exists_for_patient()
 
