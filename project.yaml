@@ -61,6 +61,20 @@ actions:
       highly_sensitive:
         dataset: output/dataset_definition/input_postcovid2.csv.gz
 
+  ## Generate cohort - postcovid3 
+
+  generate_cohort_postcovid3:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition/measures_cohorts.py --output output/dataset_definition/input_postcovid3.csv.gz
+        --
+        --patient_measures
+        --start_cohort 2024-10-01
+    needs:
+    - study_dates
+    outputs:
+      highly_sensitive:
+        dataset: output/dataset_definition/input_postcovid3.csv.gz
+
   ## Generate measures for Age (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_age:
@@ -102,6 +116,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_age_postcovid2.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Age
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid3.csv
 
   ## Generate measures for Sex (cross-sectional) - precovid 
 
@@ -145,6 +173,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_sex_postcovid2.csv
 
+  ## Generate measures for Sex (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Sex
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid3.csv
+
   ## Generate measures for Ethnicity (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_ethnicity:
@@ -186,6 +228,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_ethnicity_postcovid2.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Ethnicity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid3.csv
 
   ## Generate measures for IMD (cross-sectional) - precovid 
 
@@ -229,6 +285,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_imd_postcovid2.csv
 
+  ## Generate measures for IMD (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --IMD
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid3.csv
+
   ## Generate measures for Rurality (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_rurality:
@@ -270,6 +340,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_rurality_postcovid2.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Rurality
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid3.csv
 
   ## Generate measures for Smoking (cross-sectional) - precovid 
 
@@ -313,6 +397,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_smoking_postcovid2.csv
 
+  ## Generate measures for Smoking (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Smoking
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid3.csv
+
   ## Generate measures for Obesity (cross-sectional) - precovid 
 
   generate_measures_precovid_2018-10-01_obesity:
@@ -354,6 +452,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_obesity_postcovid2.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Obesity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid3.csv
 
   ## Generate measures for Multimorbidity (cross-sectional) - precovid 
 
@@ -397,6 +509,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_multimorbidity_postcovid2.csv
 
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid3.csv
+        --
+        --practice_measures
+        --CS
+        --Multimorbidity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid3.csv
+
   ## Generate measures for vax_covid (longitudinal) - postcovid1 
 
   generate_measures_postcovid1_2022-10-01_vax_covid:
@@ -424,6 +550,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_vax_covid_postcovid2.csv
+
+  ## Generate measures for vax_covid (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_vax_covid:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --vax_covid
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_vax_covid_postcovid3.csv
 
   ## Generate measures for vax_flu (longitudinal) - precovid 
 
@@ -467,6 +607,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_vax_flu_postcovid2.csv
 
+  ## Generate measures for vax_flu (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_vax_flu:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --vax_flu
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_vax_flu_postcovid3.csv
+
   ## Generate measures for vax_pneum (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_vax_pneum:
@@ -508,6 +662,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_vax_pneum_postcovid2.csv
+
+  ## Generate measures for vax_pneum (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_vax_pneum:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --vax_pneum
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_vax_pneum_postcovid3.csv
 
   ## Generate measures for Consultation (longitudinal) - precovid 
 
@@ -551,6 +719,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_consultation_postcovid2.csv
 
+  ## Generate measures for Consultation (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --Consultation
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid3.csv
+
   ## Generate measures for ec_all (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_ec_all:
@@ -592,6 +774,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2.csv
+
+  ## Generate measures for ec_all (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_ec_all:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_all_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --ec_all
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ec_all_postcovid3.csv
 
   ## Generate measures for apc_all (longitudinal) - precovid 
 
@@ -635,6 +831,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2.csv
 
+  ## Generate measures for apc_all (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_apc_all:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_all_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --apc_all
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_apc_all_postcovid3.csv
+
   ## Generate measures for ec_ACSCs (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_ec_acscs:
@@ -677,6 +887,20 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2.csv
 
+  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_ec_acscs:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ec_acscs_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --ec_ACSCs
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ec_acscs_postcovid3.csv
+
   ## Generate measures for apc_ACSCs (longitudinal) - precovid 
 
   generate_measures_precovid_2018-10-01_apc_acscs:
@@ -718,6 +942,20 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2.csv
+
+  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 
+
+  generate_measures_postcovid3_2024-10-01_apc_acscs:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_apc_acscs_postcovid3.csv
+        --
+        --practice_measures
+        --Long
+        --apc_ACSCs
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_apc_acscs_postcovid3.csv
 
   ## Check measures files & generate merged datasets for cohort: precovid 
 
@@ -795,4 +1033,30 @@ actions:
       moderately_sensitive:
         dataset1: output/analytic_data_long_postcovid2.csv
         dataset2: output/analytic_data_wide_postcovid2.csv
+
+  ## Check measures files & generate merged datasets for cohort: postcovid3 
+
+  generate_merged_postcovid3:
+    run: r:latest analysis/data_cleaning.R postcovid3
+    needs:
+    - generate_measures_postcovid3_2024-10-01_age
+    - generate_measures_postcovid3_2024-10-01_sex
+    - generate_measures_postcovid3_2024-10-01_ethnicity
+    - generate_measures_postcovid3_2024-10-01_imd
+    - generate_measures_postcovid3_2024-10-01_rurality
+    - generate_measures_postcovid3_2024-10-01_smoking
+    - generate_measures_postcovid3_2024-10-01_obesity
+    - generate_measures_postcovid3_2024-10-01_multimorbidity
+    - generate_measures_postcovid3_2024-10-01_vax_covid
+    - generate_measures_postcovid3_2024-10-01_vax_flu
+    - generate_measures_postcovid3_2024-10-01_vax_pneum
+    - generate_measures_postcovid3_2024-10-01_consultation
+    - generate_measures_postcovid3_2024-10-01_ec_all
+    - generate_measures_postcovid3_2024-10-01_apc_all
+    - generate_measures_postcovid3_2024-10-01_ec_acscs
+    - generate_measures_postcovid3_2024-10-01_apc_acscs
+    outputs:
+      moderately_sensitive:
+        dataset1: output/analytic_data_long_postcovid3.csv
+        dataset2: output/analytic_data_wide_postcovid3.csv
 

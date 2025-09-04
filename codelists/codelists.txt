@@ -16,7 +16,7 @@ opensafely/osteoarthritis/2020-06-04
 user/ZoeMZou/multimorbidity_hearing-loss/366aa417
 user/ZoeMZou/multimorbidity_irritable-bowel-syndrome/7c337dca
 opensafely/asthma-diagnosis-snomed/2020-04-15
-opensafely/asthma-exacerbation-secondary-care/229001a8
+bristol/asthma/3a558edf
 user/ZoeMZou/multimorbidity_asthma/63240a95
 user/elsie_horne/diabetes_snomed/43881c67
 user/elsie_horne/diabetes_icd10/2a78a932
@@ -46,7 +46,7 @@ user/elsie_horne/stroke_sah_hs_snomed/6adc02f9
 user/RochelleKnight/stroke_sah_hs_icd10/0e7e0019
 user/ZoeMZou/multimorbidity_stroketransient-ischemic-attack/4cc75756
 opensafely/current-copd/2020-05-06
-opensafely/copd-secondary-care/35734162
+bristol/copd/0031c5f4
 user/ZoeMZou/multimorbidity_copd/33b7e421
 user/ZoeMZou/multimorbidity_connective-tissue-disorder/1aa870ec
 user/elsie_horne/cancer_snomed/23271cdf

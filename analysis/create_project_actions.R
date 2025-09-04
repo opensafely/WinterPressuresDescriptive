@@ -13,13 +13,14 @@ defaults_list <- list(
 )
 
 # Define cohorts and cohort start dates
-cohorts_postcovid <- c("postcovid1", "postcovid2")
+cohorts_postcovid <- c("postcovid1", "postcovid2", "postcovid3")
 cohorts_all <- c("precovid", cohorts_postcovid)
 
 cohort_dates <- list(
   precovid = "2018-10-01",
   postcovid1 = "2022-10-01",
-  postcovid2 = "2023-10-01"
+  postcovid2 = "2023-10-01",
+  postcovid3 = "2024-10-01"
 )
 
 # Define subgroups

@@ -189,7 +189,7 @@ copd_ctv3 = codelist_from_csv(
 )
 
 copd_icd10 = codelist_from_csv(
-    "codelists/opensafely-copd-secondary-care.csv",
+    "codelists/bristol-copd.csv",
     column="code"
 )
     ## Asthma
@@ -199,7 +199,7 @@ asthma_snomed = codelist_from_csv(
 )
 
 asthma_icd10 = codelist_from_csv(
-    "codelists/opensafely-asthma-exacerbation-secondary-care.csv",
+    "codelists/bristol-asthma.csv",
     column="code"
 )
 

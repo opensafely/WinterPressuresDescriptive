@@ -31,6 +31,7 @@ from ehrql.tables.tpp import (
     clinical_events, 
     ons_deaths,
     emergency_care_attendances,
+    ethnicity_from_sus,
 )
 
 from ehrql.tables.core import medications

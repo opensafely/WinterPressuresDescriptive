@@ -25,20 +25,26 @@ if practice_measures:
     # Age-related measures
     # =========================
     measures_age = {
-        "exp_prop_under5y": exp_bin_under_5y,
-        "exp_prop_5_to_16": exp_bin_5_16y,
-        "exp_prop_65_to_74": exp_bin_65_74y,
-        "exp_prop_75_to_84": exp_bin_75_84y,
-        "exp_prop_age_85_plus": exp_bin_85y_plus,
-        "exp_prop_age_missing": exp_bin_age_missing,
+        "exp_prop_under5y":      exp_bin_under_5y,
+        "exp_prop_5_to_11":      exp_bin_5_11y,
+        "exp_prop_12_to_17":     exp_bin_12_17y,
+        "exp_prop_18_to_29":     exp_bin_18_29y,
+        "exp_prop_30_to_44":     exp_bin_30_44y,
+        "exp_prop_45_to_54":     exp_bin_45_54y,
+        "exp_prop_55_to_64":     exp_bin_55_64y,
+        "exp_prop_65_to_74":     exp_bin_65_74y,
+        "exp_prop_75_to_79":     exp_bin_75_79y,
+        "exp_prop_80_to_84":     exp_bin_80_84y,
+        "exp_prop_age_85_plus":  exp_bin_85y_plus,
+        "exp_prop_age_missing":  exp_bin_age_missing,
     }
 
     # =========================
     # Sex-related measures
     # =========================
     measures_sex = {
-        "exp_prop_male": exp_bin_male,
-        "exp_prop_female": exp_bin_female,
+        "exp_prop_male":        exp_bin_male,
+        "exp_prop_female":      exp_bin_female,
         "exp_prop_sex_missing": exp_bin_sex_missing,
     }
 
@@ -46,11 +52,11 @@ if practice_measures:
     # Ethnicity-related measures
     # =========================
     measures_ethnicity = {
-        "exp_prop_eth_white": exp_bin_eth_white,
-        "exp_prop_eth_mixed": exp_bin_eth_mixed,
-        "exp_prop_eth_asian": exp_bin_eth_asian,
-        "exp_prop_eth_black": exp_bin_eth_black,
-        "exp_prop_eth_other": exp_bin_eth_other,
+        "exp_prop_eth_white":   exp_bin_eth_white,
+        "exp_prop_eth_mixed":   exp_bin_eth_mixed,
+        "exp_prop_eth_asian":   exp_bin_eth_asian,
+        "exp_prop_eth_black":   exp_bin_eth_black,
+        "exp_prop_eth_other":   exp_bin_eth_other,
         "exp_prop_eth_missing": exp_bin_eth_missing,
     }
 
@@ -58,14 +64,11 @@ if practice_measures:
     # Rurality-related measures
     # =========================
     measures_rurality = {
-        "exp_prop_urb_major": exp_bin_urb_major,
-        "exp_prop_urb_minor": exp_bin_urb_minor,
-        "exp_prop_urb_town": exp_bin_urb_town,
-        "exp_prop_urb_town_sp": exp_bin_urb_town_sp,
-        "exp_prop_rural_fringe": exp_bin_rural_fringe,
-        "exp_prop_rural_fringe_sp": exp_bin_rural_fringe_sp,
-        "exp_prop_rural_village": exp_bin_rural_village,
-        "exp_prop_rural_village_sp": exp_bin_rural_village_sp,
+        "exp_prop_urb_major":        exp_bin_urb_major,
+        "exp_prop_urb_minor":        exp_bin_urb_minor,
+        "exp_prop_urb_town":         exp_bin_urb_town,
+        "exp_prop_rural_fringe":     exp_bin_rural_fringe,
+        "exp_prop_rural_village":    exp_bin_rural_village,
         "exp_prop_rurality_missing": exp_bin_rurality_missing,
     }
 
@@ -73,10 +76,10 @@ if practice_measures:
     # IMD-related measures
     # =========================
     measures_imd = {
-        "exp_prop_imd_1_most": exp_bin_imd_1_most,
-        "exp_prop_imd_2": exp_bin_imd_2,
-        "exp_prop_imd_3": exp_bin_imd_3,
-        "exp_prop_imd_4": exp_bin_imd_4,
+        "exp_prop_imd_1_most":  exp_bin_imd_1_most,
+        "exp_prop_imd_2":       exp_bin_imd_2,
+        "exp_prop_imd_3":       exp_bin_imd_3,
+        "exp_prop_imd_4":       exp_bin_imd_4,
         "exp_prop_imd_5_least": exp_bin_imd_5_least,
         "exp_prop_imd_missing": exp_bin_imd_missing,
     }
@@ -86,8 +89,8 @@ if practice_measures:
     # =========================
     measures_smoking = {
         "exp_prop_smoker_current": exp_bin_smoker_current,
-        "exp_prop_smoker_ever": exp_bin_smoker_ever,
-        "exp_prop_smoker_never": exp_bin_smoker_never,
+        "exp_prop_smoker_ever":    exp_bin_smoker_ever,
+        "exp_prop_smoker_never":   exp_bin_smoker_never,
         "exp_prop_smoker_missing": exp_bin_smoker_missing,
     }
 
@@ -102,26 +105,26 @@ if practice_measures:
     # Multimorbidity-related measures
     # =========================
     measures_multimorbidity = {
-        "exp_prop_af": exp_bin_af,
-        "exp_prop_alcoholproblem": exp_bin_alcoholproblem,
+        "exp_prop_af":                exp_bin_af,
+        "exp_prop_alcoholproblem":    exp_bin_alcoholproblem,
         "exp_prop_anxietydepression": exp_bin_anxietydepression,
-        "exp_prop_asthma": exp_bin_asthma,
-        "exp_prop_cancer": exp_bin_cancer,
-        "exp_prop_chd": exp_bin_chd,
-        "exp_prop_ckd": exp_bin_ckd,
-        "exp_prop_constipation": exp_bin_constipation,
-        "exp_prop_copd": exp_bin_copd,
-        "exp_prop_ctd": exp_bin_ctd,
-        "exp_prop_dementia": exp_bin_dementia,
-        "exp_prop_diabetes": exp_bin_diabetes,
-        "exp_prop_epilepsy": exp_bin_epilepsy,
-        "exp_prop_hearingloss": exp_bin_hearingloss,
-        "exp_prop_hf": exp_bin_hf,
-        "exp_prop_hypertension": exp_bin_hypertension,
-        "exp_prop_ibs": exp_bin_ibs,
-        "exp_prop_psychosis": exp_bin_psychosis,
-        "exp_prop_stroketia": exp_bin_stroketia,
-        "exp_prop_osteoarthritis": exp_bin_osteoarthritis,
+        "exp_prop_asthma":            exp_bin_asthma,
+        "exp_prop_cancer":            exp_bin_cancer,
+        "exp_prop_chd":               exp_bin_chd,
+        "exp_prop_ckd":               exp_bin_ckd,
+        "exp_prop_constipation":      exp_bin_constipation,
+        "exp_prop_copd":              exp_bin_copd,
+        "exp_prop_ctd":               exp_bin_ctd,
+        "exp_prop_dementia":          exp_bin_dementia,
+        "exp_prop_diabetes":          exp_bin_diabetes,
+        "exp_prop_epilepsy":          exp_bin_epilepsy,
+        "exp_prop_hearingloss":       exp_bin_hearingloss,
+        "exp_prop_hf":                exp_bin_hf,
+        "exp_prop_hypertension":      exp_bin_hypertension,
+        "exp_prop_ibs":               exp_bin_ibs,
+        "exp_prop_osteoarthritis":    exp_bin_osteoarthritis,
+        "exp_prop_psychosis":         exp_bin_psychosis,
+        "exp_prop_stroketia":         exp_bin_stroketia,
     }
 
     # =========================
@@ -129,7 +132,7 @@ if practice_measures:
     # =========================
     measures_consultation = {
         "exp_num_consrate2019": exp_num_consrate2019,
-        "exp_num_consrate_m": exp_num_consrate,
+        "exp_num_consrate_m":   exp_num_consrate,
     }
 
     # =========================
@@ -162,22 +165,22 @@ if practice_measures:
     # ACSC-related measures - EC
     # =========================
     measures_ec_acsc = {
-        "out_num_copd_ec_w": out_num_copd_ec,
-        "out_num_asthma_ec_w": out_num_asthma_ec,
+        "out_num_copd_ec_w":         out_num_copd_ec,
+        "out_num_asthma_ec_w":       out_num_asthma_ec,
         "out_num_hypertension_ec_w": out_num_hypertension_ec,
-        "out_num_diabetes_ec_w": out_num_diabetes_ec,
-        "out_num_angina_ec_w": out_num_angina_ec,
+        "out_num_diabetes_ec_w":     out_num_diabetes_ec,
+        "out_num_angina_ec_w":       out_num_angina_ec,
     }
 
     # =========================
     # ACSC-related measures - APC
     # =========================
     measures_apc_acsc = {
-        "out_num_copd_apc_w": out_num_copd_apc,
-        "out_num_asthma_apc_w": out_num_asthma_apc,
+        "out_num_copd_apc_w":         out_num_copd_apc,
+        "out_num_asthma_apc_w":       out_num_asthma_apc,
         "out_num_hypertension_apc_w": out_num_hypertension_apc,
-        "out_num_diabetes_apc_w": out_num_diabetes_apc,
-        "out_num_angina_apc_w": out_num_angina_apc,
+        "out_num_diabetes_apc_w":     out_num_diabetes_apc,
+        "out_num_angina_apc_w":       out_num_angina_apc,
     }
 
     # ---------------------- Cross-Sectional Measures ----------------------
@@ -262,7 +265,7 @@ if practice_measures:
             measures.define_measure(
                 name = "exp_count_consultation_m",
                 numerator = exp_num_consrate,
-                intervals = months(12).ending_on(start_cohort - days(1))
+                intervals = months(12).starting_on(start_cohort - months(12))
             )
 
         if vax_flu:
