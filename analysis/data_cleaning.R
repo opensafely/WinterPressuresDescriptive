@@ -10,6 +10,7 @@
   #install.packages("lubridate")
   #install.packages("here")
   #install.packages("data.table")
+  #install.packages("purrr")
 
 library(dplyr)
 library(tidyr)
@@ -22,6 +23,7 @@ library(glue)
 library(lubridate)
 library(here)
 library(data.table)  # Allows you to import .csv files, and write .csv files
+library(purrr)
 #library(arrow)
 
 
@@ -81,61 +83,79 @@ return(result)
   #Check that the date values = specific SET of SEQUENTIAL values, BY certain variables
   #Check that the date values are the same across datasets
 
-date_check_long <- function(file_list, date_var_list, group_vars = NULL,
+date_check_long <- function(file_list, start_date_var_list, end_date_var_list, group_vars = NULL,
                             start_date = NULL, n_expected = NULL, by = "1 week") {
-  #Makes sure the 'var_list' argument is a character vector of column names
-  if (!is.character(date_var_list)) stop("`var_list` must be a character vector of column names.") 
-  
-  #Store reference values (from the first file)
-  ref_values <- list()
-  result <- TRUE #Add a function "result", start assuming the result = TRUE
-  result_list <- list()  # store all results
-  
-  #Sequentially upload each .csv file in the file_list
-  for (i in seq_along(file_list)) {
-    df <- readr::read_csv(file_list[[i]])
-    for (date_var in date_var_list) {             #Then, sequentially go through each variable in `var_list'
-      if (!date_var %in% colnames(df)) {       #Check that the variable exists in the dataset
+ 
+  #First write a "helper" function to create all the components for the check
+  date_check_long_helper <- function(df, date_var, is_start, i) {
+      if (!date_var %in% colnames(df)) {  #Check if the SPECIFIC DATE VARIABLE exists in your data & format it as a date (just in case)
         warning("Variable '", date_var, "' not found in dataset: ", i)
-        result <- FALSE
-        next                            #Allows the loop to continue?
+        return(NULL)
+      }
+      df[[date_var]] <- as.Date(df[[date_var]])
+      start_date <- as.Date(start_date)
+    
+    #Create an "expected" sequence of dates, based on whether date_var contains starting or end dates
+      expected <- if (is_start) {
+        seq(min(df[[date_var]]), max(df[[date_var]]), by = by)
+      } else {
+        if (by == '1 month'){
+          ceiling_date(seq(ymd(start_date), ymd(start_date +years(1)-months(1)), by = '1 month'), unit = "months")-days(1)
+        }
+        else if (by == '1 week'){
+          seq(ymd(start_date + days(6)), ymd(start_date + days(7)*(n_expected)-days(1) ), by = '1 week')
+          #seq(ymd(start_date + days(6)), ymd(start_date + days(7)*(n_expected - 1) ), by = '1 week')
+        }
       }
       
-      df[[date_var]] <- as.Date(df[[date_var]]) #Converts date_var into date format (extra step - most dates will already be in date format, but just in case)
+    #Create the actual set of dates  
+      actual <- sort(unique(df[[date_var]]))
       
-      date_check_summary <- df %>% group_by(across(all_of(group_vars))) %>% #groups the data by the variables specified in the group_vars argument
-        summarise(   #Summarise creates a summary dataset containing the below specified columns (min_date, max_date, etc)  
+    #Create a summary dataset
+      date_check_summary <- df %>% 
+        group_by(across(all_of(group_vars))) %>% #groups the data by the variables specified in the group_vars argument
+        summarise(   #Creates a summary dataset containing the below specified columns (min_date, max_date, etc)  
           dataset = i,
-          min_date = min(.data[[date_var]]),       #The earliest date in the group. Note '.data' is from rlang (used by dyplr) and says "Look inside whatever the current data frame is"
-          max_date = max(.data[[date_var]]),       #The latest date in the group
-          n_dates = n_distinct(.data[[date_var]]), #Distinct rows aka dates in each group
-          expected_dates = list(seq(               #Creates an item-list column to store the multiple values . Specifying that the multiple values are a list allows dyplyr You need to store them as a list bc it helps summarise!? 
-                                    min(.data[[date_var]]), 
-                                    max(.data[[date_var]]), 
-                                    by = by)),
-          actual_dates = list(sort(unique(.data[[date_var]]))),
-          date_check = identical(    #The actual check - are the actual dates in the data = the expected dates?
-            sort(unique(.data[[date_var]])), #Sorts the dataset, retrieves the distinct dates
-            seq(min(.data[[date_var]]), max(.data[[date_var]]), by = by)
-          ),
-          start_check = if (!is.null(start_date)) min(.data[[date_var]]) == as.Date(start_date) else NA, #Checks whether the earliest date in the group is the same as the expected start date
-          n_check = if (!is.null(n_expected)) n_distinct(.data[[date_var]]) == n_expected else NA, #Checks if the number of unique weekly dates is what you'd expect
+          var_type = if (is_start) "start" else "end",
+          date_var = date_var,
+          min_date = min(df[[date_var]]),
+          max_date = max(df[[date_var]]),
+          expected_dates = list(expected),
+          actual_dates = list(actual),
+          sequence_check = identical(actual, expected),
+          start_date_check = if (is_start & !is.null(start_date)) min(df[[date_var]]) == as.Date(start_date) else NA,
+          n_check = if (!is.null(n_expected)) n_distinct(df[[date_var]]) == n_expected else NA,
           .groups = "drop"
         )
-      result_list[[length(result_list) + 1]] <- date_check_summary
-    }
-  }  
-  final_result <- dplyr::bind_rows(result_list)
-    date_check_passed  = all(final_result$date_check,  na.rm = TRUE)
-    start_check_passed = all(final_result$start_check, na.rm = TRUE)
-    n_check_passed     = all(final_result$n_check,     na.rm = TRUE)
+  }
   
-  return(list(
-    final_result = final_result,
-    date_check_passed = date_check_passed, 
-    start_check_passed = start_check_passed, 
-    n_check_passed = n_check_passed)) #Assigning names to the items so the R viewer will refer to them by name, not [1], [2], etc
-} 
+  #Now we're back in the "main" function
+  #NOTE: We've defined the helper above, but haven't called it yet, so it hasn't created the summary dataset yet
+    result_list <- list()  # store all results
+    
+    for (i in seq_along(file_list)) {  #Looping over each file in the dataset
+      df <- read_csv(file_list[[i]]) # Importing the file
+      
+      pair_results <- map2_dfr(start_date_var_list, end_date_var_list, ~{ #Pair the start date/end date variables
+          bind_rows(
+            date_check_long_helper(df, .x, TRUE, i),   # start variable
+            date_check_long_helper(df, .y, FALSE, i)   # end variable
+          )
+        })
+      
+      result_list[[i]] <- pair_results
+    }
+    
+    final_result <- bind_rows(result_list)
+    
+    list(
+      final_result = final_result,
+      date_check_passed  = all(final_result$sequence_check, na.rm = TRUE),
+      start_check_passed = all(final_result$start_date_check, na.rm = TRUE),
+      n_check_passed     = all(final_result$n_check, na.rm = TRUE)
+    )
+}
+
 
 ##Identical_vector_check: 
 ##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes 
@@ -311,8 +331,10 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   print("This is the test list")
     print(test)
 
+    
+#FOR CODE DEVELOPMENT, USE: measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
+#OS (incorporates the 'cohort' arguments needed for the .yaml file)
  measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
-#FOR NOW ONLY measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
 
 exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
   exp_vax_measures_csv <-grep("_vax", measures_csv,value=TRUE) 
@@ -449,18 +471,18 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     }
 
       
-#Exposures (consultations, longitudinal)  
+#Exposures (consultations, longitudinal) 
+  #"Transform" so that each consultation proportion variable is it's own column
   print("date_check_long for longitudinal exposure - consultation")
-  date_check_cons <-date_check_long(
-    exp_cons_measures_csv,
-    date_var_list = c("interval_start", "interval_end"), 
-    group_vars = NULL,
-    start_date = "2017-10-01",
+  date_check_cons <- date_check_long(
+    exp_cons_measures_csv, 
+    start_date_var_list = c("interval_start"),
+    end_date_var_list = c("interval_end"),
+    group_vars = NULL, 
+    start_date = "2022-10-01", 
     n_expected = 12,
-    by = "1 month"
+    by= "1 month"
   )
-  #NOTE: Date check NOT passed - interval_start, and interval_end dates are not on the first of each month
-  #I have left the data cleaning code blank for 
   
   
 #Outcomes (longitudinal):
@@ -468,12 +490,14 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   print("date_check_long for longitudinal outcomes")
   date_check_out <- date_check_long(
     out_measures_csv, 
-    date_var_list = c("interval_start", "interval_end"), 
+    start_date_var_list = c("interval_start"), 
+    end_date_var_list = c("interval_end"),
     group_vars = NULL, 
-    start_date = "2018-10-01", 
+    start_date = "2023-10-01", 
     n_expected = 20,
     by= "1 week"
   )
+  
   print("if date_check_out passed")
   if(date_check_out$date_check_passed) {
     ##Pre-allocating objects
@@ -535,9 +559,10 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
 #Outcomes ACSCs (longitudinal):
   date_check_out_acscs <- date_check_long(
     out_acscs_measures_csv, 
-    date_var_list = c("interval_start", "interval_end"), 
+    start_date_var_list = c("interval_start"), 
+    end_date_var_list = c("interval_end"),
     group_vars = c("measure"), 
-    start_date = "2018-10-01", 
+    start_date = "2023-10-01", 
     n_expected = 20,
     by= "1 week"
   )
