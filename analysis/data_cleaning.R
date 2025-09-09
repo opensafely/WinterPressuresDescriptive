@@ -30,7 +30,7 @@ library(purrr)
 #DEFINING ARGUMENTS 
 args <- commandArgs(trailingOnly = TRUE)
 cohort <- args[1]  # e.g., "precovid", "postcovid1", etc.
-
+start_date <- as.Date(args[2]) #The index date for each cohort 
 
 #DEFINING FUNCTIONS   
 ##var_consistency_check: 
@@ -104,7 +104,6 @@ date_check_long <- function(file_list, start_date_var_list, end_date_var_list, g
         }
         else if (by == '1 week'){
           seq(ymd(start_date + days(6)), ymd(start_date + days(7)*(n_expected)-days(1) ), by = '1 week')
-          #seq(ymd(start_date + days(6)), ymd(start_date + days(7)*(n_expected - 1) ), by = '1 week')
         }
       }
       
@@ -332,7 +331,7 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
     print(test)
 
     
-#FOR CODE DEVELOPMENT, USE: measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
+#FOR CODE DEVELOPMENT, USE: measures_csv <- list.files(path = measures_path, pattern = "postcovid3\\.csv$", full.names = TRUE)   
 #OS (incorporates the 'cohort' arguments needed for the .yaml file)
   measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
 
@@ -370,7 +369,8 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
     
     #Pre-allocating objects
       wide_exp_measures <- vector("list", length(exp_measures_csv))   #list containing transformed datasets, set length = length of exp_measures_csv
-      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
+      rename_list <- c("numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "denom",
+                       "ratio_exp_prop" = "exp_prop", "hypertension" = "hypt" ) #Renaming rules for dataset
       print("Pre-allocation done")
 
     #For-loop of the data management steps 
@@ -421,7 +421,8 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   
     #Pre-allocating objects
       wide_exp_vax_measures <- vector("list", length(exp_vax_measures_csv))   #list containing transformed datasets
-      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "exp_denom") #Renaming rules for dataset
+      rename_list <- c("numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "exp_denom",
+                       "ratio_exp_prop" = "exp_prop") #Renaming rules for dataset
         print("Pre-allocation done")
       
     #For-loop of the data management steps 
@@ -473,18 +474,19 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
       
 #Exposures (consultations, longitudinal) 
   #Date check & reshape wide (one row per practice, each month is a separate column)
-  print("date_check_long for longitudinal exposure - consultation")
+  print("date_check_exp_cons for longitudinal exposure - consultation")
+  
+  start_date_cons = start_date - years(1)
   date_check_exp_cons <- date_check_long(
     exp_cons_measures_csv, 
     start_date_var_list = c("interval_start"),
     end_date_var_list = c("interval_end"),
     group_vars = NULL, 
-    start_date = "2022-10-01", 
+    start_date = start_date_cons, 
     n_expected = 12,
     by= "1 month"
   )
-
-  print("if date_check_cons passed")
+  
   if(date_check_exp_cons$date_check_passed) {
     ##Pre-allocating objects
       #wide_exp_cons_measures <- vector("list", length(exp_cons_measures_csv))   #list containing transformed datasets
@@ -535,6 +537,9 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
       #Checking that each proportion variable goes between 0 and 1 
       prop_vars <- names(wide_exp_cons_measures)[grepl("prop", names(wide_exp_cons_measures))]
       range_check(wide_exp_cons_measures, var_list = prop_vars, min = 0.000000000000000000, max= 1.00000000000000000000000)
+      print("if date_check_cons passed")
+  }else{
+      print("Date check NOT passed for wide_exp_cons_measures")
     }
     
   
@@ -542,13 +547,13 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   
 #Outcomes (longitudinal):
   #Just need to date check & merge (structurally, can keep as is: one row per practice per week)
-  print("date_check_long for longitudinal outcomes")
+  print("date_check_out for longitudinal OUTCOMES")
   date_check_out <- date_check_long(
     out_measures_csv, 
     start_date_var_list = c("interval_start"), 
     end_date_var_list = c("interval_end"),
     group_vars = NULL, 
-    start_date = "2023-10-01", 
+    start_date = start_date, 
     n_expected = 20,
     by= "1 week"
   )
@@ -612,16 +617,17 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
 
 
 #Outcomes ACSCs (longitudinal):
+  print("date_check_out for longitudinal OUTCOMES - ACSCS")
   date_check_out_acscs <- date_check_long(
     out_acscs_measures_csv, 
     start_date_var_list = c("interval_start"), 
     end_date_var_list = c("interval_end"),
     group_vars = c("measure"), 
-    start_date = "2023-10-01", 
+    start_date = start_date, 
     n_expected = 20,
     by= "1 week"
   )
-  
+  print("if date_check_out_acscs passed")
   if(date_check_out_acscs$date_check_passed) {
     ##Pre-allocating objects
     wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv))   #list containing transformed datasets
