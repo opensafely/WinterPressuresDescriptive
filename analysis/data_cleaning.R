@@ -334,9 +334,9 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
     
 #FOR CODE DEVELOPMENT, USE: measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
 #OS (incorporates the 'cohort' arguments needed for the .yaml file)
- measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
+  measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
 
-exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
+  exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
   exp_vax_measures_csv <-grep("_vax", measures_csv,value=TRUE) 
   exp_cons_measures_csv <-grep("_consultation", measures_csv,value=TRUE) 
   
@@ -370,7 +370,7 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     
     #Pre-allocating objects
       wide_exp_measures <- vector("list", length(exp_measures_csv))   #list containing transformed datasets, set length = length of exp_measures_csv
-      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
+      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
       print("Pre-allocation done")
 
     #For-loop of the data management steps 
@@ -421,7 +421,7 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   
     #Pre-allocating objects
       wide_exp_vax_measures <- vector("list", length(exp_vax_measures_csv))   #list containing transformed datasets
-      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
+      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "exp_denom") #Renaming rules for dataset
         print("Pre-allocation done")
       
     #For-loop of the data management steps 
@@ -472,9 +472,9 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
 
       
 #Exposures (consultations, longitudinal) 
-  #"Transform" so that each consultation proportion variable is it's own column
+  #Date check & reshape wide (one row per practice, each month is a separate column)
   print("date_check_long for longitudinal exposure - consultation")
-  date_check_cons <- date_check_long(
+  date_check_exp_cons <- date_check_long(
     exp_cons_measures_csv, 
     start_date_var_list = c("interval_start"),
     end_date_var_list = c("interval_end"),
@@ -483,7 +483,62 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     n_expected = 12,
     by= "1 month"
   )
+
+  print("if date_check_cons passed")
+  if(date_check_exp_cons$date_check_passed) {
+    ##Pre-allocating objects
+      #wide_exp_cons_measures <- vector("list", length(exp_cons_measures_csv))   #list containing transformed datasets
+      rename_list <- c("numerator" = "exp_num_cons","denominator" = "exp_denom_cons","ratio" = "exp_prop_cons")   #Renaming rules for dataset
+    
+    #Importing the single .csv (don't need to loop through datasets for this exposure)
+    #For-loop of the data management steps 
+    #Even though GP cpnsultations is only 1 .csv file, put in for loop so checking functions work  
+      
+      wide_exp_cons_measures <- readr::read_csv(exp_cons_measures_csv)
+      
+      #Check that there are multiple rows per practice
+      if(!one_row_check(wide_exp_cons_measures,"practice_pseudo_id")){
+        message("There are multiple rows per practice in dataset: exp_cons_measures")
+      }else{
+        stop()
+      }
+      
+      #Check that each numerical variable is non-negative
+      if(all(positive_var_check(wide_exp_cons_measures))) {
+      }else{
+        stop()
+      }
+      #Check that all the interval_start dates in the GP consultations .csv are BEFORE the index date for the other exposure vars
+      if (max(wide_exp_cons_measures$interval_start) < min(merged_exp_measures$interval_start)) {
+        print("TRUE: All interval_start dates in wide_exp_cons_measures are BEFORE the interval_start dates in merged_exp_measures")
+      } else {
+        print("FALSE: All interval_start dates in wide_exp_cons_measures are NOT BEFORE the interval_start dates in merged_exp_measures")
+      }
+                          
+      print("Reshaping & renaming exp_cons_measures.csv")    
+      #Reshaping to wide and renaming
+      wide_exp_cons_measures <- wide_exp_cons_measures  %>% 
+        mutate(yyyymm = format(interval_start, "%Y%m")) %>%
+        pivot_wider(
+          id_cols = practice_pseudo_id,
+          names_from = yyyymm,
+          values_from = c(numerator, denominator, ratio),
+          names_glue = "{.value}_{yyyymm}") %>%
+        rename_with(~ str_replace_all(., rename_list))
+      
+      #Check again that there is now ONE row per practice
+      if(one_row_check(wide_exp_cons_measures, "practice_pseudo_id")) {
+        message("OK - merged_out_measures is one row per practice")
+      } else {
+        message("ERROR - something weird happened and merged_exp_measures is STILL multiple rows per practice")
+      }
+      #Checking that each proportion variable goes between 0 and 1 
+      prop_vars <- names(wide_exp_cons_measures)[grepl("prop", names(wide_exp_cons_measures))]
+      range_check(wide_exp_cons_measures, var_list = prop_vars, min = 0.000000000000000000, max= 1.00000000000000000000000)
+    }
+    
   
+
   
 #Outcomes (longitudinal):
   #Just need to date check & merge (structurally, can keep as is: one row per practice per week)
@@ -502,7 +557,7 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   if(date_check_out$date_check_passed) {
     ##Pre-allocating objects
       wide_out_measures <- vector("list", length(out_measures_csv))   #list containing transformed datasets
-      rename_list <-c("numerator_out_num" = "num", "denominator_out_num" = "denom", "ratio_out_num" = "out_prop")   #Renaming rules for dataset
+      rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", "ratio_out_num" = "out_prop")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
       for(i in seq_along(out_measures_csv)) {
@@ -570,7 +625,7 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   if(date_check_out_acscs$date_check_passed) {
     ##Pre-allocating objects
     wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv))   #list containing transformed datasets
-    rename_list <-c("numerator_out_num" = "num", "denominator_out_num" = "denom", "ratio_out_num" = "out_acscs_prop")   #Renaming rules for dataset
+    rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", "ratio_out_num" = "out_acscs_prop")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
     for(i in seq_along(out_acscs_measures_csv)) {
@@ -623,61 +678,70 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   }
 
   
-#Merging the exposures, exposures_vax, outcomes, and outcomes_acscs data together
+#Merging the exposures, exposures_vax, exposures_cons, outcomes, and outcomes_acscs data together
   exp_data <- left_join(merged_exp_measures, merged_exp_vax_measures, by = "practice_pseudo_id") %>%
     rename(
-      interval_start_exp = interval_start.x,
-      interval_end_exp = interval_end.x,
-      interval_start_exp_vax = interval_start.y,
-      interval_end_exp_vax = interval_end.y
+      exp_interval_start = interval_start.x,
+      exp_interval_end = interval_end.x,
+      exp_vax_interval_start = interval_start.y,
+      exp_vax_interval_end = interval_end.y
     )
-  
-    #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
-      denom_vars <- grep("denom_", names(exp_data), value = TRUE)
-      exp_data <- drop_all_duplicates(exp_data, df_name = "exp_data", denom_vars, new_name = "denom_exp")
+  #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
+    denom_vars <- grep("denom_", names(exp_data), value = TRUE)
+    exp_data <- drop_all_duplicates(exp_data, df_name = "exp_data", denom_vars, new_name = "exp_denom")
     
-
+  #Now merge in the wide GP consulations data 
+  #Do in this order so that the denom vars in GP cons are not dropped!
+    exp_data  <- left_join(exp_data, wide_exp_cons_measures, by = "practice_pseudo_id") 
+    
   out_data <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
-    #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
-      denom_vars <- grep("denom_", names(out_data), value = TRUE)
-      out_data <- drop_all_duplicates(out_data, df_name = "out_data", denom_vars, new_name = "denom_out")
-
   
+  #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
+    denom_vars <- grep("denom_", names(out_data), value = TRUE)
+    out_data <- drop_all_duplicates(out_data, df_name = "out_data", denom_vars, new_name = "out_denom")
+
   analytic_data_long <- left_join(out_data, exp_data, by = "practice_pseudo_id") %>%  #Merging the exp data to the longitudinal outcomes
-    rename(interval_start_out = interval_start,
-           interval_end_out = interval_end) %>%
+    rename(out_interval_start = interval_start,
+           out_interval_end = interval_end) %>%
     group_by(practice_pseudo_id) %>%
-    mutate(week_number = dense_rank(interval_start_out)) %>%
+    mutate(week_number = dense_rank(out_interval_start)) %>%
     ungroup()
-  
-  date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
-  denom_vars <- grep("denom", names(analytic_data_long), value = TRUE)
-  
-  
-  wide_variables = analytic_data_long %>% 
-    select(-all_of(c("practice_pseudo_id", "interval_start_out", 
-                     "interval_end_out", "interval_start_exp", 
-                     "interval_end_exp", "interval_start_exp_vax", 
-                     "interval_end_exp_vax", "week_number"))) %>% 
-                    names
-
-  
-  analytic_data_wide <- analytic_data_long %>%
-    select(-all_of(c("interval_start_out", "interval_end_out", 
-                     "interval_start_exp", "interval_end_exp", 
-                     "interval_start_exp_vax", "interval_end_exp_vax"))) %>%
-    pivot_wider(
-      id_cols = practice_pseudo_id,
-      names_from = week_number,
-      values_from = wide_variables,
-      names_glue = "{.value}{week_number}"
+    
+  #Prep to check & transform analytic_data_long
+    date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
+    cons_vars <- grep("_cons_" , names(analytic_data_long), value = TRUE)
+    out_vars <- grep("out", names(analytic_data_long), value = TRUE)
+      out_vars <- out_vars[!grepl("interval", out_vars)]
+    
+  #Check that the exp_variables merged correctly into the long dataset
+  #i.e. all have one unique value per practice (per outcome week)
+    exp_vars <- grep("exp" , names(analytic_data_long), value = TRUE)
+    
+    exp_merge_check <- all(
+      analytic_data_long %>%
+        group_by(practice_pseudo_id) %>%
+        summarise(across(all_of(exp_vars), ~ n_distinct(.x) == 1), .groups = "drop") %>%
+        select(-practice_pseudo_id) %>%
+        unlist()
     )
   
+  if (exp_merge_check){
+    analytic_data_wide <- analytic_data_long %>%
+      pivot_wider(
+        id_cols = c(practice_pseudo_id, cons_vars, exp_vars),
+        names_from = week_number,
+        values_from = out_vars,
+        names_glue = "{.value}{week_number}"
+      )
+  }
   
+   
   
+
 #EXPORTING ANALYTIC DATASET  
   data.table::fwrite(analytic_data_long, glue::glue("output/analytic_data_long_{cohort}.csv"))
   data.table::fwrite(analytic_data_wide, glue::glue("output/analytic_data_wide_{cohort}.csv"))
+  
   
   
   
@@ -689,7 +753,6 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     #Only issue is if some patients have missing data on key characteristics.
 #Add the number of registered patients used to calculate each proportion variable
   #CHECK that this number is consistent within each dataset, and for each category variable 
-## Figure out a way to create 3 different datasets, one for each cohort.
 #Create the CMS
   
 #FROM LP:
