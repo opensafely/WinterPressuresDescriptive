@@ -557,7 +557,8 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   if(date_check_out$date_check_passed) {
     ##Pre-allocating objects
       wide_out_measures <- vector("list", length(out_measures_csv))   #list containing transformed datasets
-      rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", "ratio_out_num" = "out_prop")   #Renaming rules for dataset
+      rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", 
+                      "ratio_out_num" = "out_prop")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
       for(i in seq_along(out_measures_csv)) {
@@ -610,7 +611,6 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   }
 
 
-  
 #Outcomes ACSCs (longitudinal):
   date_check_out_acscs <- date_check_long(
     out_acscs_measures_csv, 
@@ -625,7 +625,8 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   if(date_check_out_acscs$date_check_passed) {
     ##Pre-allocating objects
     wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv))   #list containing transformed datasets
-    rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", "ratio_out_num" = "out_acscs_prop")   #Renaming rules for dataset
+    rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", 
+                    "ratio_out_num" = "out_acscs_prop", "hypertension" = "hypt")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
     for(i in seq_along(out_acscs_measures_csv)) {
