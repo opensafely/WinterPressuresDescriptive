@@ -334,11 +334,11 @@ def generate_variables(cohort_start):
         inex_bin_imd        = inex_bin_imd,
         inex_bin_region     = inex_bin_region,
         # Inclusion/exclusion binary flags (VACCINE ELIGIBILITY)
-        inex_bin_elig_pneum_65y     = inex_bin_elig_pneum_65y,
-        inex_bin_elig_flu_65y       = inex_bin_elig_flu_65y,
+        inex_bin_elig_pneum_65y     = inex_bin_elig_pneum_65y,           #Pneumococcal vaccine
+        inex_bin_elig_flu_65y       = inex_bin_elig_flu_65y,             #Flu vaccine
         inex_bin_elig_flu_2_3y      = inex_bin_elig_flu_2_3y,
         inex_bin_elig_flu_pregnancy = inex_bin_elig_flu_pregnancy,
-        inex_bin_elig_covid_75y     = inex_bin_elig_covid_75y,
+        inex_bin_elig_covid_75y     = inex_bin_elig_covid_75y,           #COVID SPRING vaccine
         # Practice ID
         practice_id = practice_id,      
         # Sex binary flags
