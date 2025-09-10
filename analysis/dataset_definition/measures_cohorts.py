@@ -15,10 +15,10 @@ if practice_measures:
     globals().update(variables_dynamic)
 
     # Import cross-sectional variables (focusing on a time point)
-    from variables_cross_sectional import generate_variables
-    variables_cs = generate_variables(INTERVAL.start_date)
+    from variables_cross_sectional import generate_measure_variables
+    variables_cs = generate_measure_variables(INTERVAL.start_date)
     # Extract variables from the dictionary so they can be directly used
-    globals().update(variables_cs["cs_measure"])
+    globals().update(variables_cs)
 
     # ---------------------- Measures Dictionaries ----------------------
     # =========================
@@ -349,10 +349,10 @@ if patient_measures:
     for var_name, var_value in jcvi_variables.items():
         setattr(dataset, var_name, var_value)
 
-    # Import multimorbidity conditions (20)
+    # Import other dataset variables including region and multimorbidity conditions (20)
 
-    from variables_cross_sectional import generate_variables
-    variables_cs = generate_variables(start_cohort)
+    from variables_cross_sectional import generate_dataset_variables
+    variables_cs = generate_dataset_variables(start_cohort)
 
-    for var_name, var_value in variables_cs["cs_dataset"].items():
+    for var_name, var_value in variables_cs.items():
         setattr(dataset, var_name, var_value)
