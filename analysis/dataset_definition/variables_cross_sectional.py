@@ -324,7 +324,7 @@ def generate_variables(cohort_start):
         ).exists_for_patient())
     )
 
-    dynamic_variables = dict(
+    cs_measure = dict(
         # Inclusion/exclusion binary flags (GENERAL)
         inex_bin_reg_cs     = inex_bin_reg_cs,
         inex_bin_alive      = inex_bin_alive,
@@ -333,14 +333,14 @@ def generate_variables(cohort_start):
         inex_bin_ethinicity = inex_bin_ethinicity,
         inex_bin_imd        = inex_bin_imd,
         inex_bin_region     = inex_bin_region,
-        # Inclusion/exclusion binary flags (VAX eligibility)
-        inex_bin_elig_pneum_65y     = inex_bin_elig_pneum_65y,      #Pneumococcal vaccine
-        inex_bin_elig_flu_65y       = inex_bin_elig_flu_65y,          #Flu vaccine
+        # Inclusion/exclusion binary flags (VACCINE ELIGIBILITY)
+        inex_bin_elig_pneum_65y     = inex_bin_elig_pneum_65y,
+        inex_bin_elig_flu_65y       = inex_bin_elig_flu_65y,
         inex_bin_elig_flu_2_3y      = inex_bin_elig_flu_2_3y,
         inex_bin_elig_flu_pregnancy = inex_bin_elig_flu_pregnancy,
-        inex_bin_elig_covid_75y     = inex_bin_elig_covid_75y,      #COVID SPRING vaccine
+        inex_bin_elig_covid_75y     = inex_bin_elig_covid_75y,
         # Practice ID
-        practice_id = practice_id,
+        practice_id = practice_id,      
         # Sex binary flags
         exp_bin_male        = exp_bin_male,
         exp_bin_female      = exp_bin_female,
@@ -358,64 +358,96 @@ def generate_variables(cohort_start):
         exp_bin_75_79y      = exp_bin_75_79y,
         exp_bin_80_84y      = exp_bin_80_84y,
         exp_bin_85y_plus    = exp_bin_85y_plus,
-        exp_bin_age_missing =exp_bin_age_missing,
+        exp_bin_age_missing = exp_bin_age_missing,
         # Ethnicity binary flags
-        tmp_exp_cat_ethnicity = tmp_exp_cat_ethnicity,
-        tmp_exp_cat_eth_code  = tmp_exp_cat_eth_code,
-        tmp_exp_cat_eth_sus   = tmp_exp_cat_eth_sus,
-        exp_bin_eth_white     = exp_bin_eth_white,
-        exp_bin_eth_mixed     = exp_bin_eth_mixed,
-        exp_bin_eth_asian     = exp_bin_eth_asian,
-        exp_bin_eth_black     = exp_bin_eth_black,
-        exp_bin_eth_other     = exp_bin_eth_other,
-        exp_bin_eth_missing   = exp_bin_eth_missing,
-        # Practice region
-        exp_cat_region =exp_cat_region,
+        exp_bin_eth_white   = exp_bin_eth_white,
+        exp_bin_eth_mixed   = exp_bin_eth_mixed,
+        exp_bin_eth_asian   = exp_bin_eth_asian,
+        exp_bin_eth_black   = exp_bin_eth_black,
+        exp_bin_eth_other   = exp_bin_eth_other,
+        exp_bin_eth_missing = exp_bin_eth_missing,
         # Rurality binary flags
-        tmp_exp_cat_rur_urb      = tmp_exp_cat_rur_urb,
         exp_bin_urb_major        = exp_bin_urb_major,
         exp_bin_urb_minor        = exp_bin_urb_minor,
         exp_bin_urb_town         = exp_bin_urb_town,
         exp_bin_rural_fringe     = exp_bin_rural_fringe,
         exp_bin_rural_village    = exp_bin_rural_village,
         exp_bin_rurality_missing = exp_bin_rurality_missing,
-        # IMD binary flags   
-        tmp_exp_cat_imd     = tmp_exp_cat_imd,
+        # IMD binary flags
         exp_bin_imd_1_most  = exp_bin_imd_1_most,
         exp_bin_imd_2       = exp_bin_imd_2,
         exp_bin_imd_3       = exp_bin_imd_3,
         exp_bin_imd_4       = exp_bin_imd_4,
         exp_bin_imd_5_least = exp_bin_imd_5_least,
         exp_bin_imd_missing = exp_bin_imd_missing,
-        # Smoking status
+        # Smoking status binary flags
         exp_bin_smoker_current = exp_bin_smoker_current,
         exp_bin_smoker_ever    = exp_bin_smoker_ever,
         exp_bin_smoker_never   = exp_bin_smoker_never,
         exp_bin_smoker_missing = exp_bin_smoker_missing,
         # Obesity
         exp_bin_obesity = exp_bin_obesity,
-        #Consultation-2019
+        # Consultation rate in 2019
         exp_num_consrate2019 = exp_num_consrate2019,
-        # Cambridge Multimorbidity Conditions (20)
-        exp_bin_af                = exp_bin_af,                # Atrial fibrillation
-        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,    # Alcohol problems
-        exp_bin_anxietydepression = exp_bin_anxietydepression, # Anxiety/depression
-        exp_bin_asthma            = exp_bin_asthma,            # Asthma
-        exp_bin_cancer            = exp_bin_cancer,            # Cancer
-        exp_bin_chd               = exp_bin_chd,               # Coronary heart disease
-        exp_bin_ckd               = exp_bin_ckd,               # Chronic kidney disease
-        exp_bin_constipation      = exp_bin_constipation,      # Constipation
-        exp_bin_copd              = exp_bin_copd,              # Chronic obstructive pulmonary disease
-        exp_bin_ctd               = exp_bin_ctd,               # Connective tissue disorder
-        exp_bin_dementia          = exp_bin_dementia,          # Dementia
-        exp_bin_diabetes          = exp_bin_diabetes,          # Diabetes mellitus
-        exp_bin_epilepsy          = exp_bin_epilepsy,          # Epilepsy
-        exp_bin_hearingloss       = exp_bin_hearingloss,       # Hearing loss
-        exp_bin_hf                = exp_bin_hf,                # Heart failure
-        exp_bin_hypertension      = exp_bin_hypertension,      # Hypertension
-        exp_bin_ibs               = exp_bin_ibs,               # Irritable bowel syndrome
-        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,    # Osteoarthritis (painful condition)
-        exp_bin_psychosis         = exp_bin_psychosis,         # Psychosis/bipolar disorder
-        exp_bin_stroketia         = exp_bin_stroketia,         # Stroke/transient ischaemic attack      
+        # Multimorbidity conditions (20)
+        exp_bin_af                = exp_bin_af,
+        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,
+        exp_bin_anxietydepression = exp_bin_anxietydepression,
+        exp_bin_asthma            = exp_bin_asthma,
+        exp_bin_cancer            = exp_bin_cancer,
+        exp_bin_chd               = exp_bin_chd,
+        exp_bin_ckd               = exp_bin_ckd,
+        exp_bin_constipation      = exp_bin_constipation,
+        exp_bin_copd              = exp_bin_copd,
+        exp_bin_ctd               = exp_bin_ctd,
+        exp_bin_dementia          = exp_bin_dementia,
+        exp_bin_diabetes          = exp_bin_diabetes,
+        exp_bin_epilepsy          = exp_bin_epilepsy,
+        exp_bin_hearingloss       = exp_bin_hearingloss,
+        exp_bin_hf                = exp_bin_hf,
+        exp_bin_hypertension      = exp_bin_hypertension,
+        exp_bin_ibs               = exp_bin_ibs,
+        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,
+        exp_bin_psychosis         = exp_bin_psychosis,
+        exp_bin_stroketia         = exp_bin_stroketia,
     )
-    return dynamic_variables
+
+    cs_dataset = dict(
+        # Practice ID
+        practice_id          = practice_id,
+        # Practice region
+        exp_cat_region       = exp_cat_region,
+        # Ethnicity category
+        tmp_exp_cat_ethnicity= tmp_exp_cat_ethnicity,
+        # Rurality category
+        tmp_exp_cat_rur_urb  = tmp_exp_cat_rur_urb,
+        # IMD category
+        tmp_exp_cat_imd      = tmp_exp_cat_imd,
+        # Consultation rate in 2019
+        exp_num_consrate2019 = exp_num_consrate2019,
+        # Multimorbidity conditions
+        exp_bin_af                = exp_bin_af,
+        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,
+        exp_bin_anxietydepression = exp_bin_anxietydepression,
+        exp_bin_asthma            = exp_bin_asthma,
+        exp_bin_cancer            = exp_bin_cancer,
+        exp_bin_chd               = exp_bin_chd,
+        exp_bin_ckd               = exp_bin_ckd,
+        exp_bin_constipation      = exp_bin_constipation,
+        exp_bin_copd              = exp_bin_copd,
+        exp_bin_ctd               = exp_bin_ctd,
+        exp_bin_dementia          = exp_bin_dementia,
+        exp_bin_diabetes          = exp_bin_diabetes,
+        exp_bin_epilepsy          = exp_bin_epilepsy,
+        exp_bin_hearingloss       = exp_bin_hearingloss,
+        exp_bin_hf                = exp_bin_hf,
+        exp_bin_hypertension      = exp_bin_hypertension,
+        exp_bin_ibs               = exp_bin_ibs,
+        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,
+        exp_bin_psychosis         = exp_bin_psychosis,
+        exp_bin_stroketia         = exp_bin_stroketia,
+    )
+    return {
+        "cs_measure": cs_measure,
+        "cs_dataset": cs_dataset,
+    }
