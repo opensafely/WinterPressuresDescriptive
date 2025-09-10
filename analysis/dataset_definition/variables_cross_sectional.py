@@ -389,27 +389,27 @@ def generate_variables(cohort_start):
         exp_bin_obesity = exp_bin_obesity,
         # Consultation rate in 2019
         exp_num_consrate2019 = exp_num_consrate2019,
-        # Multimorbidity conditions (20)
-        exp_bin_af                = exp_bin_af,
-        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,
-        exp_bin_anxietydepression = exp_bin_anxietydepression,
-        exp_bin_asthma            = exp_bin_asthma,
-        exp_bin_cancer            = exp_bin_cancer,
-        exp_bin_chd               = exp_bin_chd,
-        exp_bin_ckd               = exp_bin_ckd,
-        exp_bin_constipation      = exp_bin_constipation,
-        exp_bin_copd              = exp_bin_copd,
-        exp_bin_ctd               = exp_bin_ctd,
-        exp_bin_dementia          = exp_bin_dementia,
-        exp_bin_diabetes          = exp_bin_diabetes,
-        exp_bin_epilepsy          = exp_bin_epilepsy,
-        exp_bin_hearingloss       = exp_bin_hearingloss,
-        exp_bin_hf                = exp_bin_hf,
-        exp_bin_hypertension      = exp_bin_hypertension,
-        exp_bin_ibs               = exp_bin_ibs,
-        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,
-        exp_bin_psychosis         = exp_bin_psychosis,
-        exp_bin_stroketia         = exp_bin_stroketia,
+        # Cambridge Multimorbidity Conditions (20)
+        exp_bin_af                = exp_bin_af,                # Atrial fibrillation
+        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,    # Alcohol problems
+        exp_bin_anxietydepression = exp_bin_anxietydepression, # Anxiety/depression
+        exp_bin_asthma            = exp_bin_asthma,            # Asthma
+        exp_bin_cancer            = exp_bin_cancer,            # Cancer
+        exp_bin_chd               = exp_bin_chd,               # Coronary heart disease
+        exp_bin_ckd               = exp_bin_ckd,               # Chronic kidney disease
+        exp_bin_constipation      = exp_bin_constipation,      # Constipation
+        exp_bin_copd              = exp_bin_copd,              # Chronic obstructive pulmonary disease
+        exp_bin_ctd               = exp_bin_ctd,               # Connective tissue disorder
+        exp_bin_dementia          = exp_bin_dementia,          # Dementia
+        exp_bin_diabetes          = exp_bin_diabetes,          # Diabetes mellitus
+        exp_bin_epilepsy          = exp_bin_epilepsy,          # Epilepsy
+        exp_bin_hearingloss       = exp_bin_hearingloss,       # Hearing loss
+        exp_bin_hf                = exp_bin_hf,                # Heart failure
+        exp_bin_hypertension      = exp_bin_hypertension,      # Hypertension
+        exp_bin_ibs               = exp_bin_ibs,               # Irritable bowel syndrome
+        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,    # Osteoarthritis (painful condition)
+        exp_bin_psychosis         = exp_bin_psychosis,         # Psychosis/bipolar disorder
+        exp_bin_stroketia         = exp_bin_stroketia,         # Stroke/transient ischaemic attack    
     )
 
     cs_dataset = dict(
@@ -425,27 +425,27 @@ def generate_variables(cohort_start):
         tmp_exp_cat_imd      = tmp_exp_cat_imd,
         # Consultation rate in 2019
         exp_num_consrate2019 = exp_num_consrate2019,
-        # Multimorbidity conditions
-        exp_bin_af                = exp_bin_af,
-        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,
-        exp_bin_anxietydepression = exp_bin_anxietydepression,
-        exp_bin_asthma            = exp_bin_asthma,
-        exp_bin_cancer            = exp_bin_cancer,
-        exp_bin_chd               = exp_bin_chd,
-        exp_bin_ckd               = exp_bin_ckd,
-        exp_bin_constipation      = exp_bin_constipation,
-        exp_bin_copd              = exp_bin_copd,
-        exp_bin_ctd               = exp_bin_ctd,
-        exp_bin_dementia          = exp_bin_dementia,
-        exp_bin_diabetes          = exp_bin_diabetes,
-        exp_bin_epilepsy          = exp_bin_epilepsy,
-        exp_bin_hearingloss       = exp_bin_hearingloss,
-        exp_bin_hf                = exp_bin_hf,
-        exp_bin_hypertension      = exp_bin_hypertension,
-        exp_bin_ibs               = exp_bin_ibs,
-        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,
-        exp_bin_psychosis         = exp_bin_psychosis,
-        exp_bin_stroketia         = exp_bin_stroketia,
+        # Cambridge Multimorbidity Conditions (20)
+        exp_bin_af                = exp_bin_af,                # Atrial fibrillation
+        exp_bin_alcoholproblem    = exp_bin_alcoholproblem,    # Alcohol problems
+        exp_bin_anxietydepression = exp_bin_anxietydepression, # Anxiety/depression
+        exp_bin_asthma            = exp_bin_asthma,            # Asthma
+        exp_bin_cancer            = exp_bin_cancer,            # Cancer
+        exp_bin_chd               = exp_bin_chd,               # Coronary heart disease
+        exp_bin_ckd               = exp_bin_ckd,               # Chronic kidney disease
+        exp_bin_constipation      = exp_bin_constipation,      # Constipation
+        exp_bin_copd              = exp_bin_copd,              # Chronic obstructive pulmonary disease
+        exp_bin_ctd               = exp_bin_ctd,               # Connective tissue disorder
+        exp_bin_dementia          = exp_bin_dementia,          # Dementia
+        exp_bin_diabetes          = exp_bin_diabetes,          # Diabetes mellitus
+        exp_bin_epilepsy          = exp_bin_epilepsy,          # Epilepsy
+        exp_bin_hearingloss       = exp_bin_hearingloss,       # Hearing loss
+        exp_bin_hf                = exp_bin_hf,                # Heart failure
+        exp_bin_hypertension      = exp_bin_hypertension,      # Hypertension
+        exp_bin_ibs               = exp_bin_ibs,               # Irritable bowel syndrome
+        exp_bin_osteoarthritis    = exp_bin_osteoarthritis,    # Osteoarthritis (painful condition)
+        exp_bin_psychosis         = exp_bin_psychosis,         # Psychosis/bipolar disorder
+        exp_bin_stroketia         = exp_bin_stroketia,         # Stroke/transient ischaemic attack    
     )
     return {
         "cs_measure": cs_measure,
