@@ -65,7 +65,7 @@ process_measure_output <- function(cohort) {
         ) %>%
         rename(
             practice_id = practice_pseudo_id, # consistent ID
-            exp_denom_all = exp_denom # shared denominator
+            exp_denom_total = exp_denom # shared denominator
         )
 
     # Return the processed data
