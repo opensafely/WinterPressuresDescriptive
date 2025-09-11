@@ -1,9 +1,16 @@
-# Load libraries ---------------------------------------------------------------
-print("Load libraries")
+# Load libraries --------------------------------------------------------------
+print('Load libraries')
 
-library(magrittr)
-library(here)
 library(dplyr)
+library(tidyverse)
+library(lubridate)
+library(data.table)
+library(readr)
+library(jsonlite)
+library(here)
+library(fs)
+library(base)
+library(stats)
 
 # Define table1 output folder ---------------------------------------------------------
 print("Creating output/table1 output folder")
