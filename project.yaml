@@ -1066,6 +1066,7 @@ actions:
     run: r:latest analysis/table1/dataset_clean.R precovid
     needs:
     - generate_cohort_precovid
+    - generate_merged_precovid
     outputs:
       moderately_sensitive:
         cohort_clean: output/dataset_clean/input_precovid_clean.csv
@@ -1076,7 +1077,6 @@ actions:
     run: r:latest analysis/table1/table1.R precovid
     needs:
     - generate_input_precovid_clean
-    - generate_merged_precovid
     outputs:
       moderately_sensitive:
         table1: output/table1/table1-cohort_precovid.csv
@@ -1088,6 +1088,7 @@ actions:
     run: r:latest analysis/table1/dataset_clean.R postcovid1
     needs:
     - generate_cohort_postcovid1
+    - generate_merged_postcovid1
     outputs:
       moderately_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid1_clean.csv
@@ -1098,7 +1099,6 @@ actions:
     run: r:latest analysis/table1/table1.R postcovid1
     needs:
     - generate_input_postcovid1_clean
-    - generate_merged_postcovid1
     outputs:
       moderately_sensitive:
         table1: output/table1/table1-cohort_postcovid1.csv
@@ -1110,6 +1110,7 @@ actions:
     run: r:latest analysis/table1/dataset_clean.R postcovid2
     needs:
     - generate_cohort_postcovid2
+    - generate_merged_postcovid2
     outputs:
       moderately_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid2_clean.csv
@@ -1120,7 +1121,6 @@ actions:
     run: r:latest analysis/table1/table1.R postcovid2
     needs:
     - generate_input_postcovid2_clean
-    - generate_merged_postcovid2
     outputs:
       moderately_sensitive:
         table1: output/table1/table1-cohort_postcovid2.csv
@@ -1132,6 +1132,7 @@ actions:
     run: r:latest analysis/table1/dataset_clean.R postcovid3
     needs:
     - generate_cohort_postcovid3
+    - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid3_clean.csv
@@ -1142,7 +1143,6 @@ actions:
     run: r:latest analysis/table1/table1.R postcovid3
     needs:
     - generate_input_postcovid3_clean
-    - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
         table1: output/table1/table1-cohort_postcovid3.csv

@@ -130,7 +130,10 @@ generate_input_clean <- function(cohort) {
     action(
       name = glue("generate_input_{cohort}_clean"),
       run = glue("r:latest analysis/table1/dataset_clean.R {cohort}"),
-      needs = list(glue("generate_cohort_{cohort}")),
+      needs = list(
+        glue("generate_cohort_{cohort}"),
+        glue("generate_merged_{cohort}")
+      ),
       moderately_sensitive = list(
         cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.csv")
       )
@@ -146,12 +149,13 @@ generate_table1 <- function(cohort) {
       name = glue("generate_table1_{cohort}"),
       run = glue("r:latest analysis/table1/table1.R {cohort}"),
       needs = list(
-        glue("generate_input_{cohort}_clean"),
-        glue("generate_merged_{cohort}")
+        glue("generate_input_{cohort}_clean")
       ),
       moderately_sensitive = list(
         table1 = glue("output/table1/table1-cohort_{cohort}.csv"),
-        table1_midpoint6 = glue("output/table1/table1-cohort_{cohort}-midpoint6.csv")
+        table1_midpoint6 = glue(
+          "output/table1/table1-cohort_{cohort}-midpoint6.csv"
+        )
       )
     )
   )
