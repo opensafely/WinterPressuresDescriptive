@@ -122,6 +122,41 @@ generate_cohort <- function(cohort) {
     )
   )
 }
+
+# Generate cleaned input
+generate_input_clean <- function(cohort) {
+  splice(
+    comment(glue("Generate cleaned input dataset - {cohort}")),
+    action(
+      name = glue("generate_input_{cohort}_clean"),
+      run = glue("r:latest analysis/table1/dataset_clean.R {cohort}"),
+      needs = list(glue("generate_cohort_{cohort}")),
+      moderately_sensitive = list(
+        cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.csv")
+      )
+    )
+  )
+}
+
+# Generate Table 1
+generate_table1 <- function(cohort) {
+  splice(
+    comment(glue("Generate Table 1 summary statistics - {cohort}")),
+    action(
+      name = glue("generate_table1_{cohort}"),
+      run = glue("r:latest analysis/table1/table1.R {cohort}"),
+      needs = list(
+        glue("generate_input_{cohort}_clean"),
+        glue("generate_merged_{cohort}")
+      ),
+      moderately_sensitive = list(
+        table1 = glue("output/table1/table1-cohort_{cohort}.csv"),
+        table1_midpoint6 = glue("output/table1/table1-cohort_{cohort}-midpoint6.csv")
+      )
+    )
+  )
+}
+
 # Start building the actions list ----------------------------------------------
 actions_list <- c(
   ## Post YAML disclaimer ------------------------------------------------------
@@ -259,6 +294,11 @@ for (cohort in cohorts_all) {
   actions_list <- c(actions_list, check_and_merge_action)
 }
 
+# Append input_clean + Table 1 actions -------------------------------------------
+for (cohort in cohorts_all) {
+  actions_list <- c(actions_list, generate_input_clean(cohort))
+  actions_list <- c(actions_list, generate_table1(cohort))
+}
 
 # Combine actions into project list --------------------------------------------
 

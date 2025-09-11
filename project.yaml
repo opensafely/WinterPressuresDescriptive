@@ -1060,79 +1060,91 @@ actions:
         dataset1: output/analytic_data_long_postcovid3.csv
         dataset2: output/analytic_data_wide_postcovid3.csv
 
+  ## Generate cleaned input dataset - precovid 
 
-  generate_merged_precovid:
-    run: r:latest analysis/data_cleaning.R precovid
+  generate_input_precovid_clean:
+    run: r:latest analysis/table1/dataset_clean.R precovid
     needs:
-    - generate_measures_precovid_2018-10-01_age
-    - generate_measures_precovid_2018-10-01_sex
-    - generate_measures_precovid_2018-10-01_ethnicity
-    - generate_measures_precovid_2018-10-01_imd
-    - generate_measures_precovid_2018-10-01_rurality
-    - generate_measures_precovid_2018-10-01_smoking
-    - generate_measures_precovid_2018-10-01_obesity
-    - generate_measures_precovid_2018-10-01_multimorbidity
-    - generate_measures_precovid_2018-10-01_vax_flu
-    - generate_measures_precovid_2018-10-01_vax_pneum
-    - generate_measures_precovid_2018-10-01_consultation
-    - generate_measures_precovid_2018-10-01_ec_all
-    - generate_measures_precovid_2018-10-01_apc_all
-    - generate_measures_precovid_2018-10-01_ec_acscs
-    - generate_measures_precovid_2018-10-01_apc_acscs
+    - generate_cohort_precovid
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_precovid.csv
-        dataset2: output/analytic_data_wide_precovid.csv
+        cohort_clean: output/dataset_clean/input_precovid_clean.csv
 
-  ## Check measures files & generate merged datasets for cohort: postcovid1 
+  ## Generate Table 1 summary statistics - precovid 
 
-  generate_merged_postcovid1:
-    run: r:latest analysis/data_cleaning.R postcovid1 2022-10-01
+  generate_table1_precovid:
+    run: r:latest analysis/table1/table1.R precovid
     needs:
-    - generate_measures_postcovid1_2022-10-01_age
-    - generate_measures_postcovid1_2022-10-01_sex
-    - generate_measures_postcovid1_2022-10-01_ethnicity
-    - generate_measures_postcovid1_2022-10-01_imd
-    - generate_measures_postcovid1_2022-10-01_rurality
-    - generate_measures_postcovid1_2022-10-01_smoking
-    - generate_measures_postcovid1_2022-10-01_obesity
-    - generate_measures_postcovid1_2022-10-01_multimorbidity
-    - generate_measures_postcovid1_2022-10-01_vax_covid
-    - generate_measures_postcovid1_2022-10-01_vax_flu
-    - generate_measures_postcovid1_2022-10-01_vax_pneum
-    - generate_measures_postcovid1_2022-10-01_consultation
-    - generate_measures_postcovid1_2022-10-01_ec_all
-    - generate_measures_postcovid1_2022-10-01_apc_all
-    - generate_measures_postcovid1_2022-10-01_ec_acscs
-    - generate_measures_postcovid1_2022-10-01_apc_acscs
+    - generate_input_precovid_clean
+    - generate_merged_precovid
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_postcovid1.csv
-        dataset2: output/analytic_data_wide_postcovid1.csv
+        table1: output/table1/table1-cohort_precovid.csv
+        table1_midpoint6: output/table1/table1-cohort_precovid-midpoint6.csv
 
-  ## Check measures files & generate merged datasets for cohort: postcovid2 
+  ## Generate cleaned input dataset - postcovid1 
 
-  generate_merged_postcovid2:
-    run: r:latest analysis/data_cleaning.R postcovid2 2023-10-01
+  generate_input_postcovid1_clean:
+    run: r:latest analysis/table1/dataset_clean.R postcovid1
     needs:
-    - generate_measures_postcovid2_2023-10-01_age
-    - generate_measures_postcovid2_2023-10-01_sex
-    - generate_measures_postcovid2_2023-10-01_ethnicity
-    - generate_measures_postcovid2_2023-10-01_imd
-    - generate_measures_postcovid2_2023-10-01_rurality
-    - generate_measures_postcovid2_2023-10-01_smoking
-    - generate_measures_postcovid2_2023-10-01_obesity
-    - generate_measures_postcovid2_2023-10-01_multimorbidity
-    - generate_measures_postcovid2_2023-10-01_vax_covid
-    - generate_measures_postcovid2_2023-10-01_vax_flu
-    - generate_measures_postcovid2_2023-10-01_vax_pneum
-    - generate_measures_postcovid2_2023-10-01_consultation
-    - generate_measures_postcovid2_2023-10-01_ec_all
-    - generate_measures_postcovid2_2023-10-01_apc_all
-    - generate_measures_postcovid2_2023-10-01_ec_acscs
-    - generate_measures_postcovid2_2023-10-01_apc_acscs
+    - generate_cohort_postcovid1
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_postcovid2.csv
-        dataset2: output/analytic_data_wide_postcovid2.csv
+        cohort_clean: output/dataset_clean/input_postcovid1_clean.csv
+
+  ## Generate Table 1 summary statistics - postcovid1 
+
+  generate_table1_postcovid1:
+    run: r:latest analysis/table1/table1.R postcovid1
+    needs:
+    - generate_input_postcovid1_clean
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_postcovid1.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid1-midpoint6.csv
+
+  ## Generate cleaned input dataset - postcovid2 
+
+  generate_input_postcovid2_clean:
+    run: r:latest analysis/table1/dataset_clean.R postcovid2
+    needs:
+    - generate_cohort_postcovid2
+    outputs:
+      moderately_sensitive:
+        cohort_clean: output/dataset_clean/input_postcovid2_clean.csv
+
+  ## Generate Table 1 summary statistics - postcovid2 
+
+  generate_table1_postcovid2:
+    run: r:latest analysis/table1/table1.R postcovid2
+    needs:
+    - generate_input_postcovid2_clean
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_postcovid2.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid2-midpoint6.csv
+
+  ## Generate cleaned input dataset - postcovid3 
+
+  generate_input_postcovid3_clean:
+    run: r:latest analysis/table1/dataset_clean.R postcovid3
+    needs:
+    - generate_cohort_postcovid3
+    outputs:
+      moderately_sensitive:
+        cohort_clean: output/dataset_clean/input_postcovid3_clean.csv
+
+  ## Generate Table 1 summary statistics - postcovid3 
+
+  generate_table1_postcovid3:
+    run: r:latest analysis/table1/table1.R postcovid3
+    needs:
+    - generate_input_postcovid3_clean
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_postcovid3.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid3-midpoint6.csv
 
