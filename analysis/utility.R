@@ -1,8 +1,24 @@
 # Rounding function for redaction ----
-
+# Rounding for counts
 roundmid_any <- function(x, to = 6) {
   # centers on (integer) midpoint of the rounding points
   x <- as.numeric(x)
+  ceiling(x / to) * to - (floor(to / 2) * (x != 0))
+}
+
+# Rounding for proportions
+roundmid_prop_adaptive <- function(x) {
+  x <- as.numeric(x)
+  m <- mean(x, na.rm = TRUE)
+  
+  # If very rare (<1%), round to 0.0006 (0.06%)
+  if (m < 0.01) {
+    to <- 0.0006
+  } else {
+    # Otherwise round to 0.006 (0.6%)
+    to <- 0.006
+  }
+  
   ceiling(x / to) * to - (floor(to / 2) * (x != 0))
 }
 
