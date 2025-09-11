@@ -10,14 +10,10 @@
   #install.packages("lubridate")
   #install.packages("here")
   #install.packages("data.table")
+  #install.packages("purrr")
 
-library(dplyr)
-library(tidyr)
-library(readr)
-library(ggplot2)
-library(haven)      # Allows you to import STATA .dta files 
-library(stringr)    # Allows you to replace strings, useful for renaming vars
 library(tidyverse)
+library(haven)      # Allows you to import STATA .dta files 
 library(glue)
 library(lubridate)
 library(here)
@@ -25,9 +21,18 @@ library(data.table)  # Allows you to import .csv files, and write .csv files
 #library(arrow)
 
 
+
 #DEFINING ARGUMENTS 
 args <- commandArgs(trailingOnly = TRUE)
-cohort <- args[1]  # e.g., "precovid", "postcovid1", etc.
+print("Length of args:")
+print(length(args))
+if (length(args) == 0) { #So we can use args when testing codes locally 
+  cohort <- "precovid" # e.g., "precovid", "postcovid1", etc.
+  start_date <- as.Date("2018-10-01") #The index date for each cohort 
+} else {
+  cohort <- args[[1]] 
+  start_date <- as.Date(args[[2]])
+}
 
 
 #DEFINING FUNCTIONS   
@@ -81,61 +86,78 @@ return(result)
   #Check that the date values = specific SET of SEQUENTIAL values, BY certain variables
   #Check that the date values are the same across datasets
 
-date_check_long <- function(file_list, date_var_list, group_vars = NULL,
+date_check_long <- function(file_list, start_date_var_list, end_date_var_list, group_vars = NULL,
                             start_date = NULL, n_expected = NULL, by = "1 week") {
-  #Makes sure the 'var_list' argument is a character vector of column names
-  if (!is.character(date_var_list)) stop("`var_list` must be a character vector of column names.") 
-  
-  #Store reference values (from the first file)
-  ref_values <- list()
-  result <- TRUE #Add a function "result", start assuming the result = TRUE
-  result_list <- list()  # store all results
-  
-  #Sequentially upload each .csv file in the file_list
-  for (i in seq_along(file_list)) {
-    df <- readr::read_csv(file_list[[i]])
-    for (date_var in date_var_list) {             #Then, sequentially go through each variable in `var_list'
-      if (!date_var %in% colnames(df)) {       #Check that the variable exists in the dataset
+ 
+  #First write a "helper" function to create all the components for the check
+  date_check_long_helper <- function(df, date_var, is_start, i) {
+      if (!date_var %in% colnames(df)) {  #Check if the SPECIFIC DATE VARIABLE exists in your data & format it as a date (just in case)
         warning("Variable '", date_var, "' not found in dataset: ", i)
-        result <- FALSE
-        next                            #Allows the loop to continue?
+        return(NULL)
+      }
+      df[[date_var]] <- as.Date(df[[date_var]])
+      start_date <- as.Date(start_date)
+    
+    #Create an "expected" sequence of dates, based on whether date_var contains starting or end dates
+      expected <- if (is_start) {
+        seq(min(df[[date_var]]), max(df[[date_var]]), by = by)
+      } else {
+        if (by == '1 month'){
+          ceiling_date(seq(ymd(start_date), ymd(start_date +years(1)-months(1)), by = '1 month'), unit = "months")-days(1)
+        }
+        else if (by == '1 week'){
+          seq(ymd(start_date + days(6)), ymd(start_date + days(7)*(n_expected)-days(1) ), by = '1 week')
+        }
       }
       
-      df[[date_var]] <- as.Date(df[[date_var]]) #Converts date_var into date format (extra step - most dates will already be in date format, but just in case)
+    #Create the actual set of dates  
+      actual <- sort(unique(df[[date_var]]))
       
-      date_check_summary <- df %>% group_by(across(all_of(group_vars))) %>% #groups the data by the variables specified in the group_vars argument
-        summarise(   #Summarise creates a summary dataset containing the below specified columns (min_date, max_date, etc)  
+    #Create a summary dataset
+      date_check_summary <- df %>% 
+        group_by(across(all_of(group_vars))) %>% #groups the data by the variables specified in the group_vars argument
+        summarise(   #Creates a summary dataset containing the below specified columns (min_date, max_date, etc)  
           dataset = i,
-          min_date = min(.data[[date_var]]),       #The earliest date in the group. Note '.data' is from rlang (used by dyplr) and says "Look inside whatever the current data frame is"
-          max_date = max(.data[[date_var]]),       #The latest date in the group
-          n_dates = n_distinct(.data[[date_var]]), #Distinct rows aka dates in each group
-          expected_dates = list(seq(               #Creates an item-list column to store the multiple values . Specifying that the multiple values are a list allows dyplyr You need to store them as a list bc it helps summarise!? 
-                                    min(.data[[date_var]]), 
-                                    max(.data[[date_var]]), 
-                                    by = by)),
-          actual_dates = list(sort(unique(.data[[date_var]]))),
-          date_check = identical(    #The actual check - are the actual dates in the data = the expected dates?
-            sort(unique(.data[[date_var]])), #Sorts the dataset, retrieves the distinct dates
-            seq(min(.data[[date_var]]), max(.data[[date_var]]), by = by)
-          ),
-          start_check = if (!is.null(start_date)) min(.data[[date_var]]) == as.Date(start_date) else NA, #Checks whether the earliest date in the group is the same as the expected start date
-          n_check = if (!is.null(n_expected)) n_distinct(.data[[date_var]]) == n_expected else NA, #Checks if the number of unique weekly dates is what you'd expect
+          var_type = if (is_start) "start" else "end",
+          date_var = date_var,
+          min_date = min(df[[date_var]]),
+          max_date = max(df[[date_var]]),
+          expected_dates = list(expected),
+          actual_dates = list(actual),
+          sequence_check = identical(actual, expected),
+          start_date_check = if (is_start & !is.null(start_date)) min(df[[date_var]]) == as.Date(start_date) else NA,
+          n_check = if (!is.null(n_expected)) n_distinct(df[[date_var]]) == n_expected else NA,
           .groups = "drop"
         )
-      result_list[[length(result_list) + 1]] <- date_check_summary
-    }
-  }  
-  final_result <- dplyr::bind_rows(result_list)
-    date_check_passed  = all(final_result$date_check,  na.rm = TRUE)
-    start_check_passed = all(final_result$start_check, na.rm = TRUE)
-    n_check_passed     = all(final_result$n_check,     na.rm = TRUE)
+  }
   
-  return(list(
-    final_result = final_result,
-    date_check_passed = date_check_passed, 
-    start_check_passed = start_check_passed, 
-    n_check_passed = n_check_passed)) #Assigning names to the items so the R viewer will refer to them by name, not [1], [2], etc
-} 
+  #Now we're back in the "main" function
+  #NOTE: We've defined the helper above, but haven't called it yet, so it hasn't created the summary dataset yet
+    result_list <- list()  # store all results
+    
+    for (i in seq_along(file_list)) {  #Looping over each file in the dataset
+      df <- read_csv(file_list[[i]]) # Importing the file
+      
+      pair_results <- map2_dfr(start_date_var_list, end_date_var_list, ~{ #Pair the start date/end date variables
+          bind_rows(
+            date_check_long_helper(df, .x, TRUE, i),   # start variable
+            date_check_long_helper(df, .y, FALSE, i)   # end variable
+          )
+        })
+      
+      result_list[[i]] <- pair_results
+    }
+    
+    final_result <- bind_rows(result_list)
+    
+    list(
+      final_result = final_result,
+      date_check_passed  = all(final_result$sequence_check, na.rm = TRUE),
+      start_check_passed = all(final_result$start_date_check, na.rm = TRUE),
+      n_check_passed     = all(final_result$n_check, na.rm = TRUE)
+    )
+}
+
 
 ##Identical_vector_check: 
 ##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes 
@@ -311,10 +333,12 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   print("This is the test list")
     print(test)
 
- measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
-#FOR NOW ONLY measures_csv <- list.files(path = measures_path, pattern = "postcovid2\\.csv$", full.names = TRUE)   
+    
+#FOR CODE DEVELOPMENT, USE: measures_csv <- list.files(path = measures_path, pattern = "postcovid3\\.csv$", full.names = TRUE)   
+#OS (incorporates the 'cohort' arguments needed for the .yaml file)
+  measures_csv <- list.files(path = measures_path, pattern = paste0(cohort, "\\.csv$"), full.names = TRUE) 
 
-exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
+  exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRUE, value=TRUE) 
   exp_vax_measures_csv <-grep("_vax", measures_csv,value=TRUE) 
   exp_cons_measures_csv <-grep("_consultation", measures_csv,value=TRUE) 
   
@@ -348,7 +372,8 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     
     #Pre-allocating objects
       wide_exp_measures <- vector("list", length(exp_measures_csv))   #list containing transformed datasets, set length = length of exp_measures_csv
-      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
+      rename_list <- c("numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "denom",
+                       "ratio_exp_prop" = "exp_prop", "hypertension" = "hypt" ) #Renaming rules for dataset
       print("Pre-allocation done")
 
     #For-loop of the data management steps 
@@ -399,7 +424,8 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   
     #Pre-allocating objects
       wide_exp_vax_measures <- vector("list", length(exp_vax_measures_csv))   #list containing transformed datasets
-      rename_list <- c("ratio_exp_prop" = "exp_prop", "numerator_exp_prop" = "num", "denominator_exp_prop" = "denom") #Renaming rules for dataset
+      rename_list <- c("numerator_exp_prop" = "exp_num", "denominator_exp_prop" = "exp_denom",
+                       "ratio_exp_prop" = "exp_prop") #Renaming rules for dataset
         print("Pre-allocation done")
       
     #For-loop of the data management steps 
@@ -449,36 +475,98 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     }
 
       
-#Exposures (consultations, longitudinal)  
-  print("date_check_long for longitudinal exposure - consultation")
-  date_check_cons <-date_check_long(
-    exp_cons_measures_csv,
-    date_var_list = c("interval_start", "interval_end"), 
-    group_vars = NULL,
-    start_date = "2017-10-01",
-    n_expected = 12,
-    by = "1 month"
-  )
-  #NOTE: Date check NOT passed - interval_start, and interval_end dates are not on the first of each month
-  #I have left the data cleaning code blank for 
+#Exposures (consultations, longitudinal) 
+  #Date check & reshape wide (one row per practice, each month is a separate column)
+  print("date_check_exp_cons for longitudinal exposure - consultation")
   
+  start_date_cons = start_date - years(1)
+  date_check_exp_cons <- date_check_long(
+    exp_cons_measures_csv, 
+    start_date_var_list = c("interval_start"),
+    end_date_var_list = c("interval_end"),
+    group_vars = NULL, 
+    start_date = start_date_cons, 
+    n_expected = 12,
+    by= "1 month"
+  )
+  
+  if(date_check_exp_cons$date_check_passed) {
+    ##Pre-allocating objects
+      #wide_exp_cons_measures <- vector("list", length(exp_cons_measures_csv))   #list containing transformed datasets
+      rename_list <- c("numerator" = "exp_num_cons","denominator" = "exp_denom_cons","ratio" = "exp_prop_cons")   #Renaming rules for dataset
+    
+    #Importing the single .csv (don't need to loop through datasets for this exposure)
+    #For-loop of the data management steps 
+    #Even though GP cpnsultations is only 1 .csv file, put in for loop so checking functions work  
+      
+      wide_exp_cons_measures <- readr::read_csv(exp_cons_measures_csv)
+      
+      #Check that there are multiple rows per practice
+      if(!one_row_check(wide_exp_cons_measures,"practice_pseudo_id")){
+        message("There are multiple rows per practice in dataset: exp_cons_measures")
+      }else{
+        stop()
+      }
+      
+      #Check that each numerical variable is non-negative
+      if(all(positive_var_check(wide_exp_cons_measures))) {
+      }else{
+        stop()
+      }
+      #Check that all the interval_start dates in the GP consultations .csv are BEFORE the index date for the other exposure vars
+      if (max(wide_exp_cons_measures$interval_start) < min(merged_exp_measures$interval_start)) {
+        print("TRUE: All interval_start dates in wide_exp_cons_measures are BEFORE the interval_start dates in merged_exp_measures")
+      } else {
+        print("FALSE: All interval_start dates in wide_exp_cons_measures are NOT BEFORE the interval_start dates in merged_exp_measures")
+      }
+                          
+      print("Reshaping & renaming exp_cons_measures.csv")    
+      #Reshaping to wide and renaming
+      wide_exp_cons_measures <- wide_exp_cons_measures  %>% 
+        mutate(yyyymm = format(interval_start, "%Y%m")) %>%
+        pivot_wider(
+          id_cols = practice_pseudo_id,
+          names_from = yyyymm,
+          values_from = c(numerator, denominator, ratio),
+          names_glue = "{.value}_{yyyymm}") %>%
+        rename_with(~ str_replace_all(., rename_list))
+      
+      #Check again that there is now ONE row per practice
+      if(one_row_check(wide_exp_cons_measures, "practice_pseudo_id")) {
+        message("OK - merged_out_measures is one row per practice")
+      } else {
+        message("ERROR - something weird happened and merged_exp_measures is STILL multiple rows per practice")
+      }
+      #Checking that each proportion variable goes between 0 and 1 
+      prop_vars <- names(wide_exp_cons_measures)[grepl("prop", names(wide_exp_cons_measures))]
+      range_check(wide_exp_cons_measures, var_list = prop_vars, min = 0.000000000000000000, max= 1.00000000000000000000000)
+      print("if date_check_cons passed")
+  }else{
+      print("Date check NOT passed for wide_exp_cons_measures")
+    }
+    
+  
+
   
 #Outcomes (longitudinal):
   #Just need to date check & merge (structurally, can keep as is: one row per practice per week)
-  print("date_check_long for longitudinal outcomes")
+  print("date_check_out for longitudinal OUTCOMES")
   date_check_out <- date_check_long(
     out_measures_csv, 
-    date_var_list = c("interval_start", "interval_end"), 
+    start_date_var_list = c("interval_start"), 
+    end_date_var_list = c("interval_end"),
     group_vars = NULL, 
-    start_date = "2018-10-01", 
+    start_date = start_date, 
     n_expected = 20,
     by= "1 week"
   )
+  
   print("if date_check_out passed")
   if(date_check_out$date_check_passed) {
     ##Pre-allocating objects
       wide_out_measures <- vector("list", length(out_measures_csv))   #list containing transformed datasets
-      rename_list <-c("numerator_out_num" = "num", "denominator_out_num" = "denom", "ratio_out_num" = "out_prop")   #Renaming rules for dataset
+      rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", 
+                      "ratio_out_num" = "out_prop")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
       for(i in seq_along(out_measures_csv)) {
@@ -531,21 +619,23 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   }
 
 
-  
 #Outcomes ACSCs (longitudinal):
+  print("date_check_out for longitudinal OUTCOMES - ACSCS")
   date_check_out_acscs <- date_check_long(
     out_acscs_measures_csv, 
-    date_var_list = c("interval_start", "interval_end"), 
+    start_date_var_list = c("interval_start"), 
+    end_date_var_list = c("interval_end"),
     group_vars = c("measure"), 
-    start_date = "2018-10-01", 
+    start_date = start_date, 
     n_expected = 20,
     by= "1 week"
   )
-  
+  print("if date_check_out_acscs passed")
   if(date_check_out_acscs$date_check_passed) {
     ##Pre-allocating objects
     wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv))   #list containing transformed datasets
-    rename_list <-c("numerator_out_num" = "num", "denominator_out_num" = "denom", "ratio_out_num" = "out_acscs_prop")   #Renaming rules for dataset
+    rename_list <-c("numerator_out_num" = "out_acscs_num", "denominator_out_num" = "out_acscs_denom", 
+                    "ratio_out_num" = "out_acscs_prop", "hypertension" = "hypt")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
     for(i in seq_along(out_acscs_measures_csv)) {
@@ -598,61 +688,70 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
   }
 
   
-#Merging the exposures, exposures_vax, outcomes, and outcomes_acscs data together
+#Merging the exposures, exposures_vax, exposures_cons, outcomes, and outcomes_acscs data together
   exp_data <- left_join(merged_exp_measures, merged_exp_vax_measures, by = "practice_pseudo_id") %>%
     rename(
-      interval_start_exp = interval_start.x,
-      interval_end_exp = interval_end.x,
-      interval_start_exp_vax = interval_start.y,
-      interval_end_exp_vax = interval_end.y
+      exp_interval_start = interval_start.x,
+      exp_interval_end = interval_end.x,
+      exp_vax_interval_start = interval_start.y,
+      exp_vax_interval_end = interval_end.y
     )
-  
-    #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
-      denom_vars <- grep("denom_", names(exp_data), value = TRUE)
-      exp_data <- drop_all_duplicates(exp_data, df_name = "exp_data", denom_vars, new_name = "denom_exp")
+  #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
+    denom_vars <- grep("denom_", names(exp_data), value = TRUE)
+    exp_data <- drop_all_duplicates(exp_data, df_name = "exp_data", denom_vars, new_name = "exp_denom")
     
-
+  #Now merge in the wide GP consulations data 
+  #Do in this order so that the denom vars in GP cons are not dropped!
+    exp_data  <- left_join(exp_data, wide_exp_cons_measures, by = "practice_pseudo_id") 
+    
   out_data <- left_join(merged_out_measures, merged_out_acscs_measures, by = c("practice_pseudo_id", "interval_start", "interval_end"))
-    #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
-      denom_vars <- grep("denom_", names(out_data), value = TRUE)
-      out_data <- drop_all_duplicates(out_data, df_name = "out_data", denom_vars, new_name = "denom_out")
-
   
+  #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
+    denom_vars <- grep("denom_", names(out_data), value = TRUE)
+    out_data <- drop_all_duplicates(out_data, df_name = "out_data", denom_vars, new_name = "out_denom")
+
   analytic_data_long <- left_join(out_data, exp_data, by = "practice_pseudo_id") %>%  #Merging the exp data to the longitudinal outcomes
-    rename(interval_start_out = interval_start,
-           interval_end_out = interval_end) %>%
+    rename(out_interval_start = interval_start,
+           out_interval_end = interval_end) %>%
     group_by(practice_pseudo_id) %>%
-    mutate(week_number = dense_rank(interval_start_out)) %>%
+    mutate(week_number = dense_rank(out_interval_start)) %>%
     ungroup()
-  
-  date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
-  denom_vars <- grep("denom", names(analytic_data_long), value = TRUE)
-  
-  
-  wide_variables = analytic_data_long %>% 
-    select(-all_of(c("practice_pseudo_id", "interval_start_out", 
-                     "interval_end_out", "interval_start_exp", 
-                     "interval_end_exp", "interval_start_exp_vax", 
-                     "interval_end_exp_vax", "week_number"))) %>% 
-                    names
-
-  
-  analytic_data_wide <- analytic_data_long %>%
-    select(-all_of(c("interval_start_out", "interval_end_out", 
-                     "interval_start_exp", "interval_end_exp", 
-                     "interval_start_exp_vax", "interval_end_exp_vax"))) %>%
-    pivot_wider(
-      id_cols = practice_pseudo_id,
-      names_from = week_number,
-      values_from = wide_variables,
-      names_glue = "{.value}{week_number}"
+    
+  #Prep to check & transform analytic_data_long
+    date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
+    cons_vars <- grep("_cons_" , names(analytic_data_long), value = TRUE)
+    out_vars <- grep("out", names(analytic_data_long), value = TRUE)
+      out_vars <- out_vars[!grepl("interval", out_vars)]
+    
+  #Check that the exp_variables merged correctly into the long dataset
+  #i.e. all have one unique value per practice (per outcome week)
+    exp_vars <- grep("exp" , names(analytic_data_long), value = TRUE)
+    
+    exp_merge_check <- all(
+      analytic_data_long %>%
+        group_by(practice_pseudo_id) %>%
+        summarise(across(all_of(exp_vars), ~ n_distinct(.x) == 1), .groups = "drop") %>%
+        select(-practice_pseudo_id) %>%
+        unlist()
     )
   
+  if (exp_merge_check){
+    analytic_data_wide <- analytic_data_long %>%
+      pivot_wider(
+        id_cols = c(practice_pseudo_id, cons_vars, exp_vars),
+        names_from = week_number,
+        values_from = out_vars,
+        names_glue = "{.value}{week_number}"
+      )
+  }
   
+   
   
+
 #EXPORTING ANALYTIC DATASET  
   data.table::fwrite(analytic_data_long, glue::glue("output/analytic_data_long_{cohort}.csv"))
   data.table::fwrite(analytic_data_wide, glue::glue("output/analytic_data_wide_{cohort}.csv"))
+  
   
   
   
@@ -664,7 +763,6 @@ exp_measures_csv <- grep("_apc|_ec|_consultation|_vax", measures_csv, invert=TRU
     #Only issue is if some patients have missing data on key characteristics.
 #Add the number of registered patients used to calculate each proportion variable
   #CHECK that this number is consistent within each dataset, and for each category variable 
-## Figure out a way to create 3 different datasets, one for each cohort.
 #Create the CMS
   
 #FROM LP:
