@@ -12,25 +12,28 @@
   #install.packages("data.table")
   #install.packages("purrr")
 
-library(dplyr)
-library(tidyr)
-library(readr)
-library(ggplot2)
-library(haven)      # Allows you to import STATA .dta files 
-library(stringr)    # Allows you to replace strings, useful for renaming vars
 library(tidyverse)
+library(haven)      # Allows you to import STATA .dta files 
 library(glue)
 library(lubridate)
 library(here)
 library(data.table)  # Allows you to import .csv files, and write .csv files
-library(purrr)
 #library(arrow)
+
 
 
 #DEFINING ARGUMENTS 
 args <- commandArgs(trailingOnly = TRUE)
-cohort <- args[1]  # e.g., "precovid", "postcovid1", etc.
-start_date <- as.Date(args[2]) #The index date for each cohort 
+print("Length of args:")
+print(length(args))
+if (length(args) == 0) { #So we can use args when testing codes locally 
+  cohort <- "precovid" # e.g., "precovid", "postcovid1", etc.
+  start_date <- as.Date("2018-10-01") #The index date for each cohort 
+} else {
+  cohort <- args[[1]] 
+  start_date <- as.Date(args[[2]])
+}
+
 
 #DEFINING FUNCTIONS   
 ##var_consistency_check: 
