@@ -1,6 +1,6 @@
 # First function to preprocess data
 
-preprocess <- function(cohort, describe) {
+preprocess <- function(cohort) {
   # Get column names ----
   print('Get column names')
 
@@ -61,17 +61,42 @@ preprocess <- function(cohort, describe) {
       across(all_of(num_cols), ~ as.numeric(.)),
       across(all_of(cat_cols), ~ as.character(.))
     )
-
-  # Describe data ----
-  print('Describe data')
-
-  if (isTRUE(describe)) {
-    describe_data(df = input, name = paste0(cohort, "_raw"))
-  }
-
-  # Remove records with missing patient id or practice id 
+  # Apply includsion criteria ----
   print('Remove records with missing patient id or practice id')
 
   input <- input[!is.na(input$patient_id) & !is.na(input$practice_id), ]
   
   message("All records with valid patient and practice IDs retained.")
+
+  print("Inclusion criteria: Alive at index")
+
+  input <- subset(input, inex_bin_alive == TRUE) 
+  
+  message("All records alive at index.")
+
+  print("Inclusion criteria: registered with a practice at index")
+
+  input <- subset(input, inex_bin_reg_cs == TRUE) 
+  
+  message("All records registered with a practice at index")
+
+  # Restrict columns ----
+  print('Restrict columns')
+
+  input <- input %>%
+    select(
+      patient_id,
+      practice_id,
+      starts_with("index_date"),
+      starts_with("exp_"), # Exposures
+      starts_with("inex_"), # Inclusion/exclusion
+      starts_with("cens_"), # Censor
+      starts_with("vax_date_"), # Vaccination dates and vax type
+      starts_with("vax_cat_"), # Vaccination products
+      starts_with("vax_bin_") # Vaccination binary flags
+    )
+  # Return data ----
+  print('Return data')
+
+  return(input)
+}

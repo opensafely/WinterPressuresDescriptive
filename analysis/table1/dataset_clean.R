@@ -18,16 +18,62 @@ print("Creating output/dataset_clean output folder")
 dataclean_dir <- "output/dataset_clean/"
 dir_create(here::here(dataclean_dir))
 
-file_path <- paste0("output/dataset_definition/input_", cohort, ".csv.gz")
+# Source common functions ------------------------------------------------------
+print('Source common functions')
 
+source("analysis/utility.R")
+lapply(
+  list.files("analysis/table1", full.names = TRUE, pattern = "fn-"),
+  source
+)
 
-# Load cohort dataset ----
-print('Load cohort dataset')
+# Specify command arguments ----------------------------------------------------
+print('Specify command arguments')
 
-input <- read_csv(file_path, col_types = col_classes)
+args <- commandArgs(trailingOnly = TRUE)
+print(length(args))
+if (length(args) == 0) {
+  cohort <- "postcovid1"
+} else {
+  cohort <- args[[1]]
+}
+
+# Preprocess data --------------------------------------------------------------
+print('Preprocess data')
+input <- preprocess(cohort)
+message(paste0("Preprocessed data has N = ", nrow(input), " rows"))
+
+# Create practice-level summary dataset ----------------------------------------
+print('Create practice-level summary dataset')
+practice_summary <- collapse(input)
 message(paste0(
-"Dataset has been read successfully with N = ",
-nrow(input),
-" rows"
+  "Practice-level summary dataset has N = ",
+  nrow(practice_summary),
+  " rows"
 ))
 
+# Process measure outputs -------------------------------------------------------
+print('Process measure outputs')    
+
+measure_output_clean <- process_measure_output(cohort)
+message(paste0("Measure output clean dataset has N = ", nrow(measure_output_clean), " rows"))
+
+# Merge measure outputs with practice_summary -----------------------------------
+print('Merge measure outputs with practice_summary')
+
+practice_summary <- practice_summary %>%
+  right_join(measure_output_clean, by = "practice_id", suffix = c(".x", ""))
+
+# Remove duplicated columns from practice_summary (those with .x suffix)
+n_removed <- sum(endsWith(names(practice_summary), ".x"))
+practice_summary <- practice_summary %>%
+  select(-ends_with(".x"))
+
+message(paste0("Removed ", n_removed, " duplicated columns from practice_summary"))
+message(paste0("Practice summary dataset after merging measure outputs has N = ", nrow(practice_summary), " rows"))
+
+# Save practice_summary dataset ---------------------------------------------------
+print('Save practice_summary dataset')
+output_path <- paste0(dataclean_dir, "input_", cohort, "_clean.csv")   
+write_csv(practice_summary, output_path)
+message(paste0("Practice-level summary dataset saved to ", output_path))
