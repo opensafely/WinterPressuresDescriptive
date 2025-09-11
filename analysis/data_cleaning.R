@@ -12,25 +12,28 @@
   #install.packages("data.table")
   #install.packages("purrr")
 
-library(dplyr)
-library(tidyr)
-library(readr)
-library(ggplot2)
-library(haven)      # Allows you to import STATA .dta files 
-library(stringr)    # Allows you to replace strings, useful for renaming vars
 library(tidyverse)
+library(haven)      # Allows you to import STATA .dta files 
 library(glue)
 library(lubridate)
 library(here)
 library(data.table)  # Allows you to import .csv files, and write .csv files
-library(purrr)
 #library(arrow)
+
 
 
 #DEFINING ARGUMENTS 
 args <- commandArgs(trailingOnly = TRUE)
-cohort <- args[1]  # e.g., "precovid", "postcovid1", etc.
-start_date <- as.Date(args[2]) #The index date for each cohort 
+print("Length of args:")
+print(length(args))
+if (length(args) == 0) { #So we can use args when testing codes locally 
+  cohort <- "precovid" # e.g., "precovid", "postcovid1", etc.
+  start_date <- as.Date("2018-10-01") #The index date for each cohort 
+} else {
+  cohort <- args[[1]] 
+  start_date <- as.Date(args[[2]])
+}
+
 
 #DEFINING FUNCTIONS   
 ##var_consistency_check: 
@@ -631,7 +634,7 @@ test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
   if(date_check_out_acscs$date_check_passed) {
     ##Pre-allocating objects
     wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv))   #list containing transformed datasets
-    rename_list <-c("numerator_out_num" = "out_num", "denominator_out_num" = "out_denom", 
+    rename_list <-c("numerator_out_num" = "out_acscs_num", "denominator_out_num" = "out_acscs_denom", 
                     "ratio_out_num" = "out_acscs_prop", "hypertension" = "hypt")   #Renaming rules for dataset
     
     #For-loop of the data management steps 
