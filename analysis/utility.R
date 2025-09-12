@@ -1,13 +1,13 @@
 # Rounding function for redaction ----
 # Rounding for counts
-roundmid_any <- function(x, to = 6) {
+roundmid_num <- function(x, to = 6) {
   # centers on (integer) midpoint of the rounding points
   x <- as.numeric(x)
   ceiling(x / to) * to - (floor(to / 2) * (x != 0))
 }
 
 # Rounding for proportions
-roundmid_prop_adaptive <- function(x) {
+roundmid_prop <- function(x) {
   x <- as.numeric(x)
   m <- mean(x, na.rm = TRUE)
   
@@ -18,8 +18,12 @@ roundmid_prop_adaptive <- function(x) {
     # Otherwise round to 0.006 (0.6%)
     to <- 0.006
   }
+  y <- ceiling(x / to) * to - (floor(to / 2) * (x != 0))
   
-  ceiling(x / to) * to - (floor(to / 2) * (x != 0))
+  # clamp values to [0,1]
+  y <- pmin(pmax(y, 0), 1)
+  
+  return(y)
 }
 
 # Function to make display numbers ----

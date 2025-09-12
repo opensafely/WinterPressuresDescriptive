@@ -132,10 +132,18 @@ input <- input %>%
 message("Strata flags added to input dataset")
 
 # Create Table 1 -----------------------------------------------------------------
-summarise_dist <- function(x) {
+summarise_dist <- function(x, type) {
     q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
     tibble(
         n_practices = sum(!is.na(x)), # total practices with non-missing values
+        n_patients = if (type %in% c("num", "denom")) {
+            sum(x, na.rm = TRUE)
+        } else {
+            NA
+        }, # total patients only for counts
+        min = min(x, na.rm = TRUE),
+        max = max(x, na.rm = TRUE),
+        range = max - min,
         mean = mean(x, na.rm = TRUE),
         sd = sd(x, na.rm = TRUE),
         median = median(x, na.rm = TRUE),
@@ -176,12 +184,12 @@ table1_long <- input %>%
 print("Create summary without redaction")
 table1_summary <- table1_long %>%
     group_by(category, type) %>%
-    summarise(summarise_dist(value), .groups = "drop") %>%
+    summarise(summarise_dist(value, unique(type)), .groups = "drop") %>%
     mutate(strata_region = "Overall") %>%
     bind_rows(
         table1_long %>%
             group_by(strata_region, category, type) %>%
-            summarise(summarise_dist(value), .groups = "drop")
+            summarise(summarise_dist(value, unique(type)), .groups = "drop")
     )
 
 # keep long version of strata
@@ -216,7 +224,7 @@ table1_long_strata <- practice_strata_long %>%
 
 table1_summary_strata <- table1_long_strata %>%
     group_by(strata, category, type) %>%
-    summarise(summarise_dist(value), .groups = "drop")
+    summarise(summarise_dist(value, unique(type)), .groups = "drop")
 
 table1_summary <- table1_summary %>%
     rename(strata = strata_region)
@@ -251,15 +259,22 @@ table1_summary_midpoint <- table1_summary_all %>%
                 .x %>%
                     mutate(across(
                         where(is.numeric),
-                        ~ roundmid_any(.x, to = threshold)
+                        ~ roundmid_num(.x, to = threshold)
                     ))
             } else if (unique(.x$type) == "prop") {
                 # proportions: adaptive rounding
                 .x %>%
-                    mutate(across(
-                        where(is.numeric),
-                        ~ roundmid_prop_adaptive(.x)
-                    ))
+                    mutate(
+                        across(
+                            where(is.numeric) &
+                                !matches("n_patients|n_practices"),
+                            ~ roundmid_prop(.x)
+                        ),
+                        across(
+                            matches("n_patients|n_practices"),
+                            ~ roundmid_num(.x, to = threshold)
+                        )
+                    )
             } else {
                 .x
             }
