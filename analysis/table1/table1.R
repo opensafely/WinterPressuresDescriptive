@@ -132,6 +132,8 @@ input <- input %>%
 message("Strata flags added to input dataset")
 
 # Create Table 1 -----------------------------------------------------------------
+# Generate function to summarise distribution ----
+print("Generate function to summarise distribution")
 summarise_dist <- function(x, type) {
     q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
     tibble(
@@ -161,8 +163,10 @@ summarise_dist <- function(x, type) {
         p90 = q[[9]]
     )
 }
+# Create long version of overall data ----
+print("Create long version of data")
 
-# Add overall label
+# add overall label
 table1_long <- input %>%
     select(
         practice_id,
@@ -180,7 +184,7 @@ table1_long <- input %>%
     rename(strata_region = exp_cat_region) %>%
     mutate(strata_region = coalesce(strata_region, "Unknown"))
 
-# Create summary without redaction ----
+# Summarise overall data ----
 print("Create summary without redaction")
 table1_summary <- table1_long %>%
     group_by(category, type) %>%
@@ -191,6 +195,8 @@ table1_summary <- table1_long %>%
             group_by(strata_region, category, type) %>%
             summarise(summarise_dist(value, unique(type)), .groups = "drop")
     )
+# Create long version of strata data ----
+print("Create long version of strata data")
 
 # keep long version of strata
 practice_strata_long <- input %>%
@@ -209,6 +215,7 @@ practice_strata_long <- input %>%
     filter(in_stratum == 1) %>%
     select(-in_stratum)
 
+# create long version of data for strata
 table1_long_strata <- practice_strata_long %>%
     pivot_longer(
         cols = c(
@@ -221,18 +228,21 @@ table1_long_strata <- practice_strata_long %>%
         values_to = "value"
     )
 
-
+# Summarise strata data ----
+print("Summarise strata data")
 table1_summary_strata <- table1_long_strata %>%
     group_by(strata, category, type) %>%
     summarise(summarise_dist(value, unique(type)), .groups = "drop")
 
+# Clean up names ----
 table1_summary <- table1_summary %>%
     rename(strata = strata_region)
 
 table1_summary_strata <- table1_summary_strata %>%
     mutate(strata = strata)
 
-# bind together
+# Bind together overall and strata summaries ----
+print("Bind together overall and strata summaries")
 table1_summary_all <- bind_rows(table1_summary, table1_summary_strata)
 
 # Save Table 1 -----------------------------------------------------------------
@@ -284,7 +294,7 @@ table1_summary_midpoint <- table1_summary_all %>%
 
 message("Redaction complete")
 
-# Save Table 1 -----------------------------------------------------------------
+# Save rounded Table 1 -------------------------------------------------------------
 print("Save rounded Table 1")
 
 write.csv(
