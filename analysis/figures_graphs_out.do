@@ -1,28 +1,44 @@
-//STATA coding in OS
-		//Have to install ssc commands specially
-		//Have to round numbers + apply disclosure control?
-		//Have to generate a table
-	
-	
-//GP CONSULTATIONS
+/*============================================================================
+DO FILE NAME:			figures_graphs_out.do
+DATE: 					12/09/2025
+AUTHOR:					Shrinkhala Dawadi
+DESCRIPTION OF FILE:	Produces a table used to generate descriptive graphs 
+==============================================================================*/	
+
+
+//===================================================
+//OUTCOME - HOSPITAL ATTENDANCES/ADMISSIONS
+//===================================================
+
+
+//Setting directory for user-written commands
+	//ssc install xframeappend 
+adopath + ../workspace/analysis/ado 
+
+
+//Defining program to mid-point round the raw numerator/denominator variables
+capture program drop round_mp6 
+program round_mp6
+	gen `2' = ceil(`1'/6)*6 - (floor(6/2)*(`1'!=0))
+end
+
 
 //Importing the data & clearing frames
 clear frames 
-import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDescriptive\output\analytic_data_long_postcovid1.csv", varnames(1) clear
+import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
 
 
-//DATA MANAGEMENT
-
-//Dropping
-	//Exposure - date vars
-	//Exposure - GP consultation vars
-	//Variables showing the missing proportions
-	//Vaccination variables
+**#//DATA MANAGEMENT
+//Dropping vars
+	//Date variables, vars related to missingness in exposures, vaccination variables
 	//CMS: Drop all conditions except hypertension, asthma, diabetes.
 		//^^The 3 most prevalent conditions in Payne et al.2018
 		//(excluding hearing loss & those requiring prescription codelists)
+	//Exposure vars we're not currently stratifying by 
+	//All GP consultation vars
 
-	drop exp_interval_* *_cons_* *_missing *_vax_* exp_*_af *_alcoholproblem *_anxietydepression *_cancer *_chd *_ckd *_constipation *_copd *_ctd *_dementia *_epilepsy *_hearingloss *_hf *_ibs *_osteoarthritis *_psychosis *_stroketia *smoker_ever *_smoker_never
+	drop exp_interval_* *_cons_* *_missing exp_*_af *_alcoholproblem *_anxietydepression *_cancer *_chd *_ckd *_constipation *_copd *_ctd *_dementia *_epilepsy *_hearingloss *_hf *_ibs *_osteoarthritis *_psychosis *_stroketia *smoker_ever *_smoker_never
+	cap drop *_vax_*
 	
 	rename *diabetes* *dbts*
 	rename *asthma* *ast*
@@ -38,10 +54,17 @@ import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDesc
 	rename *_eth_* *_*
 	rename *_least *
 	rename *_most *
+	rename *imd_# *imd#
 	rename *under* *u*
 	rename *_age_*_plus *_*p
 	rename *denom* *dnm*
 
+	drop *_5_11* *_12_17* *_18_29* *_30_44* *_45_54* *_55_64* *_65_74* *_75_79* *_80_84* *_85p*
+	drop *_mixed* *_asian* *_black* *_other*
+	drop  *_imd2* *_imd3* *_imd3* *_imd4* *_imd5*
+	drop  *_urb2*  *_urb3* *_urb4* *_urb5*
+	drop  *_male*
+	
 	
 //Group variables: tertiles of select exposures
 //I.e. grouping practices into tertiles based on their registered patient case-mix
@@ -52,51 +75,82 @@ import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDesc
 		
 	sort practice_pseudo_id out_interval_start
 	
-//Disclosure control & generating summary variables
-//Midpoint rounding the numerator and denominator variables we'll use to generate the mean and medians
 
-local group_var_list _u5y _5_11 _12_17 _18_29 _30_44 _45_54 _55_64 _65_74 _80_84 _85p _white _mixed _asian _black _other _imd_1 _imd_2 _imd_3 _imd_4 _imd_5 _ast _dbts _hypt _obs _urb1 _urb2 _urb3 _urb4 _urb5 _male _female _smoker
+//Outcome numerators - rounded to midpoint 6
+local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smoker
+
+	foreach var of varlist out_num_* out_acscs_num_*{
+		local out_var: subinstr local var "num_" "", all 	
+		local out_var: subinstr local out_var "acscs_" "", all
+		
+		round_mp6 `var' mp6_`out_var' ///Rounded numerator per practice, per date
+			
+		egen t_`out_var'= 	///Rounded total numerator, PER DATE
+			total(`var'), by(out_interval_start)	
+			round_mp6 t_`out_var' mp6_t_`out_var'
+			
+		if strlen("`group_var_list'") != 0{
+		foreach group_var in `group_var_list'{  
+			egen t`group_var'_`out_var' = ///Rounded total num, PER DATE & GROUP VAR
+				total(`var'), by(out_interval_start tert_exp_prop`group_var')
+				round_mp6 t`group_var'_`out_var' mp6_t`group_var'_`out_var'
+		}
+		}
+		}
 		
 //Outcome denominators - rounded to midpoint 6 
-	//Per practice
-		gen mp6_out_dnm = ceil(out_dnm/6)*6 - (floor(6/2)*(out_dnm!=0))
-		
-	//Overall
-		egen t_out_dnm = total(out_dnm), by(out_interval_start)
-		gen mp6_t_out_dnm = ceil(t_out_dnm/6)*6 - (floor(6/2)*(t_out_dnm!=0))
+	round_mp6 out_dnm mp6_out_dnm  ///Rounded denominator per practice, per date
 	
-	//Overall by tertile
-		foreach group_var in `group_var_list'{
-			egen t`group_var'_out_dnm = total(out_dnm), by(out_interval_start tert_exp_prop`group_var')
+	egen t_out_dnm = ///Rounded total denom, PER DATE
+		total(out_dnm), by(out_interval_start) 
+		round_mp6 t_out_dnm mp6_t_out_dnm 
 		
+	if strlen("`group_var_list'") != 0{		
+	foreach group_var in `group_var_list'{
+		egen t`group_var'_out_dnm = ///Rounded total num, PER DATE & GROUP VAR
+			total(out_dnm), by(out_interval_start tert_exp_prop`group_var')
+			round_mp6 t`group_var'_out_dnm mp6_t`group_var'_out_dnm
 	}
-		
-//Outcome numerators, totals, means, medians - rounded to midpoint 6
-	foreach var of varlist out_num_* out_acscs_num_*{
-		local new_var_name: subinstr local var "num_" "", all
-		local new_var_name: subinstr local new_var_name "acscs_" "", all
-		
-		gen mp6_`new_var_name' = ceil(`var'/6)*6 - (floor(6/2)*(`var'!=0))
-			
-		egen t_`new_var_name' = total(`var'), by(out_interval_start)
-		gen mp6_t_`new_var_name' = ceil(t_`new_var_name'/6)*6 - (floor(6/2)*(t_`new_var_name'!=0))
-		
-		gen mp6_mean_`new_var_name' = mp6_t_`new_var_name'/ mp6_t_out_dnm
-			
-		egen mp6_md_`new_var_name' = median((mp6_`new_var_name'/mp6_out_dnm))
-		
-		if strlen("`group_var_list'") != 0{
-			foreach group_var in `group_var_list'{  
-				egen t`group_var'_`new_var_name' = total(`var'), by(out_interval_start tert_exp_prop`group_var')
-				gen mp6_t`group_var'_`new_var_name' = ceil(t`group_var'_`new_var_name'/6)*6 - (floor(6/2)*(t`group_var'_`new_var_name'!=0))
-				
-				gen mp6_mean`group_var'_`new_var_name' =  mp6_t`group_var'_`new_var_name'/ t`group_var'_out_dnm 
-				
-				egen mp6_md`group_var'_`new_var_name' = median(mp6_t`group_var'_`new_var_name'/t`group_var'_out_dnm )
-		}
-		}
-		}
+	}
+	
+//Outcome medians - generated from rounded numerators & denominators
+//	We have the proportions of hospitalised patients per practice per week
+//		mp6_md_`out_var': is the median of this distribution per week
+//		mp6_md`group_var'_`out_var': is the median of this distribution per week and by the tertiles of the grouping variable 
 
+	foreach var of varlist mp6_out*{
+	local out_var: subinstr local var "mp6_" "", all
+		egen mp6_md_`out_var' = /// Median of the proportion distribution, AT EACH DATE
+			median(mp6_`out_var'/mp6_out_dnm), by(out_interval_start)
+		
+	if strlen("`group_var_list'") != 0{
+	foreach group_var in `group_var_list'{
+		egen mp6_md`group_var'_`out_var' = ///Median of the prop. dist, BY GROUP & DATE
+				median(mp6_`out_var'/mp6_out_dnm), by(out_interval_start tert_exp_prop`group_var')
+	}		
+	}
+	}
+	
+
+//Outcome total proportions - generated from rounded total numerators & denominators
+//	We have the COUNT of hospitalised patients across all practices per week
+//		mp6_prop_`out_var': total count hospitalised/all registered patients PER WEEK
+//		mp6_prop`group_var'_`out_var': total count hospitalised/all registered patients PER WEEK AND GROUP var
+//		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
+
+	foreach var of varlist mp6_out*{
+	local out_var: subinstr local var "mp6_" "", all
+		gen mp6_prop_`out_var' = /// count outcome/count pts, PER DATE
+			mp6_t_`out_var'/ mp6_t_out_dnm 	
+		
+	if strlen("`group_var_list'") != 0{
+		foreach group_var in `group_var_list' {	
+		gen mp6_prop`group_var'_`out_var' = /// count outcome/count pts, BY GROUP & DATE
+			mp6_t`group_var'_`out_var'/ mp6_t`group_var'_out_dnm 	
+	}
+	}		
+	}
+			
 
 //Second drop of variables we no longer need
 	drop exp_num* exp_prop* exp_dnm*
@@ -104,20 +158,17 @@ local group_var_list _u5y _5_11 _12_17 _18_29 _30_44 _45_54 _55_64 _65_74 _80_84
 	drop t_out* t_*_out* 
 	drop mp6_out* mp6_t_*_out*
 		
-	drop *_5_11* *_12_17* *_18_29* *_30_44* *_45_54* *_55_64* *_65_74* *_75_79* *_80_84* *_85p*
-	drop *_mixed* *_asian* *_black* *_other*
-	drop  *_imd_2* *_imd_3* *_imd_3* *_imd_4* *_imd_5*
-	drop  *_urb2*  *_urb3* *_urb4* *_urb5*
-	drop  *_male*
-	
-	
+		
+		
+		
+**#//GENERATING THE TABLES	
 //Collapsing across all practices
-	foreach stat in mean md {
+	foreach stat in prop md {
 	foreach hosp in apc ec {
 		local first_frame  `stat'_out_`hosp'
 		local out_vars mp6_`stat'_out_`hosp'
 		
-		preserve
+	preserve
 		keep practice_pseudo_id week_number `out_vars'*
 		
 		reshape wide `out_vars'_w, i(practice_pseudo_id) j(week_number)
@@ -129,24 +180,36 @@ local group_var_list _u5y _5_11 _12_17 _18_29 _30_44 _45_54 _55_64 _65_74 _80_84
 			
 		collapse (first) `out_vars'* 
 		
-		gen grouped_by = "All practices"
-		frame copy default `first_frame', replace 	
-		restore
-		}
-	}
+		rename mp6_`stat'_out_`hosp'_w* mp6_`stat'_out_w*
 		
-
+		gen grouped_by = "All practices"
+		gen acscs = "No - all conditions"
+		
+		if "`hosp'" == "apc"{
+			gen outcome_type = "Admitted patient care" 
+		}
+		else if "`hosp'" == "ec" {
+			gen outcome_type = "Emergency attendance"
+		}
+		
+		frame copy default `first_frame', replace 	
+		
+	restore
+	}
+	}	
 	
 	
 //Collapsing by tertiles
-	local exp_var_list u5y white imd_1 ast dbts hypt obs urb1 female smoker
-	foreach stat in mean md {
+	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	local acscs_list copd ast hypt dbts ang
+	foreach stat in prop md {
 	foreach hosp in apc ec {
 		local first_frame `stat'_out_`hosp'_all
 		local j = 1
 		
 		foreach exp_var in `exp_var_list'  {
-		local out_vars mp6_`stat'_`exp_var'_out_*_`hosp' 
+		foreach acscs in `acscs_list' {
+		local out_vars mp6_`stat'_`exp_var'_out_`acscs'_`hosp' 
 		preserve
 			keep practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w
 		
@@ -162,23 +225,32 @@ local group_var_list _u5y _5_11 _12_17 _18_29 _30_44 _45_54 _55_64 _65_74 _80_84
 			}
 	
 			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
-			
 				
+			rename mp6_`stat'_`exp_var'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*	
+	
 			gen grouped_by = "", after (tert_exp_prop_`exp_var')
 				qui levelsof tert_exp_prop_`exp_var'
 				forvalues i = 1/`r(r)'{
 					replace grouped_by = "Proportion `exp_var', tertile `i'" in `i'
 				}
+			gen outcome_type = ""
+				replace outcome_type = "Admitted patient care"  if "`hosp'"=="apc"
+				replace outcome_type = "Emergency attendance"  if "`hosp'"=="ec"
+			gen acscs = ""
+				replace acscs = "COPD" if "`acscs'" == "copd"
+				replace acscs = "Asthma" if "`acscs'" == "ast"
+				replace acscs = "Hypertension" if "`acscs'" == "hypt"
+				replace acscs = "Diabetes" if "`acscs'" == "dbts"
+				replace acscs = "Angina" if "`acscs'" == "ang"
+		
 			drop tert_exp_prop_`exp_var'
-			rename mp6_`stat'_`exp_var'_out_* mp6_`stat'_out_*
-			
-			
-			frame copy default out_`exp_var'_`hosp', replace 
+				
+			frame copy default out_`exp_var'_`acscs'_`hosp', replace 
 				if `j' == 1 {
-					frame copy out_`exp_var'_`hosp' `first_frame', replace
+					frame copy out_`exp_var'_`acscs'_`hosp' `first_frame', replace
 				} 
 				if `j' != 1{
-					frame `first_frame': xframeappend out_`exp_var'_`hosp',
+					frame `first_frame': xframeappend out_`exp_var'_`acscs'_`hosp', drop
 				}
 				
 		local ++ j
@@ -186,92 +258,29 @@ local group_var_list _u5y _5_11 _12_17 _18_29 _30_44 _45_54 _55_64 _65_74 _80_84
 	}
 	}	
 	}
-		
+	}	
 	
-//Merging the all-practice datasets together
+	
+//Appending the frames together 
+	frame md_out_apc_all: xframeappend md_out_apc 
+	frame md_out_ec_all: xframeappend md_out_ec 
+	frame prop_out_apc_all: xframeappend prop_out_apc 
+	frame prop_out_ec_all: xframeappend prop_out_ec 
 
-//Merging the tertile datasets together	
-	frame mean_cons_all: xframeappend mean_cons_exp	
-	frame md_cons_all: xframeappend md_cons_exp	
-	
+//Dropping remaining frames	
+	cap frame drop out_u5y_copd_apc out_u5y_copd_ec prop_out_apc prop_out_ec md_out_apc md_out_ec
+
 //Saving as a .dta file, and exporting as a tab-delimited file 	
-	foreach frame in md_out_apc md_out_ec mean_out_apc mean_out_ec md_out_apc_all md_out_ec_all mean_out_apc_all mean_out_ec_all {
-		frame `frame': save `frame'.dta, replace
-		frame `frame': export delimited using `frame'.txt, delim(tab)
+//"/output/`frame'.dta"
+//"/output/`frame'.csv"
+	foreach frame in md_out_apc_all md_out_ec_all prop_out_apc_all prop_out_ec_all {
+		frame `frame': save ../workspace/output/`frame'_`1'.dta, replace
+		frame `frame': export delimited using ../workspace/output/`frame'_`1'.csv, replace	
 	}
-
-
-
 	
-
-
+ 
 	
-**# //GRAPHS	
-//DISTRIBUTION of the proportion of hospitalised patients per practice
-	
-	//Overall
-//		hist out_prop_apc_w, freq		
-	
-	//By region
-	
-	
-//Line graphs of the prop. of hospitalised patients - OVER TIME
-//tsset practice_pseudo_id out_interval_start
-	
-	//Overall
-//		tsline mean_out_apc_w, name(mean_out_apc)
-//		tsline mean_out_ec_w, name(mean_out_ec)
-	
-	//By region
-
-	
-	//By registered patient case-mix
-		//Practices in the 90th percent
-//			tsline mean_out_apc_w, by(tert_exp_prop_under5y) overlay
-	
-//grc1leg reg_total_gp_fte reg_total_gp_extg_fte reg_total_gp_extgl_fte, ///
-//		legend(reg_total_gp_extgl_fte) ///
-//			cols(3) pos(12) ring(0) ///
-//		title("GP FTE from 2015 - 2024", size(small)) ///
-//		name("gp_fte", replace) ///
-//		saving("gp_fte", replace)	
-	
-	
-//Line graphs of GP consultations - OVER TIME
-
-//Two-way correlation: relationship
-	//How changes over time.....
-
-//	tsline out_prop_apc_w if practice_pseudo_id == 3
-	
-//	xtset practice_pseudo_id out_interval_start
-//	xtline out_prop_apc_w, overlay legend(off)
-//	xtline mean_out_prop_apc_w, overlay legend(off)
-	
-//	xtline mean_out_apc_w, overlay legend(off)
-//	
-//	if practice_pseudo_id == 3
-
-	//Line graphs of the total number of hospital admissions over time
-		//Overall
-		//By practice region
-		
-//Exposure: GP characteristics - cross-sectional
-	//Scatter plot of of the distribution of the proportion of registered patients
-//	hist exp_prop_female
-//	twoway scatter out_prop_apc_w exp_prop_female
-
-
-
-//Useful code snippets
-//	foreach var of varlist out*_num_*{
-//		di "`var'"
-//		local new_var_name: subinstr local var "num_" "", all
-//		di "`new_var_name'"
-//	}	
-	
-
-
+**# //GRAPHS
 
 
 

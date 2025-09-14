@@ -250,6 +250,54 @@ for (cohort in cohorts_all) {
 actions_list <- c(actions_list, check_and_merge_action)
 }
 
+#Add action: generate the tables used for the descriptive outcome graphs
+for (cohort in cohorts_all){
+  date <- cohort_dates[[cohort]] #Pull in the date for the cohort
+  
+  #Defining the action
+  table_for_output_graphs <- c(
+    comment(glue("Generates midpoint 6 rounded dataset for the outcome graphs, cohort: {cohort}")),
+    action(
+      name = glue("generate_table_for_outcome_graph_{cohort}"),
+      run = glue("stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        dataset1 = glue("output/md_out_apc_all_{cohort}.csv"),
+        dataset2 = glue("output/prop_out_apc_all_{cohort}.csv"),
+        dataset3 = glue("output/md_out_ec_all_{cohort}.csv"),
+        dataset4 = glue("output/prop_out_ec_all_{cohort}.csv")
+    )
+  )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, table_for_output_graphs)
+}
+
+#Add action: generate the tables used for the descriptive consultation graphs
+for (cohort in cohorts_all){
+  date <- cohort_dates[[cohort]] #Pull in the date for the cohort
+  
+  #Defining the action
+  table_for_cons_graphs <- c(
+    comment(glue("Generates mp6 rounded dataset for the cons graphs, cohort: {cohort}")),
+    action(
+      name = glue("generate_table_for_cons_graph_{cohort}"),
+      run = glue("stata-mp:latest analysis/figures_graphs_exp_cons.do {cohort} {date}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        dataset1 = glue("output/md_cons_all_{cohort}.csv"),
+        dataset2 = glue("output/prop_cons_all_{cohort}.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, table_for_cons_graphs)
+}
+
+
+
+
+
 
 
 # Combine actions into project list --------------------------------------------
