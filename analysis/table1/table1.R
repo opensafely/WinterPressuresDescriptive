@@ -34,9 +34,9 @@ print('Specify command arguments')
 args <- commandArgs(trailingOnly = TRUE)
 print(length(args))
 if (length(args) == 0) {
-    cohort <- "postcovid1"
+  cohort <- "postcovid1"
 } else {
-    cohort <- args[[1]]
+  cohort <- args[[1]]
 }
 
 # Define input file path ---------------------------------------------------------
@@ -49,9 +49,9 @@ print('Load data')
 
 input <- read_csv(file_path)
 message(paste0(
-    "Dataset has been read successfully with N = ",
-    nrow(input),
-    " rows"
+  "Dataset has been read successfully with N = ",
+  nrow(input),
+  " rows"
 ))
 
 # Restrict columns for table 1 ------------------------------------------------
@@ -60,11 +60,11 @@ print('Restrict columns')
 n_before <- ncol(input)
 
 input <- input %>%
-    select(
-        practice_id,
-        starts_with("index_date"),
-        starts_with("exp_") # Exposures
-    )
+  select(
+    practice_id,
+    starts_with("index_date"),
+    starts_with("exp_") # Exposures
+  )
 
 n_after <- ncol(input)
 n_removed <- n_before - n_after
@@ -75,171 +75,177 @@ message("Number of variables removed: ", n_removed)
 
 # GP characteristics of interest for making strata and calculating cutoffs ----
 print(
-    'GP characteristics of interest for making strata and calculating cutoffs'
+  'GP characteristics of interest for making strata and calculating cutoffs'
 )
 
 vars_interest <- c(
-    "exp_prop_female",
-    "exp_prop_imd_5_least",
-    "exp_prop_eth_white",
-    "exp_prop_obesity",
-    "exp_prop_smoker_current",
-    "exp_prop_age_85_plus"
+  "exp_prop_female",
+  "exp_prop_imd_1_most",
+  "exp_prop_eth_white",
+  "exp_prop_obesity",
+  "exp_prop_smoker_current",
+  "exp_prop_under5y",
+  "exp_prop_age_85_plus"
 )
 
 # 95th percentile thresholds for each
 cutoffs <- input %>%
-    summarise(across(
-        all_of(vars_interest),
-        ~ quantile(.x, 0.95, na.rm = TRUE)
-    )) %>%
-    as.list()
+  summarise(across(
+    all_of(vars_interest),
+    ~ quantile(.x, 0.95, na.rm = TRUE)
+  )) %>%
+  as.list()
 
 # add flags
 input <- input %>%
-    mutate(
-        strata_female_high = ifelse(
-            exp_prop_female >= cutoffs$exp_prop_female,
-            1,
-            0
-        ),
-        strata_imd5_high = ifelse(
-            exp_prop_imd_5_least >= cutoffs$exp_prop_imd_5_least,
-            1,
-            0
-        ),
-        strata_eth_white_high = ifelse(
-            exp_prop_eth_white >= cutoffs$exp_prop_eth_white,
-            1,
-            0
-        ),
-        strata_obesity_high = ifelse(
-            exp_prop_obesity >= cutoffs$exp_prop_obesity,
-            1,
-            0
-        ),
-        strata_smoker_high = ifelse(
-            exp_prop_smoker_current >= cutoffs$exp_prop_smoker_current,
-            1,
-            0
-        ),
-        strata_age85plus_high = ifelse(
-            exp_prop_age_85_plus >= cutoffs$exp_prop_age_85_plus,
-            1,
-            0
-        )
+  mutate(
+    strata_female_high = ifelse(
+      exp_prop_female >= cutoffs$exp_prop_female,
+      1,
+      0
+    ),
+    strata_imd1_high = ifelse(
+      exp_prop_imd_1_most >= cutoffs$exp_prop_imd_1_most,
+      1,
+      0
+    ),
+    strata_eth_white_high = ifelse(
+      exp_prop_eth_white >= cutoffs$exp_prop_eth_white,
+      1,
+      0
+    ),
+    strata_obesity_high = ifelse(
+      exp_prop_obesity >= cutoffs$exp_prop_obesity,
+      1,
+      0
+    ),
+    strata_smoker_high = ifelse(
+      exp_prop_smoker_current >= cutoffs$exp_prop_smoker_current,
+      1,
+      0
+    ),
+    strata_age85plus_high = ifelse(
+      exp_prop_age_85_plus >= cutoffs$exp_prop_age_85_plus,
+      1,
+      0
+    ),
+    strata_under5y_high = ifelse(
+      exp_prop_under5y >= cutoffs$exp_prop_under5y,
+      1,
+      0
     )
+  )
 message("Strata flags added to input dataset")
 
 # Create Table 1 -----------------------------------------------------------------
 # Generate function to summarise distribution ----
 print("Generate function to summarise distribution")
 summarise_dist <- function(x, type) {
-    q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
-    tibble(
-        n_practices = sum(!is.na(x)), # total practices with non-missing values
-        n_patients = if (type %in% c("num", "denom")) {
-            sum(x, na.rm = TRUE)
-        } else {
-            NA
-        }, # total patients only for counts
-        min = min(x, na.rm = TRUE),
-        max = max(x, na.rm = TRUE),
-        range = max - min,
-        mean = mean(x, na.rm = TRUE),
-        sd = sd(x, na.rm = TRUE),
-        median = median(x, na.rm = TRUE),
-        q1 = quantile(x, 0.25, na.rm = TRUE),
-        q3 = quantile(x, 0.75, na.rm = TRUE),
-        iqr = IQR(x, na.rm = TRUE),
-        p10 = q[[1]],
-        p20 = q[[2]],
-        p30 = q[[3]],
-        p40 = q[[4]],
-        p50 = q[[5]],
-        p60 = q[[6]],
-        p70 = q[[7]],
-        p80 = q[[8]],
-        p90 = q[[9]]
-    )
+  q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
+  tibble(
+    n_practices = sum(!is.na(x)), # total practices with non-missing values
+    n_patients = if (type %in% c("num", "denom")) {
+      sum(x, na.rm = TRUE)
+    } else {
+      NA
+    }, # total patients only for counts
+    min = min(x, na.rm = TRUE),
+    max = max(x, na.rm = TRUE),
+    range = max - min,
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    median = median(x, na.rm = TRUE),
+    q1 = quantile(x, 0.25, na.rm = TRUE),
+    q3 = quantile(x, 0.75, na.rm = TRUE),
+    iqr = IQR(x, na.rm = TRUE),
+    p10 = q[[1]],
+    p20 = q[[2]],
+    p30 = q[[3]],
+    p40 = q[[4]],
+    p50 = q[[5]],
+    p60 = q[[6]],
+    p70 = q[[7]],
+    p80 = q[[8]],
+    p90 = q[[9]]
+  )
 }
 # Create long version of overall data ----
 print("Create long version of data")
 
 # add overall label
 table1_long <- input %>%
-    select(
-        practice_id,
-        exp_cat_region,
-        starts_with("exp_num_"),
-        starts_with("exp_denom_"),
-        starts_with("exp_prop_")
-    ) %>%
-    pivot_longer(
-        cols = -c(practice_id, exp_cat_region),
-        names_to = c("type", "category"),
-        names_pattern = "exp_(num|denom|prop)_(.*)",
-        values_to = "value"
-    ) %>%
-    rename(strata_region = exp_cat_region) %>%
-    mutate(strata_region = coalesce(strata_region, "Unknown"))
+  select(
+    practice_id,
+    exp_cat_region,
+    starts_with("exp_num_"),
+    starts_with("exp_denom_"),
+    starts_with("exp_prop_")
+  ) %>%
+  pivot_longer(
+    cols = -c(practice_id, exp_cat_region),
+    names_to = c("type", "category"),
+    names_pattern = "exp_(num|denom|prop)_(.*)",
+    values_to = "value"
+  ) %>%
+  rename(strata_region = exp_cat_region) %>%
+  mutate(strata_region = coalesce(strata_region, "Unknown"))
 
 # Summarise overall data ----
 print("Create summary without redaction")
 table1_summary <- table1_long %>%
-    group_by(category, type) %>%
-    summarise(summarise_dist(value, unique(type)), .groups = "drop") %>%
-    mutate(strata_region = "Overall") %>%
-    bind_rows(
-        table1_long %>%
-            group_by(strata_region, category, type) %>%
-            summarise(summarise_dist(value, unique(type)), .groups = "drop")
-    )
+  group_by(category, type) %>%
+  summarise(summarise_dist(value, unique(type)), .groups = "drop") %>%
+  mutate(strata_region = "Overall") %>%
+  bind_rows(
+    table1_long %>%
+      group_by(strata_region, category, type) %>%
+      summarise(summarise_dist(value, unique(type)), .groups = "drop")
+  )
 # Create long version of strata data ----
 print("Create long version of strata data")
 
 # keep long version of strata
 practice_strata_long <- input %>%
-    select(
-        practice_id,
-        starts_with("exp_num_"),
-        starts_with("exp_denom_"),
-        starts_with("exp_prop_"),
-        starts_with("strata_")
-    ) %>%
-    pivot_longer(
-        cols = starts_with("strata_"),
-        names_to = "strata",
-        values_to = "in_stratum"
-    ) %>%
-    filter(in_stratum == 1) %>%
-    select(-in_stratum)
+  select(
+    practice_id,
+    starts_with("exp_num_"),
+    starts_with("exp_denom_"),
+    starts_with("exp_prop_"),
+    starts_with("strata_")
+  ) %>%
+  pivot_longer(
+    cols = starts_with("strata_"),
+    names_to = "strata",
+    values_to = "in_stratum"
+  ) %>%
+  filter(in_stratum == 1) %>%
+  select(-in_stratum)
 
 # create long version of data for strata
 table1_long_strata <- practice_strata_long %>%
-    pivot_longer(
-        cols = c(
-            starts_with("exp_num_"),
-            starts_with("exp_denom_"),
-            starts_with("exp_prop_")
-        ),
-        names_to = c("type", "category"),
-        names_pattern = "exp_(num|denom|prop)_(.*)",
-        values_to = "value"
-    )
+  pivot_longer(
+    cols = c(
+      starts_with("exp_num_"),
+      starts_with("exp_denom_"),
+      starts_with("exp_prop_")
+    ),
+    names_to = c("type", "category"),
+    names_pattern = "exp_(num|denom|prop)_(.*)",
+    values_to = "value"
+  )
 
 # Summarise strata data ----
 print("Summarise strata data")
 table1_summary_strata <- table1_long_strata %>%
-    group_by(strata, category, type) %>%
-    summarise(summarise_dist(value, unique(type)), .groups = "drop")
+  group_by(strata, category, type) %>%
+  summarise(summarise_dist(value, unique(type)), .groups = "drop")
 
 # Clean up names ----
 table1_summary <- table1_summary %>%
-    rename(strata = strata_region)
+  rename(strata = strata_region)
 
 table1_summary_strata <- table1_summary_strata %>%
-    mutate(strata = strata)
+  mutate(strata = strata)
 
 # Bind together overall and strata summaries ----
 print("Bind together overall and strata summaries")
@@ -249,48 +255,48 @@ table1_summary_all <- bind_rows(table1_summary, table1_summary_strata)
 print("Save Table 1")
 
 write.csv(
-    table1_summary_all,
-    paste0(
-        table1_dir,
-        "table1-cohort_",
-        cohort,
-        ".csv"
-    ),
-    row.names = FALSE
+  table1_summary_all,
+  paste0(
+    table1_dir,
+    "table1-cohort_",
+    cohort,
+    ".csv"
+  ),
+  row.names = FALSE
 )
 
 # Apply redaction/rounding ----
 table1_summary_midpoint <- table1_summary_all %>%
-    group_split(type) %>%
-    purrr::map_dfr(
-        ~ {
-            if (unique(.x$type) %in% c("num", "denom")) {
-                # counts: midpoint rounding to threshold
-                .x %>%
-                    mutate(across(
-                        where(is.numeric),
-                        ~ roundmid_num(.x, to = threshold)
-                    ))
-            } else if (unique(.x$type) == "prop") {
-                # proportions: adaptive rounding
-                .x %>%
-                    mutate(
-                        across(
-                            where(is.numeric) &
-                                !matches("n_patients|n_practices"),
-                            ~ roundmid_prop(.x)
-                        ),
-                        across(
-                            matches("n_patients|n_practices"),
-                            ~ roundmid_num(.x, to = threshold)
-                        )
-                    )
-            } else {
-                .x
-            }
-        }
-    ) %>%
-    rename_with(~ paste0(.x, "_midpoint6"), where(is.numeric)) # <-- add suffix
+  group_split(type) %>%
+  purrr::map_dfr(
+    ~ {
+      if (unique(.x$type) %in% c("num", "denom")) {
+        # counts: midpoint rounding to threshold
+        .x %>%
+          mutate(across(
+            where(is.numeric),
+            ~ roundmid_num(.x, to = threshold)
+          ))
+      } else if (unique(.x$type) == "prop") {
+        # proportions: adaptive rounding
+        .x %>%
+          mutate(
+            across(
+              where(is.numeric) &
+                !matches("n_patients|n_practices"),
+              ~ roundmid_prop(.x)
+            ),
+            across(
+              matches("n_patients|n_practices"),
+              ~ roundmid_num(.x, to = threshold)
+            )
+          )
+      } else {
+        .x
+      }
+    }
+  ) %>%
+  rename_with(~ paste0(.x, "_midpoint6"), where(is.numeric)) # <-- add suffix
 
 message("Redaction complete")
 
@@ -298,12 +304,12 @@ message("Redaction complete")
 print("Save rounded Table 1")
 
 write.csv(
-    table1_summary_midpoint,
-    paste0(
-        table1_dir,
-        "table1-cohort_",
-        cohort,
-        "-midpoint6.csv"
-    ),
-    row.names = FALSE
+  table1_summary_midpoint,
+  paste0(
+    table1_dir,
+    "table1-cohort_",
+    cohort,
+    "-midpoint6.csv"
+  ),
+  row.names = FALSE
 )
