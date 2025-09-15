@@ -84,19 +84,19 @@ message(paste0(
   " rows"
 ))
 
-# Remove practices with <750 patients ----------------------------------------
-print("Remove practices with <750 patients")
+# Remove practices with <1000 patients ----------------------------------------
+print("Remove practices with <1000 patients")
 
 n_before <- nrow(practice_summary)
 
 practice_summary <- practice_summary %>%
-  filter(exp_denom_total >= 750)
+  filter(exp_denom_total >= 1000)
 
 n_after <- nrow(practice_summary)
 
 n_removed <- n_before - n_after
 
-message(paste0("Number of practices with <750 patients: ", n_removed))
+message(paste0("Number of practices with <1000 patients: ", n_removed))
 message(paste0(
   "Practice summary dataset after removing small practices has N = ",
   n_after,

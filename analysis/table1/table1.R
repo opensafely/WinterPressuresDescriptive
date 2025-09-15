@@ -85,14 +85,15 @@ vars_interest <- c(
   "exp_prop_obesity",
   "exp_prop_smoker_current",
   "exp_prop_under5y",
-  "exp_prop_age_85_plus"
+  "exp_prop_age_85_plus",
+  "exp_prop_rural_village"
 )
 
-# 95th percentile thresholds for each
+# 90th percentile thresholds for each
 cutoffs <- input %>%
   summarise(across(
     all_of(vars_interest),
-    ~ quantile(.x, 0.95, na.rm = TRUE)
+    ~ quantile(.x, 0.90, na.rm = TRUE)
   )) %>%
   as.list()
 
@@ -131,6 +132,11 @@ input <- input %>%
     ),
     strata_under5y_high = ifelse(
       exp_prop_under5y >= cutoffs$exp_prop_under5y,
+      1,
+      0
+    ),
+    strata_ruralvillage_high = ifelse(
+      exp_prop_rural_village >= cutoffs$exp_prop_rural_village,
       1,
       0
     )
@@ -270,25 +276,28 @@ table1_summary_midpoint <- table1_summary_all %>%
   group_split(type) %>%
   purrr::map_dfr(
     ~ {
-      if (unique(.x$type) %in% c("num", "denom")) {
-        # counts: midpoint rounding to threshold
-        .x %>%
-          mutate(across(
-            where(is.numeric),
-            ~ roundmid_num(.x, to = threshold)
-          ))
-      } else if (unique(.x$type) == "prop") {
-        # proportions: adaptive rounding
+      if (unique(.x$type) == "prop") {
         .x %>%
           mutate(
             across(
-              where(is.numeric) &
-                !matches("n_patients|n_practices"),
-              ~ roundmid_prop(.x)
+              where(is.numeric) & !matches("n_patients|n_practices"),
+              ~ ifelse(
+                grepl("cons_", category),
+                .,                   # leave consultation proportions unrounded
+                roundmid_prop(.)     # round other proportions
+              )
             ),
             across(
               matches("n_patients|n_practices"),
-              ~ roundmid_num(.x, to = threshold)
+              ~ roundmid_num(., to = threshold)
+            )
+          )
+      } else if (unique(.x$type) %in% c("num", "denom")) {
+        .x %>%
+          mutate(
+            across(
+              where(is.numeric),
+              ~ roundmid_num(., to = threshold)
             )
           )
       } else {
@@ -296,8 +305,7 @@ table1_summary_midpoint <- table1_summary_all %>%
       }
     }
   ) %>%
-  rename_with(~ paste0(.x, "_midpoint6"), where(is.numeric)) # <-- add suffix
-
+  rename_with(~ paste0(.x, "_midpoint6"), where(is.numeric))  # add suffix
 message("Redaction complete")
 
 # Save rounded Table 1 -------------------------------------------------------------
