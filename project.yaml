@@ -1060,318 +1060,6 @@ actions:
         dataset1: output/analytic_data_long_postcovid3.csv
         dataset2: output/analytic_data_wide_postcovid3.csv
 
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: precovid
-
-    
-
-  generate_table_for_outcome_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_out.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_precovid.csv
-        dataset2: output/prop_out_apc_all_precovid.csv
-        dataset3: output/md_out_ec_all_precovid.csv
-        dataset4: output/prop_out_ec_all_precovid.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid1
-
-    
-
-  generate_table_for_outcome_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid1.csv
-        dataset2: output/prop_out_apc_all_postcovid1.csv
-        dataset3: output/md_out_ec_all_postcovid1.csv
-        dataset4: output/prop_out_ec_all_postcovid1.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid2
-
-    
-
-  generate_table_for_outcome_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid2.csv
-        dataset2: output/prop_out_apc_all_postcovid2.csv
-        dataset3: output/md_out_ec_all_postcovid2.csv
-        dataset4: output/prop_out_ec_all_postcovid2.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid3
-
-    
-
-  generate_table_for_outcome_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid3.csv
-        dataset2: output/prop_out_apc_all_postcovid3.csv
-        dataset3: output/md_out_ec_all_postcovid3.csv
-        dataset4: output/prop_out_ec_all_postcovid3.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: precovid 
-
-  generate_table_for_cons_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_precovid.csv
-        dataset2: output/prop_cons_all_precovid.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid1 
-
-  generate_table_for_cons_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid1.csv
-        dataset2: output/prop_cons_all_postcovid1.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid2 
-
-  generate_table_for_cons_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid2.csv
-        dataset2: output/prop_cons_all_postcovid2.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid3 
-
-  generate_table_for_cons_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid3.csv
-        dataset2: output/prop_cons_all_postcovid3.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: precovid
-
-    
-
-  generate_table_for_outcome_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_out.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_precovid.csv
-        dataset2: output/prop_out_apc_all_precovid.csv
-        dataset3: output/md_out_ec_all_precovid.csv
-        dataset4: output/prop_out_ec_all_precovid.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid1
-
-    
-
-  generate_table_for_outcome_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid1.csv
-        dataset2: output/prop_out_apc_all_postcovid1.csv
-        dataset3: output/md_out_ec_all_postcovid1.csv
-        dataset4: output/prop_out_ec_all_postcovid1.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid2
-
-    
-
-  generate_table_for_outcome_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid2.csv
-        dataset2: output/prop_out_apc_all_postcovid2.csv
-        dataset3: output/md_out_ec_all_postcovid2.csv
-        dataset4: output/prop_out_ec_all_postcovid2.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid3
-
-    
-
-  generate_table_for_outcome_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid3.csv
-        dataset2: output/prop_out_apc_all_postcovid3.csv
-        dataset3: output/md_out_ec_all_postcovid3.csv
-        dataset4: output/prop_out_ec_all_postcovid3.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: precovid 
-
-  generate_table_for_cons_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_precovid.csv
-        dataset2: output/prop_cons_all_precovid.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid1 
-
-  generate_table_for_cons_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid1.csv
-        dataset2: output/prop_cons_all_postcovid1.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid2 
-
-  generate_table_for_cons_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid2.csv
-        dataset2: output/prop_cons_all_postcovid2.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid3 
-
-  generate_table_for_cons_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid3.csv
-        dataset2: output/prop_cons_all_postcovid3.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: precovid
-
-    
-
-  generate_table_for_outcome_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_out.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_precovid.csv
-        dataset2: output/prop_out_apc_all_precovid.csv
-        dataset3: output/md_out_ec_all_precovid.csv
-        dataset4: output/prop_out_ec_all_precovid.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid1
-
-    
-
-  generate_table_for_outcome_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid1.csv
-        dataset2: output/prop_out_apc_all_postcovid1.csv
-        dataset3: output/md_out_ec_all_postcovid1.csv
-        dataset4: output/prop_out_ec_all_postcovid1.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid2
-
-    
-
-  generate_table_for_outcome_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid2.csv
-        dataset2: output/prop_out_apc_all_postcovid2.csv
-        dataset3: output/md_out_ec_all_postcovid2.csv
-        dataset4: output/prop_out_ec_all_postcovid2.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid3
-
-    
-
-  generate_table_for_outcome_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid3.csv
-        dataset2: output/prop_out_apc_all_postcovid3.csv
-        dataset3: output/md_out_ec_all_postcovid3.csv
-        dataset4: output/prop_out_ec_all_postcovid3.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: precovid 
-
-  generate_table_for_cons_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_precovid.csv
-        dataset2: output/prop_cons_all_precovid.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid1 
-
-  generate_table_for_cons_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid1.csv
-        dataset2: output/prop_cons_all_postcovid1.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid2 
-
-  generate_table_for_cons_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid2.csv
-        dataset2: output/prop_cons_all_postcovid2.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid3 
-
-  generate_table_for_cons_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid3.csv
-        dataset2: output/prop_cons_all_postcovid3.csv
-
   ## Generate cleaned input dataset - precovid 
 
   generate_input_precovid_clean:
@@ -1459,4 +1147,108 @@ actions:
       moderately_sensitive:
         table1: output/table1/table1-cohort_postcovid3.csv
         table1_midpoint6: output/table1/table1-cohort_postcovid3-midpoint6.csv
+
+  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: precovid
+
+    
+
+  generate_table_for_outcome_graph_precovid:
+    run: stata-mp:latest analysis/figures_graphs_out.do precovid 2018-10-01
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_out_apc_all_precovid.csv
+        dataset2: output/prop_out_apc_all_precovid.csv
+        dataset3: output/md_out_ec_all_precovid.csv
+        dataset4: output/prop_out_ec_all_precovid.csv
+
+  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid1
+
+    
+
+  generate_table_for_outcome_graph_postcovid1:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid1 2022-10-01
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_out_apc_all_postcovid1.csv
+        dataset2: output/prop_out_apc_all_postcovid1.csv
+        dataset3: output/md_out_ec_all_postcovid1.csv
+        dataset4: output/prop_out_ec_all_postcovid1.csv
+
+  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid2
+
+    
+
+  generate_table_for_outcome_graph_postcovid2:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid2 2023-10-01
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_out_apc_all_postcovid2.csv
+        dataset2: output/prop_out_apc_all_postcovid2.csv
+        dataset3: output/md_out_ec_all_postcovid2.csv
+        dataset4: output/prop_out_ec_all_postcovid2.csv
+
+  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid3
+
+    
+
+  generate_table_for_outcome_graph_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_out_apc_all_postcovid3.csv
+        dataset2: output/prop_out_apc_all_postcovid3.csv
+        dataset3: output/md_out_ec_all_postcovid3.csv
+        dataset4: output/prop_out_ec_all_postcovid3.csv
+
+  ## Generates mp6 rounded dataset for the cons graphs, cohort: precovid 
+
+  generate_table_for_cons_graph_precovid:
+    run: stata-mp:latest analysis/figures_graphs_exp_cons.do precovid 2018-10-01
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_cons_all_precovid.csv
+        dataset2: output/prop_cons_all_precovid.csv
+
+  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid1 
+
+  generate_table_for_cons_graph_postcovid1:
+    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid1 2022-10-01
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_cons_all_postcovid1.csv
+        dataset2: output/prop_cons_all_postcovid1.csv
+
+  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid2 
+
+  generate_table_for_cons_graph_postcovid2:
+    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid2 2023-10-01
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_cons_all_postcovid2.csv
+        dataset2: output/prop_cons_all_postcovid2.csv
+
+  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid3 
+
+  generate_table_for_cons_graph_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        dataset1: output/md_cons_all_postcovid3.csv
+        dataset2: output/prop_cons_all_postcovid3.csv
 
