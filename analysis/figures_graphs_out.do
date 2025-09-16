@@ -23,9 +23,12 @@ program round_mp6
 end
 
 
+
+
 //Importing the data & clearing frames
 clear frames 
-import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
+//import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
+import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDescriptive\output\analytic_data_long_postcovid1.csv", clear
 
 
 **#//DATA MANAGEMENT
@@ -158,26 +161,50 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	drop t_out* t_*_out* 
 	drop mp6_out* mp6_t_*_out*
 		
+ 
+//------------------
+preserve 
+keep practice_pseudo_id week_number mp6_prop_u5y_out_apc_w*
+reshape wide mp6_prop_u5y_out_apc_w*, i(practice_pseudo_id) j(week_number)
+
+	foreach var of varlist mp6_prop_*out_apc_w*{
+		levelsof `var'
+		di _n "Wide variable: `var' has levels: `r(levels)'"
 		
-		
+		di "Check 1: assert r(r) == 1 --> Should work"
+			assert `r(r)' == 1
+			
+		di "Check 2: assert r(r) == 2 --> Should be incorrect"
+			assert `r(r)' == 2
+			if _rc == 9 {
+				di "There was an error for variable: `var'"
+			}
+			else {
+				continue
+			}
+	}			
+
 		
 **#//GENERATING THE TABLES	
-//Collapsing across all practices
+//All outcomes: collapsing across all practices 
 	foreach stat in prop md {
 	foreach hosp in apc ec {
-		local first_frame  `stat'_out_`hosp'
+		local first_frame  `stat'_out_`hosp'_all
 		local out_vars mp6_`stat'_out_`hosp'
 		
-	preserve
-		keep practice_pseudo_id week_number `out_vars'*
+		frame put practice_pseudo_id week_number `out_vars'*, into(`first_frame')
+		frame change `first_frame'
 		
 		reshape wide `out_vars'_w, i(practice_pseudo_id) j(week_number)
 			
 		foreach var of varlist `out_vars'* {
 			qui  levelsof `var' if `var'!=.
-			assert `r(r)' == 1
+			cap assert `r(r)' == 1
+				if _rc == 9 {
+					di _n "Error: variable `var' is not consistent across all practices"
+					continue
+				}
 			}	
-			
 		collapse (first) `out_vars'* 
 		
 		rename mp6_`stat'_out_`hosp'_w* mp6_`stat'_out_w*
@@ -186,32 +213,28 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		gen acscs = "No - all conditions"
 		
 		if "`hosp'" == "apc"{
-			gen outcome_type = "Admitted patient care" 
+		gen outcome_type = "Admitted patient care" 
 		}
 		else if "`hosp'" == "ec" {
-			gen outcome_type = "Emergency attendance"
+		gen outcome_type = "Emergency attendance"
 		}
-		
-		frame copy default `first_frame', replace 	
-		
-	restore
+		frame change default 
 	}
 	}	
 	
 	
-//Collapsing by tertiles
+//All outcomes: collapsing by TERTILES of the exposure variable
 	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
-	local acscs_list copd ast hypt dbts ang
 	foreach stat in prop md {
 	foreach hosp in apc ec {
-		local first_frame `stat'_out_`hosp'_all
+		local first_frame `stat'_out_`hosp'_exp
 		local j = 1
 		
 		foreach exp_var in `exp_var_list'  {
-		foreach acscs in `acscs_list' {
-		local out_vars mp6_`stat'_`exp_var'_out_`acscs'_`hosp' 
-		preserve
-			keep practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w
+		local out_vars mp6_`stat'_`exp_var'_out_`hosp' 
+		
+		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(`stat'_out_`hosp'_`exp_var')
+		frame change `stat'_out_`hosp'_`exp_var'
 		
 			reshape wide `out_vars'_w, i(practice_pseudo_id tert_exp_prop_`exp_var') j(week_number)
 			
@@ -222,14 +245,138 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 					levelsof `var' if tert_exp_prop_`exp_var' == `level'
 					
 					cap assert `r(r)' == 1 	
-						if _rc != 0 {
+						if _rc == 9 {
 							di _n "Collapse was not completed"
 							di "Variable:`var', does not have the same values within each level of exp_var: `exp_var'" 
-							continue
+						continue
 						}
 				}	
 			}
 	
+			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
+				
+			rename mp6_`stat'_`exp_var'_out_`hosp'_w* mp6_`stat'_out_w*	
+	
+			gen grouped_by = "", after (tert_exp_prop_`exp_var')
+				qui levelsof tert_exp_prop_`exp_var'
+				forvalues i = 1/`r(r)'{
+					replace grouped_by = "Proportion `exp_var', tertile `i'" in `i'
+				}
+			drop tert_exp_prop_`exp_var'
+			
+			gen acscs = "No - all conditions"
+		
+			gen outcome_type = ""
+				replace outcome_type = "Admitted patient care"  if "`hosp'"=="apc"
+				replace outcome_type = "Emergency attendance"  if "`hosp'"=="ec"
+			
+			di _n "We are almost done `stat' `hosp' exp_var: `exp_var'"
+			if `j' == 1 {
+				frame copy `stat'_out_`hosp'_`exp_var' `first_frame', replace 
+				frame change default
+				frame drop `stat'_out_`hosp'_`exp_var'
+			} 
+			if `j' != 1{
+				frame change `first_frame'
+				xframeappend `stat'_out_`hosp'_`exp_var', drop
+				frame change default
+			}
+		
+		local ++ j
+	}
+	}	
+	}
+	
+	
+//ACSCS outcomes: Collapsing across all practices 	
+	local acscs_list copd ast hypt dbts ang	
+	foreach stat in prop md {
+	foreach hosp in apc ec {
+		local first_frame `stat'_out_`hosp'_acscs
+		local j = 1
+		
+		foreach acscs in `acscs_list' {
+			local out_vars mp6_`stat'_out_`acscs'_`hosp'
+		
+			frame put practice_pseudo_id week_number `out_vars'*, into(`stat'_out_`hosp'_`acscs')
+			frame change `stat'_out_`hosp'_`acscs'
+			
+			reshape wide `out_vars', i(practice_pseudo_id) j(week_number)
+				
+			foreach var of varlist `out_vars'* {
+				qui  levelsof `var' if `var'!=.
+				cap assert `r(r)' == 1
+					if _rc == 9 {
+						di _n "Error: variable `var' is not consistent across all practices for ACSC: `acscs'"
+						continue
+					}
+			}	
+			collapse (first) `out_vars'_w* 
+			
+			rename mp6_`stat'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*
+			
+			gen grouped_by = "All practices"
+			gen acscs = ""
+				replace acscs = "COPD" if "`acscs'" == "copd"
+				replace acscs = "Asthma" if "`acscs'" == "ast"
+				replace acscs = "Hypertension" if "`acscs'" == "hypt"
+				replace acscs = "Diabetes" if "`acscs'" == "dbts"
+				replace acscs = "Angina" if "`acscs'" == "ang"
+			
+			if "`hosp'" == "apc"{
+			gen outcome_type = "Admitted patient care" 
+			}
+			else if "`hosp'" == "ec" {
+			gen outcome_type = "Emergency attendance"
+			}
+			di _n "We are almost done `stat' `hosp' for ACSCs `acscs'"
+			if `j' == 1 {
+				frame copy `stat'_out_`hosp'_`acscs' `first_frame', replace
+				frame change default
+				frame drop `stat'_out_`hosp'_`acscs'
+			} 
+			if `j' != 1{
+				frame change `first_frame' 
+				xframeappend `stat'_out_`hosp'_`acscs', drop
+				frame change default
+			}
+		local ++ j
+		}
+	}
+	}	
+	
+
+//ACSCS outcomes: Collapsing by TERTILES of the exposure variable 
+	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	local acscs_list copd ast hypt dbts ang
+	foreach stat in prop md {
+	foreach hosp in apc ec {
+		local first_frame `stat'_out_`hosp'_exp_acscs
+		local j = 1
+		
+		foreach exp_var in `exp_var_list'  {
+		foreach acscs in `acscs_list' {
+		local out_vars mp6_`stat'_`exp_var'_out_`acscs'_`hosp' 
+			
+		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(`stat'_out_`hosp'_`exp_var'_`acscs')
+		frame change `stat'_out_`hosp'_`exp_var'_`acscs'
+		
+			reshape wide `out_vars'_w, i(practice_pseudo_id tert_exp_prop_`exp_var') j(week_number)
+			
+			foreach var of varlist `out_vars'_w* {
+				qui levelsof tert_exp_prop_`exp_var', local(exp_var_levels)
+			foreach level in `exp_var_levels'{
+				di "Outcome: `var', grouping variable: `exp_var' with levels: `exp_var_levels'"
+				levelsof `var' if tert_exp_prop_`exp_var' == `level'
+					
+				cap assert `r(r)' == 1 	
+					if _rc != 0 {
+						di _n "Collapse was not completed"
+						di "Variable:`var', does not have the same values within each level of exp_var: `exp_var'" 
+						continue
+					}
+			}	
+			}
 			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
 				
 			rename mp6_`stat'_`exp_var'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*	
@@ -250,42 +397,49 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 				replace acscs = "Angina" if "`acscs'" == "ang"
 		
 			drop tert_exp_prop_`exp_var'
+			
+			di _n "We are almost done `stat' `hosp' exp_var: `exp_var' for ACSCs `acscs'"
+			if `j' == 1 {
+				frame copy `stat'_out_`hosp'_`exp_var'_`acscs' `first_frame', replace
+				frame change default
+				frame drop `stat'_out_`hosp'_`exp_var'_`acscs' 
 				
-			frame copy default out_`exp_var'_`acscs'_`hosp', replace 
-				if `j' == 1 {
-					frame copy out_`exp_var'_`acscs'_`hosp' `first_frame', replace
-				} 
-				if `j' != 1{
-					frame `first_frame': xframeappend out_`exp_var'_`acscs'_`hosp', drop
-				}
+			} 
+			if `j' != 1{
+				frame change `first_frame' 
+				xframeappend `stat'_out_`hosp'_`exp_var'_`acscs', drop
+				frame change default
+			}
 				
 		local ++ j
-		restore
 	}
 	}	
 	}
 	}	
 	
-	
-//Appending the frames together 
-	frame md_out_apc_all: xframeappend md_out_apc 
-	frame md_out_ec_all: xframeappend md_out_ec 
-	frame prop_out_apc_all: xframeappend prop_out_apc 
-	frame prop_out_ec_all: xframeappend prop_out_ec 
 
-//Dropping remaining frames	
-	cap frame drop out_u5y_copd_apc out_u5y_copd_ec prop_out_apc prop_out_ec md_out_apc md_out_ec
+	
+	
+**# //APPENDING THE FRAMES TOGETHRER
+	frame md_out_apc_all: ///
+		xframeappend md_out_apc_acscs md_out_apc_exp md_out_apc_exp_acscs, drop 	
+	frame md_out_ec_all: ///
+		xframeappend md_out_ec_acscs md_out_ec_exp md_out_ec_exp_acscs, drop  
+	frame prop_out_apc_all: ///
+		xframeappend prop_out_apc_acscs prop_out_apc_exp prop_out_apc_exp_acscs, drop 
+	frame prop_out_ec_all: ///
+		xframeappend prop_out_ec_acscs prop_out_ec_exp prop_out_ec_exp_acscs, drop 
 
 //Saving as a .dta file, and exporting as a tab-delimited file 	
-//"/output/`frame'.dta"
-//"/output/`frame'.csv"
+
 	foreach frame in md_out_apc_all md_out_ec_all prop_out_apc_all prop_out_ec_all {
 		frame `frame': save ../workspace/output/`frame'_`1'.dta, replace
 		frame `frame': export delimited using ../workspace/output/`frame'_`1'.csv, replace	
 	}
 	
- 
 	
+	
+
 **# //GRAPHS
 
 
