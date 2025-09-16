@@ -36,9 +36,9 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 		//(excluding hearing loss & those requiring prescription codelists)
 	//Exposure vars we're not currently stratifying by 
 	//All GP consultation vars
-
-	drop exp_interval_* *_cons_* *_missing exp_*_af *_alcoholproblem *_anxietydepression *_cancer *_chd *_ckd *_constipation *_copd *_ctd *_dementia *_epilepsy *_hearingloss *_hf *_ibs *_osteoarthritis *_psychosis *_stroketia *smoker_ever *_smoker_never
-	cap drop *_vax_*
+	
+	drop exp_interval_* *_missing exp_*_af *_alcoholproblem *_anxietydepression *_cancer *_chd *_ckd *_constipation *_copd *_ctd *_dementia *_epilepsy *_hearingloss *_hf *_ibs *_osteoarthritis *_psychosis *_stroketia *smoker_ever *_smoker_never
+	cap drop *_vax_* *_cons_*
 	
 	rename *diabetes* *dbts*
 	rename *asthma* *ast*
@@ -220,7 +220,13 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 				foreach level in `exp_var_levels'{
 					di "Outcome: `var', grouping variable: `exp_var' with levels: `exp_var_levels'"
 					levelsof `var' if tert_exp_prop_`exp_var' == `level'
-					assert `r(r)' == 1
+					
+					cap assert `r(r)' == 1 	
+						if _rc != 0 {
+							di _n "Collapse was not completed"
+							di "Variable:`var', does not have the same values within each level of exp_var: `exp_var'" 
+							continue
+						}
 				}	
 			}
 	
