@@ -27,8 +27,8 @@ end
 
 //Importing the data & clearing frames
 clear frames 
-//import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
-import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDescriptive\output\analytic_data_long_postcovid1.csv", clear
+import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
+//import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDescriptive\output\analytic_data_long_postcovid1.csv", clear
 
 
 **#//DATA MANAGEMENT
@@ -431,7 +431,6 @@ reshape wide mp6_prop_u5y_out_apc_w*, i(practice_pseudo_id) j(week_number)
 		xframeappend prop_out_ec_acscs prop_out_ec_exp prop_out_ec_exp_acscs, drop 
 
 //Saving as a .dta file, and exporting as a tab-delimited file 	
-
 	foreach frame in md_out_apc_all md_out_ec_all prop_out_apc_all prop_out_ec_all {
 		frame `frame': save ../workspace/output/`frame'_`1'.dta, replace
 		frame `frame': export delimited using ../workspace/output/`frame'_`1'.csv, replace	
