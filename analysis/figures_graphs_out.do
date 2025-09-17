@@ -32,6 +32,12 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 
 
 **#//DATA MANAGEMENT
+//Exclude practices with fewer than <1000 patients 
+	count if exp_denom <1000
+	qui levelsof practice_pseudo_id if exp_denom <1000
+	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
+	drop if exp_denom <1000
+	
 //Dropping vars
 	//Date variables, vars related to missingness in exposures, vaccination variables
 	//CMS: Drop all conditions except hypertension, asthma, diabetes.
@@ -77,15 +83,21 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	}
 		
 	sort practice_pseudo_id out_interval_start
-	
 
+	
 //Outcome numerators - rounded to midpoint 6
 local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smoker
 
 	foreach var of varlist out_num_* out_acscs_num_*{
+		qui levelsof out_interval_start if `var' <= 7, local(date_list) clean
+			if `r(N)' !=0 {
+				di _n "Variable `var' contains counts <=7 for dates: `r(levels)'"
+			}
+		
 		local out_var: subinstr local var "num_" "", all 	
 		local out_var: subinstr local out_var "acscs_" "", all
 		
+
 		round_mp6 `var' mp6_`out_var' ///Rounded numerator per practice, per date
 			
 		egen t_`out_var'= 	///Rounded total numerator, PER DATE
@@ -134,6 +146,21 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	}
 	}
 	
+//Outcome medians generated from raw (unrounded) num/denom 
+	foreach var of varlist out_num* out_acscs_num*{	
+		local out_var: subinstr local var "num_" "", all 
+		local out_var: subinstr local out_var "acscs_" "", all
+		
+		egen md_`out_var' = /// Median of the proportion distribution, AT EACH DATE
+			median(`var'/out_dnm), by(out_interval_start)
+		
+	if strlen("`group_var_list'") != 0{	
+	foreach group_var in `group_var_list'{
+		egen md`group_var'_`out_var' = /// Median of the prop. dist, BY GROUP & DATE
+		median(`var'/out_dnm), by(out_interval_start tert_exp_prop`group_var')
+	}		
+	}
+	}
 
 //Outcome total proportions - generated from rounded total numerators & denominators
 //	We have the COUNT of hospitalised patients across all practices per week
@@ -153,7 +180,23 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	}
 	}		
 	}
+		
+//Outcome total proportions generated from raw (unrounded) num/denom		
+	foreach var of varlist out_num* out_acscs_num*{
+		local out_var: subinstr local var "num_" "", all 
+		local out_var: subinstr local out_var "acscs_" "", all	
+		
+		gen prop_`out_var' = /// count outcome/count pts, PER DATE
+			t_`out_var'/ t_out_dnm
 			
+	if strlen("`group_var_list'") != 0 {
+		foreach group_var in `group_var_list' {	
+		gen prop`group_var'_`out_var' = /// count outcome/count pts, BY GROUP & DATE
+			t`group_var'_`out_var'/ t`group_var'_out_dnm 	
+	}
+	}
+	}
+		
 
 //Second drop of variables we no longer need
 	drop exp_num* exp_prop* exp_dnm*
@@ -169,7 +212,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	foreach stat in prop md {
 	foreach hosp in apc ec {
 		local first_frame  `stat'_out_`hosp'_all
-		local out_vars mp6_`stat'_out_`hosp'
+		local out_vars `stat'_out_`hosp'
 		
 		frame put practice_pseudo_id week_number `out_vars'*, into(`first_frame')
 		frame change `first_frame'
@@ -186,7 +229,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}	
 		collapse (first) `out_vars'* 
 		
-		rename mp6_`stat'_out_`hosp'_w* mp6_`stat'_out_w*
+		rename `stat'_out_`hosp'_w* `stat'_out_w*
 		
 		gen grouped_by = "All practices"
 		gen acscs = "No - all conditions"
@@ -210,7 +253,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		local j = 1
 		
 		foreach exp_var in `exp_var_list'  {
-		local out_vars mp6_`stat'_`exp_var'_out_`hosp' 
+		local out_vars `stat'_`exp_var'_out_`hosp' 
 		
 		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(`stat'_out_`hosp'_`exp_var')
 		frame change `stat'_out_`hosp'_`exp_var'
@@ -234,7 +277,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	
 			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
 				
-			rename mp6_`stat'_`exp_var'_out_`hosp'_w* mp6_`stat'_out_w*	
+			rename `stat'_`exp_var'_out_`hosp'_w* `stat'_out_w*	
 	
 			gen grouped_by = "", after (tert_exp_prop_`exp_var')
 				qui levelsof tert_exp_prop_`exp_var'
@@ -275,7 +318,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		local j = 1
 		
 		foreach acscs in `acscs_list' {
-			local out_vars mp6_`stat'_out_`acscs'_`hosp'
+			local out_vars `stat'_out_`acscs'_`hosp'
 		
 			frame put practice_pseudo_id week_number `out_vars'*, into(`stat'_out_`hosp'_`acscs')
 			frame change `stat'_out_`hosp'_`acscs'
@@ -292,7 +335,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}	
 			collapse (first) `out_vars'_w* 
 			
-			rename mp6_`stat'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*
+			rename `stat'_out_`acscs'_`hosp'_w* `stat'_out_w*
 			
 			gen grouped_by = "All practices"
 			gen acscs = ""
@@ -335,7 +378,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		
 		foreach exp_var in `exp_var_list'  {
 		foreach acscs in `acscs_list' {
-		local out_vars mp6_`stat'_`exp_var'_out_`acscs'_`hosp' 
+		local out_vars `stat'_`exp_var'_out_`acscs'_`hosp' 
 			
 		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(`stat'_out_`hosp'_`exp_var'_`acscs')
 		frame change `stat'_out_`hosp'_`exp_var'_`acscs'
@@ -358,7 +401,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}
 			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
 				
-			rename mp6_`stat'_`exp_var'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*	
+			rename `stat'_`exp_var'_out_`acscs'_`hosp'_w* `stat'_out_w*	
 	
 			gen grouped_by = "", after (tert_exp_prop_`exp_var')
 				qui levelsof tert_exp_prop_`exp_var'
