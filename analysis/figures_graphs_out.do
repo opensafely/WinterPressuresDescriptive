@@ -158,8 +158,13 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	drop t_out* t_*_out* 
 	drop mp6_out* mp6_t_*_out*
 		
+<<<<<<< Updated upstream
 		
 		
+=======
+
+		
+>>>>>>> Stashed changes
 		
 **#//GENERATING THE TABLES	
 //Collapsing across all practices
