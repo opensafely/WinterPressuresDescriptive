@@ -160,29 +160,8 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	drop out_num* out_acscs_num* out_dnm out_prop* out_acscs_prop*
 	drop t_out* t_*_out* 
 	drop mp6_out* mp6_t_*_out*
-		
- 
-//------------------
-preserve 
-keep practice_pseudo_id week_number mp6_prop_u5y_out_apc_w*
-reshape wide mp6_prop_u5y_out_apc_w*, i(practice_pseudo_id) j(week_number)
 
-	foreach var of varlist mp6_prop_*out_apc_w*{
-		levelsof `var'
-		di _n "Wide variable: `var' has levels: `r(levels)'"
-		
-		di "Check 1: assert r(r) == 1 --> Should work"
-			assert `r(r)' == 1
-			
-		di "Check 2: assert r(r) == 2 --> Should be incorrect"
-			assert `r(r)' == 2
-			if _rc == 9 {
-				di "There was an error for variable: `var'"
-			}
-			else {
-				continue
-			}
-	}			
+
 
 		
 **#//GENERATING THE TABLES	
