@@ -1148,54 +1148,7 @@ actions:
         table1: output/table1/table1-cohort_postcovid3.csv
         table1_midpoint6: output/table1/table1-cohort_postcovid3-midpoint6.csv
 
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: precovid
-
-    
-
-  generate_table_for_outcome_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_out.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_precovid.csv
-        dataset2: output/prop_out_apc_all_precovid.csv
-        dataset3: output/md_out_ec_all_precovid.csv
-        dataset4: output/prop_out_ec_all_precovid.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid1
-
-    
-
-  generate_table_for_outcome_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid1.csv
-        dataset2: output/prop_out_apc_all_postcovid1.csv
-        dataset3: output/md_out_ec_all_postcovid1.csv
-        dataset4: output/prop_out_ec_all_postcovid1.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid2
-
-    
-
-  generate_table_for_outcome_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_out.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid2.csv
-        dataset2: output/prop_out_apc_all_postcovid2.csv
-        dataset3: output/md_out_ec_all_postcovid2.csv
-        dataset4: output/prop_out_ec_all_postcovid2.csv
-
-  ## Generates midpoint 6 rounded dataset for the outcome graphs, cohort: postcovid3
-
-    
+  ## Generates dataset for the outcome graphs, cohort: postcovid3 
 
   generate_table_for_outcome_graph_postcovid3:
     run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
@@ -1203,52 +1156,275 @@ actions:
     - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
-        dataset1: output/md_out_apc_all_postcovid3.csv
-        dataset2: output/prop_out_apc_all_postcovid3.csv
-        dataset3: output/md_out_ec_all_postcovid3.csv
-        dataset4: output/prop_out_ec_all_postcovid3.csv
+        dataset1: output/temp_prop_out_vars_postcovid3.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid3.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid3.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid3.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid3.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid3.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid3.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid3.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid3.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid3.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid3.csv
+        dataset12: output/temp_md_out_vars_postcovid3.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid3.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid3.csv
+        dataset15: output/temp_md_female_out_vars_postcovid3.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid3.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid3.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid3.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid3.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid3.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid3.csv
+        dataset22: output/temp_md_white_out_vars_postcovid3.csv
+        dataset23: output/md_out_apc_all_postcovid3.csv
+        dataset24: output/prop_out_apc_all_postcovid3.csv
+        dataset25: output/md_out_ec_all_postcovid3.csv
+        dataset26: output/prop_out_ec_all_postcovid3.csv
 
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: precovid 
+  ## Generates dataset for the outcome graphs, cohort: postcovid3 
 
-  generate_table_for_cons_graph_precovid:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do precovid 2018-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_precovid.csv
-        dataset2: output/prop_cons_all_precovid.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid1 
-
-  generate_table_for_cons_graph_postcovid1:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid1 2022-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid1.csv
-        dataset2: output/prop_cons_all_postcovid1.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid2 
-
-  generate_table_for_cons_graph_postcovid2:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid2 2023-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid2.csv
-        dataset2: output/prop_cons_all_postcovid2.csv
-
-  ## Generates mp6 rounded dataset for the cons graphs, cohort: postcovid3 
-
-  generate_table_for_cons_graph_postcovid3:
-    run: stata-mp:latest analysis/figures_graphs_exp_cons.do postcovid3 2024-10-01
+  generate_table_for_outcome_graph_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
     needs:
     - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
-        dataset1: output/md_cons_all_postcovid3.csv
-        dataset2: output/prop_cons_all_postcovid3.csv
+        dataset1: output/temp_prop_out_vars_postcovid3.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid3.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid3.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid3.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid3.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid3.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid3.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid3.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid3.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid3.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid3.csv
+        dataset12: output/temp_md_out_vars_postcovid3.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid3.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid3.csv
+        dataset15: output/temp_md_female_out_vars_postcovid3.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid3.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid3.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid3.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid3.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid3.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid3.csv
+        dataset22: output/temp_md_white_out_vars_postcovid3.csv
+        dataset23: output/md_out_apc_all_postcovid3.csv
+        dataset24: output/prop_out_apc_all_postcovid3.csv
+        dataset25: output/md_out_ec_all_postcovid3.csv
+        dataset26: output/prop_out_ec_all_postcovid3.csv
+
+  ## Generates dataset for the outcome graphs, cohort: postcovid3 
+
+  generate_table_for_outcome_graph_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        dataset1: output/temp_prop_out_vars_postcovid3.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid3.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid3.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid3.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid3.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid3.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid3.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid3.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid3.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid3.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid3.csv
+        dataset12: output/temp_md_out_vars_postcovid3.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid3.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid3.csv
+        dataset15: output/temp_md_female_out_vars_postcovid3.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid3.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid3.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid3.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid3.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid3.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid3.csv
+        dataset22: output/temp_md_white_out_vars_postcovid3.csv
+        dataset23: output/md_out_apc_all_postcovid3.csv
+        dataset24: output/prop_out_apc_all_postcovid3.csv
+        dataset25: output/md_out_ec_all_postcovid3.csv
+        dataset26: output/prop_out_ec_all_postcovid3.csv
+
+  ## Generates dataset for the outcome graphs, cohort: postcovid3 
+
+  generate_table_for_outcome_graph_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        dataset1: output/temp_prop_out_vars_postcovid3.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid3.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid3.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid3.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid3.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid3.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid3.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid3.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid3.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid3.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid3.csv
+        dataset12: output/temp_md_out_vars_postcovid3.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid3.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid3.csv
+        dataset15: output/temp_md_female_out_vars_postcovid3.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid3.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid3.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid3.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid3.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid3.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid3.csv
+        dataset22: output/temp_md_white_out_vars_postcovid3.csv
+        dataset23: output/md_out_apc_all_postcovid3.csv
+        dataset24: output/prop_out_apc_all_postcovid3.csv
+        dataset25: output/md_out_ec_all_postcovid3.csv
+        dataset26: output/prop_out_ec_all_postcovid3.csv
+
+  ## Generates dataset for the outcome graphs, cohort: precovid 
+
+  generate_table_for_outcome_graph_precovid:
+    run: stata-mp:latest analysis/figures_graphs_out.do precovid 2018-10-01
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        dataset1: output/temp_prop_out_vars_precovid.csv
+        dataset2: output/temp_prop_ast_out_vars_precovid.csv
+        dataset3: output/temp_prop_dbts_out_vars_precovid.csv
+        dataset4: output/temp_prop_female_out_vars_precovid.csv
+        dataset5: output/temp_prop_hypt_out_vars_precovid.csv
+        dataset6: output/temp_prop_imd1_out_vars_precovid.csv
+        dataset7: output/temp_prop_obs_out_vars_precovid.csv
+        dataset8: output/temp_prop_smoker_out_vars_precovid.csv
+        dataset9: output/temp_prop_u5y_out_vars_precovid.csv
+        dataset10: output/temp_prop_urb1_out_vars_precovid.csv
+        dataset11: output/temp_prop_white_out_vars_precovid.csv
+        dataset12: output/temp_md_out_vars_precovid.csv
+        dataset13: output/temp_md_ast_out_vars_precovid.csv
+        dataset14: output/temp_md_dbts_out_vars_precovid.csv
+        dataset15: output/temp_md_female_out_vars_precovid.csv
+        dataset16: output/temp_md_hypt_out_vars_precovid.csv
+        dataset17: output/temp_md_imd1_out_vars_precovid.csv
+        dataset18: output/temp_md_obs_out_vars_precovid.csv
+        dataset19: output/temp_md_smoker_out_vars_precovid.csv
+        dataset20: output/temp_md_u5y_out_vars_precovid.csv
+        dataset21: output/temp_md_urb1_out_vars_precovid.csv
+        dataset22: output/temp_md_white_out_vars_precovid.csv
+        dataset23: output/md_out_apc_all_precovid.csv
+        dataset24: output/prop_out_apc_all_precovid.csv
+        dataset25: output/md_out_ec_all_precovid.csv
+        dataset26: output/prop_out_ec_all_precovid.csv
+
+  ## Generates dataset for the outcome graphs, cohort: postcovid1 
+
+  generate_table_for_outcome_graph_postcovid1:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid1 2022-10-01
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        dataset1: output/temp_prop_out_vars_postcovid1.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid1.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid1.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid1.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid1.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid1.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid1.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid1.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid1.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid1.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid1.csv
+        dataset12: output/temp_md_out_vars_postcovid1.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid1.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid1.csv
+        dataset15: output/temp_md_female_out_vars_postcovid1.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid1.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid1.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid1.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid1.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid1.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid1.csv
+        dataset22: output/temp_md_white_out_vars_postcovid1.csv
+        dataset23: output/md_out_apc_all_postcovid1.csv
+        dataset24: output/prop_out_apc_all_postcovid1.csv
+        dataset25: output/md_out_ec_all_postcovid1.csv
+        dataset26: output/prop_out_ec_all_postcovid1.csv
+
+  ## Generates dataset for the outcome graphs, cohort: postcovid2 
+
+  generate_table_for_outcome_graph_postcovid2:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid2 2023-10-01
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        dataset1: output/temp_prop_out_vars_postcovid2.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid2.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid2.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid2.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid2.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid2.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid2.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid2.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid2.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid2.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid2.csv
+        dataset12: output/temp_md_out_vars_postcovid2.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid2.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid2.csv
+        dataset15: output/temp_md_female_out_vars_postcovid2.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid2.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid2.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid2.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid2.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid2.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid2.csv
+        dataset22: output/temp_md_white_out_vars_postcovid2.csv
+        dataset23: output/md_out_apc_all_postcovid2.csv
+        dataset24: output/prop_out_apc_all_postcovid2.csv
+        dataset25: output/md_out_ec_all_postcovid2.csv
+        dataset26: output/prop_out_ec_all_postcovid2.csv
+
+  ## Generates dataset for the outcome graphs, cohort: postcovid3 
+
+  generate_table_for_outcome_graph_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_out.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        dataset1: output/temp_prop_out_vars_postcovid3.csv
+        dataset2: output/temp_prop_ast_out_vars_postcovid3.csv
+        dataset3: output/temp_prop_dbts_out_vars_postcovid3.csv
+        dataset4: output/temp_prop_female_out_vars_postcovid3.csv
+        dataset5: output/temp_prop_hypt_out_vars_postcovid3.csv
+        dataset6: output/temp_prop_imd1_out_vars_postcovid3.csv
+        dataset7: output/temp_prop_obs_out_vars_postcovid3.csv
+        dataset8: output/temp_prop_smoker_out_vars_postcovid3.csv
+        dataset9: output/temp_prop_u5y_out_vars_postcovid3.csv
+        dataset10: output/temp_prop_urb1_out_vars_postcovid3.csv
+        dataset11: output/temp_prop_white_out_vars_postcovid3.csv
+        dataset12: output/temp_md_out_vars_postcovid3.csv
+        dataset13: output/temp_md_ast_out_vars_postcovid3.csv
+        dataset14: output/temp_md_dbts_out_vars_postcovid3.csv
+        dataset15: output/temp_md_female_out_vars_postcovid3.csv
+        dataset16: output/temp_md_hypt_out_vars_postcovid3.csv
+        dataset17: output/temp_md_imd1_out_vars_postcovid3.csv
+        dataset18: output/temp_md_obs_out_vars_postcovid3.csv
+        dataset19: output/temp_md_smoker_out_vars_postcovid3.csv
+        dataset20: output/temp_md_u5y_out_vars_postcovid3.csv
+        dataset21: output/temp_md_urb1_out_vars_postcovid3.csv
+        dataset22: output/temp_md_white_out_vars_postcovid3.csv
+        dataset23: output/md_out_apc_all_postcovid3.csv
+        dataset24: output/prop_out_apc_all_postcovid3.csv
+        dataset25: output/md_out_ec_all_postcovid3.csv
+        dataset26: output/prop_out_ec_all_postcovid3.csv
 

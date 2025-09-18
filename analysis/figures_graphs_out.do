@@ -147,21 +147,22 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	}
 	
 //Outcome medians generated from raw (unrounded) num/denom 
-	foreach var of varlist out_num* out_acscs_num*{	
-		local out_var: subinstr local var "num_" "", all 
+	foreach var of varlist out_prop* out_acscs_prop*{	
+		local out_var: subinstr local var "prop_" "", all 
 		local out_var: subinstr local out_var "acscs_" "", all
 		
 		egen md_`out_var' = /// Median of the proportion distribution, AT EACH DATE
-			median(`var'/out_dnm), by(out_interval_start)
+			median(`var'), by(out_interval_start)
 		
 	if strlen("`group_var_list'") != 0{	
 	foreach group_var in `group_var_list'{
 		egen md`group_var'_`out_var' = /// Median of the prop. dist, BY GROUP & DATE
-		median(`var'/out_dnm), by(out_interval_start tert_exp_prop`group_var')
+		median(`var'), by(out_interval_start tert_exp_prop`group_var')
 	}		
 	}
 	}
-
+	
+	
 //Outcome total proportions - generated from rounded total numerators & denominators
 //	We have the COUNT of hospitalised patients across all practices per week
 //		mp6_prop_`out_var': total count hospitalised/all registered patients PER WEEK
@@ -205,9 +206,45 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	drop mp6_out* mp6_t_*_out*
 
 
+**#//GENERATING TEMPORARY TABLES USED FOR CHECKING  
+//For completeness, doing for all cohorts
+
+//Overall outcome variables (APC, EC) including per acscs
+	local prop_out_vars prop_out*
+	preserve
+		keep practice_pseudo_id week_number `prop_out_vars'
+		reshape wide `prop_out_vars', i(practice_pseudo_id ) j(week_number)
+		//export delimited using ../workspace/output/temp_prop_out_vars_`1'.csv, replace	
+		export delimited using temp_prop_out_vars.csv, replace	
+	restore
+	
+	local md_out_vars md_out*
+	preserve
+		keep practice_pseudo_id week_number `md_out_vars'
+		reshape wide `md_out_vars', i(practice_pseudo_id ) j(week_number)
+		//export delimited using ../workspace/output/temp_md_out_vars_`1'.csv, replace	
+		export delimited using temp_md_out_vars.csv, replace	
+	restore
+	
+//SUMMARY exposure thirds outcome variables (APC, EC) including per acscs
+	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	foreach stat in prop md {
+	foreach exp_var in `exp_var_list'{
+		local `stat'_`exp_var'_out_vars `stat'_`exp_var'_out*
+		
+		preserve 
+			keep practice_pseudo_id week_number ``stat'_`exp_var'_out_vars'
+			reshape wide ``stat'_`exp_var'_out_vars', i(practice_pseudo_id ) j(week_number)
+			export delimited using ../workspace/output/temp_`stat'_`exp_var'_out_vars_`1'.csv, replace	
+			//export delimited using temp_`stat'_`exp_var'_out_vars.csv, replace
+		restore 	
+	}
+	}
+	
+
 
 		
-**#//GENERATING THE TABLES	
+**#//GENERATING THE TABLES FOR THE GRAPHS	
 //All outcomes: collapsing across all practices 
 	foreach stat in prop md {
 	foreach hosp in apc ec {
@@ -220,7 +257,8 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		reshape wide `out_vars'_w, i(practice_pseudo_id) j(week_number)
 			
 		foreach var of varlist `out_vars'* {
-			qui  levelsof `var' if `var'!=.
+			di "levelsof `var'"
+			levelsof `var' if `var'!=. & `var' != 0 
 			cap assert `r(r)' == 1
 				if _rc == 9 {
 					di _n "Error: variable `var' is not consistent across all practices"
@@ -264,8 +302,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 				qui levelsof tert_exp_prop_`exp_var', local(exp_var_levels)
 				foreach level in `exp_var_levels'{
 					di "Outcome: `var', grouping variable: `exp_var' with levels: `exp_var_levels'"
-					levelsof `var' if tert_exp_prop_`exp_var' == `level'
-					
+					levelsof `var' if tert_exp_prop_`exp_var' == `level' & `var' != 0 
 					cap assert `r(r)' == 1 	
 						if _rc == 9 {
 							di _n "Collapse was not completed"
@@ -326,7 +363,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			reshape wide `out_vars', i(practice_pseudo_id) j(week_number)
 				
 			foreach var of varlist `out_vars'* {
-				qui  levelsof `var' if `var'!=.
+				qui  levelsof `var' if `var' !=. & `var' != 0 
 				cap assert `r(r)' == 1
 					if _rc == 9 {
 						di _n "Error: variable `var' is not consistent across all practices for ACSC: `acscs'"
@@ -389,7 +426,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 				qui levelsof tert_exp_prop_`exp_var', local(exp_var_levels)
 			foreach level in `exp_var_levels'{
 				di "Outcome: `var', grouping variable: `exp_var' with levels: `exp_var_levels'"
-				levelsof `var' if tert_exp_prop_`exp_var' == `level'
+				levelsof `var' if tert_exp_prop_`exp_var' == `level' & `var' != 0 
 					
 				cap assert `r(r)' == 1 	
 					if _rc != 0 {
@@ -457,8 +494,10 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		frame `frame': save ../workspace/output/`frame'_`1'.dta, replace
 		frame `frame': export delimited using ../workspace/output/`frame'_`1'.csv, replace	
 	}
-	
-	
+
+
+
+ 	
 	
 
 **# //GRAPHS

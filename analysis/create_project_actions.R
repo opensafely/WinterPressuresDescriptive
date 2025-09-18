@@ -297,22 +297,18 @@ for (cohort in cohorts_all) {
   #Append check_and_merge actions to main action list
   actions_list <- c(actions_list, check_and_merge_action)
 }
-
-
 # Append input_clean + Table 1 actions -------------------------------------------
 for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_input_clean(cohort))
   actions_list <- c(actions_list, generate_table1(cohort))
 }
-
-
-#Add action: generate the tables used for the descriptive outcome graphs
+#Add action: generate the temporary checking tables for the outcome
 for (cohort in cohorts_all){
   date <- cohort_dates[[cohort]] #Pull in the date for the cohort
   
   #Defining the action
-  table_for_output_graphs <- c(
-    comment(glue("Generates midpoint 6 rounded dataset for the outcome graphs, cohort: {cohort}")),
+  temp_check_table <- c(
+    comment(glue("Generates dataset for the outcome graphs, cohort: {cohort}")),
     action(
       name = glue("generate_table_for_outcome_graph_{cohort}"),
       run = glue("stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"),
@@ -322,37 +318,56 @@ for (cohort in cohorts_all){
         dataset2 = glue("output/prop_out_apc_all_{cohort}.csv"),
         dataset3 = glue("output/md_out_ec_all_{cohort}.csv"),
         dataset4 = glue("output/prop_out_ec_all_{cohort}.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, table_for_output_graphs)
+}  
+#Add action: generate the tables used for the descriptive outcome graphs
+for (cohort in cohorts_all){
+  date <- cohort_dates[[cohort]] #Pull in the date for the cohort
+  
+  #Defining the action
+  table_for_output_graphs <- c(
+    comment(glue("Generates dataset for the outcome graphs, cohort: {cohort}")),
+    action(
+      name = glue("generate_table_for_outcome_graph_{cohort}"),
+      run = glue("stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        dataset1 = glue("output/temp_prop_out_vars_{cohort}.csv"),
+        dataset2 = glue("output/temp_prop_ast_out_vars_{cohort}.csv"),
+        dataset3 = glue("output/temp_prop_dbts_out_vars_{cohort}.csv"),
+        dataset4 = glue("output/temp_prop_female_out_vars_{cohort}.csv"),
+        dataset5 = glue("output/temp_prop_hypt_out_vars_{cohort}.csv"),
+        dataset6 = glue("output/temp_prop_imd1_out_vars_{cohort}.csv"),
+        dataset7 = glue("output/temp_prop_obs_out_vars_{cohort}.csv"),
+        dataset8 = glue("output/temp_prop_smoker_out_vars_{cohort}.csv"),
+        dataset9 = glue("output/temp_prop_u5y_out_vars_{cohort}.csv"),
+        dataset10 = glue("output/temp_prop_urb1_out_vars_{cohort}.csv"),
+        dataset11 = glue("output/temp_prop_white_out_vars_{cohort}.csv"),
+        dataset12 = glue("output/temp_md_out_vars_{cohort}.csv"),
+        dataset13 = glue("output/temp_md_ast_out_vars_{cohort}.csv"),
+        dataset14 = glue("output/temp_md_dbts_out_vars_{cohort}.csv"),
+        dataset15 = glue("output/temp_md_female_out_vars_{cohort}.csv"),
+        dataset16 = glue("output/temp_md_hypt_out_vars_{cohort}.csv"),
+        dataset17 = glue("output/temp_md_imd1_out_vars_{cohort}.csv"),
+        dataset18 = glue("output/temp_md_obs_out_vars_{cohort}.csv"),
+        dataset19 = glue("output/temp_md_smoker_out_vars_{cohort}.csv"),
+        dataset20 = glue("output/temp_md_u5y_out_vars_{cohort}.csv"),
+        dataset21 = glue("output/temp_md_urb1_out_vars_{cohort}.csv"),
+        dataset22 = glue("output/temp_md_white_out_vars_{cohort}.csv"),
+        dataset23 = glue("output/md_out_apc_all_{cohort}.csv"),
+        dataset24 = glue("output/prop_out_apc_all_{cohort}.csv"),
+        dataset25 = glue("output/md_out_ec_all_{cohort}.csv"),
+        dataset26 = glue("output/prop_out_ec_all_{cohort}.csv")
     )
   )
   )
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, table_for_output_graphs)
 }
-
-#Add action: generate the tables used for the descriptive consultation graphs
-for (cohort in cohorts_all){
-  date <- cohort_dates[[cohort]] #Pull in the date for the cohort
-  
-  #Defining the action
-  table_for_cons_graphs <- c(
-    comment(glue("Generates mp6 rounded dataset for the cons graphs, cohort: {cohort}")),
-    action(
-      name = glue("generate_table_for_cons_graph_{cohort}"),
-      run = glue("stata-mp:latest analysis/figures_graphs_exp_cons.do {cohort} {date}"),
-      needs = list(glue("generate_merged_{cohort}")), 
-      moderately_sensitive = list(
-        dataset1 = glue("output/md_cons_all_{cohort}.csv"),
-        dataset2 = glue("output/prop_cons_all_{cohort}.csv")
-      )
-    )
-  )
-  #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, table_for_cons_graphs)
-}
-
-
-
-
 # Combine actions into project list --------------------------------------------
 
 project_list <- splice(
