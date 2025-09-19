@@ -214,16 +214,16 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	preserve
 		keep practice_pseudo_id week_number `prop_out_vars'
 		reshape wide `prop_out_vars', i(practice_pseudo_id ) j(week_number)
-		//export delimited using ../workspace/output/temp_prop_out_vars_`1'.csv, replace	
-		export delimited using temp_prop_out_vars.csv, replace	
+		export delimited using ../workspace/output/temp_prop_out_vars_`1'.csv, replace	
+		//export delimited using temp_prop_out_vars.csv, replace	
 	restore
 	
 	local md_out_vars md_out*
 	preserve
 		keep practice_pseudo_id week_number `md_out_vars'
 		reshape wide `md_out_vars', i(practice_pseudo_id ) j(week_number)
-		//export delimited using ../workspace/output/temp_md_out_vars_`1'.csv, replace	
-		export delimited using temp_md_out_vars.csv, replace	
+		export delimited using ../workspace/output/temp_md_out_vars_`1'.csv, replace	
+		//export delimited using temp_md_out_vars.csv, replace	
 	restore
 	
 //SUMMARY exposure thirds outcome variables (APC, EC) including per acscs
