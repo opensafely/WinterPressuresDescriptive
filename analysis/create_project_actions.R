@@ -302,28 +302,6 @@ for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_input_clean(cohort))
   actions_list <- c(actions_list, generate_table1(cohort))
 }
-#Add action: generate the temporary checking tables for the outcome
-for (cohort in cohorts_all){
-  date <- cohort_dates[[cohort]] #Pull in the date for the cohort
-  
-  #Defining the action
-  temp_check_table <- c(
-    comment(glue("Generates dataset for the outcome graphs, cohort: {cohort}")),
-    action(
-      name = glue("generate_table_for_outcome_graph_{cohort}"),
-      run = glue("stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"),
-      needs = list(glue("generate_merged_{cohort}")), 
-      moderately_sensitive = list(
-        dataset1 = glue("output/md_out_apc_all_{cohort}.csv"),
-        dataset2 = glue("output/prop_out_apc_all_{cohort}.csv"),
-        dataset3 = glue("output/md_out_ec_all_{cohort}.csv"),
-        dataset4 = glue("output/prop_out_ec_all_{cohort}.csv")
-      )
-    )
-  )
-  #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, table_for_output_graphs)
-}  
 #Add action: generate the tables used for the descriptive outcome graphs
 for (cohort in cohorts_all){
   date <- cohort_dates[[cohort]] #Pull in the date for the cohort
