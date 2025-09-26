@@ -1,0 +1,110 @@
+term,label,group,ref
+cons_201710,Oct 2017,Consultations,
+cons_201711,Nov 2017,Consultations,
+cons_201712,Dec 2017,Consultations,
+cons_201801,Jan 2018,Consultations,
+cons_201802,Feb 2018,Consultations,
+cons_201803,Mar 2018,Consultations,
+cons_201804,Apr 2018,Consultations,
+cons_201805,May 2018,Consultations,
+cons_201806,Jun 2018,Consultations,
+cons_201807,Jul 2018,Consultations,
+cons_201808,Aug 2018,Consultations,
+cons_201809,Sep 2018,Consultations,
+cons_202110,Oct 2021,Consultations,
+cons_202111,Nov 2021,Consultations,
+cons_202112,Dec 2021,Consultations,
+cons_202201,Jan 2022,Consultations,
+cons_202202,Feb 2022,Consultations,
+cons_202203,Mar 2022,Consultations,
+cons_202204,Apr 2022,Consultations,
+cons_202205,May 2022,Consultations,
+cons_202206,Jun 2022,Consultations,
+cons_202207,Jul 2022,Consultations,
+cons_202208,Aug 2022,Consultations,
+cons_202209,Sep 2022,Consultations,
+cons_202210,Oct 2022,Consultations,
+cons_202211,Nov 2022,Consultations,
+cons_202212,Dec 2022,Consultations,
+cons_202301,Jan 2023,Consultations,
+cons_202302,Feb 2023,Consultations,
+cons_202303,Mar 2023,Consultations,
+cons_202304,Apr 2023,Consultations,
+cons_202305,May 2023,Consultations,
+cons_202306,Jun 2023,Consultations,
+cons_202307,Jul 2023,Consultations,
+cons_202308,Aug 2023,Consultations,
+cons_202309,Sep 2023,Consultations,
+cons_202310,Oct 2023,Consultations,
+cons_202311,Nov 2023,Consultations,
+cons_202312,Dec 2023,Consultations,
+cons_202401,Jan 2024,Consultations,
+cons_202402,Feb 2024,Consultations,
+cons_202403,Mar 2024,Consultations,
+cons_202404,Apr 2024,Consultations,
+cons_202405,May 2024,Consultations,
+cons_202406,Jun 2024,Consultations,
+cons_202407,Jul 2024,Consultations,
+cons_202408,Aug 2024,Consultations,
+cons_202409,Sep 2024,Consultations,
+total,Total patients,Total,
+under5y,Under 5,Age,1
+5_to_11,5–11,Age,2
+12_to_17,12–17,Age,3
+18_to_29,18–29,Age,4
+30_to_44,30–44,Age,5
+45_to_54,45–54,Age,6
+55_to_64,55–64,Age,7
+65_to_74,65–74,Age,8
+75_to_79,75–79,Age,9
+80_to_84,80–84,Age,10
+age_85_plus,85+,Age,11
+age_missing,Missing age,Age,12
+female,Female,Sex,1
+male,Male,Sex,2
+sex_missing,Missing sex,Sex,3
+eth_white,White,Ethnicity,1
+eth_asian,Asian,Ethnicity,2
+eth_black,Black,Ethnicity,3
+eth_mixed,Mixed,Ethnicity,4
+eth_other,Other,Ethnicity,5
+eth_missing,Missing ethnicity,Ethnicity,6
+imd_1_most,IMD 1 (most deprived),Deprivation,1
+imd_2,IMD 2,Deprivation,2
+imd_3,IMD 3,Deprivation,3
+imd_4,IMD 4,Deprivation,4
+imd_5_least,IMD 5 (least deprived),Deprivation,5
+imd_missing,Missing IMD,Deprivation,6
+urb_major,Urban major conurbation,Rurality,1
+urb_minor,Urban minor conurbation,Rurality,2
+urb_town,Urban town,Rurality,3
+rural_fringe,Rural fringe,Rurality,4
+rural_village,Rural village,Rurality,5
+rurality_missing,Missing rurality,Rurality,6
+smoker_never,Never smoker,Smoking,1
+smoker_current,Current smoker,Smoking,3
+smoker_ever,Eever smoker,Smoking,2
+smoker_missing,Missing smoking,Smoking,4
+af,Atrial fibrillation,Conditions,
+alcoholproblem,Alcohol problems,Conditions,
+anxietydepression,Anxiety or depression,Conditions,
+asthma,Asthma,Conditions,
+cancer,Cancer,Conditions,
+chd,Coronary heart disease,Conditions,
+ckd,Chronic kidney disease,Conditions,
+constipation,Constipation,Conditions,
+copd,Chronic obstructive pulmonary disease,Conditions,
+ctd,Connective tissue disease,Conditions,
+dementia,Dementia,Conditions,
+diabetes,Diabetes,Conditions,
+epilepsy,Epilepsy,Conditions,
+hearingloss,Hearing loss,Conditions,
+hf,Heart failure,Conditions,
+hypertension,Hypertension,Conditions,
+hypt,Hypothyroidism,Conditions,
+ibs,Irritable bowel syndrome,Conditions,
+obesity,Obesity,Conditions,
+osteoarthritis,Osteoarthritis,Conditions,
+psychosis,Psychosis,Conditions,
+stroketia,Stroke or TIA,Conditions,
+listsize,Practice list size,List size,
