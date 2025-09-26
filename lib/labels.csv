@@ -81,30 +81,30 @@ urb_town,Urban town,Rurality,3
 rural_fringe,Rural fringe,Rurality,4
 rural_village,Rural village,Rurality,5
 rurality_missing,Missing rurality,Rurality,6
-smoker_never,Never smoker,Smoking,1
-smoker_current,Current smoker,Smoking,3
-smoker_ever,Eever smoker,Smoking,2
-smoker_missing,Missing smoking,Smoking,4
-af,Atrial fibrillation,Conditions,
-alcoholproblem,Alcohol problems,Conditions,
-anxietydepression,Anxiety or depression,Conditions,
-asthma,Asthma,Conditions,
-cancer,Cancer,Conditions,
-chd,Coronary heart disease,Conditions,
-ckd,Chronic kidney disease,Conditions,
-constipation,Constipation,Conditions,
-copd,Chronic obstructive pulmonary disease,Conditions,
-ctd,Connective tissue disease,Conditions,
-dementia,Dementia,Conditions,
-diabetes,Diabetes,Conditions,
-epilepsy,Epilepsy,Conditions,
-hearingloss,Hearing loss,Conditions,
-hf,Heart failure,Conditions,
-hypertension,Hypertension,Conditions,
-hypt,Hypothyroidism,Conditions,
-ibs,Irritable bowel syndrome,Conditions,
-obesity,Obesity,Conditions,
-osteoarthritis,Osteoarthritis,Conditions,
-psychosis,Psychosis,Conditions,
-stroketia,Stroke or TIA,Conditions,
+smoker_never,Never smoker,Smoking Status,1
+smoker_current,Current smoker,Smoking Status,3
+smoker_ever,Eever smoker,Smoking Status,2
+smoker_missing,Missing smoking,Smoking Status,4
+af,Atrial fibrillation,Condition,
+alcoholproblem,Alcohol problems,Condition,
+anxietydepression,Anxiety or depression,Condition,
+asthma,Asthma,Condition,
+cancer,Cancer,Condition,
+chd,Coronary heart disease,Condition,
+ckd,Chronic kidney disease,Condition,
+constipation,Constipation,Condition,
+copd,Chronic obstructive pulmonary disease,Condition,
+ctd,Connective tissue disease,Condition,
+dementia,Dementia,Condition,
+diabetes,Diabetes,Condition,
+epilepsy,Epilepsy,Condition,
+hearingloss,Hearing loss,Condition,
+hf,Heart failure,Condition,
+hypertension,Hypertension,Condition,
+hypt,Hypothyroidism,Condition,
+ibs,Irritable bowel syndrome,Condition,
+obesity,Obesity,Condition,
+osteoarthritis,Osteoarthritis,Condition,
+psychosis,Psychosis,Condition,
+stroketia,Stroke or TIA,Condition,
 listsize,Practice list size,List size,

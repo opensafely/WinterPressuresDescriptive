@@ -94,6 +94,7 @@ df_long <- df_prop %>%
     values_to = "value"
   ) %>%
   mutate(
+    value = value * 100, # scale to percent
     decile = factor(
       decile,
       levels = c(
@@ -128,14 +129,19 @@ walk(groups, function(g) {
     aes(x = decile, y = value, color = cohort, group = cohort)
   ) +
     geom_line(size = 0.8, alpha = 0.6) +
-    geom_point(size = 2, alpha = 0.7) +
+    geom_point(size = 1, alpha = 0.6) +
+    geom_vline(xintercept = "P50", colour = "grey80", size = 0.6) +
     facet_wrap(~category_label, scales = "free_y") +
     scale_x_discrete(
       labels = c("P10", "", "P30", "", "P50", "", "P70", "", "P90")
     ) +
     labs(
-      title = paste("Deciles of proportions by cohort –", g),
-      y = "Proportion",
+      title = paste(
+        "Deciles of the proportion of",
+        g,
+        "groups across practices by cohort"
+      ),
+      y = "Proportion (%)",
       x = "Percentile"
     ) +
     theme_bw() +
@@ -159,7 +165,7 @@ ggplot(
   aes(x = decile, y = value, color = cohort, group = cohort)
 ) +
   geom_line(size = 0.8, alpha = 0.6) +
-  geom_point(size = 2, alpha = 0.7) +
+  geom_point(size = 1, alpha = 0.8) +
   facet_wrap(~category_label, scales = "free_y") +
   scale_x_discrete(
     labels = c("P10", "", "P30", "", "P50", "", "P70", "", "P90")
@@ -175,7 +181,7 @@ ggplot(
     legend.position = "bottom"
   )
 
-# Median and IQR trajectory plot for Consultations ----------------------------
+# Consultations – Deciles, Median, Q1, Q3 -------------------------------------
 
 df_cons <- df %>%
   filter(type == "prop", strata == "Overall", group == "Consultations") %>%
@@ -183,31 +189,115 @@ df_cons <- df %>%
     category,
     category_label,
     cohort,
-    median_midpoint6,
+    p10_midpoint6,
+    p20_midpoint6,
+    p30_midpoint6,
+    p40_midpoint6,
+    p50_midpoint6,
+    p60_midpoint6,
+    p70_midpoint6,
+    p80_midpoint6,
+    p90_midpoint6,
     q1_midpoint6,
+    median_midpoint6,
     q3_midpoint6
   ) %>%
   # scale to per 1000 patients
+  mutate(across(where(is.numeric), ~ .x * 1000))
+
+# Reshape all deciles
+df_deciles <- df_cons %>%
+  pivot_longer(
+    cols = starts_with("p"),
+    names_to = "percentile",
+    values_to = "value"
+  ) %>%
   mutate(
-    median_midpoint6 = median_midpoint6 * 1000,
-    q1_midpoint6 = q1_midpoint6 * 1000,
-    q3_midpoint6 = q3_midpoint6 * 1000
+    percentile = factor(
+      percentile,
+      levels = c(
+        "p10_midpoint6",
+        "p20_midpoint6",
+        "p30_midpoint6",
+        "p40_midpoint6",
+        "p50_midpoint6",
+        "p60_midpoint6",
+        "p70_midpoint6",
+        "p80_midpoint6",
+        "p90_midpoint6"
+      ),
+      labels = c("P10", "P20", "P30", "P40", "P50", "P60", "P70", "P80", "P90")
+    )
   )
 
+# Reshape median, q1, q3
+df_summary <- df_cons %>%
+  pivot_longer(
+    cols = c(q1_midpoint6, median_midpoint6, q3_midpoint6),
+    names_to = "stat",
+    values_to = "value"
+  ) %>%
+  mutate(
+    stat = recode(
+      stat,
+      q1_midpoint6 = "Q1",
+      median_midpoint6 = "Median",
+      q3_midpoint6 = "Q3"
+    )
+  )
 
 # Plot
-p_cons <- ggplot(
-  df_cons,
-  aes(x = category_label, group = cohort, color = cohort)
-) +
-  geom_line(aes(y = median_midpoint6), size = 1) +
-  geom_point(aes(y = median_midpoint6), size = 2) +
-  geom_line(aes(y = q1_midpoint6), linetype = "dashed", alpha = 0.6) +
-  geom_line(aes(y = q3_midpoint6), linetype = "dashed", alpha = 0.6) +
+p_cons <- ggplot() +
+  # all deciles (thin dashed)
+  geom_line(
+    data = df_deciles,
+    aes(
+      x = category_label,
+      y = value,
+      group = interaction(cohort, percentile),
+      color = cohort
+    ),
+    linetype = "dashed",
+    size = 0.4,
+    alpha = 0.5
+  ) +
+  # Q1 and Q3 (thinner solid)
+  geom_line(
+    data = df_summary %>% filter(stat %in% c("Q1", "Q3")),
+    aes(
+      x = category_label,
+      y = value,
+      group = interaction(cohort, stat),
+      color = cohort
+    ),
+    size = 0.6,
+    alpha = 0.8
+  ) +
+  # Median (thicker solid, highlighted with points)
+  geom_line(
+    data = df_summary %>% filter(stat == "Median"),
+    aes(
+      x = category_label,
+      y = value,
+      group = interaction(cohort, stat),
+      color = cohort
+    ),
+    size = 1.2
+  ) +
+  geom_point(
+    data = df_summary %>% filter(stat == "Median"),
+    aes(
+      x = category_label,
+      y = value,
+      group = interaction(cohort, stat),
+      color = cohort
+    ),
+    size = 1
+  ) +
   labs(
-    title = "Consultations: Median and IQR per 1,000 registered patients over time by cohort",
+    title = "Consultations: Deciles with highlighted Median & IQR over time",
     x = "Month",
-    y = "Consultations per 1,000 patients [Median(IQR)]"
+    y = "Consultations per 1,000 patients"
   ) +
   theme_bw() +
   theme(
@@ -215,9 +305,46 @@ p_cons <- ggplot(
     legend.position = "bottom"
   )
 
-# Save plot
 ggsave(
-  filename = file.path(plot_dir, "consultations_median_iqr.png"),
+  filename = file.path(plot_dir, "consultations_deciles_median_iqr.png"),
+  plot = p_cons,
+  width = 12,
+  height = 6
+)
+
+
+p_cons <- ggplot(
+  df_cons,
+  aes(x = category_label, color = cohort, fill = cohort)
+) +
+  # P10–P90 ribbon
+  geom_ribbon(
+    aes(ymin = p10_midpoint6, ymax = p90_midpoint6, group = cohort),
+    alpha = 0.15,
+    linetype = 0
+  ) +
+  # Q1–Q3 ribbon
+  geom_ribbon(
+    aes(ymin = q1_midpoint6, ymax = q3_midpoint6, group = cohort),
+    alpha = 0.3,
+    linetype = 0
+  ) +
+  # Median line
+  geom_line(aes(y = median_midpoint6, group = cohort), size = 1) +
+  geom_point(aes(y = median_midpoint6, group = cohort), size = 1) +
+  labs(
+    title = "Consultations per 1,000 patients: Median, IQR and P10–P90 over time",
+    x = "Month",
+    y = "Consultations per 1,000 patients"
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+    legend.position = "bottom"
+  )
+
+ggsave(
+  filename = file.path(plot_dir, "consultations_band.png"),
   plot = p_cons,
   width = 12,
   height = 6
