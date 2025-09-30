@@ -15,15 +15,17 @@ DESCRIPTION OF FILE:	Produces a table used to generate descriptive graphs
 	//ssc install xframeappend 
 adopath + ../workspace/analysis/ado 
 
+//Creating a new folder for the outputs
+// mkdir ..workspace/output
+ mkdir output/figure1
+ mkdir output/temp_figure1
+
 
 //Defining program to mid-point round the raw numerator/denominator variables
 capture program drop round_mp6 
 program round_mp6
 	gen `2' = ceil(`1'/6)*6 - (floor(6/2)*(`1'!=0))
 end
-
-
-
 
 //Importing the data & clearing frames
 clear frames 
@@ -68,10 +70,10 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	rename *_age_*_plus *_*p
 	rename *denom* *dnm*
 
-	drop *_5_11* *_12_17* *_18_29* *_30_44* *_45_54* *_55_64* *_65_74* *_75_79* *_80_84* *_85p*
-	drop *_mixed* *_asian* *_black* *_other*
-	drop  *_imd2* *_imd3* *_imd3* *_imd4* *_imd5*
-	drop  *_urb2*  *_urb3* *_urb4* *_urb5*
+	drop *_5_11* *_12_17* *_18_29* *_30_44* *_45_54* *_55_64* 
+	drop *_mixed* *_other*
+	drop  *_imd3* *_imd3* *_imd4* *_imd5*
+	drop  *_urb3* *_urb4* *_urb5*
 	drop  *_male*
 	
 	
@@ -86,7 +88,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 
 	
 //Outcome numerators - rounded to midpoint 6
-local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smoker
+local group_var_list _u5y _65_74 _75_79 _80_84 _85p _white _asian _black _imd1 _imd2 _ast _dbts _hypt _obs _urb1 _urb2 _female _smoker
 
 	foreach var of varlist out_num_* out_acscs_num_*{
 		qui levelsof out_interval_start if `var' <= 7, local(date_list) clean
@@ -132,35 +134,41 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 //	We have the proportions of hospitalised patients per practice per week
 //		mp6_md_`out_var': is the median of this distribution per week
 //		mp6_md`group_var'_`out_var': is the median of this distribution per week and by the tertiles of the grouping variable 
+local group_var_list _u5y _65_74 _75_79 _80_84 _85p _white _asian _black _imd1 _imd2 _ast _dbts _hypt _obs _urb1 _urb2 _female _smoker
 
 	foreach var of varlist mp6_out*{
 	local out_var: subinstr local var "mp6_" "", all
 		egen mp6_md_`out_var' = /// Median of the proportion distribution, AT EACH DATE
-			median(mp6_`out_var'/mp6_out_dnm), by(out_interval_start)
+			median(((mp6_`out_var'/mp6_out_dnm)*1000)), by(out_interval_start)
 		
 	if strlen("`group_var_list'") != 0{
 	foreach group_var in `group_var_list'{
 		egen mp6_md`group_var'_`out_var' = ///Median of the prop. dist, BY GROUP & DATE
-				median(mp6_`out_var'/mp6_out_dnm), by(out_interval_start tert_exp_prop`group_var')
+				median(((mp6_`out_var'/mp6_out_dnm)*1000)), by(out_interval_start tert_exp_prop`group_var')
 	}		
 	}
 	}
 	
+	//Removing the uneccessary median of the denominator var that was created in this loop
+	drop mp6_md*out_dnm
+	
+	
+	
 //Outcome medians generated from raw (unrounded) num/denom 
-	foreach var of varlist out_prop* out_acscs_prop*{	
-		local out_var: subinstr local var "prop_" "", all 
-		local out_var: subinstr local out_var "acscs_" "", all
-		
-		egen md_`out_var' = /// Median of the proportion distribution, AT EACH DATE
-			median(`var'), by(out_interval_start)
-		
-	if strlen("`group_var_list'") != 0{	
-	foreach group_var in `group_var_list'{
-		egen md`group_var'_`out_var' = /// Median of the prop. dist, BY GROUP & DATE
-		median(`var'), by(out_interval_start tert_exp_prop`group_var')
-	}		
-	}
-	}
+//	foreach var of varlist out_prop* out_acscs_prop*{	
+//		local out_var: subinstr local var "prop_" "", all 
+//		local out_var: subinstr local out_var "acscs_" "", all
+//		
+//		egen md_`out_var' = /// Median of the proportion distribution, AT EACH DATE
+//			median(`var'*1000), by(out_interval_start)
+//		
+//	if strlen("`group_var_list'") != 0{	
+//	foreach group_var in `group_var_list'{
+//		egen md`group_var'_`out_var' = /// Median of the prop. dist, BY GROUP & DATE
+//		median(`var'*1000), by(out_interval_start tert_exp_prop`group_var')
+//	}		
+//	}
+//	}
 	
 	
 //Outcome total proportions - generated from rounded total numerators & denominators
@@ -168,77 +176,97 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 //		mp6_prop_`out_var': total count hospitalised/all registered patients PER WEEK
 //		mp6_prop`group_var'_`out_var': total count hospitalised/all registered patients PER WEEK AND GROUP var
 //		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
+local group_var_list _u5y _65_74 _75_79 _80_84 _85p _white _asian _black _imd1 _imd2 _ast _dbts _hypt _obs _urb1 _urb2 _female _smoker
 
 	foreach var of varlist mp6_out*{
 	local out_var: subinstr local var "mp6_" "", all
 		gen mp6_prop_`out_var' = /// count outcome/count pts, PER DATE
-			mp6_t_`out_var'/ mp6_t_out_dnm 	
+			(mp6_t_`out_var'/ mp6_t_out_dnm)*1000 	
 		
 	if strlen("`group_var_list'") != 0{
 		foreach group_var in `group_var_list' {	
 		gen mp6_prop`group_var'_`out_var' = /// count outcome/count pts, BY GROUP & DATE
-			mp6_t`group_var'_`out_var'/ mp6_t`group_var'_out_dnm 	
+			(mp6_t`group_var'_`out_var'/ mp6_t`group_var'_out_dnm)*1000 	
 	}
 	}		
 	}
+	//Removing the uneccessary proportion of the denominator var that was created in this loop
+	drop mp6_prop*out_dnm
+	
 		
 //Outcome total proportions generated from raw (unrounded) num/denom		
-	foreach var of varlist out_num* out_acscs_num*{
-		local out_var: subinstr local var "num_" "", all 
-		local out_var: subinstr local out_var "acscs_" "", all	
-		
-		gen prop_`out_var' = /// count outcome/count pts, PER DATE
-			t_`out_var'/ t_out_dnm
-			
-	if strlen("`group_var_list'") != 0 {
-		foreach group_var in `group_var_list' {	
-		gen prop`group_var'_`out_var' = /// count outcome/count pts, BY GROUP & DATE
-			t`group_var'_`out_var'/ t`group_var'_out_dnm 	
-	}
-	}
-	}
+//	foreach var of varlist out_num* out_acscs_num*{
+//		local out_var: subinstr local var "num_" "", all 
+//		local out_var: subinstr local out_var "acscs_" "", all	
+//		
+//		gen prop_`out_var' = /// count outcome/count pts, PER DATE
+//			t_`out_var'/ t_out_dnm
+//			
+//	if strlen("`group_var_list'") != 0 {
+//		foreach group_var in `group_var_list' {	
+//		gen prop`group_var'_`out_var' = /// count outcome/count pts, BY GROUP & DATE
+//			t`group_var'_`out_var'/ t`group_var'_out_dnm 	
+//	}
+//	}
+//	}
 		
 
+**#//SAVING THE DATASET WITH THE TOTAL PROPORTIONS & MEDIANS	
+	//export delimited using ../workspace/output/summary_analytic_data_long_`1'.csv, replace		
+		
+			
 //Second drop of variables we no longer need
-	drop exp_num* exp_prop* exp_dnm*
-	drop out_num* out_acscs_num* out_dnm out_prop* out_acscs_prop*
-	drop t_out* t_*_out* 
-	drop mp6_out* mp6_t_*_out*
+//	drop exp_num* exp_prop* exp_dnm*
+//	drop out_num* out_acscs_num* out_dnm out_prop* out_acscs_prop*
+//	drop t_out* t_*_out* 
+//	drop mp6_out* mp6_t_*_out*
+
+
 
 
 **#//GENERATING TEMPORARY TABLES USED FOR CHECKING  
 //For completeness, doing for all cohorts
 
 //Overall outcome variables (APC, EC) including per acscs
-	local prop_out_vars prop_out*
+	local mp6_prop_out_vars mp6_t_out* mp6_prop_out*
 	preserve
-		keep practice_pseudo_id week_number `prop_out_vars'
-		reshape wide `prop_out_vars', i(practice_pseudo_id ) j(week_number)
-		export delimited using ../workspace/output/temp_prop_out_vars_`1'.csv, replace	
-		//export delimited using temp_prop_out_vars.csv, replace	
+		keep practice_pseudo_id week_number `mp6_prop_out_vars'
+		reshape wide `mp6_prop_out_vars', i(practice_pseudo_id ) j(week_number)
+		export delimited using ../workspace/output/temp_figure1/temp_mp6_prop_out_vars_`1'.csv, replace	
+		//export delimited using temp_mp6_prop_out_vars.csv, replace	
 	restore
 	
-	local md_out_vars md_out*
+	local mp6_md_out_vars mp6_out* mp6_md_out*
 	preserve
-		keep practice_pseudo_id week_number `md_out_vars'
-		reshape wide `md_out_vars', i(practice_pseudo_id ) j(week_number)
-		export delimited using ../workspace/output/temp_md_out_vars_`1'.csv, replace	
-		//export delimited using temp_md_out_vars.csv, replace	
+		keep practice_pseudo_id week_number `mp6_md_out_vars'
+		reshape wide `mp6_md_out_vars', i(practice_pseudo_id ) j(week_number)
+		export delimited using ../workspace/output/temp_figure1/temp_mp6_md_out_vars_`1'.csv, replace	
+		//export delimited using temp_mp6_md_out_vars.csv, replace	
 	restore
+
 	
 //SUMMARY exposure thirds outcome variables (APC, EC) including per acscs
-	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
-	foreach stat in prop md {
+	local exp_var_list u5y 65_74 75_79 80_84 85p white asian black imd1 imd2 ast dbts hypt obs urb1 urb2 female smoker
+	//Proportions, by tertiles of the exposure
 	foreach exp_var in `exp_var_list'{
-		local `stat'_`exp_var'_out_vars `stat'_`exp_var'_out*
-		
+		local mp6_prop_exp_out_vars mp6_t_`exp_var'_out*  mp6_prop_`exp_var'_out*
 		preserve 
-			keep practice_pseudo_id week_number ``stat'_`exp_var'_out_vars'
-			reshape wide ``stat'_`exp_var'_out_vars', i(practice_pseudo_id ) j(week_number)
-			export delimited using ../workspace/output/temp_`stat'_`exp_var'_out_vars_`1'.csv, replace	
-			//export delimited using temp_`stat'_`exp_var'_out_vars.csv, replace
+			keep practice_pseudo_id week_number `mp6_prop_exp_out_vars'
+			reshape wide `mp6_prop_exp_out_vars', i(practice_pseudo_id ) j(week_number)
+			export delimited using ../workspace/output/temp_figure1/temp_mp6_prop_`exp_var'_out_vars_`1'.csv, replace	
+			//export delimited using temp_mp6_prop_`exp_var'_out_vars.csv, replace
 		restore 	
 	}
+	
+	//Medians, by tertiles of the exposure
+	foreach exp_var in `exp_var_list'{
+		local mp6_md_exp_out_vars mp6_out* mp6_md_`exp_var'_out*
+		preserve 
+			keep practice_pseudo_id week_number tert_exp_prop_`exp_var' `mp6_md_exp_out_vars'
+			reshape wide `mp6_md_exp_out_vars', i(practice_pseudo_id tert_exp_prop_`exp_var') j(week_number)
+			export delimited using ../workspace/output/temp_figure1/temp_mp6_md_`exp_var'_out_vars_`1'.csv, replace	
+			//export delimited using temp_mp6_md_`exp_var'_out_vars.csv, replace
+		restore 	
 	}
 	
 
@@ -248,8 +276,8 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 //All outcomes: collapsing across all practices 
 	foreach stat in prop md {
 	foreach hosp in apc ec {
-		local first_frame  `stat'_out_`hosp'_all
-		local out_vars `stat'_out_`hosp'
+		local first_frame  mp6_`stat'_out_`hosp'_all
+		local out_vars mp6_`stat'_out_`hosp'
 		
 		frame put practice_pseudo_id week_number `out_vars'*, into(`first_frame')
 		frame change `first_frame'
@@ -267,7 +295,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}	
 		collapse (first) `out_vars'* 
 		
-		rename `stat'_out_`hosp'_w* `stat'_out_w*
+		rename mp6_`stat'_out_`hosp'_w* mp6_`stat'_out_w*
 		
 		gen grouped_by = "All practices"
 		gen acscs = "No - all conditions"
@@ -284,17 +312,19 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	
 	
 //All outcomes: collapsing by TERTILES of the exposure variable
-	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	//local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	local exp_var_list u5y 65_74 75_79 80_84 85p white asian black imd1 imd2 ast dbts hypt obs urb1 urb2 female smoker
+	
 	foreach stat in prop md {
 	foreach hosp in apc ec {
-		local first_frame `stat'_out_`hosp'_exp
+		local first_frame mp6_`stat'_out_`hosp'_exp
 		local j = 1
 		
 		foreach exp_var in `exp_var_list'  {
-		local out_vars `stat'_`exp_var'_out_`hosp' 
+		local out_vars mp6_`stat'_`exp_var'_out_`hosp' 
 		
-		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(`stat'_out_`hosp'_`exp_var')
-		frame change `stat'_out_`hosp'_`exp_var'
+		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(mp6_`stat'_out_`hosp'_`exp_var')
+		frame change mp6_`stat'_out_`hosp'_`exp_var'
 		
 			reshape wide `out_vars'_w, i(practice_pseudo_id tert_exp_prop_`exp_var') j(week_number)
 			
@@ -305,7 +335,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 					levelsof `var' if tert_exp_prop_`exp_var' == `level' & `var' != 0 
 					cap assert `r(r)' == 1 	
 						if _rc == 9 {
-							di _n "Collapse was not completed"
+							di _n "Pre-collapse check result: "
 							di "Variable:`var', does not have the same values within each level of exp_var: `exp_var'" 
 						continue
 						}
@@ -314,7 +344,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	
 			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
 				
-			rename `stat'_`exp_var'_out_`hosp'_w* `stat'_out_w*	
+			rename mp6_`stat'_`exp_var'_out_`hosp'_w* mp6_`stat'_out_w*	
 	
 			gen grouped_by = "", after (tert_exp_prop_`exp_var')
 				qui levelsof tert_exp_prop_`exp_var'
@@ -329,15 +359,15 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 				replace outcome_type = "Admitted patient care"  if "`hosp'"=="apc"
 				replace outcome_type = "Emergency attendance"  if "`hosp'"=="ec"
 			
-			di _n "We are almost done `stat' `hosp' exp_var: `exp_var'"
+			di _n "We are almost done mp6_`stat' `hosp' exp_var: `exp_var'"
 			if `j' == 1 {
-				frame copy `stat'_out_`hosp'_`exp_var' `first_frame', replace 
+				frame copy mp6_`stat'_out_`hosp'_`exp_var' `first_frame', replace 
 				frame change default
-				frame drop `stat'_out_`hosp'_`exp_var'
+				frame drop mp6_`stat'_out_`hosp'_`exp_var'
 			} 
 			if `j' != 1{
 				frame change `first_frame'
-				xframeappend `stat'_out_`hosp'_`exp_var', drop
+				xframeappend mp6_`stat'_out_`hosp'_`exp_var', drop
 				frame change default
 			}
 		
@@ -351,19 +381,19 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	local acscs_list copd ast hypt dbts ang	
 	foreach stat in prop md {
 	foreach hosp in apc ec {
-		local first_frame `stat'_out_`hosp'_acscs
+		local first_frame mp6_`stat'_out_`hosp'_acscs
 		local j = 1
 		
 		foreach acscs in `acscs_list' {
-			local out_vars `stat'_out_`acscs'_`hosp'
+			local out_vars mp6_`stat'_out_`acscs'_`hosp'
 		
-			frame put practice_pseudo_id week_number `out_vars'*, into(`stat'_out_`hosp'_`acscs')
-			frame change `stat'_out_`hosp'_`acscs'
+			frame put practice_pseudo_id week_number `out_vars'*, into(mp6_`stat'_out_`hosp'_`acscs')
+			frame change mp6_`stat'_out_`hosp'_`acscs'
 			
 			reshape wide `out_vars', i(practice_pseudo_id) j(week_number)
 				
 			foreach var of varlist `out_vars'* {
-				qui  levelsof `var' if `var' !=. & `var' != 0 
+				qui levelsof `var' if `var' !=. & `var' != 0 
 				cap assert `r(r)' == 1
 					if _rc == 9 {
 						di _n "Error: variable `var' is not consistent across all practices for ACSC: `acscs'"
@@ -372,7 +402,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}	
 			collapse (first) `out_vars'_w* 
 			
-			rename `stat'_out_`acscs'_`hosp'_w* `stat'_out_w*
+			rename mp6_`stat'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*
 			
 			gen grouped_by = "All practices"
 			gen acscs = ""
@@ -390,13 +420,13 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}
 			di _n "We are almost done `stat' `hosp' for ACSCs `acscs'"
 			if `j' == 1 {
-				frame copy `stat'_out_`hosp'_`acscs' `first_frame', replace
+				frame copy mp6_`stat'_out_`hosp'_`acscs' `first_frame', replace
 				frame change default
-				frame drop `stat'_out_`hosp'_`acscs'
+				frame drop mp6_`stat'_out_`hosp'_`acscs'
 			} 
 			if `j' != 1{
 				frame change `first_frame' 
-				xframeappend `stat'_out_`hosp'_`acscs', drop
+				xframeappend mp6_`stat'_out_`hosp'_`acscs', drop
 				frame change default
 			}
 		local ++ j
@@ -406,19 +436,21 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 	
 
 //ACSCS outcomes: Collapsing by TERTILES of the exposure variable 
-	local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	//local exp_var_list u5y white imd1 ast dbts hypt obs urb1 female smoker
+	local exp_var_list u5y 65_74 75_79 80_84 85p white asian black imd1 imd2 ast dbts hypt obs urb1 urb2 female smoker
+	
 	local acscs_list copd ast hypt dbts ang
 	foreach stat in prop md {
 	foreach hosp in apc ec {
-		local first_frame `stat'_out_`hosp'_exp_acscs
+		local first_frame mp6_`stat'_out_`hosp'_exp_acscs
 		local j = 1
 		
 		foreach exp_var in `exp_var_list'  {
 		foreach acscs in `acscs_list' {
-		local out_vars `stat'_`exp_var'_out_`acscs'_`hosp' 
+		local out_vars mp6_`stat'_`exp_var'_out_`acscs'_`hosp' 
 			
-		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(`stat'_out_`hosp'_`exp_var'_`acscs')
-		frame change `stat'_out_`hosp'_`exp_var'_`acscs'
+		frame put practice_pseudo_id week_number tert_exp_prop_`exp_var' `out_vars'_w, into(mp6_`stat'_out_`hosp'_`exp_var'_`acscs')
+		frame change mp6_`stat'_out_`hosp'_`exp_var'_`acscs'
 		
 			reshape wide `out_vars'_w, i(practice_pseudo_id tert_exp_prop_`exp_var') j(week_number)
 			
@@ -430,7 +462,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 					
 				cap assert `r(r)' == 1 	
 					if _rc != 0 {
-						di _n "Collapse was not completed"
+						di _n "Pre-collapse check result: "
 						di "Variable:`var', does not have the same values within each level of exp_var: `exp_var'" 
 						continue
 					}
@@ -438,7 +470,7 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 			}
 			collapse (first) `out_vars'_w*, by(tert_exp_prop_`exp_var')
 				
-			rename `stat'_`exp_var'_out_`acscs'_`hosp'_w* `stat'_out_w*	
+			rename mp6_`stat'_`exp_var'_out_`acscs'_`hosp'_w* mp6_`stat'_out_w*	
 	
 			gen grouped_by = "", after (tert_exp_prop_`exp_var')
 				qui levelsof tert_exp_prop_`exp_var'
@@ -457,16 +489,16 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 		
 			drop tert_exp_prop_`exp_var'
 			
-			di _n "We are almost done `stat' `hosp' exp_var: `exp_var' for ACSCs `acscs'"
+			di _n "We are almost done mp6_`stat' `hosp' exp_var: `exp_var' for ACSCs `acscs'"
 			if `j' == 1 {
-				frame copy `stat'_out_`hosp'_`exp_var'_`acscs' `first_frame', replace
+				frame copy mp6_`stat'_out_`hosp'_`exp_var'_`acscs' `first_frame', replace
 				frame change default
-				frame drop `stat'_out_`hosp'_`exp_var'_`acscs' 
+				frame drop mp6_`stat'_out_`hosp'_`exp_var'_`acscs' 
 				
 			} 
 			if `j' != 1{
 				frame change `first_frame' 
-				xframeappend `stat'_out_`hosp'_`exp_var'_`acscs', drop
+				xframeappend mp6_`stat'_out_`hosp'_`exp_var'_`acscs', drop
 				frame change default
 			}
 				
@@ -479,27 +511,27 @@ local group_var_list _u5y _white _imd1 _ast _dbts _hypt _obs _urb1 _female _smok
 
 	
 	
-**# //APPENDING THE FRAMES TOGETHRER
-	frame md_out_apc_all: ///
-		xframeappend md_out_apc_acscs md_out_apc_exp md_out_apc_exp_acscs, drop 	
-	frame md_out_ec_all: ///
-		xframeappend md_out_ec_acscs md_out_ec_exp md_out_ec_exp_acscs, drop  
-	frame prop_out_apc_all: ///
-		xframeappend prop_out_apc_acscs prop_out_apc_exp prop_out_apc_exp_acscs, drop 
-	frame prop_out_ec_all: ///
-		xframeappend prop_out_ec_acscs prop_out_ec_exp prop_out_ec_exp_acscs, drop 
-
+**# //APPENDING THE FRAMES TOGETHER
+	frame mp6_md_out_apc_all: ///
+		xframeappend mp6_md_out_apc_acscs mp6_md_out_apc_exp mp6_md_out_apc_exp_acscs, drop 
+	frame mp6_md_out_ec_all: ///
+		xframeappend mp6_md_out_ec_acscs mp6_md_out_ec_exp mp6_md_out_ec_exp_acscs, drop  
+	frame mp6_prop_out_apc_all: ///
+		xframeappend mp6_prop_out_apc_acscs mp6_prop_out_apc_exp mp6_prop_out_apc_exp_acscs, drop 
+	frame mp6_prop_out_ec_all: ///
+		xframeappend mp6_prop_out_ec_acscs mp6_prop_out_ec_exp mp6_prop_out_ec_exp_acscs, drop 
+				
+		
+		
 //Saving as a .dta file, and exporting as a tab-delimited file 	
-	foreach frame in md_out_apc_all md_out_ec_all prop_out_apc_all prop_out_ec_all {
-		frame `frame': save ../workspace/output/`frame'_`1'.dta, replace
-		frame `frame': export delimited using ../workspace/output/`frame'_`1'.csv, replace	
+	foreach frame in mp6_md_out_apc_all mp6_md_out_ec_all mp6_prop_out_apc_all mp6_prop_out_ec_all {
+		frame `frame': save ../workspace/output/figure1/`frame'_`1'.dta, replace
+		frame `frame': export delimited using ../workspace/output/figure1/`frame'_`1'.csv, replace	
 	}
 
 
 
  	
-	
-
 **# //GRAPHS
 
 
