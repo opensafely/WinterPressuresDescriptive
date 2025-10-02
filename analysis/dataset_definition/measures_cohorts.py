@@ -1,5 +1,9 @@
+from ehrql import claim_permissions
+
 from module_table_imports import *
 from config_setup import *
+
+claim_permissions("appointments")
 
 if practice_measures:
 
