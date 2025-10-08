@@ -117,6 +117,29 @@ df <- df %>%
     )
   )
 
+# --- Cohort labels (add this new section) ---
+
+# Define desired order explicitly
+desired_order <- c(
+  "Pre-COVID19 (2018-10-01)",
+  "Post-COVID19 I (2022-10-01)",
+  "Post-COVID19 II (2023-10-01)",
+  "Post-COVID19 III (2024-10-01)"
+)
+
+# Join with labels.csv for pretty names
+df <- df %>%
+  left_join(
+    labels %>%
+      select(term, label) %>%
+      filter(term %in% c("precovid", "postcovid1", "postcovid2", "postcovid3")),
+    by = c("cohort" = "term")
+  ) %>%
+  mutate(
+    cohort_label = if_else(!is.na(label), label, cohort),
+    cohort_label = factor(cohort_label, levels = desired_order)
+  )
+
 # Plot Proportion
 df_prop <- df %>%
   filter(type == "prop", strata == "Overall")
@@ -162,9 +185,9 @@ walk(groups, function(g) {
   plot_data <- df_long %>% filter(group == g)
 
   # Data for horizontal overall lines (one per category × cohort)
-  lines_df <- df_prop_plot %>%
+  lines_df <- df_prop %>%
     filter(group == g) %>%
-    distinct(category_label, cohort, prop_overall_midpoint6) %>%
+    distinct(category_label, cohort_label, prop_overall_midpoint6) %>%
     mutate(prop_overall = prop_overall_midpoint6 * 100) # convert to %
 
   # Compute intersection points (P50 vertical line vs horizontal line)
@@ -173,7 +196,7 @@ walk(groups, function(g) {
 
   p <- ggplot(
     plot_data,
-    aes(x = decile, y = value, color = cohort, group = cohort)
+    aes(x = decile, y = value, color = cohort_label, group = cohort_label)
   ) +
     # Solid lines = decile trends (practice-level)
     geom_line(linewidth = 0.8, alpha = 0.6) +
@@ -185,7 +208,7 @@ walk(groups, function(g) {
       data = lines_df,
       aes(
         yintercept = prop_overall,
-        color = cohort,
+        color = cohort_label,
         linetype = "Population average"
       ),
       linewidth = 0.8,
@@ -196,7 +219,7 @@ walk(groups, function(g) {
     # Triangles = intersection points
     geom_point(
       data = intersection_df,
-      aes(x = decile, y = prop_overall, color = cohort),
+      aes(x = decile, y = prop_overall, color = cohort_label),
       shape = 17, # triangle
       size = 2, # smaller marker
       alpha = 0.9,
@@ -244,7 +267,7 @@ df_popavg_cons <- df %>%
     group == "Consultations",
     strata == "Overall"
   ) %>%
-  distinct(category_label, cohort, prop_overall_midpoint6) %>%
+  distinct(category_label, cohort_label, prop_overall_midpoint6) %>%
   mutate(prop_overall_midpoint6 = as.numeric(prop_overall_midpoint6) * 1000)
 
 # Consultations – Deciles, Median, Q1, Q3 -------------------------------------
@@ -254,7 +277,7 @@ df_cons <- df %>%
   select(
     category,
     category_label,
-    cohort,
+    cohort_label,
     p10_midpoint6,
     p20_midpoint6,
     p30_midpoint6,
@@ -320,8 +343,8 @@ p_cons <- ggplot() +
     aes(
       x = category_label,
       y = value,
-      group = interaction(cohort, percentile),
-      color = cohort
+      group = interaction(cohort_label, percentile),
+      color = cohort_label
     ),
     linetype = "dashed",
     size = 0.4,
@@ -333,8 +356,8 @@ p_cons <- ggplot() +
     aes(
       x = category_label,
       y = value,
-      group = interaction(cohort, stat),
-      color = cohort
+      group = interaction(cohort_label, stat),
+      color = cohort_label
     ),
     size = 0.6,
     alpha = 0.8
@@ -345,8 +368,8 @@ p_cons <- ggplot() +
     aes(
       x = category_label,
       y = value,
-      group = interaction(cohort, stat),
-      color = cohort
+      group = interaction(cohort_label, stat),
+      color = cohort_label
     ),
     size = 1.2
   ) +
@@ -355,8 +378,8 @@ p_cons <- ggplot() +
     aes(
       x = category_label,
       y = value,
-      group = interaction(cohort, stat),
-      color = cohort
+      group = interaction(cohort_label, stat),
+      color = cohort_label
     ),
     size = 1
   ) +
@@ -366,8 +389,8 @@ p_cons <- ggplot() +
     aes(
       x = category_label,
       y = prop_overall_midpoint6,
-      group = cohort,
-      color = cohort,
+      group = cohort_label,
+      color = cohort_label,
       linetype = "Population average"
     ),
     color = "grey40",
@@ -378,7 +401,10 @@ p_cons <- ggplot() +
   labs(
     title = "Consultations: Deciles with highlighted Median & IQR over time",
     x = "Month",
-    y = "Consultations per 1,000 patients"
+    y = "Consultations per 1,000 patients",
+    colour = "Cohort",
+    fill = "Cohort",
+    linetype = ""
   ) +
   scale_linetype_manual(
     name = "",
@@ -400,29 +426,29 @@ ggsave(
 
 p_cons <- ggplot(
   df_cons,
-  aes(x = category_label, color = cohort, fill = cohort)
+  aes(x = category_label, color = cohort_label, fill = cohort_label)
 ) +
   # P10–P90 ribbon
   geom_ribbon(
-    aes(ymin = p10_midpoint6, ymax = p90_midpoint6, group = cohort),
+    aes(ymin = p10_midpoint6, ymax = p90_midpoint6, group = cohort_label),
     alpha = 0.15,
     linetype = 0
   ) +
   # Q1–Q3 ribbon
   geom_ribbon(
-    aes(ymin = q1_midpoint6, ymax = q3_midpoint6, group = cohort),
+    aes(ymin = q1_midpoint6, ymax = q3_midpoint6, group = cohort_label),
     alpha = 0.3,
     linetype = 0
   ) +
   # Median line
-  geom_line(aes(y = median_midpoint6, group = cohort), size = 1) +
-  geom_point(aes(y = median_midpoint6, group = cohort), size = 1) +
+  geom_line(aes(y = median_midpoint6, group = cohort_label), size = 1) +
+  geom_point(aes(y = median_midpoint6, group = cohort_label), size = 1) +
   geom_line(
     data = df_popavg_cons,
     aes(
       x = category_label,
       y = prop_overall_midpoint6,
-      group = cohort,
+      group = cohort_label,
       linetype = "Population average"
     ),
     color = "grey40",
@@ -433,11 +459,14 @@ p_cons <- ggplot(
   labs(
     title = "Consultations per 1,000 patients: Median, IQR and P10–P90 over time",
     x = "Month",
-    y = "Consultations per 1,000 patients"
+    y = "Consultations per 1,000 patients",
+    colour = "Cohort",
+    fill = "Cohort",
+    linetype = ""
   ) +
   scale_linetype_manual(
     name = "",
-    values = c("Population average" = "longdash")
+    values = c("Population average" = "33")
   ) +
   theme_bw() +
   theme(
