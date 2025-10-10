@@ -124,7 +124,7 @@ local group_var_list _u5y _65_74 _75_79 _80_84 _85p _white _asian _black _imd1 _
 		
 	if strlen("`group_var_list'") != 0{		
 	foreach group_var in `group_var_list'{
-		egen t`group_var'_out_dnm = ///Rounded total num, PER DATE & GROUP VAR
+		egen t`group_var'_out_dnm = ///Rounded total denom, PER DATE & GROUP VAR
 			total(out_dnm), by(out_interval_start tert_exp_prop`group_var')
 			round_mp6 t`group_var'_out_dnm mp6_t`group_var'_out_dnm
 	}
