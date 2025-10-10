@@ -1,6 +1,6 @@
 /*============================================================================
 DO FILE NAME:			figures_graphs_out.do
-DATE: 					12/09/2025
+DATE: 					09/09/2025
 AUTHOR:					Shrinkhala Dawadi
 DESCRIPTION OF FILE:	Produces histograms of the outcome  
 ==============================================================================*/	
@@ -16,7 +16,7 @@ DESCRIPTION OF FILE:	Produces histograms of the outcome
 adopath + ../workspace/analysis/ado 
 
 
-//Creating the file paths 
+//Creating the file paths for outputs
 // mkdir ..workspace/output
  cap mkdir output/figure1
  cap mkdir output/temp_figure1
@@ -27,6 +27,11 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 //import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDescriptive\output\analytic_data_long_postcovid1.csv", clear
 
 
+//Exclude practices with fewer than <1000 patients 
+	count if exp_denom <1000
+	qui levelsof practice_pseudo_id if exp_denom <1000
+	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
+	drop if exp_denom <1000
 
 //Creating the histograms
 //Data is organised as one row per practice in long (so no summary measures used here)
