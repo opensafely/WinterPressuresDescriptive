@@ -24,8 +24,6 @@ adopath + ../workspace/analysis/ado
  
 // Importing data
 import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
-//import delimited "C:\Users\ShrinkhalaDawadi\Documents\GitHub\WinterPressuresDescriptive\output\analytic_data_long_postcovid1.csv", clear
-
 
 //Exclude practices with fewer than <1000 patients 
 	count if exp_denom <1000
