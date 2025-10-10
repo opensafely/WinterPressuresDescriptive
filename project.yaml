@@ -1352,3 +1352,55 @@ actions:
         dataset41: output/figure1/mp6_md_out_ec_all_postcovid3.csv
         dataset42: output/figure1/mp6_prop_out_ec_all_postcovid3.csv
 
+  ## Generates histograms of the outcome, cohort: precovid 
+
+  generate_outcome_histograms_precovid:
+    run: stata-mp:latest analysis/figures_graphs_outcome_histogram.do precovid 2024-10-01
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        histogram1: output/figure1/apc_hist_precovid.svg
+        histogram2: output/figure1/apc_hist_acscs_precovid.svg
+        histogram3: output/figure1/ec_hist_precovid.svg
+        histogram4: output/figure1/ec_hist_acscs_precovid.svg
+
+  ## Generates histograms of the outcome, cohort: postcovid1 
+
+  generate_outcome_histograms_postcovid1:
+    run: stata-mp:latest analysis/figures_graphs_outcome_histogram.do postcovid1 2024-10-01
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        histogram1: output/figure1/apc_hist_postcovid1.svg
+        histogram2: output/figure1/apc_hist_acscs_postcovid1.svg
+        histogram3: output/figure1/ec_hist_postcovid1.svg
+        histogram4: output/figure1/ec_hist_acscs_postcovid1.svg
+
+  ## Generates histograms of the outcome, cohort: postcovid2 
+
+  generate_outcome_histograms_postcovid2:
+    run: stata-mp:latest analysis/figures_graphs_outcome_histogram.do postcovid2 2024-10-01
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        histogram1: output/figure1/apc_hist_postcovid2.svg
+        histogram2: output/figure1/apc_hist_acscs_postcovid2.svg
+        histogram3: output/figure1/ec_hist_postcovid2.svg
+        histogram4: output/figure1/ec_hist_acscs_postcovid2.svg
+
+  ## Generates histograms of the outcome, cohort: postcovid3 
+
+  generate_outcome_histograms_postcovid3:
+    run: stata-mp:latest analysis/figures_graphs_outcome_histogram.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        histogram1: output/figure1/apc_hist_postcovid3.svg
+        histogram2: output/figure1/apc_hist_acscs_postcovid3.svg
+        histogram3: output/figure1/ec_hist_postcovid3.svg
+        histogram4: output/figure1/ec_hist_acscs_postcovid3.svg
+
