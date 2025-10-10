@@ -371,10 +371,10 @@ for (cohort in cohorts_all){
       run = glue("stata-mp:latest analysis/figures_graphs_outcome_histogram.do {cohort} {date}"),
       needs = list(glue("generate_merged_{cohort}")), 
       moderately_sensitive = list(
-        histogram1 = glue("output/figure1/apc_hist_{cohort}.svg"),
-        histogram2 = glue("output/figure1/apc_hist_acscs_{cohort}.svg"),
-        histogram3 = glue("output/figure1/ec_hist_{cohort}.svg"),
-        histogram4 = glue("output/figure1/ec_hist_acscs_{cohort}.svg")
+        histogram1 = glue("output/figure1/apc_hg_{cohort}.svg"),
+        histogram2 = glue("output/figure1/apc_hg_acscs_{cohort}.svg"),
+        histogram3 = glue("output/figure1/ec_hg_{cohort}.svg"),
+        histogram4 = glue("output/figure1/ec_hg_acscs_{cohort}.svg")
       )
     )
   )

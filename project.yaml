@@ -1360,10 +1360,10 @@ actions:
     - generate_merged_precovid
     outputs:
       moderately_sensitive:
-        histogram1: output/figure1/apc_hist_precovid.svg
-        histogram2: output/figure1/apc_hist_acscs_precovid.svg
-        histogram3: output/figure1/ec_hist_precovid.svg
-        histogram4: output/figure1/ec_hist_acscs_precovid.svg
+        histogram1: output/figure1/apc_hg_precovid.svg
+        histogram2: output/figure1/apc_hg_acscs_precovid.svg
+        histogram3: output/figure1/ec_hg_precovid.svg
+        histogram4: output/figure1/ec_hg_acscs_precovid.svg
 
   ## Generates histograms of the outcome, cohort: postcovid1 
 
@@ -1373,10 +1373,10 @@ actions:
     - generate_merged_postcovid1
     outputs:
       moderately_sensitive:
-        histogram1: output/figure1/apc_hist_postcovid1.svg
-        histogram2: output/figure1/apc_hist_acscs_postcovid1.svg
-        histogram3: output/figure1/ec_hist_postcovid1.svg
-        histogram4: output/figure1/ec_hist_acscs_postcovid1.svg
+        histogram1: output/figure1/apc_hg_postcovid1.svg
+        histogram2: output/figure1/apc_hg_acscs_postcovid1.svg
+        histogram3: output/figure1/ec_hg_postcovid1.svg
+        histogram4: output/figure1/ec_hg_acscs_postcovid1.svg
 
   ## Generates histograms of the outcome, cohort: postcovid2 
 
@@ -1386,10 +1386,10 @@ actions:
     - generate_merged_postcovid2
     outputs:
       moderately_sensitive:
-        histogram1: output/figure1/apc_hist_postcovid2.svg
-        histogram2: output/figure1/apc_hist_acscs_postcovid2.svg
-        histogram3: output/figure1/ec_hist_postcovid2.svg
-        histogram4: output/figure1/ec_hist_acscs_postcovid2.svg
+        histogram1: output/figure1/apc_hg_postcovid2.svg
+        histogram2: output/figure1/apc_hg_acscs_postcovid2.svg
+        histogram3: output/figure1/ec_hg_postcovid2.svg
+        histogram4: output/figure1/ec_hg_acscs_postcovid2.svg
 
   ## Generates histograms of the outcome, cohort: postcovid3 
 
@@ -1399,8 +1399,8 @@ actions:
     - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
-        histogram1: output/figure1/apc_hist_postcovid3.svg
-        histogram2: output/figure1/apc_hist_acscs_postcovid3.svg
-        histogram3: output/figure1/ec_hist_postcovid3.svg
-        histogram4: output/figure1/ec_hist_acscs_postcovid3.svg
+        histogram1: output/figure1/apc_hg_postcovid3.svg
+        histogram2: output/figure1/apc_hg_acscs_postcovid3.svg
+        histogram3: output/figure1/ec_hg_postcovid3.svg
+        histogram4: output/figure1/ec_hg_acscs_postcovid3.svg
 
