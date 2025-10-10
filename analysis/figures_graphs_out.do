@@ -2,20 +2,20 @@
 DO FILE NAME:			figures_graphs_out.do
 DATE: 					12/09/2025
 AUTHOR:					Shrinkhala Dawadi
-DESCRIPTION OF FILE:	Produces a table used to generate descriptive graphs 
+DESCRIPTION OF FILE:	Produces a table used to generate descriptive graphs of the outcome by tertiles of the practice-level exposure variables
 ==============================================================================*/	
 
 
-//===================================================
-//OUTCOME - HOSPITAL ATTENDANCES/ADMISSIONS
-//===================================================
+//=============================================================
+//OUTCOME - HOSPITAL ATTENDANCES/ EMERGENCY ADMISSIONS
+//=============================================================
 
 
 //Setting directory for user-written commands
 	//ssc install xframeappend 
 adopath + ../workspace/analysis/ado 
 
-//Creating a new folder for the outputs
+//Creating the file paths for outputs
 // mkdir ..workspace/output
  mkdir output/figure1
  mkdir output/temp_figure1

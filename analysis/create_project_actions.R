@@ -362,8 +362,26 @@ for (cohort in cohorts_all){
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, table_for_output_graphs)
 }
+#Add action to generate the histograms of the outcome
+for (cohort in cohorts_all){
+  outcome_histograms <- c(
+    comment(glue("Generates histograms of the outcome, cohort: {cohort}")),
+    action(
+      name = glue("generate_outcome_histograms_{cohort}"),
+      run = glue("stata-mp:latest analysis/figures_graphs_outcome_histogram.do {cohort} {date}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        histogram1 = glue("output/figure1/apc_hist_{cohort}.svg"),
+        histogram2 = glue("output/figure1/apc_hist_acscs_{cohort}.svg"),
+        histogram3 = glue("output/figure1/ec_hist_{cohort}.svg"),
+        histogram4 = glue("output/figure1/ec_hist_acscs_{cohort}.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, outcome_histograms)
+}
 # Combine actions into project list --------------------------------------------
-
 project_list <- splice(
   defaults_list,
   list(actions = actions_list)
