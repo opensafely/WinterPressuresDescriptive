@@ -386,6 +386,84 @@ project_list <- splice(
   defaults_list,
   list(actions = actions_list)
 )
+#Add action to generate the variables for the outcome decile graphs
+for (cohort in cohorts_all){
+  out_dec_vars <- c(
+    comment(glue("Generates variables for the outcome decile graphs, cohort: {cohort}")),
+    action(
+      name = glue("generate_outcome_deciles_{cohort}"),
+      run = glue("stata-mp:latest analysis/f1_out_dec_variables.do {cohort} {date}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        out_dec_data_long_csv = glue("output/f1_out_dec/out_dec_data_long_{cohort}.csv"),
+        out_dec_data_wide_csv = glue("output/f1_out_dec/out_dec_data_wide_{cohort}.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, out_dec_vars)
+}
+#Add action to generate the data + graphs for the outcome decile plots
+  out_dec_graphs <- c(
+    comment(glue("Generates variables for the outcome decile graphs")),
+    action(
+      name = glue("generate_out_dec_graphs"),
+      run = glue("stata-mp:latest analysis/f1_out_dec_graphs.do"),
+      needs = list(
+        glue("generate_outcome_deciles_precovid"),
+        glue("generate_outcome_deciles_postcovid1"),
+        glue("generate_outcome_deciles_postcovid2"),
+        glue("generate_outcome_deciles_postcovid3")
+      ),
+      moderately_sensitive = list(
+        out_dec_all_csv = glue("output/f1_out_dec/out_dec_all.csv"),
+        graph_dec_all = glue("output/f1_out_dec/dec_all.svg"),
+        graph_dec_ang_all = glue("output/f1_out_dec/dec_ang_all.svg"),
+        graph_dec_ast_all = glue("output/f1_out_dec/dec_ast_all.svg"),
+        graph_dec_dbts_all = glue("output/f1_out_dec/dec_dbts_all.svg"),
+        graph_dec_copd_all = glue("output/f1_out_dec/dec_copd_all.svg"),
+        graph_dec_hypt_all = glue("output/f1_out_dec/dec_hypt_all.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, out_dec_graphs)
+#Add action to generate the data + graphs for the outcome decile plots by week
+  out_dec_week_graphs <- c(
+    comment(glue("Generates variables for the outcome decile graphs by week")),
+    action(
+      name = glue("generate_out_dec_week_graphs"),
+      run = glue("stata-mp:latest analysis/f1_out_dec_week_graphs.do"),
+      needs = list(
+        glue("generate_outcome_deciles_precovid"),
+        glue("generate_outcome_deciles_postcovid1"),
+        glue("generate_outcome_deciles_postcovid2"),
+        glue("generate_outcome_deciles_postcovid3")
+      ),
+      moderately_sensitive = list(
+        out_dec_week_all_csv = glue("output/f1_out_dec/out_dec_week_all.csv"),
+        graph1_precovid = glue("output/f1_out_dec/wdec_precovid.svg"),
+        graph1_postcovid1 = glue("output/f1_out_dec/wdec_postcovid1.svg"),
+        graph1_postcovid2 = glue("output/f1_out_dec/wdec_postcovid2.svg"),
+        graph1_postcovid3 = glue("output/f1_out_dec/wdec_postcovid3.svg"),
+        graph2_precovid = glue("output/f1_out_dec/prop_wdec_acscs_precovid.svg"),
+        graph2_postcovid1 = glue("output/f1_out_dec/prop_wdec_acscs_postcovid1.svg"),
+        graph2_postcovid2 = glue("output/f1_out_dec/prop_wdec_acscs_postcovid2.svg"),
+        graph2_postcovid3 = glue("output/f1_out_dec/prop_wdec_acscs_postcovid3.svg"),
+        graph3_precovid = glue("output/f1_out_dec/md_wdec_acscs_precovid.svg"),
+        graph3_postcovid1 = glue("output/f1_out_dec/md_wdec_acscs_postcovid1.svg"),
+        graph3_postcovid2 = glue("output/f1_out_dec/md_wdec_acscs_postcovid2.svg"),
+        graph3_postcovid3 = glue("output/f1_out_dec/md_wdec_acscs_postcovid3.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, out_dec_week_graphs)  
+# Combine actions into project list --------------------------------------------
+project_list <- splice(
+  defaults_list,
+  list(actions = actions_list)
+)
 
 # Convert list to yaml, reformat, and output a .yaml file ----------------------
 
