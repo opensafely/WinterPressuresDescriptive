@@ -303,73 +303,153 @@ for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_table1(cohort))
 }
 #Add action: generate the tables used for the descriptive outcome graphs
-for (cohort in cohorts_all){
+for (cohort in cohorts_all) {
   date <- cohort_dates[[cohort]] #Pull in the date for the cohort
-  
+
   #Defining the action
   table_for_output_graphs <- c(
     comment(glue("Generates dataset for the outcome graphs, cohort: {cohort}")),
     action(
       name = glue("generate_table_for_outcome_graph_{cohort}"),
-      run = glue("stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"),
-      needs = list(glue("generate_merged_{cohort}")), 
+      run = glue(
+        "stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"
+      ),
+      needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(
-        dataset1 = glue("output/temp_figure1/temp_mp6_prop_out_vars_{cohort}.csv"),
-        dataset2 = glue("output/temp_figure1/temp_mp6_prop_u5y_out_vars_{cohort}.csv"),
-        dataset3 = glue("output/temp_figure1/temp_mp6_prop_65_74_out_vars_{cohort}.csv"),
-        dataset4 = glue("output/temp_figure1/temp_mp6_prop_75_79_out_vars_{cohort}.csv"),
-        dataset5 = glue("output/temp_figure1/temp_mp6_prop_80_84_out_vars_{cohort}.csv"),
-        dataset6 = glue("output/temp_figure1/temp_mp6_prop_85p_out_vars_{cohort}.csv"),
-        dataset7 = glue("output/temp_figure1/temp_mp6_prop_asian_out_vars_{cohort}.csv"),
-        dataset8 = glue("output/temp_figure1/temp_mp6_prop_black_out_vars_{cohort}.csv"),
-        dataset9 = glue("output/temp_figure1/temp_mp6_prop_white_out_vars_{cohort}.csv"),
-        dataset10 = glue("output/temp_figure1/temp_mp6_prop_imd1_out_vars_{cohort}.csv"),
-        dataset11 = glue("output/temp_figure1/temp_mp6_prop_imd2_out_vars_{cohort}.csv"),
-        dataset12 = glue("output/temp_figure1/temp_mp6_prop_ast_out_vars_{cohort}.csv"),
-        dataset13 = glue("output/temp_figure1/temp_mp6_prop_dbts_out_vars_{cohort}.csv"),
-        dataset14 = glue("output/temp_figure1/temp_mp6_prop_hypt_out_vars_{cohort}.csv"),
-        dataset15 = glue("output/temp_figure1/temp_mp6_prop_obs_out_vars_{cohort}.csv"),
-        dataset16 = glue("output/temp_figure1/temp_mp6_prop_urb1_out_vars_{cohort}.csv"),
-        dataset17 = glue("output/temp_figure1/temp_mp6_prop_urb2_out_vars_{cohort}.csv"),
-        dataset18 = glue("output/temp_figure1/temp_mp6_prop_female_out_vars_{cohort}.csv"),
-        dataset19 = glue("output/temp_figure1/temp_mp6_prop_smoker_out_vars_{cohort}.csv"),
-        dataset20 = glue("output/temp_figure1/temp_mp6_md_out_vars_{cohort}.csv"),
-        dataset21 = glue("output/temp_figure1/temp_mp6_md_u5y_out_vars_{cohort}.csv"),
-        dataset22 = glue("output/temp_figure1/temp_mp6_md_65_74_out_vars_{cohort}.csv"),
-        dataset23 = glue("output/temp_figure1/temp_mp6_md_75_79_out_vars_{cohort}.csv"),
-        dataset24 = glue("output/temp_figure1/temp_mp6_md_80_84_out_vars_{cohort}.csv"),
-        dataset25 = glue("output/temp_figure1/temp_mp6_md_85p_out_vars_{cohort}.csv"),
-        dataset26 = glue("output/temp_figure1/temp_mp6_md_asian_out_vars_{cohort}.csv"),
-        dataset27 = glue("output/temp_figure1/temp_mp6_md_black_out_vars_{cohort}.csv"),
-        dataset28 = glue("output/temp_figure1/temp_mp6_md_white_out_vars_{cohort}.csv"),
-        dataset29 = glue("output/temp_figure1/temp_mp6_md_imd1_out_vars_{cohort}.csv"),
-        dataset30 = glue("output/temp_figure1/temp_mp6_md_imd2_out_vars_{cohort}.csv"),
-        dataset31 = glue("output/temp_figure1/temp_mp6_md_ast_out_vars_{cohort}.csv"),
-        dataset32 = glue("output/temp_figure1/temp_mp6_md_dbts_out_vars_{cohort}.csv"),
-        dataset33 = glue("output/temp_figure1/temp_mp6_md_hypt_out_vars_{cohort}.csv"),
-        dataset34 = glue("output/temp_figure1/temp_mp6_md_obs_out_vars_{cohort}.csv"),
-        dataset35 = glue("output/temp_figure1/temp_mp6_md_urb1_out_vars_{cohort}.csv"),
-        dataset36 = glue("output/temp_figure1/temp_mp6_md_urb2_out_vars_{cohort}.csv"),
-        dataset37 = glue("output/temp_figure1/temp_mp6_md_female_out_vars_{cohort}.csv"),
-        dataset38 = glue("output/temp_figure1/temp_mp6_md_smoker_out_vars_{cohort}.csv"),
+        dataset1 = glue(
+          "output/temp_figure1/temp_mp6_prop_out_vars_{cohort}.csv"
+        ),
+        dataset2 = glue(
+          "output/temp_figure1/temp_mp6_prop_u5y_out_vars_{cohort}.csv"
+        ),
+        dataset3 = glue(
+          "output/temp_figure1/temp_mp6_prop_65_74_out_vars_{cohort}.csv"
+        ),
+        dataset4 = glue(
+          "output/temp_figure1/temp_mp6_prop_75_79_out_vars_{cohort}.csv"
+        ),
+        dataset5 = glue(
+          "output/temp_figure1/temp_mp6_prop_80_84_out_vars_{cohort}.csv"
+        ),
+        dataset6 = glue(
+          "output/temp_figure1/temp_mp6_prop_85p_out_vars_{cohort}.csv"
+        ),
+        dataset7 = glue(
+          "output/temp_figure1/temp_mp6_prop_asian_out_vars_{cohort}.csv"
+        ),
+        dataset8 = glue(
+          "output/temp_figure1/temp_mp6_prop_black_out_vars_{cohort}.csv"
+        ),
+        dataset9 = glue(
+          "output/temp_figure1/temp_mp6_prop_white_out_vars_{cohort}.csv"
+        ),
+        dataset10 = glue(
+          "output/temp_figure1/temp_mp6_prop_imd1_out_vars_{cohort}.csv"
+        ),
+        dataset11 = glue(
+          "output/temp_figure1/temp_mp6_prop_imd2_out_vars_{cohort}.csv"
+        ),
+        dataset12 = glue(
+          "output/temp_figure1/temp_mp6_prop_ast_out_vars_{cohort}.csv"
+        ),
+        dataset13 = glue(
+          "output/temp_figure1/temp_mp6_prop_dbts_out_vars_{cohort}.csv"
+        ),
+        dataset14 = glue(
+          "output/temp_figure1/temp_mp6_prop_hypt_out_vars_{cohort}.csv"
+        ),
+        dataset15 = glue(
+          "output/temp_figure1/temp_mp6_prop_obs_out_vars_{cohort}.csv"
+        ),
+        dataset16 = glue(
+          "output/temp_figure1/temp_mp6_prop_urb1_out_vars_{cohort}.csv"
+        ),
+        dataset17 = glue(
+          "output/temp_figure1/temp_mp6_prop_urb2_out_vars_{cohort}.csv"
+        ),
+        dataset18 = glue(
+          "output/temp_figure1/temp_mp6_prop_female_out_vars_{cohort}.csv"
+        ),
+        dataset19 = glue(
+          "output/temp_figure1/temp_mp6_prop_smoker_out_vars_{cohort}.csv"
+        ),
+        dataset20 = glue(
+          "output/temp_figure1/temp_mp6_md_out_vars_{cohort}.csv"
+        ),
+        dataset21 = glue(
+          "output/temp_figure1/temp_mp6_md_u5y_out_vars_{cohort}.csv"
+        ),
+        dataset22 = glue(
+          "output/temp_figure1/temp_mp6_md_65_74_out_vars_{cohort}.csv"
+        ),
+        dataset23 = glue(
+          "output/temp_figure1/temp_mp6_md_75_79_out_vars_{cohort}.csv"
+        ),
+        dataset24 = glue(
+          "output/temp_figure1/temp_mp6_md_80_84_out_vars_{cohort}.csv"
+        ),
+        dataset25 = glue(
+          "output/temp_figure1/temp_mp6_md_85p_out_vars_{cohort}.csv"
+        ),
+        dataset26 = glue(
+          "output/temp_figure1/temp_mp6_md_asian_out_vars_{cohort}.csv"
+        ),
+        dataset27 = glue(
+          "output/temp_figure1/temp_mp6_md_black_out_vars_{cohort}.csv"
+        ),
+        dataset28 = glue(
+          "output/temp_figure1/temp_mp6_md_white_out_vars_{cohort}.csv"
+        ),
+        dataset29 = glue(
+          "output/temp_figure1/temp_mp6_md_imd1_out_vars_{cohort}.csv"
+        ),
+        dataset30 = glue(
+          "output/temp_figure1/temp_mp6_md_imd2_out_vars_{cohort}.csv"
+        ),
+        dataset31 = glue(
+          "output/temp_figure1/temp_mp6_md_ast_out_vars_{cohort}.csv"
+        ),
+        dataset32 = glue(
+          "output/temp_figure1/temp_mp6_md_dbts_out_vars_{cohort}.csv"
+        ),
+        dataset33 = glue(
+          "output/temp_figure1/temp_mp6_md_hypt_out_vars_{cohort}.csv"
+        ),
+        dataset34 = glue(
+          "output/temp_figure1/temp_mp6_md_obs_out_vars_{cohort}.csv"
+        ),
+        dataset35 = glue(
+          "output/temp_figure1/temp_mp6_md_urb1_out_vars_{cohort}.csv"
+        ),
+        dataset36 = glue(
+          "output/temp_figure1/temp_mp6_md_urb2_out_vars_{cohort}.csv"
+        ),
+        dataset37 = glue(
+          "output/temp_figure1/temp_mp6_md_female_out_vars_{cohort}.csv"
+        ),
+        dataset38 = glue(
+          "output/temp_figure1/temp_mp6_md_smoker_out_vars_{cohort}.csv"
+        ),
         dataset39 = glue("output/figure1/mp6_md_out_apc_all_{cohort}.csv"),
         dataset40 = glue("output/figure1/mp6_prop_out_apc_all_{cohort}.csv"),
         dataset41 = glue("output/figure1/mp6_md_out_ec_all_{cohort}.csv"),
         dataset42 = glue("output/figure1/mp6_prop_out_ec_all_{cohort}.csv")
+      )
     )
   )
-  )
-  #Appending action to the list of all actions for this .yaml 
+  #Appending action to the list of all actions for this .yaml
   actions_list <- c(actions_list, table_for_output_graphs)
 }
 #Add action to generate the histograms of the outcome
-for (cohort in cohorts_all){
+for (cohort in cohorts_all) {
   outcome_histograms <- c(
     comment(glue("Generates histograms of the outcome, cohort: {cohort}")),
     action(
       name = glue("generate_outcome_histograms_{cohort}"),
-      run = glue("stata-mp:latest analysis/figures_graphs_outcome_histogram.do {cohort} {date}"),
-      needs = list(glue("generate_merged_{cohort}")), 
+      run = glue(
+        "stata-mp:latest analysis/figures_graphs_outcome_histogram.do {cohort} {date}"
+      ),
+      needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(
         histogram1 = glue("output/figure1/apc_hg_{cohort}.svg"),
         histogram2 = glue("output/figure1/apc_hg_acscs_{cohort}.svg"),
@@ -378,9 +458,69 @@ for (cohort in cohorts_all){
       )
     )
   )
-  #Appending action to the list of all actions for this .yaml 
+  #Appending action to the list of all actions for this .yaml
   actions_list <- c(actions_list, outcome_histograms)
 }
+
+
+#Add action to generate correlation figures for exposures
+for (cohort in cohorts_all) {
+  generate_exposure_correlations <- c(
+    comment(glue("Generates exposure correlation figures - {cohort}")),
+    action(
+      name = glue("generate_exposure_correlation_figures_{cohort}"),
+      run = glue("r:latest analysis/graphs/correlations_exposures.R {cohort}"),
+      needs = list(glue("generate_input_{cohort}_clean")),
+      moderately_sensitive = list(
+        heatmap_age = glue("output/correlations/heatmap_age_{cohort}.png"),
+        heatmap_sex = glue("output/correlations/heatmap_sex_{cohort}.png"),
+        heatmap_eth = glue(
+          "output/correlations/heatmap_ethnicity_{cohort}.png"
+        ),
+        heatmap_imd = glue("output/correlations/heatmap_imd_{cohort}.png"),
+        heatmap_rur = glue("output/correlations/heatmap_rurality_{cohort}.png"),
+        heatmap_smk = glue("output/correlations/heatmap_smoking_{cohort}.png"),
+        heatmap_cons = glue(
+          "output/correlations/heatmap_consultation_{cohort}.png"
+        ),
+        heatmap_morb = glue(
+          "output/correlations/heatmap_morbidity_{cohort}.png"
+        ),
+        corr_tab_age = glue(
+          "output/correlations/correlations_age_{cohort}.csv"
+        ),
+        corr_tab_sex = glue(
+          "output/correlations/correlations_sex_{cohort}.csv"
+        ),
+        corr_tab_eth = glue(
+          "output/correlations/correlations_ethnicity_{cohort}.csv"
+        ),
+        corr_tab_imd = glue(
+          "output/correlations/correlations_imd_{cohort}.csv"
+        ),
+        corr_tab_rur = glue(
+          "output/correlations/correlations_rurality_{cohort}.csv"
+        ),
+        corr_tab_smk = glue(
+          "output/correlations/correlations_smoking_{cohort}.csv"
+        ),
+        corr_tab_cons = glue(
+          "output/correlations/correlations_consultation_{cohort}.csv"
+        ),
+        corr_tab_morb = glue(
+          "output/correlations/correlations_morbidity_{cohort}.csv"
+        ),
+        scatter_cons = glue(
+          "output/correlations/scatter_cons_sep_vs_mean_{cohort}.png"
+        )
+      )
+    )
+  )
+
+  #Appending action to the list of all actions for this .yaml
+  actions_list <- c(actions_list, generate_exposure_correlations)
+}
+
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
   defaults_list,
