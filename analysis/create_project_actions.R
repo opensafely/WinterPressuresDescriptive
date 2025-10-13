@@ -472,7 +472,7 @@ for (cohort in cohorts_all){
         glue("generate_outcome_deciles_postcovid3")
       ),
       moderately_sensitive = list(
-        out_dec_week_simple_all_csv = glue("output/f1_out_dec/out_dec_week_all.csv"),
+        out_dec_week_simple_all_csv = glue("output/f1_out_dec/out_dec_week_simple_all.csv"),
         graph1_x_precovid = glue("output/f1_out_dec/xdec_precovid.svg"),
         graph1_x_postcovid1 = glue("output/f1_out_dec/xdec_postcovid1.svg"),
         graph1_x_postcovid2 = glue("output/f1_out_dec/xdec_postcovid2.svg"),
