@@ -135,6 +135,36 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 		egen mp6_md_dec_`stub' = ///Median of the prop. dist, BY GROUP & DATE
 				median(((`var'/mp6_dnm)*1000)), by(interval_start `c_dec_var')
 	}		
+	
+	
+//Outcome deciles - generated from rounded numerators & denominators
+//Similar to how the prev block of code found the median of the proportion distribution, for each WEEK
+//The x vars identifies the decile points of our row-level proportions 
+	foreach var of varlist mp6_num*{
+		local w_dec_var: subinstr local var "mp6_num_" "w_dec_", all 
+		local stub: subinstr local var "mp6_num_" "", all
+		
+		gen mp6_prop_`stub' = (`var'/mp6_dnm)*1000 ///Row proportions: rounded num/dnm
+		
+		egen mp6_p10_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(10)
+		egen mp6_p20_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(20)
+		egen mp6_p30_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(30)
+		egen mp6_p40_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(40)
+		egen mp6_p50_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(50)
+		egen mp6_p60_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(60)
+		egen mp6_p70_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(70)
+		egen mp6_p80_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(80)
+		egen mp6_p90_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(90)
+		egen mp6_p99_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(99)
+	}	
+
+
+	
+//Visual check 	
+//	sort interval_start practice
+//	br practice_pseudo_id interval_start num_apc_w dnm mp6_prop_apc_w mp6_x_apc_w
+
+	
 //Doing a visual check 
 //	sort interval_start c_dec_dbts_apc_w practice
 //	br practice_pseudo_id interval_start ///

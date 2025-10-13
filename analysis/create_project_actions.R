@@ -459,6 +459,29 @@ for (cohort in cohorts_all){
   )
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, out_dec_week_graphs)  
+#Add action to generate the data + graphs for the SIMPLE outcome decile plots by week
+  out_dec_week_simple_graphs <- c(
+    comment(glue("Generates variables for the SIMPLE outcome decile graphs by week")),
+    action(
+      name = glue("generate_out_dec_week_simple_graphs"),
+      run = glue("stata-mp:latest analysis/f1_out_dec_week_graphs.do"),
+      needs = list(
+        glue("generate_outcome_deciles_precovid"),
+        glue("generate_outcome_deciles_postcovid1"),
+        glue("generate_outcome_deciles_postcovid2"),
+        glue("generate_outcome_deciles_postcovid3")
+      ),
+      moderately_sensitive = list(
+        out_dec_week_simple_all_csv = glue("output/f1_out_dec/out_dec_week_all.csv"),
+        graph1_x_precovid = glue("output/f1_out_dec/xdec_precovid.svg"),
+        graph1_x_postcovid1 = glue("output/f1_out_dec/xdec_postcovid1.svg"),
+        graph1_x_postcovid2 = glue("output/f1_out_dec/xdec_postcovid2.svg"),
+        graph1_x_postcovid3 = glue("output/f1_out_dec/xdec_postcovid3.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, out_dec_week_simple_graphs ) 
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
   defaults_list,
