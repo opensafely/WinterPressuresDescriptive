@@ -41,7 +41,7 @@ frame create out_dec_week_simple_all
 	
 		reshape long mp6_p10 mp6_p20 mp6_p30 mp6_p40 mp6_p50 mp6_p60 mp6_p70 mp6_p80 mp6_p90 mp6_p99, i(week_number) j(type) string
 	
-		reshape wide mp6_p10 mp6_p20 mp6_p30 mp6_p40 mp6_p50 mp6_p60 mp6_p70 mp6_p80 mp6_p90 mp6_p99, i(week) j(percentile) string
+		reshape wide mp6_p10 mp6_p20 mp6_p30 mp6_p40 mp6_p50 mp6_p60 mp6_p70 mp6_p80 mp6_p90 mp6_p99, i(week) j(type) string
 		
 		gen cohort = "`cohort'"
 	
