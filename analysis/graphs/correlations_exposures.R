@@ -172,7 +172,7 @@ plot_corr_heatmap <- function(
   # Save plot
   plot_path <- file.path(
     output_dir,
-    paste0("correlations_", category_name, "_", cohort, ".png")
+    paste0("heatmap_", category_name, "_", cohort, ".png")
   )
   ggsave(plot_path, p, width = 9, height = 7, dpi = 300)
   message("Saved heatmap: ", plot_path)
@@ -226,7 +226,7 @@ if (all(c("exp_prop_cons_202209", "exp_prop_cons_mean") %in% names(input))) {
     theme_minimal(base_size = 12) +
     labs(
       title = paste0(
-        "Scatter plot of consultation rates in September and the mean (per 1,000 patients)\n",
+        "Scatter plot of consultation rates in September and the mean \n",
         "(Pearson r = ",
         round(corr_val, 3),
         ")"
@@ -242,7 +242,7 @@ if (all(c("exp_prop_cons_202209", "exp_prop_cons_mean") %in% names(input))) {
   # Save scatter plot
   scatter_path <- file.path(
     here::here(output_dir),
-    paste0("scatter_cons_september_vs_mean_per1000_", cohort, ".png")
+    paste0("scatter_cons_sep_vs_mean_", cohort, ".png")
   )
   ggsave(scatter_path, p_scatter, width = 7, height = 6, dpi = 300)
   message("Saved scatter plot: ", scatter_path)
