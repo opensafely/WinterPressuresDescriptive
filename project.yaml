@@ -1495,7 +1495,7 @@ actions:
   ## Generates variables for the SIMPLE outcome decile graphs by week 
 
   generate_out_dec_week_simple_graphs:
-    run: stata-mp:latest analysis/f1_out_dec_week_graphs.do
+    run: stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do
     needs:
     - generate_outcome_deciles_precovid
     - generate_outcome_deciles_postcovid1

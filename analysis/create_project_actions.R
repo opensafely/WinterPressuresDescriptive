@@ -464,7 +464,7 @@ for (cohort in cohorts_all){
     comment(glue("Generates variables for the SIMPLE outcome decile graphs by week")),
     action(
       name = glue("generate_out_dec_week_simple_graphs"),
-      run = glue("stata-mp:latest analysis/f1_out_dec_week_graphs.do"),
+      run = glue("stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do"),
       needs = list(
         glue("generate_outcome_deciles_precovid"),
         glue("generate_outcome_deciles_postcovid1"),
