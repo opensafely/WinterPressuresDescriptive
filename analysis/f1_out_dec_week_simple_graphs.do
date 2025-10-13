@@ -19,8 +19,6 @@ adopath + ../workspace/analysis/ado
 cap mkdir f1_out_dec 
 
 
-
-
 **# //DATA MANAGEMENT- DECILE LINE GRAPHS PER OUTCOME PER WEEK 
 //i.e. The x-axis on these plots represent the week. Each line represemts a DECILE practice group
 
@@ -37,8 +35,7 @@ frame create out_dec_week_simple_all
 	
 		keep practice_pseudo_id week_number interval* mp6_p*
 		drop mp6_prop*
-		
-		
+	
 		
 		collapse (first) mp6_p*, by(week_number)
 	
@@ -49,7 +46,7 @@ frame create out_dec_week_simple_all
 		gen cohort = "`cohort'"
 	
 	frame out_dec_week_simple_all: xframeappend default
-	
+	}	
 	
 
 //Saving this dataset 
