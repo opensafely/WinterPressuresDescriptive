@@ -1420,6 +1420,7 @@ actions:
         heatmap_smk: output/correlations/heatmap_smoking_precovid.png
         heatmap_cons: output/correlations/heatmap_consultation_precovid.png
         heatmap_morb: output/correlations/heatmap_morbidity_precovid.png
+        heatmap_all: output/correlations/heatmap_all_exposures_precovid.png
         corr_tab_age: output/correlations/correlations_age_precovid.csv
         corr_tab_sex: output/correlations/correlations_sex_precovid.csv
         corr_tab_eth: output/correlations/correlations_ethnicity_precovid.csv
@@ -1446,6 +1447,7 @@ actions:
         heatmap_smk: output/correlations/heatmap_smoking_postcovid1.png
         heatmap_cons: output/correlations/heatmap_consultation_postcovid1.png
         heatmap_morb: output/correlations/heatmap_morbidity_postcovid1.png
+        heatmap_all: output/correlations/heatmap_all_exposures_postcovid1.png
         corr_tab_age: output/correlations/correlations_age_postcovid1.csv
         corr_tab_sex: output/correlations/correlations_sex_postcovid1.csv
         corr_tab_eth: output/correlations/correlations_ethnicity_postcovid1.csv
@@ -1472,6 +1474,7 @@ actions:
         heatmap_smk: output/correlations/heatmap_smoking_postcovid2.png
         heatmap_cons: output/correlations/heatmap_consultation_postcovid2.png
         heatmap_morb: output/correlations/heatmap_morbidity_postcovid2.png
+        heatmap_all: output/correlations/heatmap_all_exposures_postcovid2.png
         corr_tab_age: output/correlations/correlations_age_postcovid2.csv
         corr_tab_sex: output/correlations/correlations_sex_postcovid2.csv
         corr_tab_eth: output/correlations/correlations_ethnicity_postcovid2.csv
@@ -1498,6 +1501,7 @@ actions:
         heatmap_smk: output/correlations/heatmap_smoking_postcovid3.png
         heatmap_cons: output/correlations/heatmap_consultation_postcovid3.png
         heatmap_morb: output/correlations/heatmap_morbidity_postcovid3.png
+        heatmap_all: output/correlations/heatmap_all_exposures_postcovid3.png
         corr_tab_age: output/correlations/correlations_age_postcovid3.csv
         corr_tab_sex: output/correlations/correlations_sex_postcovid3.csv
         corr_tab_eth: output/correlations/correlations_ethnicity_postcovid3.csv

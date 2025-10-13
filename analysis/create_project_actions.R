@@ -486,6 +486,9 @@ for (cohort in cohorts_all) {
         heatmap_morb = glue(
           "output/correlations/heatmap_morbidity_{cohort}.png"
         ),
+        heatmap_all = glue(
+          "output/correlations/heatmap_all_exposures_{cohort}.png"
+        ),
         corr_tab_age = glue(
           "output/correlations/correlations_age_{cohort}.csv"
         ),
