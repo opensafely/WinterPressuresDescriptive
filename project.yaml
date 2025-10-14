@@ -1448,51 +1448,7 @@ actions:
         out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid3.csv
         out_dec_data_wide_csv: output/f1_out_dec/out_dec_data_wide_postcovid3.csv
 
-  ## Generates variables for the outcome decile graphs 
-
-  generate_out_dec_graphs:
-    run: stata-mp:latest analysis/f1_out_dec_graphs.do
-    needs:
-    - generate_outcome_deciles_precovid
-    - generate_outcome_deciles_postcovid1
-    - generate_outcome_deciles_postcovid2
-    - generate_outcome_deciles_postcovid3
-    outputs:
-      moderately_sensitive:
-        out_dec_all_csv: output/f1_out_dec/out_dec_all.csv
-        graph_dec_all: output/f1_out_dec/dec_all.svg
-        graph_dec_ang_all: output/f1_out_dec/dec_ang_all.svg
-        graph_dec_ast_all: output/f1_out_dec/dec_ast_all.svg
-        graph_dec_dbts_all: output/f1_out_dec/dec_dbts_all.svg
-        graph_dec_copd_all: output/f1_out_dec/dec_copd_all.svg
-        graph_dec_hypt_all: output/f1_out_dec/dec_hypt_all.svg
-
-  ## Generates variables for the outcome decile graphs by week 
-
-  generate_out_dec_week_graphs:
-    run: stata-mp:latest analysis/f1_out_dec_week_graphs.do
-    needs:
-    - generate_outcome_deciles_precovid
-    - generate_outcome_deciles_postcovid1
-    - generate_outcome_deciles_postcovid2
-    - generate_outcome_deciles_postcovid3
-    outputs:
-      moderately_sensitive:
-        out_dec_week_all_csv: output/f1_out_dec/out_dec_week_all.csv
-        graph1_precovid: output/f1_out_dec/wdec_precovid.svg
-        graph1_postcovid1: output/f1_out_dec/wdec_postcovid1.svg
-        graph1_postcovid2: output/f1_out_dec/wdec_postcovid2.svg
-        graph1_postcovid3: output/f1_out_dec/wdec_postcovid3.svg
-        graph2_precovid: output/f1_out_dec/prop_wdec_acscs_precovid.svg
-        graph2_postcovid1: output/f1_out_dec/prop_wdec_acscs_postcovid1.svg
-        graph2_postcovid2: output/f1_out_dec/prop_wdec_acscs_postcovid2.svg
-        graph2_postcovid3: output/f1_out_dec/prop_wdec_acscs_postcovid3.svg
-        graph3_precovid: output/f1_out_dec/md_wdec_acscs_precovid.svg
-        graph3_postcovid1: output/f1_out_dec/md_wdec_acscs_postcovid1.svg
-        graph3_postcovid2: output/f1_out_dec/md_wdec_acscs_postcovid2.svg
-        graph3_postcovid3: output/f1_out_dec/md_wdec_acscs_postcovid3.svg
-
-  ## Generates variables for the SIMPLE outcome decile graphs by week 
+  ## Generates the SIMPLE outcome decile graphs by week 
 
   generate_out_dec_week_simple_graphs:
     run: stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do
