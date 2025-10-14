@@ -1504,8 +1504,10 @@ actions:
     outputs:
       moderately_sensitive:
         out_dec_week_simple_all_csv: output/f1_out_dec/out_dec_week_simple_all.csv
-        graph1_x_precovid: output/f1_out_dec/xdec_precovid.svg
-        graph1_x_postcovid1: output/f1_out_dec/xdec_postcovid1.svg
-        graph1_x_postcovid2: output/f1_out_dec/xdec_postcovid2.svg
-        graph1_x_postcovid3: output/f1_out_dec/xdec_postcovid3.svg
+        graph_all_cond: output/f1_out_dec/x_all_cond.svg
+        graph_ang: output/f1_out_dec/x_ang.svg
+        graph_ast: output/f1_out_dec/x_ast.svg
+        graph_copd: output/f1_out_dec/x_copd.svg
+        graph_dbts: output/f1_out_dec/x_dbts.svg
+        graph_hypt: output/f1_out_dec/x_hypt.svg
 

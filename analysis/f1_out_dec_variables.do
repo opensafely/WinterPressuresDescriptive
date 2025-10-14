@@ -28,6 +28,7 @@ program round_mp6
 end
 
 
+set maxvar 10000
 // Importing data
 import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear
 
@@ -137,14 +138,27 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	}		
 	
 	
-//Outcome deciles - generated from rounded numerators & denominators
-//Similar to how the prev block of code found the median of the proportion distribution, for each WEEK
-//The x vars identifies the decile points of our row-level proportions 
-	foreach var of varlist mp6_num*{
-		local w_dec_var: subinstr local var "mp6_num_" "w_dec_", all 
-		local stub: subinstr local var "mp6_num_" "", all
+//Outcome total proportions - generated from rounded total numerators & denominators
+//	We have the COUNT of hospitalised patients across all practices per week
+//		mp6_prop_`stub': total count hospitalised/all registered patients PER WEEK
+//		mp6_prop_dec_`stub': total count hospitalised/all registered patients PER WEEK AND DECILE var
+//		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
+
+	foreach var of varlist mp6_t_num_*{
+		local stub : subinstr local var "mp6_t_num_" "", all
 		
-		gen mp6_prop_`stub' = (`var'/mp6_dnm)*1000 ///Row proportions: rounded num/dnm
+		gen mp6_prop_`stub' = (`var'/ mp6_t_dnm)*1000  /// count outcome/count pts, PER DATE
+				
+		gen mp6_prop_dec_`stub' = /// count outcome/count pts, BY GROUP & DATE
+			(mp6_t_dec_num_`stub'/ mp6_t_dec_dnm_`stub')*1000 	
+	
+	}
+	
+//Decile values of the total proportion - generated from rounded numerators & denominators
+//I.e. identifying the decile values for each proportion
+
+	foreach var of varlist mp6_num*{
+		local stub: subinstr local var "mp6_num_" "", all
 		
 		egen mp6_p10_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(10)
 		egen mp6_p20_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(20)
@@ -173,20 +187,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 //		mp6_md_dec_dbts_apc_w ///  Median of the distribution, grouped by week & decile
 //		if week_number == 17
 		
-//Outcome total proportions - generated from rounded total numerators & denominators
-//	We have the COUNT of hospitalised patients across all practices per week
-//		mp6_prop_`stub': total count hospitalised/all registered patients PER WEEK
-//		mp6_prop_dec_`stub': total count hospitalised/all registered patients PER WEEK AND DECILE var
-//		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
-
-	foreach var of varlist mp6_t_num_*{
-		local stub : subinstr local var "mp6_t_num_" "", all
-		
-		gen mp6_prop_`stub' = (`var'/ mp6_t_dnm)*1000  /// count outcome/count pts, PER DATE
-				
-		gen mp6_prop_dec_`stub' = /// count outcome/count pts, BY GROUP & DATE
-			(mp6_t_dec_num_`stub'/ mp6_t_dec_dnm_`stub')*1000 	
-	}
+	
 //Doing a visual check 
 //	sort interval_start c_dec_ast_apc_w practice
 //	br practice_pseudo_id interval_start ///
@@ -206,7 +207,7 @@ export delimited using ../workspace/output/f1_out_dec/out_dec_data_long_`1'.csv,
 	order week_number
 	rename dnm dnm_w
 	
-	reshape wide num_apc_w - mp6_prop_dec_ang_ec_w, i(practice_pseudo_id) j(week_number)
+	reshape wide num_apc_w - mp6_p99_ang_ec_w, i(practice_pseudo_id) j(week_number)
 
 	export delimited using ../workspace/output/f1_out_dec/out_dec_data_wide_`1'.csv, replace	
 	

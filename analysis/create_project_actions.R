@@ -473,10 +473,12 @@ for (cohort in cohorts_all){
       ),
       moderately_sensitive = list(
         out_dec_week_simple_all_csv = glue("output/f1_out_dec/out_dec_week_simple_all.csv"),
-        graph1_x_precovid = glue("output/f1_out_dec/xdec_precovid.svg"),
-        graph1_x_postcovid1 = glue("output/f1_out_dec/xdec_postcovid1.svg"),
-        graph1_x_postcovid2 = glue("output/f1_out_dec/xdec_postcovid2.svg"),
-        graph1_x_postcovid3 = glue("output/f1_out_dec/xdec_postcovid3.svg")
+        graph_all_cond = glue("output/f1_out_dec/x_all_cond.svg"),
+        graph_ang = glue("output/f1_out_dec/x_ang.svg"),
+        graph_ast = glue("output/f1_out_dec/x_ast.svg"),
+        graph_copd = glue("output/f1_out_dec/x_copd.svg"),
+        graph_dbts = glue("output/f1_out_dec/x_dbts.svg"),
+        graph_hypt = glue("output/f1_out_dec/x_hypt.svg")
       )
     )
   )
