@@ -34,10 +34,10 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 
 **#// DATA MANAGEMENT
 //Exclude practices with fewer than <1000 patients 
-//	count if exp_denom <1000
-//	qui levelsof practice_pseudo_id if exp_denom <1000
-//	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
-//	drop if exp_denom <1000
+	count if exp_denom <1000
+	qui levelsof practice_pseudo_id if exp_denom <1000
+	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
+	drop if exp_denom <1000
 	
 //Dropping vars: all exposure vars, all GP consultation vars 
 	drop exp_*
