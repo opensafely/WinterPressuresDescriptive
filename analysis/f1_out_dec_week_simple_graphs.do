@@ -33,7 +33,7 @@ frame create out_dec_week_simple_all
 
 		keep practice_pseudo_id week_number interval* mp6_p10* mp6_p20* mp6_p30* mp6_p40* mp6_p50* mp6_p60* mp6_p70* mp6_p80* mp6_p90* mp6_p99*
 		
-		collapse (first) mp6_p*, by(week_number)
+		collapse (first) mp6_p10* mp6_p20* mp6_p30* mp6_p40* mp6_p50* mp6_p60* mp6_p70* mp6_p80* mp6_p90* mp6_p99*, by(week_number)
 
 		gen cohort = "`cohort'"
 	
@@ -42,9 +42,9 @@ frame create out_dec_week_simple_all
 	
 //Saving this dataset 
 	frame change out_dec_week_simple_all
-	export delimited using ../workspace/output/f1_out_dec/out_dec_week_simple_all.csv, replace
-
-		
+	export delimited using ../workspace/output/f1_out_dec/out_dec_week_simple_all.csv, replace		
+	
+	
 //Graphs
 //Each figure will contain 8 individual graphs:
 	//Top row: APC admissions, one graph per cohort 
@@ -87,16 +87,16 @@ frame create out_dec_week_simple_all
 			local cohort_year 2024/25
 		}
 		twoway ///
-			line mp6_p10_`var' week_number if cohort == "`cohort'", sort lcolor(navy) || //
-			line mp6_p20_`var' week_number if cohort == "`cohort'", sort lcolor(midblue) || //
-			line mp6_p30_`var' week_number if cohort == "`cohort'", sort lcolor(eltblue) || //
-			line mp6_p40_`var' week_number if cohort == "`cohort'", sort lcolor(mint) || //
-			line mp6_p50_`var' week_number if cohort == "`cohort'", sort lcolor(midgreen) || //
-			line mp6_p60_`var' week_number if cohort == "`cohort'", sort lcolor(green) || //
-			line mp6_p70_`var' week_number if cohort == "`cohort'", sort lcolor(emerald) || //
-			line mp6_p80_`var' week_number if cohort == "`cohort'", sort lcolor(lavender) || //
-			line mp6_p90_`var' week_number if cohort == "`cohort'", sort lcolor(magenta) || //
-			line mp6_p99_`var' week_number if cohort == "`cohort'", sort lcolor(pink) ///
+			line mp6_p10_`var'_w week_number if cohort == "`cohort'", sort lcolor(navy) || //
+			line mp6_p20_`var'_w week_number if cohort == "`cohort'", sort lcolor(midblue) || //
+			line mp6_p30_`var'_w week_number if cohort == "`cohort'", sort lcolor(eltblue) || //
+			line mp6_p40_`var'_w week_number if cohort == "`cohort'", sort lcolor(mint) || //
+			line mp6_p50_`var'_w week_number if cohort == "`cohort'", sort lcolor(midgreen) || //
+			line mp6_p60_`var'_w week_number if cohort == "`cohort'", sort lcolor(green) || //
+			line mp6_p70_`var'_w week_number if cohort == "`cohort'", sort lcolor(emerald) || //
+			line mp6_p80_`var'_w week_number if cohort == "`cohort'", sort lcolor(lavender) || //
+			line mp6_p90_`var'_w week_number if cohort == "`cohort'", sort lcolor(magenta) || //
+			line mp6_p99_`var'_w week_number if cohort == "`cohort'", sort lcolor(pink) ///
 				title("`hosp_type', `cohort_year'", pos(11) size(medsmall) j(left)) ///
 					ytitle("") ///
 					xtitle("") ///

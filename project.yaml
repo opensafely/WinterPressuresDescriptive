@@ -1404,68 +1404,6 @@ actions:
         histogram3: output/figure1/ec_hg_postcovid3.svg
         histogram4: output/figure1/ec_hg_acscs_postcovid3.svg
 
-  ## Generates variables for the outcome decile graphs, cohort: precovid 
-
-  generate_outcome_deciles_precovid:
-    run: stata-mp:latest analysis/f1_out_dec_variables.do precovid 2024-10-01
-    needs:
-    - generate_merged_precovid
-    outputs:
-      moderately_sensitive:
-        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_precovid.csv
-        out_dec_data_wide_csv: output/f1_out_dec/out_dec_data_wide_precovid.csv
-
-  ## Generates variables for the outcome decile graphs, cohort: postcovid1 
-
-  generate_outcome_deciles_postcovid1:
-    run: stata-mp:latest analysis/f1_out_dec_variables.do postcovid1 2024-10-01
-    needs:
-    - generate_merged_postcovid1
-    outputs:
-      moderately_sensitive:
-        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid1.csv
-        out_dec_data_wide_csv: output/f1_out_dec/out_dec_data_wide_postcovid1.csv
-
-  ## Generates variables for the outcome decile graphs, cohort: postcovid2 
-
-  generate_outcome_deciles_postcovid2:
-    run: stata-mp:latest analysis/f1_out_dec_variables.do postcovid2 2024-10-01
-    needs:
-    - generate_merged_postcovid2
-    outputs:
-      moderately_sensitive:
-        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid2.csv
-        out_dec_data_wide_csv: output/f1_out_dec/out_dec_data_wide_postcovid2.csv
-
-  ## Generates variables for the outcome decile graphs, cohort: postcovid3 
-
-  generate_outcome_deciles_postcovid3:
-    run: stata-mp:latest analysis/f1_out_dec_variables.do postcovid3 2024-10-01
-    needs:
-    - generate_merged_postcovid3
-    outputs:
-      moderately_sensitive:
-        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid3.csv
-        out_dec_data_wide_csv: output/f1_out_dec/out_dec_data_wide_postcovid3.csv
-
-  ## Generates the SIMPLE outcome decile graphs by week 
-
-  generate_out_dec_week_simple_graphs:
-    run: stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do
-    needs:
-    - generate_outcome_deciles_precovid
-    - generate_outcome_deciles_postcovid1
-    - generate_outcome_deciles_postcovid2
-    - generate_outcome_deciles_postcovid3
-    outputs:
-      moderately_sensitive:
-        out_dec_week_simple_all_csv: output/f1_out_dec/out_dec_week_simple_all.csv
-        graph_all_cond: output/f1_out_dec/x_all_cond.svg
-        graph_ang: output/f1_out_dec/x_ang.svg
-        graph_ast: output/f1_out_dec/x_ast.svg
-        graph_copd: output/f1_out_dec/x_copd.svg
-        graph_dbts: output/f1_out_dec/x_dbts.svg
-        graph_hypt: output/f1_out_dec/x_hypt.svg
   ## Generates exposure correlation figures - precovid 
 
   generate_exposure_correlation_figures_precovid:
@@ -1573,4 +1511,76 @@ actions:
         corr_tab_cons: output/correlations/correlations_consultation_postcovid3.csv
         corr_tab_morb: output/correlations/correlations_morbidity_postcovid3.csv
         scatter_cons: output/correlations/scatter_cons_sep_vs_mean_postcovid3.png
+
+  ## Generates variables for the outcome decile graphs, cohort: precovid 
+
+  generate_out_dec_vars_precovid:
+    run: stata-mp:latest analysis/f1_out_dec_variables.do precovid 2024-10-01
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_precovid.csv
+
+  ## Generates variables for the outcome decile graphs, cohort: postcovid1 
+
+  generate_out_dec_vars_postcovid1:
+    run: stata-mp:latest analysis/f1_out_dec_variables.do postcovid1 2024-10-01
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid1.csv
+
+  ## Generates variables for the outcome decile graphs, cohort: postcovid2 
+
+  generate_out_dec_vars_postcovid2:
+    run: stata-mp:latest analysis/f1_out_dec_variables.do postcovid2 2024-10-01
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid2.csv
+
+  ## Generates variables for the outcome decile graphs, cohort: postcovid3 
+
+  generate_out_dec_vars_postcovid3:
+    run: stata-mp:latest analysis/f1_out_dec_variables.do postcovid3 2024-10-01
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        out_dec_data_long_csv: output/f1_out_dec/out_dec_data_long_postcovid3.csv
+
+  ## Generates the SIMPLE outcome decile graphs by week 
+
+  generate_out_dec_week_simple_graphs:
+    run: stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do
+    needs:
+    - generate_out_dec_vars_precovid
+    - generate_out_dec_vars_postcovid1
+    - generate_out_dec_vars_postcovid2
+    - generate_out_dec_vars_postcovid3
+    outputs:
+      moderately_sensitive:
+        out_dec_week_simple_all_csv: output/f1_out_dec/out_dec_week_simple_all.csv
+        graph_all_cond: output/f1_out_dec/x_all_cond.svg
+        graph_ang: output/f1_out_dec/x_ang.svg
+        graph_ast: output/f1_out_dec/x_ast.svg
+        graph_copd: output/f1_out_dec/x_copd.svg
+        graph_dbts: output/f1_out_dec/x_dbts.svg
+        graph_hypt: output/f1_out_dec/x_hypt.svg
+
+  ## Runs simple regressions to estimate practice variance  
+
+  generate_model_variance:
+    run: stata-mp:latest analysis/simple_model_variance.do
+    needs:
+    - generate_merged_precovid
+    - generate_merged_postcovid1
+    - generate_merged_postcovid2
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        out_dec_week_simple_all_csv: output/model_variance/model_variance.csv
 

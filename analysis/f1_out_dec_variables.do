@@ -34,10 +34,10 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 
 **#// DATA MANAGEMENT
 //Exclude practices with fewer than <1000 patients 
-	count if exp_denom <1000
-	qui levelsof practice_pseudo_id if exp_denom <1000
-	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
-	drop if exp_denom <1000
+//	count if exp_denom <1000
+//	qui levelsof practice_pseudo_id if exp_denom <1000
+//	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
+//	drop if exp_denom <1000
 	
 //Dropping vars: all exposure vars, all GP consultation vars 
 	drop exp_*
@@ -137,28 +137,12 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 				median(((`var'/mp6_dnm)*1000)), by(interval_start `c_dec_var')
 	}		
 	
-	
-//Outcome total proportions - generated from rounded total numerators & denominators
-//	We have the COUNT of hospitalised patients across all practices per week
-//		mp6_prop_`stub': total count hospitalised/all registered patients PER WEEK
-//		mp6_prop_dec_`stub': total count hospitalised/all registered patients PER WEEK AND DECILE var
-//		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
-
-	foreach var of varlist mp6_t_num_*{
-		local stub : subinstr local var "mp6_t_num_" "", all
+//Outcome row proportions - generated from rounded total numerators & denominators
+//Also creating variables to store the decile values of the row proportion distribution, each week 
+	foreach var of varlist mp6_num_*{
+		local stub : subinstr local var "mp6_num_" "", all
 		
-		gen mp6_prop_`stub' = (`var'/ mp6_t_dnm)*1000  /// count outcome/count pts, PER DATE
-				
-		gen mp6_prop_dec_`stub' = /// count outcome/count pts, BY GROUP & DATE
-			(mp6_t_dec_num_`stub'/ mp6_t_dec_dnm_`stub')*1000 	
-	
-	}
-	
-//Decile values of the total proportion - generated from rounded numerators & denominators
-//I.e. identifying the decile values for each proportion
-
-	foreach var of varlist mp6_num*{
-		local stub: subinstr local var "mp6_num_" "", all
+		gen mp6_prop_`stub' = (`var'/ mp6_dnm)*1000  /// count outcome/count pts, PER DATE
 		
 		egen mp6_p10_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(10)
 		egen mp6_p20_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(20)
@@ -170,13 +154,20 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 		egen mp6_p80_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(80)
 		egen mp6_p90_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(90)
 		egen mp6_p99_`stub' = pctile(mp6_prop_`stub'), by(interval_start) p(99)
-	}	
-
-
+	}
 	
-//Visual check 	
-//	sort interval_start practice
-//	br practice_pseudo_id interval_start num_apc_w dnm mp6_prop_apc_w mp6_x_apc_w
+
+//Outcome total proportions - generated from rounded total numerators & denominators
+//	We have the COUNT of hospitalised patients across all practices per week
+//		mp6_t_prop_`stub': total count hospitalised/all registered patients PER WEEK
+//		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
+
+	foreach var of varlist mp6_t_num_*{
+		local stub : subinstr local var "mp6_t_num_" "", all
+		
+		gen mp6_t_prop_`stub' = (`var'/ mp6_t_dnm)*1000  /// count outcome/count pts, PER DATE
+		
+	}
 
 	
 //Doing a visual check 
@@ -188,29 +179,11 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 //		if week_number == 17
 		
 	
-//Doing a visual check 
-//	sort interval_start c_dec_ast_apc_w practice
-//	br practice_pseudo_id interval_start ///
-//		num_ast_apc_w dnm prop_ast_apc_w c_dec_ast_apc_w /// per-practice
-//		mp6_t_num_ast_apc_w mp6_t_dnm mp6_prop_ast_apc_w /// Total for the entire week
-//		mp6_t_dec_num_ast_apc_w mp6_t_dec_dnm_ast_apc_w mp6_prop_dec_ast_apc_w /// Total for the entire week per decile
-//		if week_number == 5
-			
-
 //Saving the dataset
 //save ../workspace/output/f1_out_dec/out_dec_data_long_`1'.dta, replace
 export delimited using ../workspace/output/f1_out_dec/out_dec_data_long_`1'.csv, replace
 
 		
-**#// WIDE VERSION OF THE DATASET USED FOR CHECKING 
-	drop interval_start interval_end
-	order week_number
-	rename dnm dnm_w
-	
-	reshape wide num_apc_w - mp6_p99_ang_ec_w, i(practice_pseudo_id) j(week_number)
-
-	export delimited using ../workspace/output/f1_out_dec/out_dec_data_wide_`1'.csv, replace	
-	
 	
 	
 
