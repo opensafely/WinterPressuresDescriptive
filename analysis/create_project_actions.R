@@ -534,12 +534,11 @@ for (cohort in cohorts_all){
   out_dec_vars <- c(
     comment(glue("Generates variables for the outcome decile graphs, cohort: {cohort}")),
     action(
-      name = glue("generate_outcome_deciles_{cohort}"),
+      name = glue("generate_out_dec_vars_{cohort}"),
       run = glue("stata-mp:latest analysis/f1_out_dec_variables.do {cohort} {date}"),
       needs = list(glue("generate_merged_{cohort}")), 
       moderately_sensitive = list(
-        out_dec_data_long_csv = glue("output/f1_out_dec/out_dec_data_long_{cohort}.csv"),
-        out_dec_data_wide_csv = glue("output/f1_out_dec/out_dec_data_wide_{cohort}.csv")
+        out_dec_data_long_csv = glue("output/f1_out_dec/out_dec_data_long_{cohort}.csv")
       )
     )
   )
@@ -553,10 +552,10 @@ for (cohort in cohorts_all){
       name = glue("generate_out_dec_week_simple_graphs"),
       run = glue("stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do"),
       needs = list(
-        glue("generate_outcome_deciles_precovid"),
-        glue("generate_outcome_deciles_postcovid1"),
-        glue("generate_outcome_deciles_postcovid2"),
-        glue("generate_outcome_deciles_postcovid3")
+        glue("generate_out_dec_vars_precovid"),
+        glue("generate_out_dec_vars_postcovid1"),
+        glue("generate_out_dec_vars_postcovid2"),
+        glue("generate_out_dec_vars_postcovid3")
       ),
       moderately_sensitive = list(
         out_dec_week_simple_all_csv = glue("output/f1_out_dec/out_dec_week_simple_all.csv"),
@@ -571,6 +570,26 @@ for (cohort in cohorts_all){
   )
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, out_dec_week_simple_graphs ) 
+  
+#Add action to generate the data + graphs for the SIMPLE outcome decile plots by week
+  model_variance <- c(
+    comment(glue("Runs simple regressions to estimate practice variance ")),
+    action(
+      name = glue("generate_model_variance"),
+      run = glue("stata-mp:latest analysis/simple_model_variance.do"),
+      needs = list(
+        glue("generate_merged_precovid"),
+        glue("generate_merged_postcovid1"),
+        glue("generate_merged_postcovid2"),
+        glue("generate_merged_postcovid3")
+      ),
+      moderately_sensitive = list(
+        out_dec_week_simple_all_csv = glue("output/model_variance/model_variance.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, model_variance)   
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
   defaults_list,
