@@ -40,8 +40,18 @@ frame create out_dec_week_simple_all
 	frame out_dec_week_simple_all: xframeappend default
 	}	
 	
-//Saving this dataset 
+//Adding week labels 
 	frame change out_dec_week_simple_all
+	
+	label define week ///
+			1 "Oct 1"  2 "Oct 8"  3 "Oct 15"  4 "Oct 22" ///
+			 5 "Oct 29"  6 "Nov 5"  7  "Nov 12"  8 "Nov 19"  9 "Nov 26" ///
+			 10 "Dec 3"  11 "Dec 10"  12 "Dec 17"  13 "Dec 24"  14 "Dec 31" ///
+			 15 "Jan 7"  16 "Jan 14"  17 "Jan 21"  18 "Jan 28" /// 
+			 19 "Feb 4"  20 "Feb 11"
+		label values week week
+		
+//Saving this dataset 		
 	export delimited using ../workspace/output/f1_out_dec/out_dec_week_simple_all.csv, replace		
 	
 	
@@ -86,21 +96,20 @@ frame create out_dec_week_simple_all
 		if "`cohort'" == "postcovid3"{
 			local cohort_year 2024/25
 		}
-		twoway ///
-			line mp6_p10_`var'_w week_number if cohort == "`cohort'", sort lcolor(navy) || //
-			line mp6_p20_`var'_w week_number if cohort == "`cohort'", sort lcolor(midblue) || //
-			line mp6_p30_`var'_w week_number if cohort == "`cohort'", sort lcolor(eltblue) || //
-			line mp6_p40_`var'_w week_number if cohort == "`cohort'", sort lcolor(mint) || //
-			line mp6_p50_`var'_w week_number if cohort == "`cohort'", sort lcolor(midgreen) || //
-			line mp6_p60_`var'_w week_number if cohort == "`cohort'", sort lcolor(green) || //
-			line mp6_p70_`var'_w week_number if cohort == "`cohort'", sort lcolor(emerald) || //
-			line mp6_p80_`var'_w week_number if cohort == "`cohort'", sort lcolor(lavender) || //
-			line mp6_p90_`var'_w week_number if cohort == "`cohort'", sort lcolor(magenta) || //
+		twoway line mp6_p10_`var'_w week_number if cohort == "`cohort'", sort lcolor(navy) || ///
+			line mp6_p20_`var'_w week_number if cohort == "`cohort'", sort lcolor(midblue) || ///
+			line mp6_p30_`var'_w week_number if cohort == "`cohort'", sort lcolor(eltblue) || ///
+			line mp6_p40_`var'_w week_number if cohort == "`cohort'", sort lcolor(mint) || ///
+			line mp6_p50_`var'_w week_number if cohort == "`cohort'", sort lcolor(midgreen) || ///
+			line mp6_p60_`var'_w week_number if cohort == "`cohort'", sort lcolor(green) || ///
+			line mp6_p70_`var'_w week_number if cohort == "`cohort'", sort lcolor(emerald) || ///
+			line mp6_p80_`var'_w week_number if cohort == "`cohort'", sort lcolor(lavender) || ///
+			line mp6_p90_`var'_w week_number if cohort == "`cohort'", sort lcolor(magenta) || ///
 			line mp6_p99_`var'_w week_number if cohort == "`cohort'", sort lcolor(pink) ///
 				title("`hosp_type', `cohort_year'", pos(11) size(medsmall) j(left)) ///
 					ytitle("") ///
 					xtitle("") ///
-				ylab(0(1)8, labsize(medsmall)) ///	 
+				ylab(0(2)20, labsize(medsmall)) ///	 
 				xlab(1(2)20, valuelabel angle(45) labsize(small)) ///
 				legend(order(1 "Decile 1" 2 "Decile 2" 3 "Decile 3" 4 "Decile 4" 5 "Decile 5" 6 "Decile 6" 7 "Decile 7" 8 "Decile 8" 9 "Decile 9" 10  "Decile 10") cols(5) pos(6) size(tiny) ring(3)) ///
 				name("x_`var'_`cohort'", replace)
@@ -130,26 +139,10 @@ frame create out_dec_week_simple_all
 			l1title("Rate per 1000 patients", size(vsmall) ring(1)) ///
 			name("x_`cond'", replace) 
 			
-		
 		graph export ../workspace/output/f1_out_dec/x_`cond'.svg, as(svg) name("x_`cond'") replace	
 	}
-	
-	
-	
 			
 	
 	
 	
-	
-	
-	
-//	twoway line test_1 week if type == "apc_w" & cohort == "precovid", sort lcolor(navy)|| ///
-//		line test_2 week if type == "apc_w" & cohort == "precovid", sort lcolor(midblue) || ///
-//		line test_3 week if type == "apc_w" & cohort == "precovid", sort lcolor(eltblue) || ///
-//		line test_4 week if type == "apc_w" & cohort == "precovid", sort lcolor(mint) ///
-//			legend(order(1 "Decile 1" 2 "Decile 2" 3 "Decile 3" 4 "Decile 4" 5 "Decile 5" ///
-//						 6 "Decile 6" 7 "Decile 7" 8 "Decile 8" 9 "Decile 9" 10  "Decile 10") ///
-//						 cols(5) pos(6) size(tiny) ring(3))
-						 
-
 	
