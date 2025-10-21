@@ -69,20 +69,26 @@ frame create out_dec_week_simple_all
 			local hosp_type EC attendances
 		}
 		local cond_type All conditions
+		local ylab_max 18
 		if strpos("`var'", "ang"){
 			local cond_type Angina
+			local ylab_max 5
 		}
 		if strpos("`var'", "ast"){
 			local cond_type Asthma
+			local ylab_max 5
 		}
 		if strpos("`var'", "copd"){
 			local cond_type COPD
+			local ylab_max 5
 		}
 		if strpos("`var'", "dbts"){
 			local cond_type Diabetes
+			local ylab_max 5
 		}
 		if strpos("`var'", "hypt"){
 			local cond_type Hypertension
+			local ylab_max 5
 		}
 		if "`cohort'" == "precovid"{
 			local cohort_year 2018/19
@@ -109,7 +115,7 @@ frame create out_dec_week_simple_all
 				title("`hosp_type', `cohort_year'", pos(11) size(medsmall) j(left)) ///
 					ytitle("") ///
 					xtitle("") ///
-				ylab(0(2)20, labsize(medsmall)) ///	 
+				ylab(0(2)`ylab_max', labsize(medsmall)) ///	 
 				xlab(1(2)20, valuelabel angle(45) labsize(small)) ///
 				legend(order(1 "Decile 1" 2 "Decile 2" 3 "Decile 3" 4 "Decile 4" 5 "Decile 5" 6 "Decile 6" 7 "Decile 7" 8 "Decile 8" 9 "Decile 9" 10  "Decile 10") cols(5) pos(6) size(tiny) ring(3)) ///
 				name("x_`var'_`cohort'", replace)
