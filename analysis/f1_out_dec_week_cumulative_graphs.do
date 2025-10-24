@@ -153,7 +153,7 @@ frame create out_dec_week_cumulative_all
 			c_`cond'_apc_precovid c_`cond'_apc_postcovid1 c_`cond'_apc_postcovid2 c_`cond'_apc_postcovid3 ///
 			c_`cond'_ec_precovid c_`cond'_ec_postcovid1 c_`cond'_ec_postcovid2 c_`cond'_ec_postcovid3, ///
 			row(2) imargin(zero) iscale(0.5) ycommon ///
-			title("Hospital admission/emergency attendance rates over time for: `cond_type'", size(small) ring(1) pos(6)) ///
+			title("Hospital admission/emergency attendance rates over time for: `cond'", size(small) ring(1) pos(6)) ///
 			subtitle("Each line represents a decile. Practices are grouped into deciles based on their cumulative rate. All rates are per 1000 patients.", size(vsmall) ring(2) pos(6)) /// 
 			l1title("Rate per 1000 patients", size(vsmall) ring(1)) ///
 			name("c_`cond'", replace) 
