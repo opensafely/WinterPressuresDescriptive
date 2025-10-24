@@ -51,7 +51,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	rename *asthma* *ast*
 	rename *_angina_* *_ang_* 
 	
-//Cumulative admission rates per practice (i.e. all admissions summed over 20 weeks/registered patients at index date)	
+//Cumulative admission rates per practice (i.e. (all admissions summed over 20 weeks)/(registered patients at index date summed over 20 weeks))	
 //This will be used to calculate the cumulative deciles 
 	//Outcome numerators, per practice 		
 		foreach var of varlist num_* {
@@ -63,14 +63,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	//Outcome denominators, per practice
 		egen c_dnm = total(dnm), by(practice_pseudo_id) 
 			round_mp6 c_dnm mp6_c_dnm	
-			
-	//Outcome means, per practice (cumulative across time)
-		foreach var of varlist num_* {
-			local stub: subinstr local var "num_" "", all
-			gen mp6_c_prop_`stub' = (mp6_c_`var'/mp6_c_dnm)*1000
-		}
 		
-
 	//Grouping practices into deciles, by their outcome variable values 
 		//Cumulative deciles
 			foreach var of varlist num_* {
@@ -78,7 +71,6 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 				xtile c_dec_`stub' = ((c_`var'/c_dnm)*1000), nq(10)
 					label variable c_dec_`stub' "Deciles of cumulative rate: `stub'"
 			}
-			
 		//Dynamic deciles 
 			sort interval_start practice 
 			foreach var of varlist num_* {
@@ -90,36 +82,28 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 //Now calculating our outcome rates per week, and grouping by the cumulative decile var			
 //Outcome numerators - rounded to midpoint 6
 	foreach var of varlist num_* {
-		local c_dec_var: subinstr local var "num_" "c_dec_", all //local referring to appropriate decile var
+		local stub: subinstr local var "num_" "", all //Use to refer to appropriate decile var
 		
 		round_mp6 `var' mp6_`var' //Rounded numerator per practice, per week
 			
 		egen t_`var'= total(`var'), by(interval_start)	
 			round_mp6 t_`var' mp6_t_`var' //Rounded total numerator, PER WEEK
 		
-		egen t_dec_`var' = total(`var'), by(interval_start `c_dec_var') 
-			round_mp6 t_dec_`var' mp6_t_dec_`var' //Rounded total num, PER WEEK & C.DECILE VAR
+		egen c_dec_`var' = total(`var'), by(interval_start c_dec_`stub') 
+			round_mp6 c_dec_`var' mp6_c_dec_`var' //Rounded total num, PER WEEK & C.DECILE VAR
 	}	
-	
+		
 //Outcome denominators - rounded to midpoint 6 
 	round_mp6 dnm mp6_dnm  //Rounded denominator per practice, per week
 	
 	egen t_dnm = total(dnm), by(interval_start) 
 		round_mp6 t_dnm mp6_t_dnm //Rounded total denominator, PER WEEK
 
-	foreach var of varlist c_dec_*{
-		local dnm_var: subinstr local var "c_dec_" "dnm_", all 	//local referring to denominator
-		egen t_dec_`dnm_var' = total(dnm), by(interval_start `var')
-			round_mp6 t_dec_`dnm_var' mp6_t_dec_`dnm_var' //Rounded total denominator, PER WEEK & DECILE VAR
+	foreach var of varlist c_dec_num_*{
+		local stub: subinstr local var "c_dec_num_" "", all 	//local referring to denominator
+		egen c_dec_dnm_`stub' = total(dnm), by(interval_start c_dec_`stub')
+			round_mp6 c_dec_dnm_`stub' mp6_c_dec_dnm_`stub' //Rounded total denominator, PER WEEK & DECILE VAR
 	}
-	
-//Doing a visual check (code blanked out because "browse" produces an error when running on OS)
-//	sort interval_start c_dec_apc_w practice_pseudo_id
-//	br practice_pseudo_id interval_start week_number ///
-//		num_apc_w dnm prop_apc_w c_dec_apc_w /// per-practice
-//		t_num_apc_w t_dnm /// Total for the entire week
-//		t_dec_num_apc_w t_dec_dnm_apc_w /// Total for the entire week per decile
-//		if week_number == 8
 	
 //Outcome medians - generated from rounded numerators & denominators
 //	We have the proportions of hospitalised patients per practice per week
@@ -161,23 +145,17 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 //	We have the COUNT of hospitalised patients across all practices per week
 //		mp6_t_prop_`stub': total count hospitalised/all registered patients PER WEEK
 //		NOTE: These are not proportions per practice. They are proportions per week, and per grouping variable & week 
+//		mp6_c_dec_prop_`stub': total count hosp/ all reg pts PER WEEK & DECILE 
 
-	foreach var of varlist mp6_t_num_*{
-		local stub : subinstr local var "mp6_t_num_" "", all
+	foreach var of varlist num_*{
+		local stub : subinstr local var "num_" "", all
 		
-		gen mp6_t_prop_`stub' = (`var'/ mp6_t_dnm)*1000  /// count outcome/count pts, PER DATE
+		gen mp6_t_prop_`stub' = (mp6_t_num_`stub'/ mp6_t_dnm)*1000  /// count outcome/count pts, PER DATE
+		
+		gen mp6_c_dec_prop_`stub' = (mp6_c_dec_num_`stub'/mp6_c_dec_dnm_`stub')*1000  //count outcome/count pts, PER CUMULATIVE DECILE & DATE 
 		
 	}
 
-	
-//Doing a visual check 
-//	sort interval_start c_dec_dbts_apc_w practice
-//	br practice_pseudo_id interval_start ///
-//		num_dbts_apc_w dnm prop_dbts_apc_w c_dec_dbts_apc_w /// per-practice
-//		mp6_md_dbts_apc_w /// Median of the distribution, grouped by week 
-//		mp6_md_dec_dbts_apc_w ///  Median of the distribution, grouped by week & decile
-//		if week_number == 17
-		
 	
 //Saving the dataset
 //save ../workspace/output/f1_out_dec/out_dec_data_long_`1'.dta, replace
@@ -218,4 +196,8 @@ export delimited using ../workspace/output/f1_out_dec/out_dec_data_long_`1'.csv,
 //		}
 //}
 //}	
-
+	//Outcome means, per practice (cumulative across time)
+	//	foreach var of varlist num_* {
+	//		local stub: subinstr local var "num_" "", all
+	//		gen mp6_c_prop_`stub' = (mp6_c_`var'/mp6_c_dnm)*1000
+	//	}

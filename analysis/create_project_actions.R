@@ -571,7 +571,33 @@ for (cohort in cohorts_all){
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, out_dec_week_simple_graphs ) 
   
-#Add action to generate the data + graphs for the SIMPLE outcome decile plots by week
+#Add action to generate the data + graphs for the CUMULATIVE outcome decile plots by week
+  out_dec_week_cumulative_graphs <- c(
+    comment(glue("Generates the CUMULATIVE outcome decile graphs by week")),
+    action(
+      name = glue("generate_out_dec_week_cumulative_graphs"),
+      run = glue("stata-mp:latest analysis/f1_out_dec_week_cumulative_graphs.do"),
+      needs = list(
+        glue("generate_out_dec_vars_precovid"),
+        glue("generate_out_dec_vars_postcovid1"),
+        glue("generate_out_dec_vars_postcovid2"),
+        glue("generate_out_dec_vars_postcovid3")
+      ),
+      moderately_sensitive = list(
+        out_dec_week_simple_all_csv = glue("output/f1_out_dec/out_dec_week_cumulative_all.csv"),
+        graph_all_cond = glue("output/f1_out_dec/c_all_cond.svg"),
+        graph_ang = glue("output/f1_out_dec/c_ang.svg"),
+        graph_ast = glue("output/f1_out_dec/c_ast.svg"),
+        graph_copd = glue("output/f1_out_dec/c_copd.svg"),
+        graph_dbts = glue("output/f1_out_dec/c_dbts.svg"),
+        graph_hypt = glue("output/f1_out_dec/c_hypt.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, out_dec_week_cumulative_graphs)
+  
+#Add action to generate the model variances 
   model_variance <- c(
     comment(glue("Runs simple regressions to estimate practice variance ")),
     action(

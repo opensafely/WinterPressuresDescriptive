@@ -1571,6 +1571,25 @@ actions:
         graph_dbts: output/f1_out_dec/x_dbts.svg
         graph_hypt: output/f1_out_dec/x_hypt.svg
 
+  ## Generates the CUMULATIVE outcome decile graphs by week 
+
+  generate_out_dec_week_cumulative_graphs:
+    run: stata-mp:latest analysis/f1_out_dec_week_cumulative_graphs.do
+    needs:
+    - generate_out_dec_vars_precovid
+    - generate_out_dec_vars_postcovid1
+    - generate_out_dec_vars_postcovid2
+    - generate_out_dec_vars_postcovid3
+    outputs:
+      moderately_sensitive:
+        out_dec_week_simple_all_csv: output/f1_out_dec/out_dec_week_cumulative_all.csv
+        graph_all_cond: output/f1_out_dec/c_all_cond.svg
+        graph_ang: output/f1_out_dec/c_ang.svg
+        graph_ast: output/f1_out_dec/c_ast.svg
+        graph_copd: output/f1_out_dec/c_copd.svg
+        graph_dbts: output/f1_out_dec/c_dbts.svg
+        graph_hypt: output/f1_out_dec/c_hypt.svg
+
   ## Runs simple regressions to estimate practice variance  
 
   generate_model_variance:
