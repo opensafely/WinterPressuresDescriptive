@@ -160,7 +160,8 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 					("`lrtest_text'") (chi2_lrtest) (p_lrtest)					///
 					(ll) (p_ll) (aic) (bic)										///
 					(.)	
-					
+											
+					continue
 				}	
 		}			
 		}	
