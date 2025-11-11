@@ -616,6 +616,85 @@ for (cohort in cohorts_all){
   )
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, model_variance)   
+
+#Add action to generate a descriptive table for the outcome vars 
+  outcome_summary <- c(
+    comment(glue("Generate a descriptive table for the outcome vars")),
+    action(
+      name = glue("generate_outcome_summary"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/outcome_summary_stats.do"),
+      needs = list(
+        glue("generate_merged_precovid"),
+        glue("generate_merged_postcovid1"),
+        glue("generate_merged_postcovid2"),
+        glue("generate_merged_postcovid3")
+      ),
+      moderately_sensitive = list(
+        outcome_summary_stats_csv = glue("output/regressions/outcome_summary_stats.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, outcome_summary) 
+  
+#Add action to run the RI Poisson/NB regressions on APC/EC all cond
+for (cohort in cohorts_all){
+  regress_all_cond <- c(
+    comment(glue("Runs RI poisson & nb regressions for APC/EC, cohort: {cohort}")),
+    action(
+      name = glue("generate_regressions_all_cond_{cohort}"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do {cohort}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        results_all_cond_csv = glue("output/regressions/results_all_cond_{cohort}.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, regress_all_cond)
+}    
+
+#Add action to run the RI Poisson/NB regressions on APC/EC ACSC
+for (cohort in cohorts_all){
+  regress_acsc <- c(
+    comment(glue("Runs poisson, nb, zinb regressions for ACSCs, cohort: {cohort}")),
+    action(
+      name = glue("generate_regressions_acsc_{cohort}"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_acsc.do {cohort}"),
+      needs = list(glue("generate_merged_{cohort}")), 
+      moderately_sensitive = list(
+        results_acsc_csv = glue("output/regressions/results_acsc_{cohort}.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, regress_acsc)
+} 
+#Add action combining the regression .csvs across cohorts (keeping acscs/all cond separate) 
+  merged_results <- c(
+    comment(glue("Generate a merged regression results table")),
+    action(
+      name = glue("generate_merged_summary"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_merge.do"),
+      needs = list(
+        glue("generate_regressions_all_cond_precovid"),
+        glue("generate_regressions_all_cond_postcovid1"),
+        glue("generate_regressions_all_cond_postcovid2"),
+        glue("generate_regressions_all_cond_postcovid3"),
+        glue("generate_regressions_acsc_precovid"),
+        glue("generate_regressions_acsc_postcovid1"),
+        glue("generate_regressions_acsc_postcovid2"),
+        glue("generate_regressions_acsc_postcovid3")
+      ),
+      moderately_sensitive = list(
+        merged_results_all_cond_csv = glue("output/regressions/results_all_cond.csv"),
+        merged_results_acsc_csv = glue("output/regressions/results_acsc.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, merged_results) 
+  
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
   defaults_list,
