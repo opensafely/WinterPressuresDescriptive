@@ -1603,3 +1603,16 @@ actions:
       moderately_sensitive:
         out_dec_week_simple_all_csv: output/model_variance/model_variance.csv
 
+  ## Creates a table of summary statistics for each outcome 
+
+  generate_outcome_summary:
+    run: stata-mp:latest analysis/outcome_time_var/outcome_summary_stats.do
+    needs:
+    - generate_merged_precovid
+    - generate_merged_postcovid1
+    - generate_merged_postcovid2
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        outcome_summary_stats_csv: output/regressions/outcome_summary_stats.csv
+
