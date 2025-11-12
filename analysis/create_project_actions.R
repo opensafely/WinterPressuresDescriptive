@@ -615,7 +615,28 @@ for (cohort in cohorts_all){
     )
   )
   #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, model_variance)   
+  actions_list <- c(actions_list, model_variance)  
+  
+#Add action to generate summary stats for the outcome variables   
+  outcome_summary <- c(
+    comment(glue("Creates a table of summary statistics for each outcome")),
+    action(
+      name = glue("generate_outcome_summary"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/outcome_summary_stats.do"),
+      needs = list(
+        glue("generate_merged_precovid"),
+        glue("generate_merged_postcovid1"),
+        glue("generate_merged_postcovid2"),
+        glue("generate_merged_postcovid3")
+      ),
+      moderately_sensitive = list(
+        outcome_summary_stats_csv = glue("output/regressions/outcome_summary_stats.csv")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, outcome_summary)    
+  
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
   defaults_list,
