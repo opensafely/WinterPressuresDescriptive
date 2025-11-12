@@ -1603,7 +1603,7 @@ actions:
       moderately_sensitive:
         out_dec_week_simple_all_csv: output/model_variance/model_variance.csv
 
-  ## Creates a table of summary statistics for each outcome 
+  ## Generate a descriptive table for the outcome vars 
 
   generate_outcome_summary:
     run: stata-mp:latest analysis/outcome_time_var/outcome_summary_stats.do
@@ -1615,4 +1615,102 @@ actions:
     outputs:
       moderately_sensitive:
         outcome_summary_stats_csv: output/regressions/outcome_summary_stats.csv
+
+  ## Runs RI poisson & nb regressions for APC/EC, cohort: precovid 
+
+  generate_regressions_all_cond_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do precovid
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_precovid.csv
+
+  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid1 
+
+  generate_regressions_all_cond_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid1
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_postcovid1.csv
+
+  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid2 
+
+  generate_regressions_all_cond_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid2
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_postcovid2.csv
+
+  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid3 
+
+  generate_regressions_all_cond_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid3
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_postcovid3.csv
+
+  ## Runs poisson, nb, zinb regressions for ACSCs, cohort: precovid 
+
+  generate_regressions_acsc_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do precovid
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        results_acsc_csv: output/regressions/results_acsc_precovid.csv
+
+  ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid1 
+
+  generate_regressions_acsc_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid1
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        results_acsc_csv: output/regressions/results_acsc_postcovid1.csv
+
+  ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid2 
+
+  generate_regressions_acsc_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid2
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        results_acsc_csv: output/regressions/results_acsc_postcovid2.csv
+
+  ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid3 
+
+  generate_regressions_acsc_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid3
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        results_acsc_csv: output/regressions/results_acsc_postcovid3.csv
+
+  ## Generate a merged regression results table 
+
+  generate_merged_summary:
+    run: stata-mp:latest analysis/outcome_time_var/regressions_merge.do
+    needs:
+    - generate_regressions_all_cond_precovid
+    - generate_regressions_all_cond_postcovid1
+    - generate_regressions_all_cond_postcovid2
+    - generate_regressions_all_cond_postcovid3
+    - generate_regressions_acsc_precovid
+    - generate_regressions_acsc_postcovid1
+    - generate_regressions_acsc_postcovid2
+    - generate_regressions_acsc_postcovid3
+    outputs:
+      moderately_sensitive:
+        merged_results_all_cond_csv: output/regressions/results_all_cond.csv
+        merged_results_acsc_csv: output/regressions/results_acsc.csv
 
