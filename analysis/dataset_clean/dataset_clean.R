@@ -23,7 +23,7 @@ print('Source common functions')
 
 source("analysis/utility.R")
 lapply(
-  list.files("analysis/table1", full.names = TRUE, pattern = "fn-"),
+  list.files("analysis/dataset_clean", full.names = TRUE, pattern = "fn-"),
   source
 )
 

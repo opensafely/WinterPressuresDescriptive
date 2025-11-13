@@ -960,7 +960,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: precovid 
 
   generate_merged_precovid:
-    run: r:latest analysis/data_cleaning.R precovid 2018-10-01
+    run: r:latest analysis/dataset_clean/dataset_merge.R precovid 2018-10-01
     needs:
     - generate_measures_precovid_2018-10-01_age
     - generate_measures_precovid_2018-10-01_sex
@@ -979,13 +979,13 @@ actions:
     - generate_measures_precovid_2018-10-01_apc_acscs
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_precovid.csv
-        dataset2: output/analytic_data_wide_precovid.csv
+        dataset1: output/dataset_clean/merged_data_long_precovid.csv
+        dataset2: output/dataset_clean/merged_data_wide_precovid.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid1 
 
   generate_merged_postcovid1:
-    run: r:latest analysis/data_cleaning.R postcovid1 2022-10-01
+    run: r:latest analysis/dataset_clean/dataset_merge.R postcovid1 2022-10-01
     needs:
     - generate_measures_postcovid1_2022-10-01_age
     - generate_measures_postcovid1_2022-10-01_sex
@@ -1005,13 +1005,13 @@ actions:
     - generate_measures_postcovid1_2022-10-01_apc_acscs
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_postcovid1.csv
-        dataset2: output/analytic_data_wide_postcovid1.csv
+        dataset1: output/dataset_clean/merged_data_long_postcovid1.csv
+        dataset2: output/dataset_clean/merged_data_wide_postcovid1.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid2 
 
   generate_merged_postcovid2:
-    run: r:latest analysis/data_cleaning.R postcovid2 2023-10-01
+    run: r:latest analysis/dataset_clean/dataset_merge.R postcovid2 2023-10-01
     needs:
     - generate_measures_postcovid2_2023-10-01_age
     - generate_measures_postcovid2_2023-10-01_sex
@@ -1031,13 +1031,13 @@ actions:
     - generate_measures_postcovid2_2023-10-01_apc_acscs
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_postcovid2.csv
-        dataset2: output/analytic_data_wide_postcovid2.csv
+        dataset1: output/dataset_clean/merged_data_long_postcovid2.csv
+        dataset2: output/dataset_clean/merged_data_wide_postcovid2.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid3 
 
   generate_merged_postcovid3:
-    run: r:latest analysis/data_cleaning.R postcovid3 2024-10-01
+    run: r:latest analysis/dataset_clean/dataset_merge.R postcovid3 2024-10-01
     needs:
     - generate_measures_postcovid3_2024-10-01_age
     - generate_measures_postcovid3_2024-10-01_sex
@@ -1057,13 +1057,13 @@ actions:
     - generate_measures_postcovid3_2024-10-01_apc_acscs
     outputs:
       moderately_sensitive:
-        dataset1: output/analytic_data_long_postcovid3.csv
-        dataset2: output/analytic_data_wide_postcovid3.csv
+        dataset1: output/dataset_clean/merged_data_long_postcovid3.csv
+        dataset2: output/dataset_clean/merged_data_wide_postcovid3.csv
 
   ## Generate cleaned input dataset - precovid 
 
   generate_input_precovid_clean:
-    run: r:latest analysis/table1/dataset_clean.R precovid
+    run: r:latest analysis/dataset_clean/dataset_clean.R precovid
     needs:
     - generate_cohort_precovid
     - generate_merged_precovid
@@ -1085,7 +1085,7 @@ actions:
   ## Generate cleaned input dataset - postcovid1 
 
   generate_input_postcovid1_clean:
-    run: r:latest analysis/table1/dataset_clean.R postcovid1
+    run: r:latest analysis/dataset_clean/dataset_clean.R postcovid1
     needs:
     - generate_cohort_postcovid1
     - generate_merged_postcovid1
@@ -1107,7 +1107,7 @@ actions:
   ## Generate cleaned input dataset - postcovid2 
 
   generate_input_postcovid2_clean:
-    run: r:latest analysis/table1/dataset_clean.R postcovid2
+    run: r:latest analysis/dataset_clean/dataset_clean.R postcovid2
     needs:
     - generate_cohort_postcovid2
     - generate_merged_postcovid2
@@ -1129,7 +1129,7 @@ actions:
   ## Generate cleaned input dataset - postcovid3 
 
   generate_input_postcovid3_clean:
-    run: r:latest analysis/table1/dataset_clean.R postcovid3
+    run: r:latest analysis/dataset_clean/dataset_clean.R postcovid3
     needs:
     - generate_cohort_postcovid3
     - generate_merged_postcovid3

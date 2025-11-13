@@ -129,7 +129,7 @@ generate_input_clean <- function(cohort) {
     comment(glue("Generate cleaned input dataset - {cohort}")),
     action(
       name = glue("generate_input_{cohort}_clean"),
-      run = glue("r:latest analysis/table1/dataset_clean.R {cohort}"),
+      run = glue("r:latest analysis/dataset_clean/dataset_clean.R {cohort}"),
       needs = list(
         glue("generate_cohort_{cohort}"),
         glue("generate_merged_{cohort}")
@@ -279,18 +279,18 @@ for (cohort in cohorts_all) {
     glue("^generate_measures_{cohort}_")
   )]
 
-  #Actually defining the action to run the data_cleaning.R script for each cohort
+  #Actually defining the action to run the analysis/datset_clean/dataset_merge.R script for each cohort
   check_and_merge_action <- c(
     comment(glue(
       "Check measures files & generate merged datasets for cohort: {cohort}"
     )),
     action(
       name = glue("generate_merged_{cohort}"),
-      run = glue("r:latest analysis/data_cleaning.R {cohort} {date}"),
+      run = glue("r:latest analysis/dataset_clean/dataset_merge.R {cohort} {date}"),
       needs = generate_measures_list,
       moderately_sensitive = list(
-        dataset1 = glue("output/analytic_data_long_{cohort}.csv"),
-        dataset2 = glue("output/analytic_data_wide_{cohort}.csv")
+        dataset1 = glue("output/dataset_clean/merged_data_long_{cohort}.csv"),
+        dataset2 = glue("output/dataset_clean/merged_data_wide_{cohort}.csv")
       )
     )
   )

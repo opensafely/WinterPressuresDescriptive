@@ -1,7 +1,7 @@
 process_measure_output <- function(cohort) {
   # Get column names ----
   print('Get column names')
-  file_path <- paste0("output/analytic_data_wide_", cohort, ".csv")
+  file_path <- paste0("output/dataset_clean/merged_data_wide_", cohort, ".csv")
   all_cols <- fread(
     file_path,
     header = TRUE,
