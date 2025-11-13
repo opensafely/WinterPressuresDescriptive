@@ -77,7 +77,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	
 //Frame storing regression results  
 frame create results_acsc_`1' str10 cohort str4 hosp_type str15 acscs 			///
-							  str40 model_form str10 out_var str7 exp_var n 	///
+							  str40 model_form str10 out_var str7 exp_var obs 	///
 							irr_exp se_exp p_exp lci_exp uci_exp 				///
 							irr_cons se_cons p_cons lci_cons uci_cons  			///
 							or_cons_inf se_cons_inf p_cons_inf lci_cons_inf uci_cons_inf /// 
@@ -136,7 +136,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 					di "STATA error code: " _rc
 
 					frame post results_acsc_`1' ///
-						("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (n) 	///
+						("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (.) 	///
 						(.) (.) (.) (.) (.)  			///
 						(.) (.) (.) (.) (.) 			///
 						(.) (.) (.) (.) (.)				///
@@ -180,6 +180,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 						scalar ll = e(ll) 						//log-likelihood, model overall (count if zinb)
 						scalar p_ll = `p_model'					//p-value, model overall
 						scalar psuedo_r2 = e(r2_p)				//psuedo r2
+						scalar obs = e(N)
 						
 					qui estat ic 
 						matrix ic_b = r(S)
@@ -187,7 +188,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 							scalar bic = ic_b[1,6]				//BIC score 
 				
 				frame post results_acsc_`1' ///
-					("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (n) 	///
+					("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (obs) 	///
 					(irr_exp) (se_exp) (p_exp) (lci_exp) (uci_exp)  			///
 					(irr_cons) (se_cons) (p_cons) (lci_cons) (uci_cons) 		///
 					(or_cons_inf) (se_cons_inf) (p_cons_inf) (lci_cons_inf) (uci_cons_inf)	///

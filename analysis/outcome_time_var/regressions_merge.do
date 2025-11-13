@@ -14,11 +14,11 @@ cap mkdir output/regressions
 clear frames 			 
 foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 	//For APC/EC
-	import delimited using ../workspace/output/regressions/results_all_cond_`1'.csv, varnames(1) clear
+	import delimited using ../workspace/output/regressions/results_all_cond_`cohort'.csv, varnames(1) clear
 		frame copy default results_all_cond_`cohort', replace 
 	
 	//For ACSCs within APC/EC
-	import delimited using ../workspace/output/regressions/results_acsc_`1'.csv, varnames(1) clear
+	import delimited using ../workspace/output/regressions/results_acsc_`cohort'.csv, varnames(1) clear
 		frame copy default results_acsc_`cohort'
 }
 
