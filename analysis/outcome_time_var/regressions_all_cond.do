@@ -197,7 +197,6 @@ frame change results_all_cond_`1'
 
 //Exporting the frame as a .csv 
 export delimited using ../workspace/output/regressions/results_all_cond_`1'.csv, replace	
-		
-}	
-		
 	
+
+		
