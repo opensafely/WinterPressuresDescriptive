@@ -65,7 +65,7 @@ import delimited using "${github}//output/analytic_data_long_`cohort'.csv", varn
 	rename out_* *
 	rename acscs_* * 
 	
-	gen cohort = "`1'"
+	gen cohort = "`cohort'"
 	
 
 //Setting as a panel variable
@@ -80,7 +80,7 @@ import delimited using "${github}//output/analytic_data_long_`cohort'.csv", varn
 	
 	
 //Frame storing regression results  
-frame create results_acsc_`1' str10 cohort str4 hosp_type str15 acscs 			///
+frame create results_acsc_`cohort' str10 cohort str4 hosp_type str15 acscs 			///
 							  str40 model_form str10 out_var str7 exp_var obs 	///
 							irr_exp se_exp p_exp lci_exp uci_exp 				///
 							irr_cons se_cons p_cons lci_cons uci_cons  			///
@@ -139,7 +139,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 					di _n "`regression' regression error: `var' --> exp_prop_`char'"
 					di "STATA error code: " _rc
 
-					frame post results_acsc_`1' ///
+					frame post results_acsc_`cohort' ///
 						("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (.) 	///
 						(.) (.) (.) (.) (.)  			///
 						(.) (.) (.) (.) (.) 			///
@@ -191,7 +191,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 							scalar aic = ic_b[1,5]				//AIC score
 							scalar bic = ic_b[1,6]				//BIC score 
 				
-				frame post results_acsc_`1' ///
+				frame post results_acsc_`cohort' ///
 					("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (obs) 	///
 					(irr_exp) (se_exp) (p_exp) (lci_exp) (uci_exp)  			///
 					(irr_cons) (se_cons) (p_cons) (lci_cons) (uci_cons) 		///
@@ -206,7 +206,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 	}
 		
 //Checking the regression statistics have expected ranges
-frame change results_acsc_`1'
+frame change results_acsc_`cohort'
 		
 	gen check_p = ""
 		foreach var of varlist p_* {
