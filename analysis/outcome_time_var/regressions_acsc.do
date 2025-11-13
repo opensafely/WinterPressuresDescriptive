@@ -19,12 +19,7 @@ cap mkdir output/regressions
 
 //Importing data 
 clear frames 
-//import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear 
-global github C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive
-cd "${github}"
-
-foreach cohort in precovid postcovid1 postcovid2 postcovid3{
-import delimited using "${github}//output/analytic_data_long_`cohort'.csv", varnames(1) clear
+import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear 
 
 **# //DATA MANAGEMENT
 //Excluding practices with fewer than <1000 patients 
@@ -65,7 +60,7 @@ import delimited using "${github}//output/analytic_data_long_`cohort'.csv", varn
 	rename out_* *
 	rename acscs_* * 
 	
-	gen cohort = "`cohort'"
+	gen cohort = "`1'"
 	
 
 //Setting as a panel variable
@@ -80,7 +75,7 @@ import delimited using "${github}//output/analytic_data_long_`cohort'.csv", varn
 	
 	
 //Frame storing regression results  
-frame create results_acsc_`cohort' str10 cohort str4 hosp_type str15 acscs 			///
+frame create results_acsc_`1' str10 cohort str4 hosp_type str15 acscs 			///
 							  str40 model_form str10 out_var str7 exp_var obs 	///
 							irr_exp se_exp p_exp lci_exp uci_exp 				///
 							irr_cons se_cons p_cons lci_cons uci_cons  			///
@@ -139,7 +134,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 					di _n "`regression' regression error: `var' --> exp_prop_`char'"
 					di "STATA error code: " _rc
 
-					frame post results_acsc_`cohort' ///
+					frame post results_acsc_`1' 	///
 						("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (.) 	///
 						(.) (.) (.) (.) (.)  			///
 						(.) (.) (.) (.) (.) 			///
@@ -153,7 +148,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 				}
 				else {
 					matrix b = r(table) 	//Naming regression output matrix
-						scalar n = e(N) 					//Number of observations in model 
+						scalar obs = e(N) 					//Number of observations in model 
 						
 						scalar irr_exp = b[1,1] 
 						scalar se_exp = b[2,1]
@@ -184,14 +179,13 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 						scalar ll = e(ll) 						//log-likelihood, model overall (count if zinb)
 						scalar p_ll = `p_model'					//p-value, model overall
 						scalar psuedo_r2 = e(r2_p)				//psuedo r2
-						scalar obs = e(N)
 						
 					qui estat ic 
 						matrix ic_b = r(S)
 							scalar aic = ic_b[1,5]				//AIC score
 							scalar bic = ic_b[1,6]				//BIC score 
 				
-				frame post results_acsc_`cohort' ///
+				frame post results_acsc_`1' 		///
 					("postcovid3") ("`hosp'") ("`acsc'") ("`reg_name'") ("`stub'") ("`char'") (obs) 	///
 					(irr_exp) (se_exp) (p_exp) (lci_exp) (uci_exp)  			///
 					(irr_cons) (se_cons) (p_cons) (lci_cons) (uci_cons) 		///
@@ -206,7 +200,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 	}
 		
 //Checking the regression statistics have expected ranges
-frame change results_acsc_`cohort'
+frame change results_acsc_`1'
 		
 	gen check_p = ""
 		foreach var of varlist p_* {
@@ -235,7 +229,6 @@ frame change results_acsc_`cohort'
 		
 
 //Exporting the frame as a .csv 
-//export delimited using ../workspace/output/regressions/results_acsc_`1'.csv, replace	
-export delimited using "${github}//output/regressions/results_acsc_`cohort'.csv"
+export delimited using ../workspace/output/regressions/results_acsc_`1'.csv, replace	
 
 }
