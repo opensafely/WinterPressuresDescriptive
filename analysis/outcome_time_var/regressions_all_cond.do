@@ -17,15 +17,19 @@ cap mkdir output/regressions
 
 //Importing data 
 clear frames 
-import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear 
+//import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(1) clear 
+global github C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive
+cd "${github}"
 
+foreach cohort in precovid postcovid1 postcovid2 postcovid3{
+import delimited using "${github}//output/analytic_data_long_`cohort'.csv", varnames(1) clear
 
 **# //DATA MANAGEMENT
 //Excluding practices with fewer than <1000 patients 
-	count if exp_denom <1000
-	qui levelsof practice_pseudo_id if exp_denom <1000
-	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
-	drop if exp_denom <1000
+	//count if exp_denom <1000
+	//qui levelsof practice_pseudo_id if exp_denom <1000
+	//di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
+	//drop if exp_denom <1000
 	
 	
 //Renaming & generating variables to make it easier to code
@@ -197,8 +201,9 @@ frame change results_all_cond_`1'
 		}
 
 //Exporting the frame as a .csv 
-export delimited using ../workspace/output/regressions/results_all_cond_`1'.csv, replace	
+//export delimited using ../workspace/output/regressions/results_all_cond_`1'.csv, replace	
+export delimited using "${github}//output/regressions/results_all_cond_`cohort'.csv", varnames(1) clear
 		
-	
+}	
 		
 	
