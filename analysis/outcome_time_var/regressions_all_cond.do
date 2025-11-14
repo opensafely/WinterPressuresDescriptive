@@ -22,10 +22,10 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 
 **# //DATA MANAGEMENT
 //Excluding practices with fewer than <1000 patients 
-//	count if exp_denom <1000
-//	qui levelsof practice_pseudo_id if exp_denom <1000
-//	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
-//	drop if exp_denom <1000
+	count if exp_denom <1000
+	qui levelsof practice_pseudo_id if exp_denom <1000
+	di "We will drop `r(r)' unique practices, comprising `r(N)' total observations in this longitudinal data"
+	drop if exp_denom <1000
 	
 	
 //Renaming & generating variables to make it easier to code
@@ -72,7 +72,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	
 //Frame storing regression results  
 frame create results_all_cond_`1' str10 cohort str4 hosp_type str15 acscs ///
-								  str40 model_form str10 out_var str7 exp_var n 	///
+								  str40 model_form str10 out_var str7 exp_var obs 	///
 								  irr_exp se_exp p_exp lci_exp uci_exp 			///
 								  irr_cons se_cons p_cons lci_cons uci_cons  		///
 								  variance_ri se_ri lci_ri uci_ri 				///
@@ -112,7 +112,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 					
 				frame post results_all_cond_`1'		///
 					("postcovid3") ("`hosp'") ("All conditions") ("`reg_name' random intercepts") ///
-					("`stub'") ("`char'") (n) 		///
+					("`stub'") ("`char'") (.) 		///
 					(.) (.) (.) (.) (.)  			///
 					(.) (.) (.) (.) (.) 			///
 					(.) (.) (.) (.) 				///
@@ -123,7 +123,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 				}
 				else {
 					matrix b = r(table) 	//Naming regression output matrix
-						scalar n = e(N) 					//Number of observations in model 
+						scalar obs = e(N) 					//Number of observations in model 
 						
 						scalar irr_exp = b[1,1] 
 						scalar se_exp = b[2,1]
@@ -146,7 +146,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 						scalar p_ll = e(p)						 	//p-value, model 
 						scalar chi2_lrtest = e(chi2_c)				//LR test chi2
 						scalar p_lrtest = e(p_c)					//p-value, LR test
-					
+						
 					qui estat ic 
 					matrix ic_b = r(S)
 						scalar aic = ic_b[1,5]				//AIC score
@@ -154,7 +154,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 				
 				frame post results_all_cond_`1' 	///
 					("postcovid3") ("`hosp'") ("All conditions") ("`reg_name' random intercepts") ///
-					("`stub'") ("`char'") (n) 	///
+					("`stub'") ("`char'") (obs) 	///
 					(irr_exp) (se_exp) (p_exp) (lci_exp) (uci_exp)  			///
 					(irr_cons) (se_cons) (p_cons) (lci_cons) (uci_cons) 		///
 					(v_ri) (se_ri) (lci_ri) (uci_ri) 							///
@@ -198,7 +198,6 @@ frame change results_all_cond_`1'
 
 //Exporting the frame as a .csv 
 export delimited using ../workspace/output/regressions/results_all_cond_`1'.csv, replace	
-		
 	
+
 		
-	
