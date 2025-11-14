@@ -1,10 +1,7 @@
-# First function to preprocess data
-
-preprocess <- function(cohort) {
+preprocess_measure <- function(cohort) {
   # Get column names ----
   print('Get column names')
-
-  file_path <- paste0("output/dataset_definition/input_", cohort, ".csv.gz")
+  file_path <- paste0("output/dataset_clean/merged_data_wide_", cohort, ".csv")
   all_cols <- fread(
     file_path,
     header = TRUE,
@@ -19,13 +16,17 @@ preprocess <- function(cohort) {
   # Define column classes ----
   print('Define column classes')
 
-  cat_cols <- c("patient_id", grep("_cat", all_cols, value = TRUE))
+  cat_cols <- c(grep("_cat", all_cols, value = TRUE))
   bin_cols <- c(grep("_bin", all_cols, value = TRUE))
   num_cols <- c(
     grep("_num", all_cols, value = TRUE),
-    grep("vax_jcvi_age_", all_cols, value = TRUE)
+    grep("_denom", all_cols, value = TRUE),
+    grep("_prop_", all_cols, value = TRUE)
   )
-  date_cols <- grep("_date", all_cols, value = TRUE)
+  date_cols <- c(
+    grep("_start", all_cols, value = TRUE),
+    grep("_end", all_cols, value = TRUE)
+  )
   message("Column classes identified")
 
   col_classes <- setNames(
@@ -48,6 +49,7 @@ preprocess <- function(cohort) {
     nrow(input),
     " rows"
   ))
+
   # Format dataset columns ----
   print('Format dataset columns')
 
@@ -60,43 +62,34 @@ preprocess <- function(cohort) {
       across(contains('_birth_year'), ~ as.numeric(.)), #~ year(as.Date(., origin = "1970-01-01"))),
       across(all_of(num_cols), ~ as.numeric(.)),
       across(all_of(cat_cols), ~ as.character(.))
+    ) %>%
+    rename(
+      practice_id = practice_pseudo_id, # consistent ID
+      exp_denom_total = exp_denom # shared denominator
     )
-  # Apply includsion criteria ----
-  print('Remove records with missing patient id or practice id')
 
-  input <- input[!is.na(input$patient_id) & !is.na(input$practice_id), ]
-  
-  message("All records with valid patient and practice IDs retained.")
+  # Compute mean consultation proportion ----------------------------
+  print("Compute mean consultation proportions per practice")
 
-  print("Inclusion criteria: Alive at index")
+  cons_cols <- grep("^exp_prop_cons_", names(input), value = TRUE)
 
-  input <- subset(input, inex_bin_alive == TRUE) 
-  
-  message("All records alive at index.")
-
-  print("Inclusion criteria: registered with a practice at index")
-
-  input <- subset(input, inex_bin_reg_cs == TRUE) 
-  
-  message("All records registered with a practice at index")
-
-  # Restrict columns ----
-  print('Restrict columns')
-
-  input <- input %>%
-    select(
-      patient_id,
-      practice_id,
-      starts_with("index_date"),
-      starts_with("exp_"), # Exposures
-      starts_with("inex_"), # Inclusion/exclusion
-      starts_with("cens_"), # Censor
-      starts_with("vax_date_"), # Vaccination dates and vax type
-      starts_with("vax_cat_"), # Vaccination products
-      starts_with("vax_bin_") # Vaccination binary flags
+  if (length(cons_cols) > 0) {
+    input <- input %>%
+      rowwise() %>%
+      mutate(
+        exp_prop_cons_mean = mean(c_across(all_of(cons_cols)), na.rm = TRUE)
+      ) %>%
+      ungroup()
+    message(
+      "Added exp_prop_cons_mean (average across exp_prop_cons_YYYYMM columns)."
     )
-  # Return data ----
-  print('Return data')
+  } else {
+    warning("No consultation proportion columns found (exp_prop_cons_...).")
+  }
 
+  # Compute mean weekly rate ----------------------------
+  print("Compute mean weekly rates per practice")
+
+  # Return the preprocessed practice-level data
   return(input)
 }

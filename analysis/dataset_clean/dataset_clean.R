@@ -38,24 +38,27 @@ if (length(args) == 0) {
   cohort <- args[[1]]
 }
 
-# Preprocess data --------------------------------------------------------------
-print('Preprocess data')
-input <- preprocess(cohort)
+# Flag to control whether inclusion/exclusion criteria are applied
+apply_inex <- FALSE # Set to TRUE for real run, FALSE for testing
+
+# Preprocess patient-level data --------------------------------------------------------------
+print('Preprocess patient-level data')
+input <- preprocess_patients(cohort)
 message(paste0("Preprocessed data has N = ", nrow(input), " rows"))
 
-# Create practice-level summary dataset ----------------------------------------
+# Create practice-level summary dataset from patient-level data ----------------------------------------
 print('Create practice-level summary dataset')
-practice_summary <- collapse(input)
+practice_summary <- aggregat(input)
 message(paste0(
   "Practice-level summary dataset has N = ",
   nrow(practice_summary),
   " rows"
 ))
 
-# Process measure outputs -------------------------------------------------------
-print('Process measure outputs')
+# Preprocess measure tables -------------------------------------------------------
+print('Preprocess measure tables')
 
-measure_output_clean <- process_measure_output(cohort)
+measure_output_clean <- preprocess_measure(cohort)
 message(paste0(
   "Measure output clean dataset has N = ",
   nrow(measure_output_clean),
@@ -65,12 +68,12 @@ message(paste0(
 # Merge measure outputs with practice_summary -----------------------------------
 print('Merge measure outputs with practice_summary')
 
-practice_summary <- practice_summary %>%
+input <- practice_summary %>%
   right_join(measure_output_clean, by = "practice_id", suffix = c(".x", ""))
 
-# Remove duplicated columns from practice_summary (those with .x suffix)
-n_removed <- sum(endsWith(names(practice_summary), ".x"))
-practice_summary <- practice_summary %>%
+# Remove duplicated columns (those with .x suffix)
+n_removed <- sum(endsWith(names(input), ".x"))
+input <- input %>%
   select(-ends_with(".x"))
 
 message(paste0(
@@ -80,31 +83,28 @@ message(paste0(
 ))
 message(paste0(
   "Practice summary dataset after merging measure outputs has N = ",
-  nrow(practice_summary),
+  nrow(input),
   " rows"
 ))
 
-# Remove practices with <1000 patients ----------------------------------------
-print("Remove practices with <1000 patients")
+# Apply inclusion/exclusion criteria ----------------------------------------
+print('Apply inclusion/exclusion criteria')
 
-n_before <- nrow(practice_summary)
+if (apply_inex) {
+  input <- inex(input)
+  message(paste0(
+    "Practice summary dataset AFTER applying inclusion/exclusion criteria has N = ",
+    nrow(input),
+    " rows"
+  ))
+} else {
+  message(
+    "Skipping inclusion/exclusion (apply_inex = FALSE) using full dataset for testing."
+  )
+}
 
-practice_summary <- practice_summary %>%
-  filter(exp_denom_total >= 1000)
-
-n_after <- nrow(practice_summary)
-
-n_removed <- n_before - n_after
-
-message(paste0("Number of practices with <1000 patients: ", n_removed))
-message(paste0(
-  "Practice summary dataset after removing small practices has N = ",
-  n_after,
-  " rows"
-))
-
-# Save practice_summary dataset ---------------------------------------------------
-print('Save practice_summary dataset')
+# Save clean dataset ---------------------------------------------------
+print('Save clean dataset')
 output_path <- paste0(dataclean_dir, "input_", cohort, "_clean.csv")
-write_csv(practice_summary, output_path)
-message(paste0("Practice-level summary dataset saved to ", output_path))
+write_csv(input, output_path)
+message(paste0("Practice-level clean wide dataset saved to ", output_path))
