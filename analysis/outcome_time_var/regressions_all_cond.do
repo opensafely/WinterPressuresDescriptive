@@ -61,6 +61,7 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	
 	gen cohort = "`1'"
 	
+	gen log_dnm = log(dnm)
 
 //Setting as a panel variable
 	xtset practice_pseudo_id week_number
@@ -103,7 +104,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 			local stub: subinstr local stub "_w" "", all
 			local acsc: subinstr local stub "_`hosp'" "", all
 			
-			cap `regression' `var' exp_prop_`char', offset(dnm) || practice_pseudo_id:, irr
+			cap qui `regression' `var' exp_prop_`char', offset(log_dnm) || practice_pseudo_id:, irr
 				if _rc != 0  {
 					 
 					di _n "`regression' regression error: `var' --> exp_prop_`char'"

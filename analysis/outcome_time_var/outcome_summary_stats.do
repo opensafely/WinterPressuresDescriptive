@@ -27,15 +27,16 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 	frame copy default summary_`cohort', replace
 	frame change summary_`cohort'
 	
-		keep out_num_* out_acscs_num* practice_pseudo_id week_number
+		keep out_num_* out_acscs_num* practice_pseudo_id week_number out_denom
 		rename out_* *
+		rename denom dnm
 		rename acscs_* * 
 		rename *diabetes* *dbts*
 		rename *asthma* *ast*
 		rename *_angina_* *_ang_* 
 		
 	//Generating the summary statistics for each outcome variable 
-		foreach var of varlist num_* {
+		foreach var of varlist num_* dnm {
 			local stub: subinstr local var "num_" "", all
 			local stub: subinstr local stub "_w" "", all
 			
@@ -63,6 +64,9 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 			egen sd_`stub' = sd(`var')					//SD
 			gen crude_disp_`stub' = (sd_`stub')^2/mean_`stub'	//Crude dispersion (variance/mean)
 			
+			qui count if `var' !=0 		//Number of practices with non-zero observations
+				gen non_zero_obs_`stub' = `r(N)'
+			
 			qui count if `var' == 0 
 				local count_zero = `r(N)'
 			qui count 	
@@ -81,18 +85,18 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 		drop practice_pseudo_id num_* 
 	
 	//Putting the statistics summarised over all time into a new frame 
-		frame put min_* q1_* med_* q3_* max_* p10_* p20_* p30_* p40_* p50_* p60_* p70_* p80_* p90_* p99_* range_* total_* mean_* sd_* crude_disp_* prop_zero_*, into(a_summary_`cohort')
+		frame put min_* q1_* med_* q3_* max_* p10_* p20_* p30_* p40_* p50_* p60_* p70_* p80_* p90_* p99_* range_* total_* mean_* sd_* crude_disp_* non_zero_obs_* prop_zero_*, into(a_summary_`cohort')
 		frame change a_summary_`cohort'
-			collapse (first) min_apc - prop_zero_ang_ec
+			collapse (first) min_apc - prop_zero_dnm
 			gen id = 1
 		//Reshaping to long - one row per outcome, each column represents a statistic	
-			reshape long min_ q1_ med_ q3_ max_ p10_ p20_ p30_ p40_ p50_ p60_ p70_ p80_ p90_ p99_ range_ total_ mean_ sd_ crude_disp_ prop_zero_ , i(id) j(outcome) string
+			reshape long min_ q1_ med_ q3_ max_ p10_ p20_ p30_ p40_ p50_ p60_ p70_ p80_ p90_ p99_ range_ total_ mean_ sd_ crude_disp_ non_zero_obs_ prop_zero_ , i(id) j(outcome) string
 		frame change summary_`cohort'	
 	
 	//Putting the statistics summarised per WEEK into a new frame	
 		frame put week_number wprop_zero_*, into(w_summary_`cohort')
 		frame change w_summary_`cohort'
-			collapse (first) wprop_zero_apc_w1 - wprop_zero_ang_ec_w20
+			collapse (first) wprop_zero_apc_w1 - wprop_zero_dnm_w20
 			gen id = 1
 			
 		//Because this variable is reported per week, two steps for reshape
@@ -115,11 +119,15 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 			frget prop_zero_w*, from(w_summary_`cohort')
 			
 			gen cohort = "`cohort'", before(outcome)
-			drop id
+			drop id 
 		
 	//Dropping the now-unneccesary frames 
 		frame drop w_summary_`cohort' 
 		frame drop summary_`cohort'
+		
+	//Renaming variables to make what they represent clearer	
+		rename *_ *
+		rename prop_zero prop_zero_overall
 
 //Going back to the default frame at the end of the loop 		
 	frame change default
@@ -133,14 +141,6 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 	frame a_summary_precovid: export delimited using ../workspace/output/regressions/outcome_summary_stats.csv, replace	
 	
 
-
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
