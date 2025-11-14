@@ -27,15 +27,16 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 	frame copy default summary_`cohort', replace
 	frame change summary_`cohort'
 	
-		keep out_num_* out_acscs_num* practice_pseudo_id week_number
+		keep out_num_* out_acscs_num* practice_pseudo_id week_number out_denom
 		rename out_* *
+		rename denom dnm
 		rename acscs_* * 
 		rename *diabetes* *dbts*
 		rename *asthma* *ast*
 		rename *_angina_* *_ang_* 
 		
 	//Generating the summary statistics for each outcome variable 
-		foreach var of varlist num_* {
+		foreach var of varlist num_* dnm {
 			local stub: subinstr local var "num_" "", all
 			local stub: subinstr local stub "_w" "", all
 			
@@ -92,7 +93,7 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 	//Putting the statistics summarised per WEEK into a new frame	
 		frame put week_number wprop_zero_*, into(w_summary_`cohort')
 		frame change w_summary_`cohort'
-			collapse (first) wprop_zero_apc_w1 - wprop_zero_ang_ec_w20
+			collapse (first) wprop_zero_apc_w1 - wprop_zero_dnm_w20
 			gen id = 1
 			
 		//Because this variable is reported per week, two steps for reshape
@@ -115,11 +116,15 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 			frget prop_zero_w*, from(w_summary_`cohort')
 			
 			gen cohort = "`cohort'", before(outcome)
-			drop id
+			drop id 
 		
 	//Dropping the now-unneccesary frames 
 		frame drop w_summary_`cohort' 
 		frame drop summary_`cohort'
+		
+	//Renaming variables to make what they represent clearer	
+		rename *_ *
+		rename prop_zero prop_zero_overall
 
 //Going back to the default frame at the end of the loop 		
 	frame change default
@@ -133,14 +138,6 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 	frame a_summary_precovid: export delimited using ../workspace/output/regressions/outcome_summary_stats.csv, replace	
 	
 
-
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
