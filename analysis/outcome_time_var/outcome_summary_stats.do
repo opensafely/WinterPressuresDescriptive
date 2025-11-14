@@ -64,6 +64,9 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 			egen sd_`stub' = sd(`var')					//SD
 			gen crude_disp_`stub' = (sd_`stub')^2/mean_`stub'	//Crude dispersion (variance/mean)
 			
+			qui count if `var' !=0 		//Number of practices with non-zero observations
+				gen non_zero_obs_`stub' = `r(N)'
+			
 			qui count if `var' == 0 
 				local count_zero = `r(N)'
 			qui count 	
@@ -82,12 +85,12 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3{
 		drop practice_pseudo_id num_* 
 	
 	//Putting the statistics summarised over all time into a new frame 
-		frame put min_* q1_* med_* q3_* max_* p10_* p20_* p30_* p40_* p50_* p60_* p70_* p80_* p90_* p99_* range_* total_* mean_* sd_* crude_disp_* prop_zero_*, into(a_summary_`cohort')
+		frame put min_* q1_* med_* q3_* max_* p10_* p20_* p30_* p40_* p50_* p60_* p70_* p80_* p90_* p99_* range_* total_* mean_* sd_* crude_disp_* non_zero_obs_* prop_zero_*, into(a_summary_`cohort')
 		frame change a_summary_`cohort'
-			collapse (first) min_apc - prop_zero_ang_ec
+			collapse (first) min_apc - prop_zero_dnm
 			gen id = 1
 		//Reshaping to long - one row per outcome, each column represents a statistic	
-			reshape long min_ q1_ med_ q3_ max_ p10_ p20_ p30_ p40_ p50_ p60_ p70_ p80_ p90_ p99_ range_ total_ mean_ sd_ crude_disp_ prop_zero_ , i(id) j(outcome) string
+			reshape long min_ q1_ med_ q3_ max_ p10_ p20_ p30_ p40_ p50_ p60_ p70_ p80_ p90_ p99_ range_ total_ mean_ sd_ crude_disp_ non_zero_obs_ prop_zero_ , i(id) j(outcome) string
 		frame change summary_`cohort'	
 	
 	//Putting the statistics summarised per WEEK into a new frame	
