@@ -89,6 +89,13 @@ if practice_measures:
     }
 
     # =========================
+    # Care home-related measures
+    # =========================
+    measures_carehome = {
+        "exp_prop_carehome": exp_bin_carehome,
+    }
+
+    # =========================
     # Smoking-related measures
     # =========================
     measures_smoking = {
@@ -230,6 +237,13 @@ if practice_measures:
                 measures.define_measure(
                     name = measure,
                     numerator = measures_rurality[measure]
+                )
+
+        if Carehome:
+            for measure in measures_carehome.keys():
+                measures.define_measure(
+                    name = measure,
+                    numerator = measures_carehome[measure]
                 )
 
         if Smoking:

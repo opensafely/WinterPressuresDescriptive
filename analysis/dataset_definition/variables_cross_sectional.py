@@ -327,6 +327,13 @@ def generate_measure_variables(cohort_start):
     exp_bin_imd_4        = (tmp_exp_cat_imd == "4")
     exp_bin_imd_5_least  = (tmp_exp_cat_imd == "5 (least deprived)")
 
+    ### Care home status
+    exp_bin_carehome = (
+        addresses.for_patient_on(cohort_start).care_home_is_potential_match |
+        addresses.for_patient_on(cohort_start).care_home_requires_nursing |
+        addresses.for_patient_on(cohort_start).care_home_does_not_require_nursing
+    )
+
     ### Smoking status
     tmp_most_recent_smoking_cat = (
         last_matching_event_clinical_ctv3_before(smoking_clear, cohort_start)
@@ -422,6 +429,8 @@ def generate_measure_variables(cohort_start):
         exp_bin_imd_4       = exp_bin_imd_4,
         exp_bin_imd_5_least = exp_bin_imd_5_least,
         exp_bin_imd_missing = exp_bin_imd_missing,
+        # Care home status
+        exp_bin_carehome = exp_bin_carehome,
         # Smoking status binary flags
         exp_bin_smoker_current = exp_bin_smoker_current,
         exp_bin_smoker_ever    = exp_bin_smoker_ever,
