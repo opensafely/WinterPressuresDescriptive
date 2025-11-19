@@ -30,6 +30,7 @@ cs_args <- c(
   "Ethnicity",
   "IMD",
   "Rurality",
+  "Carehome",
   "Smoking",
   "Obesity",
   "Multimorbidity"

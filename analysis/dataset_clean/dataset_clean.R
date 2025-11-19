@@ -33,7 +33,7 @@ print('Specify command arguments')
 args <- commandArgs(trailingOnly = TRUE)
 print(length(args))
 if (length(args) == 0) {
-  cohort <- "postcovid1"
+  cohort <- "precovid"
 } else {
   cohort <- args[[1]]
 }
@@ -86,6 +86,33 @@ message(paste0(
   nrow(input),
   " rows"
 ))
+
+# Collapse categorial variables where needed ----------------------------------------
+print('Collapse categorial variables where needed')
+
+input <- collapse_categories(input)
+message("Categorical variables collapsed where needed")
+
+# Apply redaction ----------------------------------------
+print('Apply redaction')
+input <- redact(input)
+message("Redaction applied")
+
+# Restrict to relevant variables only ----------------------------------------
+print('Restrict to relevant variables only')
+
+input <- restrict_variables(input)
+message("Restricted to relevant variables only")
+
+# Reshape to long format ----------------------------------------
+print('Reshape to long format')
+input_long <- reshape_outcomes_long(input)
+message("Reshaped to long format")
+
+
+# Shorten variable names
+print('Shorten variable names')
+
 
 # Apply inclusion/exclusion criteria ----------------------------------------
 print('Apply inclusion/exclusion criteria')

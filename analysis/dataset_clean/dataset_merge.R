@@ -1,17 +1,4 @@
 ## IMPORTING R PACKAGES
-#install.packages("dplyr")
-#install.packages("tidy")
-#install.packages("readr")
-#install.packages("ggplot2")
-#install.packages("haven")
-#install.packages("stringr")
-#install.packages("tidyverse")
-#install.packages("glue")
-#install.packages("lubridate")
-#install.packages("here")
-#install.packages("data.table")
-#install.packages("purrr")
-
 library(tidyverse)
 library(haven) # Allows you to import STATA .dta files
 library(glue)
@@ -205,7 +192,6 @@ date_check_long <- function(
   )
 }
 
-
 ##Identical_vector_check:
 ##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes
 identical_vector_check <- function(df_list, var_list) {
@@ -398,18 +384,6 @@ drop_all_duplicates <- function(
   return(df)
 }
 
-
-##SETTING DIRECTORIES & PATHS
-##SD own laptop, locally
-#setwd("C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output")
-#measures_path <-"C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output/measures"
-#output_path  <-"C:/Users/61487/Documents/GitHub/WinterPressuresDescriptive/output"
-
-#SD work laptop
-#setwd("C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output")
-#measures_path <-"C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output/measures"
-#output_path <- "C:/Users/ShrinkhalaDawadi/Documents/GitHub/WinterPressuresDescriptive/output"
-
 #OS
 print("This should be the working directory")
 wd <- getwd()
@@ -421,7 +395,6 @@ output_path <- here::here("output")
 
 print(here::here)
 
-
 ##IMPORTING FILES
 #list.files: lists all the files in a specified directory
 #pattern: option, only identifies files that match a specific regular expression
@@ -430,7 +403,6 @@ print(here::here)
 test <- list.files(path = "/workspace/output/measures", full.names = TRUE)
 print("This is the test list")
 print(test)
-
 
 #FOR CODE DEVELOPMENT, USE: measures_csv <- list.files(path = measures_path, pattern = "postcovid3\\.csv$", full.names = TRUE)
 #OS (incorporates the 'cohort' arguments needed for the .yaml file)
@@ -828,9 +800,9 @@ if (date_check_out_acscs$date_check_passed) {
   ##Pre-allocating objects
   wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv)) #list containing transformed datasets
   rename_list <- c(
-    "numerator_out_num" = "out_acscs_num",
-    "denominator_out_num" = "out_acscs_denom",
-    "ratio_out_num" = "out_acscs_prop",
+    "numerator_out_num" = "out_num_acscs",
+    "denominator_out_num" = "out_denom_acscs",
+    "ratio_out_num" = "out_prop_acscs",
     "hypertension" = "hypt"
   ) #Renaming rules for dataset
 
@@ -944,6 +916,11 @@ out_data <- drop_all_duplicates(
   new_name = "out_denom"
 )
 
+#Restrict out_data to only the practices in exp_data
+out_data <- out_data %>%
+  semi_join(exp_data, by = "practice_pseudo_id")
+
+#Merging the exposure and outcome data together to create the final analytic dataset
 analytic_data_long <- left_join(
   out_data,
   exp_data,
@@ -1001,7 +978,6 @@ message(paste0("Long-format merged dataset saved to ", output_path_long))
 output_path_wide <- paste0(dataclean_dir, "merged_data_wide_", cohort, ".csv")
 data.table::fwrite(analytic_data_wide, here::here(output_path_wide))
 message(paste0("Wide-format merged dataset saved to ", output_path_wide))
-
 
 #TO DO:
 #Get the positive_var_check function to output a nice dataset (like date_check_long does)

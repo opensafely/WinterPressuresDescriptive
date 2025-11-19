@@ -87,9 +87,100 @@ preprocess_measure <- function(cohort) {
     warning("No consultation proportion columns found (exp_prop_cons_...).")
   }
 
-  # Compute mean weekly rate ----------------------------
+  # Compute mean weekly rate for outcomes --------------------------------------
   print("Compute mean weekly rates per practice")
 
-  # Return the preprocessed practice-level data
+  out_prop_prefixes <- c(
+    "out_prop_apc_",
+    "out_prop_ec_",
+    "out_prop_acscs_copd_apc_",
+    "out_prop_acscs_copd_ec_",
+    "out_prop_acscs_asthma_apc_",
+    "out_prop_acscs_asthma_ec_",
+    "out_prop_acscs_hypt_apc_",
+    "out_prop_acscs_hypt_ec_",
+    "out_prop_acscs_diabetes_apc_",
+    "out_prop_acscs_diabetes_ec_",
+    "out_prop_acscs_angina_apc_",
+    "out_prop_acscs_angina_ec_"
+  )
+
+  for (p in out_prop_prefixes) {
+    # All columns matching the prefix + 1–20
+    cols <- grep(paste0("^", p, "w[0-9]+$"), names(input), value = TRUE)
+
+    if (length(cols) > 0) {
+      mean_name <- paste0(p, "mean")
+
+      input <- input %>%
+        rowwise() %>%
+        mutate(!!mean_name := mean(c_across(all_of(cols)), na.rm = TRUE)) %>%
+        ungroup()
+
+      message(
+        "Added ",
+        mean_name,
+        " (mean across: ",
+        paste(cols, collapse = ", "),
+        ")"
+      )
+    } else {
+      message("No columns found for prefix: ", p)
+    }
+  }
+
+  # Compute cumulative rates ----------------------------------------------------
+  print("Compute cumulative rates per practice")
+
+  # prefixes for cumulative calculations using _num_ variables
+  out_num_prefixes <- c(
+    "out_num_apc_",
+    "out_num_ec_",
+    "out_num_acscs_copd_apc_",
+    "out_num_acscs_copd_ec_",
+    "out_num_acscs_asthma_apc_",
+    "out_num_acscs_asthma_ec_",
+    "out_num_acscs_hypt_apc_",
+    "out_num_acscs_hypt_ec_",
+    "out_num_acscs_diabetes_apc_",
+    "out_num_acscs_diabetes_ec_",
+    "out_num_acscs_angina_apc_",
+    "out_num_acscs_angina_ec_"
+  )
+
+  for (p in out_num_prefixes) {
+    # weekly number columns: out_num_apc_w1 ... w20
+    cols <- grep(paste0("^", p, "w[0-9]+$"), names(input), value = TRUE)
+
+    if (length(cols) > 0) {
+      # create a clean cumulative rate variable name
+      prop_prefix <- gsub("num", "prop", p)
+      cumulative_rate_name <- paste0(prop_prefix, "total")
+
+      input <- input %>%
+        rowwise() %>%
+        mutate(
+          !!cumulative_rate_name := sum(c_across(all_of(cols)), na.rm = TRUE) /
+            exp_denom_total
+        ) %>%
+        ungroup()
+
+      message(
+        "Added ",
+        cumulative_rate_name,
+        ": sum(",
+        paste(cols, collapse = ", "),
+        ") / exp_denom_total"
+      )
+    } else {
+      message("No numeric weekly columns found for: ", p)
+    }
+  }
+
+  # Generate rounded proportions for descriptive tables -----------------------------
+  print("Generate rounded proportion variables for descriptive tables")
+  prop_cols <- grep("_prop_", names(input), value = TRUE)
+
+  # Return the reprocessed practice-level data
   return(input)
 }
