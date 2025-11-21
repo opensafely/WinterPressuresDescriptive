@@ -104,7 +104,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 			local stub: subinstr local stub "_w" "", all
 			local acsc: subinstr local stub "_`hosp'" "", all
 			
-			cap qui `regression' `var' exp_prop_`char', offset(log_dnm) || practice_pseudo_id:, irr
+			cap `regression' `var' exp_prop_`char', offset(log_dnm) || practice_pseudo_id:, irr
 				if _rc != 0  {
 					 
 					di _n "`regression' regression error: `var' --> exp_prop_`char'"
@@ -171,7 +171,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 //Checking the regression statistics have expected ranges
 frame change results_all_cond_`1' 
 		
-	gen check_p = ""
+	gen str check_p = ""
 		foreach var of varlist p_* {
 			cap assert `var' <1 if `var' !=.
 				if _rc != 0 {
@@ -179,7 +179,7 @@ frame change results_all_cond_`1'
 					continue 
 				}
 		}
-	gen check_irr = ""
+	gen str check_irr = ""
 		foreach var of varlist irr_* {
 			cap assert `var' > 0
 				if _rc != 0 {
@@ -187,7 +187,7 @@ frame change results_all_cond_`1'
 					continue 
 				}
 		}
-	gen check_chi2 = ""
+	gen str check_chi2 = ""
 		foreach var of varlist chi2_* {
 			cap assert `var' > 0 
 				if _rc !=0 {
