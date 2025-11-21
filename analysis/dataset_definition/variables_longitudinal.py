@@ -59,6 +59,13 @@ def generate_variables(interval_start, interval_end):
             apcs.admission_date.is_on_or_between(interval_start, interval_end)
         ).count_for_patient()
     )
+    ### Unplanned hospital admission
+    out_num_apc_unplanned = (
+        apcs.where(
+            (apcs.admission_date.is_on_or_between(interval_start, interval_end)) &
+            (apcs.admission_method.is_in("21", "22", "23", "24", "25", "2A", "2B", "2D", "28"))
+        ).count_for_patient()
+    )
 
     ### ACSC 
     ### COPD
@@ -114,6 +121,7 @@ def generate_variables(interval_start, interval_end):
         exp_bin_vax_pneumo = exp_bin_vax["PNEUMOCOCCAL"],
         out_num_ec =out_num_ec,
         out_num_apc =out_num_apc,
+        out_num_apc_unplanned = out_num_apc_unplanned,
         out_num_copd_ec = out_num_copd_ec,                   # COPD (EC)
         out_num_copd_apc = out_num_copd_apc,                 # COPD (APC)
         out_num_asthma_ec = out_num_asthma_ec,               # Asthma (EC)

@@ -192,6 +192,12 @@ copd_icd10 = codelist_from_csv(
     "codelists/bristol-copd.csv",
     column="code"
 )
+
+copd_drugs_dmd = codelist_from_csv(
+    "codelists/opensafely-copd-medications-new-dmd.csv",           
+    column="dmd_id"
+)
+
     ## Asthma
 asthma_snomed = codelist_from_csv(
     "codelists/opensafely-asthma-diagnosis-snomed.csv",
@@ -200,6 +206,11 @@ asthma_snomed = codelist_from_csv(
 
 asthma_icd10 = codelist_from_csv(
     "codelists/bristol-asthma.csv",
+    column="code"
+)
+
+asthma_drugs_dmd = codelist_from_csv(
+    "codelists/nhs-drug-refsets-c19astdrug_cod.csv",
     column="code"
 )
 
@@ -324,5 +335,48 @@ ami_icd10 = codelist_from_csv(
 
 ami_prior_icd10 = codelist_from_csv(
     "codelists/user-elsie_horne-ami_prior_icd10.csv",
+    column="code"
+)
+    ## Severe Mental Illness - Schizophrenia, Bipolar Disorder, Other Psychoses
+severe_mental_illness_snomed = codelist_from_csv(
+    "codelists/user-hjforbes-severe-mental-illness.csv",
+    column="code"
+)
+bipolar_and_mood_disorders_icd10 = codelist_from_csv(
+    "codelists/user-kurttaylor-bipolar_and_mood_disorders_icd10.csv",
+    column="code"
+)
+other_psychotic_disorders_icd10 = codelist_from_csv(
+    "codelists/user-kurttaylor-other-psychotic_disorders_icd10.csv",
+    column="code"
+)
+schizophrenia_icd10 = codelist_from_csv(
+    "codelists/user-kurttaylor-schizophrenia_icd10.csv",
+    column="code"
+)
+second_generation_antipsychotics_drugs_dmd = codelist_from_csv(
+    "codelists/opensafely-second-generation-antipsychotics-excluding-long-acting-injections.csv",
+    column="dmd_id"
+)
+prochlorperazine_drugs_dmd = codelist_from_csv(
+    "codelists/opensafely-prochlorperazine-dmd.csv",
+    column="dmd_id"
+)
+
+    ## Severe Mental Illness - self-harm
+self_harm_aged10_snomed = codelist_from_csv(
+    "codelists/user-hjforbes-intentional-self-harm-aged10-years.csv",
+    column="code"
+)
+self_harm_aged15_snomed = codelist_from_csv(
+    "codelists/user-hjforbes-undetermined-intent-self-harm-aged15-years.csv",
+    column="code"
+)
+self_harm_aged10_icd10 = codelist_from_csv(
+    "codelists/user-kurttaylor-self_harm_intentional_10_years_icd10.csv",
+    column="code"
+)
+self_harm_aged15_icd10 = codelist_from_csv(
+    "codelists/user-kurttaylor-self_harm_undetermined_intent_15_years_icd10.csv",
     column="code"
 )

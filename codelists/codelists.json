@@ -635,6 +635,78 @@
       "url": "https://www.opencodelists.org/codelist/user/RochelleKnight/pregnancy_and_birth_snomed/1d46bcb3/",
       "downloaded_at": "2025-04-18 08:42:27.617984Z",
       "sha": "3dec4001ddd33ddaf16ce92ec450c2206880ec40"
+    },
+    "nhs-drug-refsets-c19astdrug_cod.csv": {
+      "id": "nhs-drug-refsets/c19astdrug_cod/20250912",
+      "url": "https://www.opencodelists.org/codelist/nhs-drug-refsets/c19astdrug_cod/20250912/",
+      "downloaded_at": "2025-11-21 19:12:29.597406Z",
+      "sha": "f0779793ba18d020174f167ee20e3e2d001c1350"
+    },
+    "opensafely-copd-medications-new-dmd.csv": {
+      "id": "opensafely/copd-medications-new-dmd/6eef4ab8",
+      "url": "https://www.opencodelists.org/codelist/opensafely/copd-medications-new-dmd/6eef4ab8/",
+      "downloaded_at": "2025-11-21 19:12:29.708586Z",
+      "sha": "5fcb17236089160df95036eec5818912f05744ac"
+    },
+    "user-hjforbes-severe-mental-illness.csv": {
+      "id": "user/hjforbes/severe-mental-illness/2dd5e1c0",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/severe-mental-illness/2dd5e1c0/",
+      "downloaded_at": "2025-11-21 17:17:59.032343Z",
+      "sha": "34556a280d7c7e90ce823c84930a5209f011ad0e"
+    },
+    "user-kurttaylor-bipolar_and_mood_disorders_icd10.csv": {
+      "id": "user/kurttaylor/bipolar_and_mood_disorders_icd10/66d4dd3a",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/bipolar_and_mood_disorders_icd10/66d4dd3a/",
+      "downloaded_at": "2025-11-21 17:17:59.115812Z",
+      "sha": "8aad947d0f8a0496d5996b7469641526e669c37c"
+    },
+    "user-kurttaylor-other-psychotic_disorders_icd10.csv": {
+      "id": "user/kurttaylor/other-psychotic_disorders_icd10/69879d30",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/other-psychotic_disorders_icd10/69879d30/",
+      "downloaded_at": "2025-11-21 17:17:59.204939Z",
+      "sha": "31f303bbe7399676e9b2c56fc93db68ca8be1366"
+    },
+    "user-kurttaylor-schizophrenia_icd10.csv": {
+      "id": "user/kurttaylor/schizophrenia_icd10/3768b6c6",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/schizophrenia_icd10/3768b6c6/",
+      "downloaded_at": "2025-11-21 17:17:59.296208Z",
+      "sha": "532c3cc57b47d2854a36bba221be2e3ed1372e0f"
+    },
+    "opensafely-second-generation-antipsychotics-excluding-long-acting-injections.csv": {
+      "id": "opensafely/second-generation-antipsychotics-excluding-long-acting-injections/6c7c3c11",
+      "url": "https://www.opencodelists.org/codelist/opensafely/second-generation-antipsychotics-excluding-long-acting-injections/6c7c3c11/",
+      "downloaded_at": "2025-11-21 19:12:30.062701Z",
+      "sha": "c145115e96476895687b9f617efe3efee9ac1251"
+    },
+    "opensafely-prochlorperazine-dmd.csv": {
+      "id": "opensafely/prochlorperazine-dmd/058baf47",
+      "url": "https://www.opencodelists.org/codelist/opensafely/prochlorperazine-dmd/058baf47/",
+      "downloaded_at": "2025-11-21 17:17:59.486907Z",
+      "sha": "0ab5bc20f5d21839341f4c4a43808ea60e8a1647"
+    },
+    "user-hjforbes-intentional-self-harm-aged10-years.csv": {
+      "id": "user/hjforbes/intentional-self-harm-aged10-years/18951e5c",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/intentional-self-harm-aged10-years/18951e5c/",
+      "downloaded_at": "2025-11-21 17:17:59.616434Z",
+      "sha": "1178e91131e6c33a05854dc0c80e5b1bc96d4604"
+    },
+    "user-hjforbes-undetermined-intent-self-harm-aged15-years.csv": {
+      "id": "user/hjforbes/undetermined-intent-self-harm-aged15-years/52d5ada5",
+      "url": "https://www.opencodelists.org/codelist/user/hjforbes/undetermined-intent-self-harm-aged15-years/52d5ada5/",
+      "downloaded_at": "2025-11-21 17:17:59.798185Z",
+      "sha": "5118f4e9a7a5d0564eb59f2c0493f6f1ec527cb1"
+    },
+    "user-kurttaylor-self_harm_intentional_10_years_icd10.csv": {
+      "id": "user/kurttaylor/self_harm_intentional_10_years_icd10/1e594391",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/self_harm_intentional_10_years_icd10/1e594391/",
+      "downloaded_at": "2025-11-21 17:48:51.724105Z",
+      "sha": "3b51af8285b5b0499a48c31f9dd96910007acc80"
+    },
+    "user-kurttaylor-self_harm_undetermined_intent_15_years_icd10.csv": {
+      "id": "user/kurttaylor/self_harm_undetermined_intent_15_years_icd10/0549d05c",
+      "url": "https://www.opencodelists.org/codelist/user/kurttaylor/self_harm_undetermined_intent_15_years_icd10/0549d05c/",
+      "downloaded_at": "2025-11-21 17:48:51.809326Z",
+      "sha": "63966cb50c187d90c928792cdc6aada73d665ee3"
     }
   }
 }
