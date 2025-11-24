@@ -63,7 +63,14 @@ def generate_variables(interval_start, interval_end):
     out_num_apc_unplanned = (
         apcs.where(
             (apcs.admission_date.is_on_or_between(interval_start, interval_end)) &
-            (apcs.admission_method.is_in("21", "22", "23", "24", "25", "2A", "2B", "2D", "28"))
+            (apcs.admission_method.is_in(["21", "22", "23", "24", "25", "2A", "2B", "2D", "28"]))
+        ).count_for_patient()
+    )
+    ### Planned hospital admission
+    out_num_apc_planned = (
+        apcs.where(
+            (apcs.admission_date.is_on_or_between(interval_start, interval_end)) &
+            (apcs.admission_method.is_in(["11", "12", "13", "81", "2C", "82", "83", "31", "32"]))
         ).count_for_patient()
     )
 
@@ -113,6 +120,25 @@ def generate_variables(interval_start, interval_end):
         angina_icd10, interval_start, interval_end
     ).count_for_patient()
 
+    ### Hospital admissions  - all ACSC conditions defined above
+    out_num_acsc_apc = ever_matching_event_apc_between(
+        copd_icd10 + asthma_icd10 + hypertension_icd10 + diabetes_icd10 + angina_icd10, interval_start, interval_end
+    ).count_for_patient()
+
+    ### Unplanned hospital admissions - all ACSC conditions defined above
+    out_num_acsc_apc_unplanned = ever_matching_event_apc_between(
+        copd_icd10 + asthma_icd10 + hypertension_icd10 + diabetes_icd10 + angina_icd10, interval_start, interval_end
+    ).where(apcs.admission_method.is_in(["21", "22", "23", "24", "25", "2A", "2B", "2D", "28"])).count_for_patient()
+    ### Planned hospital admissions - all ACSC conditions defined above
+    out_num_acsc_apc_planned = ever_matching_event_apc_between(
+        copd_icd10 + asthma_icd10 + hypertension_icd10 + diabetes_icd10 + angina_icd10, interval_start, interval_end
+    ).where(apcs.admission_method.is_in(["11", "12", "13", "81", "2C", "82", "83", "31", "32"])).count_for_patient()
+
+    ### A&E attendances - all ACSC conditions defined above
+    out_num_acsc_ec = ever_matching_event_ec_snomed_between(
+        multimorbidity_dict["MS_COPD_snomed"] + asthma_snomed + hypertension_snomed + diabetes_snomed + angina_snomed, interval_start, interval_end
+    ).count_for_patient()
+
     dynamic_variables = dict(
         inex_bin_reg_long = inex_bin_reg_long,
         exp_num_consrate = exp_num_consrate,
@@ -122,6 +148,11 @@ def generate_variables(interval_start, interval_end):
         out_num_ec =out_num_ec,
         out_num_apc =out_num_apc,
         out_num_apc_unplanned = out_num_apc_unplanned,
+        out_num_apc_planned = out_num_apc_planned,
+        out_num_acsc_apc = out_num_acsc_apc,                     # ACSC (APC)
+        out_num_acsc_apc_unplanned = out_num_acsc_apc_unplanned, # ACSC unplanned (APC)
+        out_num_acsc_apc_planned = out_num_acsc_apc_planned,     # ACSC planned (APC)
+        out_num_acsc_ec = out_num_acsc_ec,                       # ACSC (EC)
         out_num_copd_ec = out_num_copd_ec,                   # COPD (EC)
         out_num_copd_apc = out_num_copd_apc,                 # COPD (APC)
         out_num_asthma_ec = out_num_asthma_ec,               # Asthma (EC)

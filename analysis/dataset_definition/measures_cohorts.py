@@ -170,6 +170,8 @@ if practice_measures:
     # =========================
     measures_apc = {
         "out_num_apc_w": out_num_apc,
+        "out_num_apc_unplanned_w": out_num_apc_unplanned,
+        "out_num_apc_planned_w": out_num_apc_planned,
     }
 
     # =========================
@@ -181,6 +183,7 @@ if practice_measures:
         "out_num_hypertension_ec_w": out_num_hypertension_ec,
         "out_num_diabetes_ec_w":     out_num_diabetes_ec,
         "out_num_angina_ec_w":       out_num_angina_ec,
+        "out_num_acsc_ec_w":         out_num_acsc_ec,
     }
 
     # =========================
@@ -192,6 +195,9 @@ if practice_measures:
         "out_num_hypertension_apc_w": out_num_hypertension_apc,
         "out_num_diabetes_apc_w":     out_num_diabetes_apc,
         "out_num_angina_apc_w":       out_num_angina_apc,
+        "out_num_acsc_apc_w":         out_num_acsc_apc,
+        "out_num_acsc_apc_unplanned_w": out_num_acsc_apc_unplanned,
+        "out_num_acsc_apc_planned_w": out_num_acsc_apc_planned,
     }
 
     # ---------------------- Cross-Sectional Measures ----------------------
@@ -270,7 +276,7 @@ if practice_measures:
     # ----------------------
     # Longitudinal Measures
     # ----------------------
-    if Long:
+    if Long_all:
         measures.define_defaults(
             denominator= inex_bin_reg_cs & inex_bin_alive,
             group_by={
@@ -340,6 +346,169 @@ if practice_measures:
                     name = measure,
                     numerator = measures_apc_acsc[measure]
                 )
+
+    if Long_sub_asthma:
+        measures.define_defaults(
+            denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_asthma,
+            group_by={
+        "practice_pseudo_id": practice_id
+            },
+            intervals = weeks(20).starting_on(start_cohort),
+        )
+        if ec_all:
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure + "sub_asthma",
+                    numerator = measures_ec[measure]
+                )
+        if apc_all:
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure + "sub_asthma",
+                    numerator = measures_apc[measure]
+                )       
+        if ec_ACSCs:
+            for measure in measures_ec_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_asthma",
+                    numerator = measures_ec_acsc[measure]
+                )
+        if apc_ACSCs:
+            for measure in measures_apc_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_asthma",
+                    numerator = measures_apc_acsc[measure]
+                )
+    if Long_sub_copd:
+        measures.define_defaults(
+            denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_copd,
+            group_by={
+        "practice_pseudo_id": practice_id
+            },
+            intervals = weeks(20).starting_on(start_cohort),
+        )
+        if ec_all:
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure + "sub_copd",
+                    numerator = measures_ec[measure]
+                )
+        if apc_all:
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure + "sub_copd",
+                    numerator = measures_apc[measure]
+                )       
+        if ec_ACSCs:
+            for measure in measures_ec_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_copd",
+                    numerator = measures_ec_acsc[measure]
+                )
+        if apc_ACSCs:
+            for measure in measures_apc_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_copd",
+                    numerator = measures_apc_acsc[measure]
+                )
+    
+    if Long_sub_hypertension:
+        measures.define_defaults(
+            denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_hypertension,
+            group_by={
+        "practice_pseudo_id": practice_id
+            },
+            intervals = weeks(20).starting_on(start_cohort),
+        )
+        if ec_all:
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure + "sub_hypertension",
+                    numerator = measures_ec[measure]
+                )
+        if apc_all:
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure + "sub_hypertension",
+                    numerator = measures_apc[measure]
+                )       
+        if ec_ACSCs:
+            for measure in measures_ec_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_hypertension",
+                    numerator = measures_ec_acsc[measure]
+                )
+        if apc_ACSCs:
+            for measure in measures_apc_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_hypertension",
+                    numerator = measures_apc_acsc[measure]
+                )
+    if Long_sub_diabetes:
+        measures.define_defaults(
+            denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_diabetes,
+            group_by={
+        "practice_pseudo_id": practice_id
+            },
+            intervals = weeks(20).starting_on(start_cohort),
+        )
+        if ec_all:
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure + "sub_diabetes",
+                    numerator = measures_ec[measure]
+                )
+        if apc_all:
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure + "sub_diabetes",
+                    numerator = measures_apc[measure]
+                )       
+        if ec_ACSCs:
+            for measure in measures_ec_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_diabetes",
+                    numerator = measures_ec_acsc[measure]
+                )
+        if apc_ACSCs:
+            for measure in measures_apc_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_diabetes",
+                    numerator = measures_apc_acsc[measure]
+                )
+    if Long_sub_sev_mental_ill:
+        measures.define_defaults(
+            denominator= inex_bin_reg_cs & inex_bin_alive & inex_bin_sev_mental_ill,
+            group_by={
+        "practice_pseudo_id": practice_id
+            },
+            intervals = weeks(20).starting_on(start_cohort),
+        )
+        if ec_all:
+            for measure in measures_ec.keys():
+                measures.define_measure(
+                    name = measure + "sub_sev_mental_ill",
+                    numerator = measures_ec[measure]
+                )
+        if apc_all:
+            for measure in measures_apc.keys():
+                measures.define_measure(
+                    name = measure + "sub_sev_mental_ill",
+                    numerator = measures_apc[measure]
+                )       
+        if ec_ACSCs:
+            for measure in measures_ec_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_sev_mental_ill",
+                    numerator = measures_ec_acsc[measure]
+                )
+        if apc_ACSCs:
+            for measure in measures_apc_acsc.keys():
+                measures.define_measure(
+                    name = measure + "sub_sev_mental_ill",
+                    numerator = measures_apc_acsc[measure]
+                )
+
 if patient_measures:
 # create dataset for different cohorts based on different start_cohort date
 

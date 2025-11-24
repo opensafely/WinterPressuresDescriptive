@@ -59,7 +59,7 @@ def generate_dataset_variables(cohort_start):
     ### Had COPD ever recorded prior to the cohort start date
     inex_bin_copd = (
         (last_matching_event_clinical_snomed_before(
-            copd_snomed, cohort_start
+            multimorbidity_dict["MS_COPD_snomed"], cohort_start
         ).exists_for_patient()) |
         (last_matching_event_apc_before(
             copd_icd10, cohort_start
@@ -72,7 +72,7 @@ def generate_dataset_variables(cohort_start):
     ### Had hypertension ever recorded prior to the cohort start date
     inex_bin_hypertension = (
         (last_matching_event_clinical_ctv3_before(
-            hypertension_ctv3, cohort_start
+            multimorbidity_dict["MS_Hypertension_ctv3"], cohort_start
         ).exists_for_patient()) |
         (last_matching_event_apc_before(
             hypertension_icd10, cohort_start
