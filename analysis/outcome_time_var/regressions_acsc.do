@@ -81,7 +81,7 @@ frame create results_acsc_`1' str10 cohort str4 hosp_type str15 acscs 			///
 							irr_exp se_exp p_exp lci_exp uci_exp 				///
 							irr_cons se_cons p_cons lci_cons uci_cons  			///
 							or_cons_inf se_cons_inf p_cons_inf lci_cons_inf uci_cons_inf /// 
-							v_random_int alpha lci_alpha uci_alpha 						///
+							variance_ri alpha lci_alpha uci_alpha 						///
 							str50 lrtest_comparing chi2_lrtest p_lrtest 				///
 							ll p_ll aic bic psuedo_r2 									///
 							error

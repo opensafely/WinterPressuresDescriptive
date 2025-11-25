@@ -694,6 +694,26 @@ for (cohort in cohorts_all){
   )
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, merged_results) 
+
+#Add action creating the forest plots  
+  forest_plots <- c(
+    comment(glue("Create the forest plots")),
+    action(
+      name = glue("generate_forest_plots"),
+      run = glue("r:latest analysis/outcome_time_var/plots.R"),
+      needs = list(
+        glue("generate_merged_summary")
+      ),
+      moderately_sensitive = list(
+        fp_apc_m1_svg = glue("output/regressions/fp_apc_m1.svg"),
+        fp_apc_m2_svg = glue("output/regressions/fp_apc_m2.svg"),
+        fp_ec_m1_svg = glue("output/regressions/fp_ec_m1.svg"),
+        fp_ec_m2_svg = glue("output/regressions/fp_ec_m2.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, forest_plots)   
   
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
