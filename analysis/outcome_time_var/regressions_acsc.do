@@ -64,6 +64,13 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	
 	gen log_dnm = log(dnm)
 	
+//Make every exposure variable scale from 0 - 100
+local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 imd5 ast dbts hypt obs urb1 urb5 female smoker
+
+	foreach char in `exp_var_list'{
+		replace exp_prop_`char' = exp_prop_`char'*100
+	}
+	
 //Setting as a panel variable
 	xtset practice_pseudo_id week_number
 		
@@ -81,7 +88,7 @@ frame create results_acsc_`1' str10 cohort str4 hosp_type str15 acscs 			///
 							irr_exp se_exp p_exp lci_exp uci_exp 				///
 							irr_cons se_cons p_cons lci_cons uci_cons  			///
 							or_cons_inf se_cons_inf p_cons_inf lci_cons_inf uci_cons_inf /// 
-							v_random_int alpha lci_alpha uci_alpha 						///
+							variance_ri alpha lci_alpha uci_alpha 						///
 							str50 lrtest_comparing chi2_lrtest p_lrtest 				///
 							ll p_ll aic bic psuedo_r2 									///
 							error
@@ -130,7 +137,7 @@ local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 
 			local stub: subinstr local stub "_w" "", all	//These will be used to identify which outcome & exposure
 			local acsc: subinstr local stub "_`hosp'" "", all 	//each model represents
 			
-			cap qui `regression' `var' exp_prop_`char', offset(log_dnm) irr `reg_opts'
+			cap `regression' `var' exp_prop_`char', offset(log_dnm) irr `reg_opts'
 				if _rc != 0  {
 					di _n "`regression' regression error: `var' --> exp_prop_`char'"
 					di "STATA error code: " _rc

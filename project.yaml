@@ -1714,3 +1714,16 @@ actions:
         merged_results_all_cond_csv: output/regressions/results_all_cond.csv
         merged_results_acsc_csv: output/regressions/results_acsc.csv
 
+  ## Create the forest plots 
+
+  generate_forest_plots:
+    run: r:latest analysis/outcome_time_var/plots.R
+    needs:
+    - generate_merged_summary
+    outputs:
+      moderately_sensitive:
+        fp_apc_m1_svg: output/regressions/fp_apc_m1.svg
+        fp_apc_m2_svg: output/regressions/fp_apc_m2.svg
+        fp_ec_m1_svg: output/regressions/fp_ec_m1.svg
+        fp_ec_m2_svg: output/regressions/fp_ec_m2.svg
+
