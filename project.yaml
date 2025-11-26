@@ -1727,3 +1727,17 @@ actions:
         fp_ec_m1_svg: output/regressions/fp_ec_m1.svg
         fp_ec_m2_svg: output/regressions/fp_ec_m2.svg
 
+  ## Create correlation plots checking for a linear exp & out relationship 
+
+  linear_check_corr_plots:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do
+    needs:
+    - generate_merged_precovid
+    - generate_merged_postcovid1
+    - generate_merged_postcovid2
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        apc_svg: output/regressions/exp_apc.svg
+        ec_svg: output/regressions/exp_ec.svg
+

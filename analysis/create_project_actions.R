@@ -713,7 +713,25 @@ for (cohort in cohorts_all){
     )
   )
   #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, forest_plots)   
+  actions_list <- c(actions_list, forest_plots)  
+  
+#Add action creating the plots checking for a linear relationship bw each exp and the outcome  
+  linear_check_corr_plots <- c(
+    comment(glue("Create correlation plots checking for a linear exp & out relationship")),
+    action(
+      name = glue("linear_check_corr_plots"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/exp_out_plots.do"),
+      needs = list(
+        glue("generate_linear_check_corr_plots")
+      ),
+      moderately_sensitive = list(
+        apc_svg = glue("output/regressions/exp_apc.svg"),
+        ec_svg = glue("output/regressions/exp_ec.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, linear_check_corr_plots)     
   
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
