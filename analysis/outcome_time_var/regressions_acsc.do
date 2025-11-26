@@ -64,6 +64,13 @@ import delimited using ../workspace/output/analytic_data_long_`1'.csv, varnames(
 	
 	gen log_dnm = log(dnm)
 	
+//Make every exposure variable scale from 0 - 100
+local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 imd5 ast dbts hypt obs urb1 urb5 female smoker
+
+	foreach char in `exp_var_list'{
+		replace exp_prop_`char' = exp_prop_`char'*100
+	}
+	
 //Setting as a panel variable
 	xtset practice_pseudo_id week_number
 		
