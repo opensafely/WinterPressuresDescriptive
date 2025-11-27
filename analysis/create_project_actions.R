@@ -722,7 +722,10 @@ for (cohort in cohorts_all){
       name = glue("linear_check_corr_plots"),
       run = glue("stata-mp:latest analysis/outcome_time_var/exp_out_plots.do"),
       needs = list(
-        glue("generate_linear_check_corr_plots")
+        glue("generate_merged_precovid"),
+        glue("generate_merged_postcovid1"),
+        glue("generate_merged_postcovid2"),
+        glue("generate_merged_postcovid3")
       ),
       moderately_sensitive = list(
         apc_svg = glue("output/regressions/exp_apc.svg"),

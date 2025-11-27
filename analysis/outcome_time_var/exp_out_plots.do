@@ -76,8 +76,8 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3 {
 		foreach char in `exp_var_list' {
 			local `hosp'_`cohort'_graphs ``hosp'_`cohort'_graphs' `hosp'_`char'_`cohort'
 			
-			twoway scatter prop_`hosp'_w exp_prop_`char' || 						///
-				   lowess prop_`hosp'_w exp_prop_`char' if cohort == "`cohort'", 	///
+			twoway scatter prop_`hosp'_w exp_prop_`char' if cohort == "`cohort'" ||		///
+				   lowess prop_`hosp'_w exp_prop_`char' if cohort == "`cohort'", 		///
 				   aspect(1) scale(0.8) name("`hosp'_`char'_`cohort'", replace)
 					
 		}
@@ -87,17 +87,17 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3 {
 
 //Combining each column, then combining alltogether 
 	//APC 
-		grc1leg2 `apc_precovid_graphs', ///
+		grc1leg `apc_precovid_graphs', ///
 			row(20) ysize(20) xsize(1) title("APC precovid", size(small)) name("apc_precovid", replace)
-		grc1leg2 `apc_postcovid1_graphs', ///
+		grc1leg `apc_postcovid1_graphs', ///
 			row(20) ysize(20) xsize(1) title("APC postcovid1", size(small)) name("apc_postcovid1", replace)
-		grc1leg2 `apc_postcovid2_graphs', ///
+		grc1leg `apc_postcovid2_graphs', ///
 			row(20) ysize(20) xsize(1) title("APC postcovid2", size(small)) name("apc_postcovid2", replace)
-		grc1leg2 `apc_postcovid3_graphs', ///
+		grc1leg `apc_postcovid3_graphs', ///
 			row(20) ysize(20) xsize(1) title("APC postcovid3", size(small)) name("apc_postcovid3", replace)
 		
-		grc1leg2 apc_precovid apc_postcovid1 apc_postcovid2 apc_postcovid3, ///
-			row(20) col(4) imargin(zero) ysize(21) xsize(4.5)  ///
+		grc1leg apc_precovid apc_postcovid1 apc_postcovid2 apc_postcovid3, ///
+			row(20) col(4) imargin(zero) ysize(6.6) xsize(1.5)  ///
 			name("exp_apc", replace)
 			
 	//Saving	
@@ -105,24 +105,22 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3 {
 	
 	
 	//EC 
-		grc1leg2 `ec_precovid_graphs', ///
+		grc1leg `ec_precovid_graphs', ///
 			row(20) ysize(20) xsize(1) title("EC precovid", size(small)) name("ec_precovid", replace)
-		grc1leg2 `ec_postcovid1_graphs', ///
+		grc1leg `ec_postcovid1_graphs', ///
 			row(20) ysize(20) xsize(1) title("EC postcovid1", size(small)) name("ec_postcovid1", replace)
-		grc1leg2 `ec_postcovid2_graphs', ///
+		grc1leg `ec_postcovid2_graphs', ///
 			row(20) ysize(20) xsize(1) title("EC postcovid2", size(small)) name("ec_postcovid2", replace)
-		grc1leg2 `ec_postcovid3_graphs', ///
+		grc1leg `ec_postcovid3_graphs', ///
 			row(20) ysize(20) xsize(1) title("EC postcovid3", size(small)) name("ec_postcovid3", replace)
 		
-		grc1leg2 ec_precovid ec_postcovid1 ec_postcovid2 ec_postcovid3, ///
-			row(20) col(4) imargin(zero) ysize(21) xsize(4.5)  ///
+		grc1leg ec_precovid ec_postcovid1 ec_postcovid2 ec_postcovid3, ///
+			row(20) col(4) imargin(zero) ysize(6.6) xsize(1.5)  ///
 			name("exp_ec", replace)
 	
 	//Saving
 		graph export ../workspace/output/regressions/exp_ec.svg, as(svg) name("exp_ec", replace)
 	
-
-
 
 
 
