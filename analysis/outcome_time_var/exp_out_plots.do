@@ -97,11 +97,13 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3 {
 			row(20) ysize(20) xsize(1) title("APC postcovid3", size(small)) name("apc_postcovid3", replace)
 		
 		grc1leg apc_precovid apc_postcovid1 apc_postcovid2 apc_postcovid3, ///
-			row(20) col(4) imargin(zero) ysize(6.6) xsize(1.5)  ///
+			row(20) col(4) imargin(zero) ysize(21) xsize(4.5)  ///
 			name("exp_apc", replace)
 			
 	//Saving	
-		graph export ../workspace/output/regressions/exp_apc.svg, as(svg) name("exp_apc", replace)
+		graph export ../workspace/output/regressions/exp_apc.svg, ///
+			as(svg) width(100) height(500) ///
+			name("exp_apc", replace)
 	
 	
 	//EC 
@@ -115,11 +117,13 @@ foreach cohort in precovid postcovid1 postcovid2 postcovid3 {
 			row(20) ysize(20) xsize(1) title("EC postcovid3", size(small)) name("ec_postcovid3", replace)
 		
 		grc1leg ec_precovid ec_postcovid1 ec_postcovid2 ec_postcovid3, ///
-			row(20) col(4) imargin(zero) ysize(6.6) xsize(1.5)  ///
+			row(20) col(4) imargin(zero) ysize(21) xsize(4.5)  ///
 			name("exp_ec", replace)
 	
 	//Saving
-		graph export ../workspace/output/regressions/exp_ec.svg, as(svg) name("exp_ec", replace)
+		graph export ../workspace/output/regressions/exp_ec.svg, ///
+			as(svg) width(100) height(500) ///
+			name("exp_ec", replace)
 	
 
 
