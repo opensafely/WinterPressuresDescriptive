@@ -98,7 +98,7 @@ make_text_plot <- function(data, cohort_name, outcome_name, model_name) {
     scale_x_continuous(limits = c(1, 1.1)) +
     geom_text(aes(x=1, label = irr_lab), hjust = 0, size = 2) +
     geom_text(aes(x=1.04, label = var_lab), hjust = 0, size = 2, color = "blue") +
-    labs(title = "IRR (95% CI); Lower and upper bound for random intercepts (blue)")
+    labs(title = "IRR (95% CI); Lower & upper random-intercept bounds (blue)")
   
   return(p)
 }
