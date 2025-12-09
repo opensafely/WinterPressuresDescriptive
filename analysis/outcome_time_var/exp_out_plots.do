@@ -97,33 +97,6 @@ local exp_var_list u5y 65_74 75_79 80p white asian black other mixed imd1 imd5 a
 
 	
 	
-
-	
-//-----------------------------------------------	
-//		grc1leg2 `apc_precovid_graphs' `ec_precovid_graphs', row(20) ysize(20) xsize(1) title("APC precovid", size(small)) name("precovid", replace)
-
-//		graph export output/regressions/exp_apc.svg, as(svg) width(2000) height(10000) name("precovid", replace) replace
-	
-
-
-//local 1 precovid
-//local exp_var_list u5y 65_74 75_79 80_84 85p white asian black other mixed imd1 imd5 ast dbts hypt obs urb1 urb5 female smoker
-//	foreach hosp in apc ec {
-//		local `hosp'_`1'_graphs ""
-//		
-//		foreach char in `exp_var_list' {
-//			local `hosp'_`1'_graphs ``hosp'_`1'_graphs' `hosp'_`char'_`1'
-//			
-//		
-//		}
-//	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
