@@ -697,10 +697,14 @@ for (cohort in cohorts_all){
         glue("generate_regressions_acsc_postcovid3")
       ),
       moderately_sensitive = list(
-        fp_apc_m1_svg = glue("output/regressions/fp_apc_m1.svg"),
-        fp_apc_m2_svg = glue("output/regressions/fp_apc_m2.svg"),
-        fp_ec_m1_svg = glue("output/regressions/fp_ec_m1.svg"),
-        fp_ec_m2_svg = glue("output/regressions/fp_ec_m2.svg")
+        fp_apc_m1_adj_svg = glue("output/regressions/fp_apc_m1_adjusted.svg"),
+        fp_apc_m2_adj_svg = glue("output/regressions/fp_apc_m2_adjusted.svg"),
+        fp_ec_m1_adj_svg = glue("output/regressions/fp_ec_m1_adjusted.svg"),
+        fp_ec_m2_adj_svg = glue("output/regressions/fp_ec_m2_adjusted.svg"),
+        fp_apc_m1_unadj_svg = glue("output/regressions/fp_apc_m1_unadjusted.svg"),
+        fp_apc_m2_unadj_svg = glue("output/regressions/fp_apc_m2_unadjusted.svg"),
+        fp_ec_m1_unadj_svg = glue("output/regressions/fp_ec_m1_unadjusted.svg"),
+        fp_ec_m2_unadj_svg = glue("output/regressions/fp_ec_m2_unadjusted.svg"),
       )
     )
   )

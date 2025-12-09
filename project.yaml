@@ -1755,10 +1755,14 @@ actions:
     - generate_regressions_acsc_postcovid3
     outputs:
       moderately_sensitive:
-        fp_apc_m1_svg: output/regressions/fp_apc_m1.svg
-        fp_apc_m2_svg: output/regressions/fp_apc_m2.svg
-        fp_ec_m1_svg: output/regressions/fp_ec_m1.svg
-        fp_ec_m2_svg: output/regressions/fp_ec_m2.svg
+        fp_apc_m1_adj_svg: output/regressions/fp_apc_m1_adjusted.svg
+        fp_apc_m2_adj_svg: output/regressions/fp_apc_m2_adjusted.svg
+        fp_ec_m1_adj_svg: output/regressions/fp_ec_m1_adjusted.svg
+        fp_ec_m2_adj_svg: output/regressions/fp_ec_m2_adjusted.svg
+        fp_apc_m1_unadj_svg: output/regressions/fp_apc_m1_unadjusted.svg
+        fp_apc_m2_unadj_svg: output/regressions/fp_apc_m2_unadjusted.svg
+        fp_ec_m1_unadj_svg: output/regressions/fp_ec_m1_unadjusted.svg
+        fp_ec_m2_unadj_svg: output/regressions/fp_ec_m2_unadjusted.svg
 
   ## Correlation plots checking a linear exp & out relationship, precovid 
 
