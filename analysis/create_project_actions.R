@@ -665,7 +665,7 @@ for (cohort in cohorts_all){
     comment(glue("Runs poisson, nb, zinb regressions for ACSCs, cohort: {cohort}")),
     action(
       name = glue("generate_regressions_acsc_{cohort}"),
-      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_acsc.do {cohort}"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/reg_acsc.do {cohort}"),
       needs = list(glue("generate_merged_{cohort}")), 
       moderately_sensitive = list(
         results_acsc_csv = glue("output/regressions/results_acsc_{cohort}.csv")

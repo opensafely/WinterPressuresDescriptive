@@ -279,9 +279,6 @@ local exp_var_list u5y 65_74 75_79 80p white asian black other mixed imd1 imd5 a
 		
 		
 //Final bits of data management to make forest plots nicer 
-foreach covariate in adjusted unadjusted {
-foreach cohort in precovid postcovid1 postcovid2 postcovid3{
-import delimited "output\regressions\results_all_cond_`covariate'_`cohort'.csv", clear 
 	gen exp_var_long = exp_var
 		replace exp_var_long = "Ethnicity: Asian" if exp_var == "asian"
 		replace exp_var_long = "Ethnicity: Black" if exp_var == "black"
@@ -323,10 +320,7 @@ import delimited "output\regressions\results_all_cond_`covariate'_`cohort'.csv",
 		replace exp_var_num = 17 if exp_var == "hypt"
 		replace exp_var_num = 18 if exp_var == "obs"
 		replace exp_var_num = 19 if exp_var == "smoker"		
-		
-export delimited using "output\regressions\results_all_cond_`covariate'_`cohort'.csv", replace
-}
-}	
+	
 	
 	
 //Exporting the frame as a .csv 
