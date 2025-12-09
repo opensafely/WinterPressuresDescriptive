@@ -1739,7 +1739,7 @@ actions:
   ## Create the forest plots 
 
   generate_forest_plots:
-    run: r:latest analysis/outcome_time_var/plots.R
+    run: r:latest analysis/outcome_time_var/all_cond_forest_plots.R
     needs:
     - generate_reg_all_cond_unadjusted_precovid
     - generate_reg_all_cond_unadjusted_postcovid1

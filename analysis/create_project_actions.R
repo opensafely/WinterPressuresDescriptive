@@ -681,7 +681,7 @@ for (cohort in cohorts_all){
     comment(glue("Create the forest plots")),
     action(
       name = glue("generate_forest_plots"),
-      run = glue("r:latest analysis/outcome_time_var/plots.R"),
+      run = glue("r:latest analysis/outcome_time_var/all_cond_forest_plots.R"),
       needs = list(
         glue("generate_reg_all_cond_unadjusted_precovid"),
         glue("generate_reg_all_cond_unadjusted_postcovid1"),
@@ -704,7 +704,7 @@ for (cohort in cohorts_all){
         fp_apc_m1_unadj_svg = glue("output/regressions/fp_apc_m1_unadjusted.svg"),
         fp_apc_m2_unadj_svg = glue("output/regressions/fp_apc_m2_unadjusted.svg"),
         fp_ec_m1_unadj_svg = glue("output/regressions/fp_ec_m1_unadjusted.svg"),
-        fp_ec_m2_unadj_svg = glue("output/regressions/fp_ec_m2_unadjusted.svg"),
+        fp_ec_m2_unadj_svg = glue("output/regressions/fp_ec_m2_unadjusted.svg")
       )
     )
   )
