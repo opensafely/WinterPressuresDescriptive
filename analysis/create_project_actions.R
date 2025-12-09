@@ -48,6 +48,9 @@ long_args_all <- c(
   "apc_ACSCs"
 )
 
+#Define regression categories
+covariates_all <- c("unadjusted", "adjusted")
+
 # Create generic action function -----------------------------------------------
 
 action <- function(
@@ -638,20 +641,22 @@ for (cohort in cohorts_all){
   actions_list <- c(actions_list, outcome_summary) 
   
 #Add action to run the RI Poisson/NB regressions on APC/EC all cond
-for (cohort in cohorts_all){
-  regress_all_cond <- c(
-    comment(glue("Runs RI poisson & nb regressions for APC/EC, cohort: {cohort}")),
-    action(
-      name = glue("generate_regressions_all_cond_{cohort}"),
-      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do {cohort}"),
-      needs = list(glue("generate_merged_{cohort}")), 
-      moderately_sensitive = list(
-        results_all_cond_csv = glue("output/regressions/results_all_cond_{cohort}.csv")
+for (covariate in covariates_all) {
+  for (cohort in cohorts_all){
+    regress_all_cond <- c(
+      comment(glue("Runs {covariate} RI poisson & nb regs for APC/EC, {cohort}")),
+      action(
+        name = glue("generate_reg_all_cond_{covariate}_{cohort}"),
+        run = glue("stata-mp:latest analysis/outcome_time_var/reg_all_cond.do {cohort} {covariate}"),
+        needs = list(glue("generate_merged_{cohort}")), 
+        moderately_sensitive = list(
+          results_all_cond_csv = glue("output/regressions/results_all_cond_{covariate}_{cohort}.csv")
+        )
       )
     )
-  )
-  #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, regress_all_cond)
+    #Appending action to the list of all actions for this .yaml 
+    actions_list <- c(actions_list, regress_all_cond)
+  }
 }    
 
 #Add action to run the RI Poisson/NB regressions on APC/EC ACSC
@@ -660,7 +665,7 @@ for (cohort in cohorts_all){
     comment(glue("Runs poisson, nb, zinb regressions for ACSCs, cohort: {cohort}")),
     action(
       name = glue("generate_regressions_acsc_{cohort}"),
-      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_acsc.do {cohort}"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/reg_acsc.do {cohort}"),
       needs = list(glue("generate_merged_{cohort}")), 
       moderately_sensitive = list(
         results_acsc_csv = glue("output/regressions/results_acsc_{cohort}.csv")
@@ -670,50 +675,60 @@ for (cohort in cohorts_all){
   #Appending action to the list of all actions for this .yaml 
   actions_list <- c(actions_list, regress_acsc)
 } 
-#Add action combining the regression .csvs across cohorts (keeping acscs/all cond separate) 
-  merged_results <- c(
-    comment(glue("Generate a merged regression results table")),
-    action(
-      name = glue("generate_merged_summary"),
-      run = glue("stata-mp:latest analysis/outcome_time_var/regressions_merge.do"),
-      needs = list(
-        glue("generate_regressions_all_cond_precovid"),
-        glue("generate_regressions_all_cond_postcovid1"),
-        glue("generate_regressions_all_cond_postcovid2"),
-        glue("generate_regressions_all_cond_postcovid3"),
-        glue("generate_regressions_acsc_precovid"),
-        glue("generate_regressions_acsc_postcovid1"),
-        glue("generate_regressions_acsc_postcovid2"),
-        glue("generate_regressions_acsc_postcovid3")
-      ),
-      moderately_sensitive = list(
-        merged_results_all_cond_csv = glue("output/regressions/results_all_cond.csv"),
-        merged_results_acsc_csv = glue("output/regressions/results_acsc.csv")
-      )
-    )
-  )
-  #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, merged_results) 
 
 #Add action creating the forest plots  
   forest_plots <- c(
     comment(glue("Create the forest plots")),
     action(
       name = glue("generate_forest_plots"),
-      run = glue("r:latest analysis/outcome_time_var/plots.R"),
+      run = glue("r:latest analysis/outcome_time_var/all_cond_forest_plots.R"),
       needs = list(
-        glue("generate_merged_summary")
+        glue("generate_reg_all_cond_unadjusted_precovid"),
+        glue("generate_reg_all_cond_unadjusted_postcovid1"),
+        glue("generate_reg_all_cond_unadjusted_postcovid2"),
+        glue("generate_reg_all_cond_unadjusted_postcovid3"),
+        glue("generate_reg_all_cond_adjusted_precovid"),
+        glue("generate_reg_all_cond_adjusted_postcovid1"),
+        glue("generate_reg_all_cond_adjusted_postcovid2"),
+        glue("generate_reg_all_cond_adjusted_postcovid3"),
+        glue("generate_regressions_acsc_precovid"),
+        glue("generate_regressions_acsc_postcovid1"),
+        glue("generate_regressions_acsc_postcovid2"),
+        glue("generate_regressions_acsc_postcovid3")
       ),
       moderately_sensitive = list(
-        fp_apc_m1_svg = glue("output/regressions/fp_apc_m1.svg"),
-        fp_apc_m2_svg = glue("output/regressions/fp_apc_m2.svg"),
-        fp_ec_m1_svg = glue("output/regressions/fp_ec_m1.svg"),
-        fp_ec_m2_svg = glue("output/regressions/fp_ec_m2.svg")
+        fp_apc_m1_adj_svg = glue("output/regressions/fp_apc_m1_adjusted.svg"),
+        fp_apc_m2_adj_svg = glue("output/regressions/fp_apc_m2_adjusted.svg"),
+        fp_ec_m1_adj_svg = glue("output/regressions/fp_ec_m1_adjusted.svg"),
+        fp_ec_m2_adj_svg = glue("output/regressions/fp_ec_m2_adjusted.svg"),
+        fp_apc_m1_unadj_svg = glue("output/regressions/fp_apc_m1_unadjusted.svg"),
+        fp_apc_m2_unadj_svg = glue("output/regressions/fp_apc_m2_unadjusted.svg"),
+        fp_ec_m1_unadj_svg = glue("output/regressions/fp_ec_m1_unadjusted.svg"),
+        fp_ec_m2_unadj_svg = glue("output/regressions/fp_ec_m2_unadjusted.svg")
       )
     )
   )
   #Appending action to the list of all actions for this .yaml 
-  actions_list <- c(actions_list, forest_plots)   
+  actions_list <- c(actions_list, forest_plots)  
+  
+#Add action creating the plots checking for a linear relationship bw each exp and the outcome  
+for (cohort in cohorts_all){
+  linear_check_corr_plots <- c(
+    comment(glue("Correlation plots checking a linear exp & out relationship, {cohort}")),
+    action(
+      name = glue("linear_check_corr_plots_{cohort}"),
+      run = glue("stata-mp:latest analysis/outcome_time_var/exp_out_plots.do {cohort}"),
+      needs = list(
+        glue("generate_merged_{cohort}")
+      ),
+      moderately_sensitive = list(
+        graph1 = glue("output/regressions/exp_all_{cohort}.svg")
+      )
+    )
+  )
+  #Appending action to the list of all actions for this .yaml 
+  actions_list <- c(actions_list, linear_check_corr_plots)     
+}
   
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
