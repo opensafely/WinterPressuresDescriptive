@@ -163,7 +163,7 @@ local exp_var_list u5y 65_74 75_79 80p white asian black other mixed imd1 imd5 a
 						est store `est_name'_`stub'_`char'_`cov'
 						local var_count: word count `covariate_list' //counts how many covariates 
 							local i = `var_count' + 3			//Matrix column position for od (overdispersion)
-							local j = `var_count' + 1			//Matrix column position for constant 
+							local j = `var_count' + 2			//Matrix column position for constant 
 							local k = `var_count' + 3 + `a' 	//Matrix column position for random-intercept variance 
 
 						matrix b = r(table) 	//Naming regression output matrix
