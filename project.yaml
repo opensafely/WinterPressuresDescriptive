@@ -579,11 +579,11 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_multimorbidity_postcovid3.csv
 
-  ## Generate measures for vax_covid (longitudinal) - postcovid1 - main 
+  ## Generate measures for vax_covid (longitudinal) - postcovid1 
 
-  generate_measures_postcovid1_2022-10-01-main-vax_covid:
+  generate_measures_postcovid1_2022-10-01-vax_covid:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid1_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid1.csv
         --
         --practice_measures
         --Long_all
@@ -591,13 +591,13 @@ actions:
         --start_cohort 2022-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_covid_postcovid1_main.csv
+        dataset: output/measures/measures_vax_covid_postcovid1.csv
 
-  ## Generate measures for vax_covid (longitudinal) - postcovid2 - main 
+  ## Generate measures for vax_covid (longitudinal) - postcovid2 
 
-  generate_measures_postcovid2_2023-10-01-main-vax_covid:
+  generate_measures_postcovid2_2023-10-01-vax_covid:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid2_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid2.csv
         --
         --practice_measures
         --Long_all
@@ -605,13 +605,13 @@ actions:
         --start_cohort 2023-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_covid_postcovid2_main.csv
+        dataset: output/measures/measures_vax_covid_postcovid2.csv
 
-  ## Generate measures for vax_covid (longitudinal) - postcovid3 - main 
+  ## Generate measures for vax_covid (longitudinal) - postcovid3 
 
-  generate_measures_postcovid3_2024-10-01-main-vax_covid:
+  generate_measures_postcovid3_2024-10-01-vax_covid:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid3_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_covid_postcovid3.csv
         --
         --practice_measures
         --Long_all
@@ -619,13 +619,13 @@ actions:
         --start_cohort 2024-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_covid_postcovid3_main.csv
+        dataset: output/measures/measures_vax_covid_postcovid3.csv
 
-  ## Generate measures for vax_flu (longitudinal) - precovid - main 
+  ## Generate measures for vax_flu (longitudinal) - precovid 
 
-  generate_measures_precovid_2018-10-01-main-vax_flu:
+  generate_measures_precovid_2018-10-01-vax_flu:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_precovid_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_precovid.csv
         --
         --practice_measures
         --Long_all
@@ -633,13 +633,13 @@ actions:
         --start_cohort 2018-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_flu_precovid_main.csv
+        dataset: output/measures/measures_vax_flu_precovid.csv
 
-  ## Generate measures for vax_flu (longitudinal) - postcovid1 - main 
+  ## Generate measures for vax_flu (longitudinal) - postcovid1 
 
-  generate_measures_postcovid1_2022-10-01-main-vax_flu:
+  generate_measures_postcovid1_2022-10-01-vax_flu:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid1_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid1.csv
         --
         --practice_measures
         --Long_all
@@ -647,13 +647,13 @@ actions:
         --start_cohort 2022-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_flu_postcovid1_main.csv
+        dataset: output/measures/measures_vax_flu_postcovid1.csv
 
-  ## Generate measures for vax_flu (longitudinal) - postcovid2 - main 
+  ## Generate measures for vax_flu (longitudinal) - postcovid2 
 
-  generate_measures_postcovid2_2023-10-01-main-vax_flu:
+  generate_measures_postcovid2_2023-10-01-vax_flu:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid2_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid2.csv
         --
         --practice_measures
         --Long_all
@@ -661,13 +661,13 @@ actions:
         --start_cohort 2023-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_flu_postcovid2_main.csv
+        dataset: output/measures/measures_vax_flu_postcovid2.csv
 
-  ## Generate measures for vax_flu (longitudinal) - postcovid3 - main 
+  ## Generate measures for vax_flu (longitudinal) - postcovid3 
 
-  generate_measures_postcovid3_2024-10-01-main-vax_flu:
+  generate_measures_postcovid3_2024-10-01-vax_flu:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid3_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_flu_postcovid3.csv
         --
         --practice_measures
         --Long_all
@@ -675,13 +675,13 @@ actions:
         --start_cohort 2024-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_flu_postcovid3_main.csv
+        dataset: output/measures/measures_vax_flu_postcovid3.csv
 
-  ## Generate measures for vax_pneum (longitudinal) - precovid - main 
+  ## Generate measures for vax_pneum (longitudinal) - precovid 
 
-  generate_measures_precovid_2018-10-01-main-vax_pneum:
+  generate_measures_precovid_2018-10-01-vax_pneum:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_precovid_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_precovid.csv
         --
         --practice_measures
         --Long_all
@@ -689,13 +689,13 @@ actions:
         --start_cohort 2018-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_pneum_precovid_main.csv
+        dataset: output/measures/measures_vax_pneum_precovid.csv
 
-  ## Generate measures for vax_pneum (longitudinal) - postcovid1 - main 
+  ## Generate measures for vax_pneum (longitudinal) - postcovid1 
 
-  generate_measures_postcovid1_2022-10-01-main-vax_pneum:
+  generate_measures_postcovid1_2022-10-01-vax_pneum:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid1_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid1.csv
         --
         --practice_measures
         --Long_all
@@ -703,13 +703,13 @@ actions:
         --start_cohort 2022-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_pneum_postcovid1_main.csv
+        dataset: output/measures/measures_vax_pneum_postcovid1.csv
 
-  ## Generate measures for vax_pneum (longitudinal) - postcovid2 - main 
+  ## Generate measures for vax_pneum (longitudinal) - postcovid2 
 
-  generate_measures_postcovid2_2023-10-01-main-vax_pneum:
+  generate_measures_postcovid2_2023-10-01-vax_pneum:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid2_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid2.csv
         --
         --practice_measures
         --Long_all
@@ -717,13 +717,13 @@ actions:
         --start_cohort 2023-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_pneum_postcovid2_main.csv
+        dataset: output/measures/measures_vax_pneum_postcovid2.csv
 
-  ## Generate measures for vax_pneum (longitudinal) - postcovid3 - main 
+  ## Generate measures for vax_pneum (longitudinal) - postcovid3 
 
-  generate_measures_postcovid3_2024-10-01-main-vax_pneum:
+  generate_measures_postcovid3_2024-10-01-vax_pneum:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid3_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_vax_pneum_postcovid3.csv
         --
         --practice_measures
         --Long_all
@@ -731,13 +731,13 @@ actions:
         --start_cohort 2024-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_vax_pneum_postcovid3_main.csv
+        dataset: output/measures/measures_vax_pneum_postcovid3.csv
 
-  ## Generate measures for Consultation (longitudinal) - precovid - main 
+  ## Generate measures for Consultation (longitudinal) - precovid 
 
-  generate_measures_precovid_2018-10-01-main-consultation:
+  generate_measures_precovid_2018-10-01-consultation:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid.csv
         --
         --practice_measures
         --Long_all
@@ -745,13 +745,13 @@ actions:
         --start_cohort 2018-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_consultation_precovid_main.csv
+        dataset: output/measures/measures_consultation_precovid.csv
 
-  ## Generate measures for Consultation (longitudinal) - postcovid1 - main 
+  ## Generate measures for Consultation (longitudinal) - postcovid1 
 
-  generate_measures_postcovid1_2022-10-01-main-consultation:
+  generate_measures_postcovid1_2022-10-01-consultation:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1.csv
         --
         --practice_measures
         --Long_all
@@ -759,13 +759,13 @@ actions:
         --start_cohort 2022-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_consultation_postcovid1_main.csv
+        dataset: output/measures/measures_consultation_postcovid1.csv
 
-  ## Generate measures for Consultation (longitudinal) - postcovid2 - main 
+  ## Generate measures for Consultation (longitudinal) - postcovid2 
 
-  generate_measures_postcovid2_2023-10-01-main-consultation:
+  generate_measures_postcovid2_2023-10-01-consultation:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2.csv
         --
         --practice_measures
         --Long_all
@@ -773,13 +773,13 @@ actions:
         --start_cohort 2023-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_consultation_postcovid2_main.csv
+        dataset: output/measures/measures_consultation_postcovid2.csv
 
-  ## Generate measures for Consultation (longitudinal) - postcovid3 - main 
+  ## Generate measures for Consultation (longitudinal) - postcovid3 
 
-  generate_measures_postcovid3_2024-10-01-main-consultation:
+  generate_measures_postcovid3_2024-10-01-consultation:
     run: |-
-      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3_main.csv
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3.csv
         --
         --practice_measures
         --Long_all
@@ -787,7 +787,7 @@ actions:
         --start_cohort 2024-10-01
     outputs:
       moderately_sensitive:
-        dataset: output/measures/measures_consultation_postcovid3_main.csv
+        dataset: output/measures/measures_consultation_postcovid3.csv
 
   ## Generate measures for ec_all (longitudinal) - precovid - main 
 
@@ -2251,9 +2251,9 @@ actions:
     - generate_measures_precovid_2018-10-01_smoking
     - generate_measures_precovid_2018-10-01_obesity
     - generate_measures_precovid_2018-10-01_multimorbidity
-    - generate_measures_precovid_2018-10-01-main-vax_flu
-    - generate_measures_precovid_2018-10-01-main-vax_pneum
-    - generate_measures_precovid_2018-10-01-main-consultation
+    - generate_measures_precovid_2018-10-01-vax_flu
+    - generate_measures_precovid_2018-10-01-vax_pneum
+    - generate_measures_precovid_2018-10-01-consultation
     - generate_measures_precovid_2018-10-01-main-ec_all
     - generate_measures_precovid_2018-10-01-main-apc_all
     - generate_measures_precovid_2018-10-01-main-ec_acscs
@@ -2281,7 +2281,6 @@ actions:
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_precovid.csv
-        dataset2: output/dataset_clean/merged_data_wide_precovid.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid1 
 
@@ -2297,10 +2296,10 @@ actions:
     - generate_measures_postcovid1_2022-10-01_smoking
     - generate_measures_postcovid1_2022-10-01_obesity
     - generate_measures_postcovid1_2022-10-01_multimorbidity
-    - generate_measures_postcovid1_2022-10-01-main-vax_covid
-    - generate_measures_postcovid1_2022-10-01-main-vax_flu
-    - generate_measures_postcovid1_2022-10-01-main-vax_pneum
-    - generate_measures_postcovid1_2022-10-01-main-consultation
+    - generate_measures_postcovid1_2022-10-01-vax_covid
+    - generate_measures_postcovid1_2022-10-01-vax_flu
+    - generate_measures_postcovid1_2022-10-01-vax_pneum
+    - generate_measures_postcovid1_2022-10-01-consultation
     - generate_measures_postcovid1_2022-10-01-main-ec_all
     - generate_measures_postcovid1_2022-10-01-main-apc_all
     - generate_measures_postcovid1_2022-10-01-main-ec_acscs
@@ -2328,7 +2327,6 @@ actions:
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_postcovid1.csv
-        dataset2: output/dataset_clean/merged_data_wide_postcovid1.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid2 
 
@@ -2344,10 +2342,10 @@ actions:
     - generate_measures_postcovid2_2023-10-01_smoking
     - generate_measures_postcovid2_2023-10-01_obesity
     - generate_measures_postcovid2_2023-10-01_multimorbidity
-    - generate_measures_postcovid2_2023-10-01-main-vax_covid
-    - generate_measures_postcovid2_2023-10-01-main-vax_flu
-    - generate_measures_postcovid2_2023-10-01-main-vax_pneum
-    - generate_measures_postcovid2_2023-10-01-main-consultation
+    - generate_measures_postcovid2_2023-10-01-vax_covid
+    - generate_measures_postcovid2_2023-10-01-vax_flu
+    - generate_measures_postcovid2_2023-10-01-vax_pneum
+    - generate_measures_postcovid2_2023-10-01-consultation
     - generate_measures_postcovid2_2023-10-01-main-ec_all
     - generate_measures_postcovid2_2023-10-01-main-apc_all
     - generate_measures_postcovid2_2023-10-01-main-ec_acscs
@@ -2375,7 +2373,6 @@ actions:
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_postcovid2.csv
-        dataset2: output/dataset_clean/merged_data_wide_postcovid2.csv
 
   ## Check measures files & generate merged datasets for cohort: postcovid3 
 
@@ -2391,10 +2388,10 @@ actions:
     - generate_measures_postcovid3_2024-10-01_smoking
     - generate_measures_postcovid3_2024-10-01_obesity
     - generate_measures_postcovid3_2024-10-01_multimorbidity
-    - generate_measures_postcovid3_2024-10-01-main-vax_covid
-    - generate_measures_postcovid3_2024-10-01-main-vax_flu
-    - generate_measures_postcovid3_2024-10-01-main-vax_pneum
-    - generate_measures_postcovid3_2024-10-01-main-consultation
+    - generate_measures_postcovid3_2024-10-01-vax_covid
+    - generate_measures_postcovid3_2024-10-01-vax_flu
+    - generate_measures_postcovid3_2024-10-01-vax_pneum
+    - generate_measures_postcovid3_2024-10-01-consultation
     - generate_measures_postcovid3_2024-10-01-main-ec_all
     - generate_measures_postcovid3_2024-10-01-main-apc_all
     - generate_measures_postcovid3_2024-10-01-main-ec_acscs
@@ -2422,7 +2419,6 @@ actions:
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_postcovid3.csv
-        dataset2: output/dataset_clean/merged_data_wide_postcovid3.csv
 
   ## Generate cleaned input dataset - precovid 
 

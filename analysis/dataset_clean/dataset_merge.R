@@ -192,6 +192,33 @@ date_check_long <- function(
   )
 }
 
+##To process each subgroup file
+process_subgroup_file <- function(file) {
+  df <- readr::read_csv(file)
+
+  # ---- identify subgroup variable inside the dataset
+  sub_var <- grep("^sub_", names(df), value = TRUE)
+
+  if (length(sub_var) != 1) {
+    stop(
+      "Expected exactly one subgroup flag variable but found: ",
+      paste(sub_var, collapse = ", ")
+    )
+  }
+
+  if (!all(c(TRUE, FALSE) %in% unique(df[[sub_var]]))) {
+    stop("Subgroup flag variable must be logical (TRUE/FALSE)")
+  }
+
+  # ---- keep only the TRUE group
+  df <- df %>% filter(.data[[sub_var]] == TRUE)
+
+  # ---- drop the subgroup flag
+  df <- df %>% select(-all_of(sub_var))
+
+  return(df)
+}
+
 ##Identical_vector_check:
 ##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes
 identical_vector_check <- function(df_list, var_list) {
@@ -200,7 +227,7 @@ identical_vector_check <- function(df_list, var_list) {
     for (var in var_list) {
       result <- identical(df_list[[1]][[var]], df_list[[i]][[var]])
       if (!(result == "TRUE")) {
-        warning(
+        message(
           "Variable '",
           var,
           "'in dataset '",
@@ -244,7 +271,7 @@ one_row_check <- function(df, id) {
 positive_var_check <- function(df) {
   df_name <- deparse(substitute(df)) # captures the name of the data frame
 
-  numeric_vars <- sapply(df, is.numeric)
+  numeric_vars <- sapply(df, is.numeric) & names(df) != "practice_id"
   if (!any(numeric_vars)) {
     warning("ERROR! No numeric variables found in the dataset.")
     return(NULL)
@@ -408,7 +435,7 @@ print(test)
 #OS (incorporates the 'cohort' arguments needed for the .yaml file)
 measures_csv <- list.files(
   path = measures_path,
-  pattern = paste0(cohort, "\\.csv$"),
+  pattern = paste0(cohort, ".*\\.csv$"),
   full.names = TRUE
 )
 
@@ -421,15 +448,17 @@ exp_measures_csv <- grep(
 exp_vax_measures_csv <- grep("_vax", measures_csv, value = TRUE)
 exp_cons_measures_csv <- grep("_consultation", measures_csv, value = TRUE)
 
-out_measures_csv <- grep(
-  "acscs",
-  (grep("_apc|_ec", measures_csv, value = TRUE)),
-  invert = TRUE,
+out_measures_csv <- grep("_apc|_ec", measures_csv, value = TRUE)
+
+out_main_measures_csv <- grep(
+  "main",
+  out_measures_csv,
   value = TRUE
 )
-out_acscs_measures_csv <- grep(
-  "acscs",
-  (grep("_apc|_ec", measures_csv, value = TRUE)),
+
+out_subgroup_measures_csv <- grep(
+  "_sub_",
+  out_measures_csv,
   value = TRUE
 )
 
@@ -443,13 +472,16 @@ print("This should be the list of exp_vax_measures_csv files")
 print(exp_vax_measures_csv)
 
 print("This should be the list of exp_cons_measures_csv files")
-print(exp_vax_measures_csv)
+print(exp_cons_measures_csv)
 
 print("This should be the list of out_measures_csv files")
 print(out_measures_csv)
 
-print("This should be the list of out_acscs_measures_csv files")
-print(out_acscs_measures_csv)
+print("This should be the list of out_main_measures_csv files")
+print(out_main_measures_csv)
+
+print("This should be the list of out_subgroup_measures_csv files")
+print(out_subgroup_measures_csv)
 
 ##CLEANING THE DATA
 #Exposures (cross-sectional):
@@ -466,10 +498,9 @@ if (
   #Pre-allocating objects
   wide_exp_measures <- vector("list", length(exp_measures_csv)) #list containing transformed datasets, set length = length of exp_measures_csv
   rename_list <- c(
-    "numerator_exp_prop" = "exp_num",
-    "denominator_exp_prop" = "denom",
-    "ratio_exp_prop" = "exp_prop",
-    "hypertension" = "hypt"
+    "numerator" = "num",
+    "denominator" = "denom",
+    "ratio" = "prop"
   ) #Renaming rules for dataset
   print("Pre-allocation done")
 
@@ -488,7 +519,7 @@ if (
       rename_with(~ str_replace_all(., rename_list)) #Renaming the variables
 
     #Check that each wide dataset now has one row per practice
-    if (one_row_check(wide_exp_measures[[i]], "practice_pseudo_id")) {} else {
+    if (one_row_check(wide_exp_measures[[i]], "practice_id")) {} else {
       stop()
     }
     #Check that each numerical variable is non-negative
@@ -500,11 +531,11 @@ if (
   merge_and_drop(
     wide_exp_measures,
     var_list = c("interval_start", "interval_end"),
-    c("practice_pseudo_id"),
+    c("practice_id"),
     merged_df_name = "merged_exp_measures"
   )
   #Once again, checking that data are one row per practice
-  if (one_row_check(merged_exp_measures, "practice_pseudo_id")) {} else {
+  if (one_row_check(merged_exp_measures, "practice_id")) {} else {
     message("merged_exp_measures is NOT one row per practice")
   }
   #Checking that each proportion variable goes between 0 and 1
@@ -538,9 +569,9 @@ if (
   #Pre-allocating objects
   wide_exp_vax_measures <- vector("list", length(exp_vax_measures_csv)) #list containing transformed datasets
   rename_list <- c(
-    "numerator_exp_prop" = "exp_num",
-    "denominator_exp_prop" = "exp_denom",
-    "ratio_exp_prop" = "exp_prop"
+    "numerator" = "num",
+    "denominator" = "denom",
+    "ratio" = "prop"
   ) #Renaming rules for dataset
   print("Pre-allocation done")
 
@@ -561,9 +592,7 @@ if (
       rename_with(~ str_replace_all(., rename_list)) #Renaming the variables
 
     #Check that each wide dataset now has one row per practice
-    if (
-      one_row_check(wide_exp_vax_measures[[i]], "practice_pseudo_id")
-    ) {} else {
+    if (one_row_check(wide_exp_vax_measures[[i]], "practice_id")) {} else {
       stop()
     }
 
@@ -578,12 +607,12 @@ if (
   merge_and_drop(
     wide_exp_vax_measures,
     var_list = c("interval_start", "interval_end"),
-    c("practice_pseudo_id"),
+    c("practice_id"),
     merged_df_name = "merged_exp_vax_measures"
   )
 
   #Once again, checking that data are one row per practice
-  if (one_row_check(merged_exp_vax_measures, "practice_pseudo_id")) {} else {
+  if (one_row_check(merged_exp_vax_measures, "practice_id")) {} else {
     message("merged_exp_vax_measures is NOT one row per practice")
   }
 
@@ -620,9 +649,9 @@ if (date_check_exp_cons$date_check_passed) {
   ##Pre-allocating objects
   #wide_exp_cons_measures <- vector("list", length(exp_cons_measures_csv))   #list containing transformed datasets
   rename_list <- c(
-    "numerator" = "exp_num_cons",
-    "denominator" = "exp_denom_cons",
-    "ratio" = "exp_prop_cons"
+    "numerator" = "num_cons",
+    "denominator" = "denom_cons",
+    "ratio" = "prop_cons"
   ) #Renaming rules for dataset
 
   #Importing the single .csv (don't need to loop through datasets for this exposure)
@@ -632,7 +661,7 @@ if (date_check_exp_cons$date_check_passed) {
   wide_exp_cons_measures <- readr::read_csv(exp_cons_measures_csv)
 
   #Check that there are multiple rows per practice
-  if (!one_row_check(wide_exp_cons_measures, "practice_pseudo_id")) {
+  if (!one_row_check(wide_exp_cons_measures, "practice_id")) {
     message(
       "There are multiple rows per practice in dataset: exp_cons_measures"
     )
@@ -661,17 +690,17 @@ if (date_check_exp_cons$date_check_passed) {
   print("Reshaping & renaming exp_cons_measures.csv")
   #Reshaping to wide and renaming
   wide_exp_cons_measures <- wide_exp_cons_measures %>%
-    mutate(yyyymm = format(interval_start, "%Y%m")) %>%
+    mutate(month_abbr = tolower(format(interval_start, "%b"))) %>%
     pivot_wider(
-      id_cols = practice_pseudo_id,
-      names_from = yyyymm,
+      id_cols = practice_id,
+      names_from = month_abbr,
       values_from = c(numerator, denominator, ratio),
-      names_glue = "{.value}_{yyyymm}"
+      names_glue = "{.value}_{month_abbr}"
     ) %>%
     rename_with(~ str_replace_all(., rename_list))
 
   #Check again that there is now ONE row per practice
-  if (one_row_check(wide_exp_cons_measures, "practice_pseudo_id")) {
+  if (one_row_check(wide_exp_cons_measures, "practice_id")) {
     message("OK - merged_out_measures is one row per practice")
   } else {
     message(
@@ -695,7 +724,7 @@ if (date_check_exp_cons$date_check_passed) {
 }
 
 
-#Outcomes (longitudinal):
+#Outcomes-main (longitudinal):
 #Just need to date check & merge (structurally, can keep as is: one row per practice per week)
 print("date_check_out for longitudinal OUTCOMES")
 date_check_out <- date_check_long(
@@ -707,23 +736,29 @@ date_check_out <- date_check_long(
   n_expected = 20,
   by = "1 week"
 )
-
 print("if date_check_out passed")
 if (date_check_out$date_check_passed) {
   ##Pre-allocating objects
-  wide_out_measures <- vector("list", length(out_measures_csv)) #list containing transformed datasets
+  wide_out_measures <- vector("list", length(out_main_measures_csv)) #list containing transformed datasets
   rename_list <- c(
-    "numerator_out_num" = "out_num",
-    "denominator_out_num" = "out_denom",
-    "ratio_out_num" = "out_prop"
-  ) #Renaming rules for dataset
+    "numerator" = "num",
+    "denominator" = "denom",
+    "ratio" = "prop"
+  )
 
   #For-loop of the data management steps
   for (i in seq_along(out_measures_csv)) {
-    wide_out_measures[[i]] <- readr::read_csv(out_measures_csv[[i]])
+    file_i <- out_measures_csv[[i]]
+
+    # Processing subgroup files differently (mainly filtering to TRUE subgroup)
+    if (file_i %in% out_subgroup_measures_csv) {
+      wide_out_measures[[i]] <- process_subgroup_file(file_i)
+    } else {
+      wide_out_measures[[i]] <- readr::read_csv(file_i)
+    }
 
     #Check that there are multiple rows per practice
-    if (!one_row_check(wide_out_measures[[i]], "practice_pseudo_id")) {
+    if (!one_row_check(wide_out_measures[[i]], "practice_id")) {
       message("There are multiple rows per practice in dataset: ", i)
     } else {
       stop()
@@ -758,12 +793,12 @@ if (date_check_out$date_check_passed) {
   merge_and_drop(
     wide_out_measures,
     var_list = c("interval_end"),
-    join_var = c("practice_pseudo_id", "interval_start"),
+    join_var = c("practice_id", "interval_start"),
     merged_df_name = "merged_out_measures"
   )
 
   #Check again that there are multiple rows per practice
-  if (!one_row_check(merged_out_measures, "practice_pseudo_id")) {
+  if (!one_row_check(merged_out_measures, "practice_id")) {
     message("OK - merged_out_measures is multiple rows per practice")
   } else {
     message(
@@ -781,102 +816,15 @@ if (date_check_out$date_check_passed) {
     min = 0.000000000000000000,
     max = 1.00000000000000000000000
   )
+} else {
+  print("Date check NOT passed for wide_out_measures")
 }
-
-
-#Outcomes ACSCs (longitudinal):
-print("date_check_out for longitudinal OUTCOMES - ACSCS")
-date_check_out_acscs <- date_check_long(
-  out_acscs_measures_csv,
-  start_date_var_list = c("interval_start"),
-  end_date_var_list = c("interval_end"),
-  group_vars = c("measure"),
-  start_date = start_date,
-  n_expected = 20,
-  by = "1 week"
-)
-print("if date_check_out_acscs passed")
-if (date_check_out_acscs$date_check_passed) {
-  ##Pre-allocating objects
-  wide_out_acscs_measures <- vector("list", length(out_acscs_measures_csv)) #list containing transformed datasets
-  rename_list <- c(
-    "numerator_out_num" = "out_num_acscs",
-    "denominator_out_num" = "out_denom_acscs",
-    "ratio_out_num" = "out_prop_acscs",
-    "hypertension" = "hypt"
-  ) #Renaming rules for dataset
-
-  #For-loop of the data management steps
-  for (i in seq_along(out_acscs_measures_csv)) {
-    wide_out_acscs_measures[[i]] <- readr::read_csv(out_acscs_measures_csv[[i]])
-
-    #Check that there are multiple rows per practice
-    if (!one_row_check(wide_out_acscs_measures[[i]], "practice_pseudo_id")) {
-      message("There are multiple rows per practice in dataset: ", i)
-    } else {
-      stop()
-    }
-
-    #Check that each numerical variable is non-negative
-    if (all(positive_var_check(wide_out_acscs_measures[[i]]))) {} else {
-      stop()
-    }
-
-    #Reshaping so that each ACSC condistion is it's own column
-    wide_out_acscs_measures[[i]] <- wide_out_acscs_measures[[i]] %>%
-      pivot_wider(
-        names_from = measure,
-        values_from = c(numerator, denominator, ratio)
-      ) %>%
-      rename_with(~ str_replace_all(., rename_list))
-  }
-
-  #Check that interval_start and interval_end are consistent ACROSS datasets
-  if (
-    identical_vector_check(
-      wide_out_acscs_measures,
-      var_list = c("interval_start", "interval_end")
-    )
-  ) {} else {
-    stop()
-  }
-
-  #Merge and delete duplicate columns
-  merge_and_drop(
-    wide_out_acscs_measures,
-    var_list = c("interval_end"),
-    join_var = c("practice_pseudo_id", "interval_start"),
-    merged_df_name = "merged_out_acscs_measures"
-  )
-
-  #Check again that there are multiple rows per practice
-  if (!one_row_check(merged_out_acscs_measures, "practice_pseudo_id")) {
-    message("OK - merged_out_acscs_measures is multiple rows per practice")
-  } else {
-    message(
-      "ERROR - something weird happened and merged_exp_measures is one row per practice"
-    )
-  }
-
-  #Checking that each proportion variable goes between 0 and 1
-  prop_vars <- names(merged_out_acscs_measures)[grepl(
-    "prop",
-    names(merged_out_acscs_measures)
-  )]
-  range_check(
-    merged_out_acscs_measures,
-    var_list = prop_vars,
-    min = 0.000000000000000000,
-    max = 1.00000000000000000000000
-  )
-}
-
 
 #Merging the exposures, exposures_vax, exposures_cons, outcomes, and outcomes_acscs data together
 exp_data <- left_join(
   merged_exp_measures,
   merged_exp_vax_measures,
-  by = "practice_pseudo_id"
+  by = "practice_id"
 ) %>%
   rename(
     exp_interval_start = interval_start.x,
@@ -890,7 +838,7 @@ exp_data <- drop_all_duplicates(
   exp_data,
   df_name = "exp_data",
   denom_vars,
-  new_name = "exp_denom"
+  new_name = "list_size"
 )
 
 #Now merge in the wide GP consulations data
@@ -898,73 +846,89 @@ exp_data <- drop_all_duplicates(
 exp_data <- left_join(
   exp_data,
   wide_exp_cons_measures,
-  by = "practice_pseudo_id"
+  by = "practice_id"
 )
 
-out_data <- left_join(
-  merged_out_measures,
-  merged_out_acscs_measures,
-  by = c("practice_pseudo_id", "interval_start", "interval_end")
-)
+out_data <- merged_out_measures
 
 #Check for duplicate denominator vars - drop the duplicates, highlight any that are unique
-denom_vars <- grep("denom_", names(out_data), value = TRUE)
-out_data <- drop_all_duplicates(
-  out_data,
-  df_name = "out_data",
-  denom_vars,
-  new_name = "out_denom"
-)
+denom_main_vars <- grep("denom_.*main", names(out_data), value = TRUE)
+if (length(denom_main_vars) > 0) {
+  out_data <- drop_all_duplicates(
+    out_data,
+    df_name = "out_data",
+    denom_main_vars,
+    new_name = "denom_main"
+  )
+}
+#Now check for duplicate denominator vars within each subgroup
+
+subgroups <- c("asth", "copd", "htn", "diab", "sevmh")
+
+for (sg in subgroups) {
+  pattern <- paste0("denom_.*sub_", sg)
+  denom_sub_vars <- grep(pattern, names(out_data), value = TRUE)
+
+  if (length(denom_sub_vars) > 0) {
+    out_data <- drop_all_duplicates(
+      out_data,
+      df_name = "out_data",
+      var_list = denom_sub_vars,
+      new_name = paste0("denom_sub_", sg)
+    )
+  }
+}
 
 #Restrict out_data to only the practices in exp_data
 out_data <- out_data %>%
-  semi_join(exp_data, by = "practice_pseudo_id")
+  semi_join(exp_data, by = "practice_id")
 
 #Merging the exposure and outcome data together to create the final analytic dataset
 analytic_data_long <- left_join(
   out_data,
   exp_data,
-  by = "practice_pseudo_id"
+  by = "practice_id"
 ) %>% #Merging the exp data to the longitudinal outcomes
   rename(
     out_interval_start = interval_start,
     out_interval_end = interval_end
   ) %>%
-  group_by(practice_pseudo_id) %>%
+  group_by(practice_id) %>%
   mutate(week_number = dense_rank(out_interval_start)) %>%
   ungroup()
 
-#Prep to check & transform analytic_data_long
-date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
-cons_vars <- grep("_cons_", names(analytic_data_long), value = TRUE)
-out_vars <- grep("out", names(analytic_data_long), value = TRUE)
-out_vars <- out_vars[!grepl("interval", out_vars)]
+# #Prep to check & transform analytic_data_long
+# date_vars <- grep("interval", names(analytic_data_long), value = TRUE)
+# cons_vars <- grep("_cons_", names(analytic_data_long), value = TRUE)
+# out_vars <- grep("_main|_sub", names(analytic_data_long), value = TRUE)
 
-#Check that the exp_variables merged correctly into the long dataset
-#i.e. all have one unique value per practice (per outcome week)
-exp_vars <- grep("exp", names(analytic_data_long), value = TRUE)
+# #Check that the exp_variables merged correctly into the long dataset
+# #i.e. all have one unique value per practice (per outcome week)
+# exp_vars <- names(analytic_data_long)[!grepl(
+#   paste(c(date_vars, cons_vars, out_vars), collapse = "|"),
+#   names(analytic_data_long)
+# )]
 
-exp_merge_check <- all(
-  analytic_data_long %>%
-    group_by(practice_pseudo_id) %>%
-    summarise(
-      across(all_of(exp_vars), ~ n_distinct(.x) == 1),
-      .groups = "drop"
-    ) %>%
-    select(-practice_pseudo_id) %>%
-    unlist()
-)
+# exp_merge_check <- all(
+#   analytic_data_long %>%
+#     group_by(practice_id) %>%
+#     summarise(
+#       across(all_of(exp_vars), ~ n_distinct(.x) == 1),
+#       .groups = "drop"
+#     ) %>%
+#     select(-practice_id) %>%
+#     unlist()
+# )
 
-if (exp_merge_check) {
-  analytic_data_wide <- analytic_data_long %>%
-    pivot_wider(
-      id_cols = c(practice_pseudo_id, cons_vars, exp_vars),
-      names_from = week_number,
-      values_from = out_vars,
-      names_glue = "{.value}{week_number}"
-    )
-}
-
+# if (exp_merge_check) {
+#   analytic_data_wide <- analytic_data_long %>%
+#     pivot_wider(
+#       id_cols = c(practice_id, cons_vars, exp_vars),
+#       names_from = week_number,
+#       values_from = out_vars,
+#       names_glue = "{.value}{week_number}"
+#     )
+# }
 
 #EXPORTING MERGED DATASET
 print("Saving merged datasets")
@@ -975,9 +939,9 @@ data.table::fwrite(analytic_data_long, here::here(output_path_long))
 message(paste0("Long-format merged dataset saved to ", output_path_long))
 
 # Wide dataset
-output_path_wide <- paste0(dataclean_dir, "merged_data_wide_", cohort, ".csv")
-data.table::fwrite(analytic_data_wide, here::here(output_path_wide))
-message(paste0("Wide-format merged dataset saved to ", output_path_wide))
+# output_path_wide <- paste0(dataclean_dir, "merged_data_wide_", cohort, ".csv")
+# data.table::fwrite(analytic_data_wide, here::here(output_path_wide))
+# message(paste0("Wide-format merged dataset saved to ", output_path_wide))
 
 #TO DO:
 #Get the positive_var_check function to output a nice dataset (like date_check_long does)

@@ -44,7 +44,7 @@ def generate_dataset_variables(cohort_start):
     inex_bin_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name.is_not_null()
 
     ### Had asthma ever recorded prior to the cohort start date
-    inex_bin_asthma = (
+    sub_bin_asthma = (
         (last_matching_event_clinical_snomed_before( 
             asthma_snomed, cohort_start
         ).exists_for_patient()) |
@@ -57,7 +57,7 @@ def generate_dataset_variables(cohort_start):
     )
 
     ### Had COPD ever recorded prior to the cohort start date
-    inex_bin_copd = (
+    sub_bin_copd = (
         (last_matching_event_clinical_snomed_before(
             multimorbidity_dict["MS_COPD_snomed"], cohort_start
         ).exists_for_patient()) |
@@ -70,7 +70,7 @@ def generate_dataset_variables(cohort_start):
     )
 
     ### Had hypertension ever recorded prior to the cohort start date
-    inex_bin_hypertension = (
+    sub_bin_hypertension = (
         (last_matching_event_clinical_ctv3_before(
             multimorbidity_dict["MS_Hypertension_ctv3"], cohort_start
         ).exists_for_patient()) |
@@ -83,7 +83,7 @@ def generate_dataset_variables(cohort_start):
     )
 
     ### Had diabetes ever recorded prior to the cohort start date
-    inex_bin_diabetes = (
+    sub_bin_diabetes = (
         (last_matching_event_clinical_snomed_before(
             diabetes_snomed, cohort_start
         ).exists_for_patient()) |
@@ -96,7 +96,7 @@ def generate_dataset_variables(cohort_start):
     )
 
     ### Had severe mental illness ever recorded prior to the cohort start date
-    inex_bin_sev_mental_ill = (
+    sub_bin_sev_mental_ill = (
         (last_matching_event_clinical_snomed_before(
             severe_mental_illness_snomed + self_harm_aged10_snomed + self_harm_aged15_snomed, cohort_start
         ).exists_for_patient()) |
@@ -272,11 +272,11 @@ def generate_dataset_variables(cohort_start):
         inex_bin_imd        = inex_bin_imd,
         inex_bin_region     = inex_bin_region,
         # Inclusion for subgroups
-        inex_bin_asthma     = inex_bin_asthma,
-        inex_bin_copd       = inex_bin_copd,
-        inex_bin_hypertension = inex_bin_hypertension,
-        inex_bin_diabetes   = inex_bin_diabetes,
-        inex_bin_sev_mental_ill = inex_bin_sev_mental_ill,
+        sub_bin_asthma     = sub_bin_asthma,
+        sub_bin_copd       = sub_bin_copd,
+        sub_bin_hypertension = sub_bin_hypertension,
+        sub_bin_diabetes   = sub_bin_diabetes,
+        sub_bin_sev_mental_ill = sub_bin_sev_mental_ill,
         # Cambridge Multimorbidity Conditions (20)
         exp_bin_af                = exp_bin_af,                # Atrial fibrillation
         exp_bin_alcoholproblem    = exp_bin_alcoholproblem,    # Alcohol problems

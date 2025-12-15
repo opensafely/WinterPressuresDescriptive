@@ -247,11 +247,20 @@ for (flag in long_args_all) {
   }
   for (cohort in cohorts) {
     date <- cohort_dates[[cohort]]
-    comment_text <- glue(
-      "Generate measures for {flag} (longitudinal) - {cohort} - main"
-    )
-    name <- glue("generate_measures_{cohort}_{date}-main-{tolower(flag)}")
-    file <- glue("output/measures/measures_{tolower(flag)}_{cohort}_main.csv")
+    if (flag %in% long_args_outcomes) {
+      comment_text <- glue(
+        "Generate measures for {flag} (longitudinal) - {cohort} - main"
+      )
+      name <- glue("generate_measures_{cohort}_{date}-main-{tolower(flag)}")
+      file <- glue("output/measures/measures_{tolower(flag)}_{cohort}_main.csv")
+    } else {
+      comment_text <- glue(
+        "Generate measures for {flag} (longitudinal) - {cohort}"
+      )
+      name <- glue("generate_measures_{cohort}_{date}-{tolower(flag)}")
+      file <- glue("output/measures/measures_{tolower(flag)}_{cohort}.csv")
+    }
+
     arguments <- c(
       "--",
       "--practice_measures",
@@ -343,8 +352,7 @@ for (cohort in cohorts_all) {
       ),
       needs = generate_measures_list,
       moderately_sensitive = list(
-        dataset1 = glue("output/dataset_clean/merged_data_long_{cohort}.csv"),
-        dataset2 = glue("output/dataset_clean/merged_data_wide_{cohort}.csv")
+        dataset1 = glue("output/dataset_clean/merged_data_long_{cohort}.csv")
       )
     )
   )
