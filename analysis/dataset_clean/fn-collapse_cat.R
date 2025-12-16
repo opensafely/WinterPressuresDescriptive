@@ -3,29 +3,25 @@ collapse_categories <- function(input) {
     message("Collapse categorical variables (age 80+, urban combined)")
 
     # Variables to remove
-    vars_to_remove <- c(
-        "exp_num_80_to_84",
-        "exp_num_age_85_plus",
-        "exp_prop_80_to_84",
-        "exp_prop_age_85_plus",
-        "exp_num_urb_major",
-        "exp_num_urb_minor",
-        "exp_prop_urb_major",
-        "exp_prop_urb_minor"
-    )
+    vars_to_remove <- c(grep(
+        "80_84|85|urban_major|urban_minor",
+        names(input),
+        value = TRUE
+    ))
 
     # Collapse age 80–84 + 85+
     input <- input %>%
         mutate(
-            exp_num_age_80plus = exp_num_80_to_84 + exp_num_age_85_plus,
-            exp_prop_age_80plus = exp_num_age_80plus / exp_denom_total
+            num_age_80 = num_age_80_84 + num_age_85,
+            prop_age_80 = num_age_80 / list_size
         )
 
     # Collapse urban major + minor
     input <- input %>%
         mutate(
-            exp_num_urb_combined = exp_num_urb_major + exp_num_urb_minor,
-            exp_prop_urb_combined = exp_num_urb_combined / exp_denom_total
+            num_rurality_urban_comb = num_rurality_urban_major +
+                num_rurality_urban_minor,
+            prop_rurality_urban_comb = num_rurality_urban_comb / list_size
         )
 
     # Determine which variables exist
