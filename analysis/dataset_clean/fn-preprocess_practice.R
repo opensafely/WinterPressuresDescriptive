@@ -1,7 +1,7 @@
 preprocess_measure <- function(cohort) {
   # Get column names ----
   print('Get column names')
-  file_path <- paste0("output/dataset_clean/merged_data_wide_", cohort, ".csv")
+  file_path <- paste0("output/dataset_clean/merged_data_long_", cohort, ".csv")
   all_cols <- fread(
     file_path,
     header = TRUE,
@@ -16,12 +16,13 @@ preprocess_measure <- function(cohort) {
   # Define column classes ----
   print('Define column classes')
 
-  cat_cols <- c(grep("_cat", all_cols, value = TRUE))
+  cat_cols <- c(grep("week_number", all_cols, value = TRUE))
   bin_cols <- c(grep("_bin", all_cols, value = TRUE))
   num_cols <- c(
-    grep("_num", all_cols, value = TRUE),
-    grep("_denom", all_cols, value = TRUE),
-    grep("_prop_", all_cols, value = TRUE)
+    grep("list_size", all_cols, value = TRUE),
+    grep("^num_", all_cols, value = TRUE),
+    grep("^denom_", all_cols, value = TRUE),
+    grep("^prop_", all_cols, value = TRUE)
   )
   date_cols <- c(
     grep("_start", all_cols, value = TRUE),
@@ -62,124 +63,79 @@ preprocess_measure <- function(cohort) {
       across(contains('_birth_year'), ~ as.numeric(.)), #~ year(as.Date(., origin = "1970-01-01"))),
       across(all_of(num_cols), ~ as.numeric(.)),
       across(all_of(cat_cols), ~ as.character(.))
-    ) %>%
-    rename(
-      practice_id = practice_pseudo_id, # consistent ID
-      exp_denom_total = exp_denom # shared denominator
     )
 
   # Compute mean consultation proportion ----------------------------
   print("Compute mean consultation proportions per practice")
 
-  cons_cols <- grep("^exp_prop_cons_", names(input), value = TRUE)
+  cons_cols <- grep("^prop_cons_", names(input), value = TRUE)
 
   if (length(cons_cols) > 0) {
     input <- input %>%
       rowwise() %>%
       mutate(
-        exp_prop_cons_mean = mean(c_across(all_of(cons_cols)), na.rm = TRUE)
+        prop_cons_mean = mean(c_across(all_of(cons_cols)), na.rm = TRUE)
       ) %>%
       ungroup()
     message(
-      "Added exp_prop_cons_mean (average across exp_prop_cons_YYYYMM columns)."
+      "Added prop_cons_mean (average across prop_cons_M columns)."
     )
   } else {
-    warning("No consultation proportion columns found (exp_prop_cons_...).")
+    warning("No consultation proportion columns found (prop_cons_...).")
   }
 
   # Compute mean weekly rate for outcomes --------------------------------------
   print("Compute mean weekly rates per practice")
 
-  out_prop_prefixes <- c(
-    "out_prop_apc_",
-    "out_prop_ec_",
-    "out_prop_acscs_copd_apc_",
-    "out_prop_acscs_copd_ec_",
-    "out_prop_acscs_asthma_apc_",
-    "out_prop_acscs_asthma_ec_",
-    "out_prop_acscs_hypt_apc_",
-    "out_prop_acscs_hypt_ec_",
-    "out_prop_acscs_diabetes_apc_",
-    "out_prop_acscs_diabetes_ec_",
-    "out_prop_acscs_angina_apc_",
-    "out_prop_acscs_angina_ec_"
-  )
+  outcome_vars <- grep("^prop_apc_|^prop_ec_", names(input), value = TRUE)
 
-  for (p in out_prop_prefixes) {
-    # All columns matching the prefix + 1–20
-    cols <- grep(paste0("^", p, "w[0-9]+$"), names(input), value = TRUE)
+  if (length(outcome_vars) == 0) {
+    message("No proportion variables (prop_apc_ / prop_ec_) found in input.")
+  } else {
+    input <- input %>%
+      group_by(practice_id) %>%
+      mutate(
+        across(
+          all_of(outcome_vars),
+          ~ mean(.x, na.rm = TRUE),
+          .names = "{.col}_mean" # e.g. prop_apc_acsc_any_main_mean
+        )
+      ) %>%
+      ungroup()
 
-    if (length(cols) > 0) {
-      mean_name <- paste0(p, "mean")
-
-      input <- input %>%
-        rowwise() %>%
-        mutate(!!mean_name := mean(c_across(all_of(cols)), na.rm = TRUE)) %>%
-        ungroup()
-
-      message(
-        "Added ",
-        mean_name,
-        " (mean across: ",
-        paste(cols, collapse = ", "),
-        ")"
-      )
-    } else {
-      message("No columns found for prefix: ", p)
-    }
+    message(
+      "Added mean weekly rate variables for: ",
+      paste(outcome_vars, collapse = ", ")
+    )
   }
 
   # Compute cumulative rates ----------------------------------------------------
   print("Compute cumulative rates per practice")
 
-  # prefixes for cumulative calculations using _num_ variables
-  out_num_prefixes <- c(
-    "out_num_apc_",
-    "out_num_ec_",
-    "out_num_acscs_copd_apc_",
-    "out_num_acscs_copd_ec_",
-    "out_num_acscs_asthma_apc_",
-    "out_num_acscs_asthma_ec_",
-    "out_num_acscs_hypt_apc_",
-    "out_num_acscs_hypt_ec_",
-    "out_num_acscs_diabetes_apc_",
-    "out_num_acscs_diabetes_ec_",
-    "out_num_acscs_angina_apc_",
-    "out_num_acscs_angina_ec_"
-  )
+  # Numeric outcome count variables to sum over weeks
+  num_vars <- grep("^num_apc_|^num_ec_", names(input), value = TRUE)
 
-  for (p in out_num_prefixes) {
-    # weekly number columns: out_num_apc_w1 ... w20
-    cols <- grep(paste0("^", p, "w[0-9]+$"), names(input), value = TRUE)
+  if (length(num_vars) == 0) {
+    message("No numeric outcome variables (num_apc_ / num_ec_) found in input.")
+  } else {
+    input <- input %>%
+      group_by(practice_id) %>%
+      mutate(
+        across(
+          all_of(num_vars),
+          ~ sum(.x, na.rm = TRUE) / first(list_size),
+          .names = "{sub('^num', 'prop', .col)}_cumu"
+          # e.g. num_apc_acsc_any_main -> prop_apc_acsc_any_main_cumu
+        )
+      ) %>%
+      ungroup()
 
-    if (length(cols) > 0) {
-      # create a clean cumulative rate variable name
-      prop_prefix <- gsub("num", "prop", p)
-      cumulative_rate_name <- paste0(prop_prefix, "total")
-
-      input <- input %>%
-        rowwise() %>%
-        mutate(
-          !!cumulative_rate_name := sum(c_across(all_of(cols)), na.rm = TRUE) /
-            exp_denom_total
-        ) %>%
-        ungroup()
-
-      message(
-        "Added ",
-        cumulative_rate_name,
-        ": sum(",
-        paste(cols, collapse = ", "),
-        ") / exp_denom_total"
-      )
-    } else {
-      message("No numeric weekly columns found for: ", p)
-    }
+    message(
+      "Added cumulative outcome variables (per practice) for: ",
+      paste(num_vars, collapse = ", "),
+      " using denominator list_size."
+    )
   }
-
-  # Generate rounded proportions for descriptive tables -----------------------------
-  print("Generate rounded proportion variables for descriptive tables")
-  prop_cols <- grep("_prop_", names(input), value = TRUE)
 
   # Return the reprocessed practice-level data
   return(input)
