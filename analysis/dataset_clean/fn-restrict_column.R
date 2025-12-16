@@ -3,61 +3,63 @@ restrict_variables <- function(input) {
     message("Restricting to relevant variables only")
 
     # ----------------------------------------------------------------------
-    # 1. Variables explicitly listed for removal
+    # 1. Remove all unrounded numerator/denominator variables
     # ----------------------------------------------------------------------
-    vars_to_remove <- c(
-        # Age groups
-        grep("^exp_num_5_to_11$", names(input), value = TRUE),
-        grep("^exp_prop_5_to_11$", names(input), value = TRUE),
-        grep("^exp_num_12_to_17$", names(input), value = TRUE),
-        grep("^exp_prop_12_to_17$", names(input), value = TRUE),
-        grep("^exp_num_18_to_29$", names(input), value = TRUE),
-        grep("^exp_prop_18_to_29$", names(input), value = TRUE),
-        grep("^exp_num_30_to_44$", names(input), value = TRUE),
-        grep("^exp_prop_30_to_44$", names(input), value = TRUE),
-        grep("^exp_num_45_to_54$", names(input), value = TRUE),
-        grep("^exp_prop_45_to_54$", names(input), value = TRUE),
-        grep("^exp_num_55_to_64$", names(input), value = TRUE),
-        grep("^exp_prop_55_to_64$", names(input), value = TRUE),
 
-        # Male
-        "exp_num_male",
-        "exp_prop_male",
+    drop_raw_num_denom <- names(input)[
+        grepl("^(num_|denom_)", names(input)) & # any num_ or denom_
+            !grepl("_mp6$", names(input)) # but NOT ending in _mp6
+    ]
 
-        # IMD 2–4
-        "exp_num_imd_2",
-        "exp_prop_imd_2",
-        "exp_num_imd_3",
-        "exp_prop_imd_3",
-        "exp_num_imd_4",
-        "exp_prop_imd_4"
-    )
+    # Count how many will be removed
+    n_drop <- length(drop_raw_num_denom)
+
+    message("--------------------------------------------------")
+    message("Dropping NON-mp6 numerator/denominator variables")
+    message("Number of variables removed: ", n_drop)
+
+    if (n_drop > 0) {
+        message("Variables removed:")
+        print(drop_raw_num_denom)
+    } else {
+        message("No variables met criteria for removal.")
+    }
+
+    # Remove them from dataset
+    input <- input %>%
+        select(-all_of(drop_raw_num_denom))
 
     # ----------------------------------------------------------------------
-    # 2. Remove ALL exp_num_* and exp_denom_* EXCEPT denom_total + denom_total_r
+    # 2. Remove duplicate denominators for outcomes (main and subgroups)
     # ----------------------------------------------------------------------
-    exp_num_denom_all <- grep(
-        "^(exp_num_|exp_denom_)",
-        names(input),
-        value = TRUE
-    )
 
-    vars_to_keep <- c("exp_denom_total", "exp_denom_total_r")
+    #Check for duplicate denominator vars for outcomes - drop the duplicates, highlight any that are unique
+    denom_main_vars <- grep("^denom_.*main.*_mp6$", names(input), value = TRUE)
+    if (length(denom_main_vars) > 0) {
+        input <- drop_all_duplicates(
+            input,
+            df_name = "input",
+            denom_main_vars,
+            new_name = "denom_main_mp6"
+        )
+    }
+    #Check for duplicate denominator vars within each subgroup
 
-    exp_num_denom_remove <- setdiff(exp_num_denom_all, vars_to_keep)
+    subgroups <- c("asth", "copd", "htn", "diab", "sevmh")
 
-    # Add to removal list
-    vars_to_remove <- c(vars_to_remove, exp_num_denom_remove)
+    for (sg in subgroups) {
+        pattern <- paste0("^denom_.*sub_", sg, ".*_mp6$")
+        denom_sub_vars <- grep(pattern, names(input), value = TRUE)
 
-    # ----------------------------------------------------------------------
-    # Execute removal
-    # ----------------------------------------------------------------------
-    removed_vars <- vars_to_remove[vars_to_remove %in% names(input)]
-
-    input <- input %>% select(-any_of(removed_vars))
-
-    # Report
-    message("Removed variables: ", paste(removed_vars, collapse = ", "))
+        if (length(denom_sub_vars) > 0) {
+            input <- drop_all_duplicates(
+                input,
+                df_name = "input",
+                var_list = denom_sub_vars,
+                new_name = paste0("denom_sub_", sg, "_mp6")
+            )
+        }
+    }
 
     return(input)
 }
