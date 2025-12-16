@@ -120,6 +120,12 @@ if (apply_inex) {
   )
 }
 
+# Remove prop_ from variable names ----------------------------------------
+print('Remove prop_ from variable names')
+input <- input %>%
+  rename_with(~ gsub("^prop_", "", .x))
+message("Removed prop_ from variable names")
+
 # Save clean dataset ---------------------------------------------------
 print('Save clean dataset')
 
