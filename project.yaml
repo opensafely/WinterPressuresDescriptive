@@ -2976,50 +2976,90 @@ actions:
       moderately_sensitive:
         outcome_summary_stats_csv: output/regressions/outcome_summary_stats.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: precovid 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, precovid 
 
-  generate_regressions_all_cond_precovid:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do precovid
+  generate_reg_all_cond_unadjusted_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do precovid unadjusted
     needs:
     - generate_merged_precovid
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_precovid.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_precovid.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid1 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, postcovid1 
 
-  generate_regressions_all_cond_postcovid1:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid1
+  generate_reg_all_cond_unadjusted_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid1 unadjusted
     needs:
     - generate_merged_postcovid1
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_postcovid1.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_postcovid1.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid2 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, postcovid2 
 
-  generate_regressions_all_cond_postcovid2:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid2
+  generate_reg_all_cond_unadjusted_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid2 unadjusted
     needs:
     - generate_merged_postcovid2
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_postcovid2.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_postcovid2.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid3 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, postcovid3 
 
-  generate_regressions_all_cond_postcovid3:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid3
+  generate_reg_all_cond_unadjusted_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid3 unadjusted
     needs:
     - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_postcovid3.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_postcovid3.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, precovid 
+
+  generate_reg_all_cond_adjusted_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do precovid adjusted
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_precovid.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, postcovid1 
+
+  generate_reg_all_cond_adjusted_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid1 adjusted
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_postcovid1.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, postcovid2 
+
+  generate_reg_all_cond_adjusted_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid2 adjusted
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_postcovid2.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, postcovid3 
+
+  generate_reg_all_cond_adjusted_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid3 adjusted
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_postcovid3.csv
 
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: precovid 
 
   generate_regressions_acsc_precovid:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do precovid
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do precovid
     needs:
     - generate_merged_precovid
     outputs:
@@ -3029,7 +3069,7 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid1 
 
   generate_regressions_acsc_postcovid1:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid1
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do postcovid1
     needs:
     - generate_merged_postcovid1
     outputs:
@@ -3039,7 +3079,7 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid2 
 
   generate_regressions_acsc_postcovid2:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid2
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do postcovid2
     needs:
     - generate_merged_postcovid2
     outputs:
@@ -3049,28 +3089,78 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid3 
 
   generate_regressions_acsc_postcovid3:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid3
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do postcovid3
     needs:
     - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
         results_acsc_csv: output/regressions/results_acsc_postcovid3.csv
 
-  ## Generate a merged regression results table 
+  ## Create the forest plots 
 
-  generate_merged_summary:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_merge.do
+  generate_forest_plots:
+    run: r:latest analysis/outcome_time_var/all_cond_forest_plots.R
     needs:
-    - generate_regressions_all_cond_precovid
-    - generate_regressions_all_cond_postcovid1
-    - generate_regressions_all_cond_postcovid2
-    - generate_regressions_all_cond_postcovid3
+    - generate_reg_all_cond_unadjusted_precovid
+    - generate_reg_all_cond_unadjusted_postcovid1
+    - generate_reg_all_cond_unadjusted_postcovid2
+    - generate_reg_all_cond_unadjusted_postcovid3
+    - generate_reg_all_cond_adjusted_precovid
+    - generate_reg_all_cond_adjusted_postcovid1
+    - generate_reg_all_cond_adjusted_postcovid2
+    - generate_reg_all_cond_adjusted_postcovid3
     - generate_regressions_acsc_precovid
     - generate_regressions_acsc_postcovid1
     - generate_regressions_acsc_postcovid2
     - generate_regressions_acsc_postcovid3
     outputs:
       moderately_sensitive:
-        merged_results_all_cond_csv: output/regressions/results_all_cond.csv
-        merged_results_acsc_csv: output/regressions/results_acsc.csv
+        fp_apc_m1_adj_svg: output/regressions/fp_apc_m1_adjusted.svg
+        fp_apc_m2_adj_svg: output/regressions/fp_apc_m2_adjusted.svg
+        fp_ec_m1_adj_svg: output/regressions/fp_ec_m1_adjusted.svg
+        fp_ec_m2_adj_svg: output/regressions/fp_ec_m2_adjusted.svg
+        fp_apc_m1_unadj_svg: output/regressions/fp_apc_m1_unadjusted.svg
+        fp_apc_m2_unadj_svg: output/regressions/fp_apc_m2_unadjusted.svg
+        fp_ec_m1_unadj_svg: output/regressions/fp_ec_m1_unadjusted.svg
+        fp_ec_m2_unadj_svg: output/regressions/fp_ec_m2_unadjusted.svg
+
+  ## Correlation plots checking a linear exp & out relationship, precovid 
+
+  linear_check_corr_plots_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do precovid
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_precovid.svg
+
+  ## Correlation plots checking a linear exp & out relationship, postcovid1 
+
+  linear_check_corr_plots_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do postcovid1
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_postcovid1.svg
+
+  ## Correlation plots checking a linear exp & out relationship, postcovid2 
+
+  linear_check_corr_plots_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do postcovid2
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_postcovid2.svg
+
+  ## Correlation plots checking a linear exp & out relationship, postcovid3 
+
+  linear_check_corr_plots_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do postcovid3
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_postcovid3.svg
 

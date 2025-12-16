@@ -62,6 +62,9 @@ long_args_all <- c(
   long_args_outcomes
 )
 
+#Define regression categories
+covariates_all <- c("unadjusted", "adjusted")
+
 # Create generic action function -----------------------------------------------
 
 action <- function(
