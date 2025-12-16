@@ -10,7 +10,7 @@ if practice_measures:
     # Import variables function
     measures = create_measures()
     measures.configure_disclosure_control(enabled=False)    #disabling disclosure control for demonstration
-    measures.configure_dummy_data(population_size=10000, legacy = False)
+    measures.configure_dummy_data(population_size=10000, legacy=True)
 
     # Import longitudinal variables (focusing on time period)
     from variables_longitudinal import generate_variables
