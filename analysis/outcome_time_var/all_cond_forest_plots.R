@@ -6,233 +6,131 @@ library(ggplot2)
 library(dplyr)
 library(patchwork)
 library(svglite)
+library(stringr)
+library(viridis)
 
-
-#Importing data
+#Setting directories
 outdir <- here("output", "regressions")
 fs::dir_create(outdir)
-
-# Creating a list of file names
-file_names <- c(
-  "results_all_cond_adjusted_precovid",
-  "results_all_cond_adjusted_postcovid1",
-  "results_all_cond_adjusted_postcovid2",
-  "results_all_cond_adjusted_postcovid3",
-  "results_all_cond_unadjusted_precovid",
-  "results_all_cond_unadjusted_postcovid1",
-  "results_all_cond_unadjusted_postcovid2",
-  "results_all_cond_unadjusted_postcovid3"
-)
-
-# Creating a list? of column specifications
-col_spec <- cols(
-  cohort = col_character(),
-  hosp_type = col_character(),
-  acscs = col_character(),
-  model_form = col_character(),
-  out_var = col_character(),
-  exp_var = col_character(),
-  obs = col_double(),
-  irr_exp = col_double(),
-  se_exp = col_double(),
-  p_exp = col_double(),
-  lci_exp = col_double(),
-  uci_exp = col_double(),
-  irr_cons = col_double(),
-  se_cons = col_double(),
-  p_cons = col_double(),
-  lci_cons = col_double(),
-  uci_cons = col_double(),
-  variance_ri = col_double(),
-  se_ri = col_double(),
-  lci_ri = col_double(),
-  uci_ri = col_double(),
-  lrtest_comparing = col_character(),
-  chi2_lrtest = col_double(),
-  p_lrtest = col_double(),
-  ll = col_double(),
-  p_ll = col_double(),
-  aic = col_double(),
-  bic = col_double(),
-  error = col_double(),
-  check_p = col_character(),
-  check_irr = col_character(),
-  check_chi2 = col_character(),
-  model_form_num = col_double(),
-  exp_var_long = col_character(),
-  exp_var_num = col_double()
-)
-
-
-#Uploading and "merging" all the datasets we created in STATA 
-datasets <- list(
-  adjusted = map(c("precovid", "postcovid1", "postcovid2", "postcovid3"), function(cohort) {
-    read_csv(here("output", "regressions", paste0("results_all_cond_adjusted_", cohort, ".csv")), col_types = col_spec)
-  }) %>% setNames(c("precovid", "postcovid1", "postcovid2", "postcovid3")),
-  
-  unadjusted = map(c("precovid", "postcovid1", "postcovid2", "postcovid3"), function(cohort) {
-    read_csv(here("output", "regressions", paste0("results_all_cond_unadjusted_", cohort, ".csv")), col_types = col_spec)
-  }) %>% setNames(c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-)
-
 
 # Creating objects 
 outcomes <- c("apc", "ec")
 models <- c("Negative binomial random intercepts", "Poisson random intercepts")
+covariates <- c("yes", "no")
 
+#Putting the relevant csv files into a list 
+results <- list.files(path = outdir, pattern = paste0("all_cond.*\\.csv$"), full.names = TRUE) 
+  
+  print("This is the list of the csv files")
+  print(results)
 
-#Function to create the components of the forest plots
-# FUNCTION: make the text-plot
-make_text_plot <- function(data, cohort_name, outcome_name, model_name) {
-  plot_data <- data %>% 
-    filter(cohort == cohort_name, 
-           out_var == outcome_name, 
-           model_form == model_name)
+# Creating a function to import each .csv as a dataframe, applying this to all the list elements
+  all_cond_list <- lapply(results, function(file) {
+    readr::read_csv(file)
+  })
   
-  p <- ggplot(
-    plot_data, aes(y= fct_rev(exp_var_long))) + 
-    theme_void() +
-    theme(
-      plot.margin = margin(1, 1, 1, 1),
-      plot.title = element_text(face = "bold", size = 6, hjust = 0)) +
-    scale_x_continuous(limits = c(1, 1.1)) +
-    geom_text(aes(x=1, label = irr_lab), hjust = 0, size = 2) +
-    geom_text(aes(x=1.04, label = var_lab), hjust = 0, size = 2, color = "blue") +
-    labs(title = "IRR (95% CI); Lower & upper random-intercept bounds (blue)")
+  #Shorten the individual dataframe names 
+    file_name <- tools::file_path_sans_ext(basename(results))
+      file_name <- gsub("results_", "", file_name)  #shortening the file names
+      file_name <- gsub("adjusted", "adj", file_name)
+      file_name <- gsub("unadjusted", "unadj", file_name)
+      
+      names(all_cond_list) <- file_name #Apply new file names to list 
   
-  return(p)
+      
+#Combining all into one dataset, some data management to make graphing easier
+  all_cond <- bind_rows(all_cond_list, .id = "cohort") %>%
+    mutate(cohort_year = str_remove_all(cohort, "all_cond_adj_|all_cond_unadj_"),
+           cohort_year = str_replace_all(
+                            cohort_year, c("postcovid1" = "2018/19", "postcovid2" = "2022/23", 
+                            "postcovid3" = "2023/24","precovid" = "2024/25")),
+           cohort_num = as.numeric(factor(cohort_year, 
+                            levels = c("2018/19", "2022/23", "2023/24", "2024/25"))),
+           adjusted = case_when(!is.na(co_var) ~ "yes", is.na(co_var) ~"no")) 
+    
+
+#FUNCTION: make the forest plot
+make_forest_plot <- function(data, outcome, model, covariates) {
+  #First create the dataframe that will populate the forest plot 
+    plot_data <- data %>% 
+      filter(out_var == outcome, 
+             model_form == model,
+             adjusted == covariates) %>%
+      arrange(exp_var_num, cohort_num) %>%
+      mutate(row_id = row_number()) 
+    
+  #Then create a dataframe containg the y-axis label positions & text
+    y_axis <- plot_data  %>% 
+      group_by(exp_var_long) %>% 
+      summarise(hline_pos = last(row_id)+0.5,
+                lab_pos = mean(row_id))
+  #Vector to hold clean titles 
+    title1 <- ifelse(model == "Negative binomial random intercepts", "Negative binomial", "Poisson") 
+    title2 <- ifelse(covariates == "yes", "adjusted", "not adjusted")
+    
+  #Finally, create the forest plot 
+    p <- ggplot(plot_data, aes(x = irr_exp, y = row_id, color = cohort_year )) + 
+      geom_vline(xintercept = 1, linetype = "dashed", color = "gray50", linewidth = 0.4) +
+      geom_hline(yintercept = y_axis$hline_pos,linetype = "dashed", color = "gray75", linewidth = 0.2) +
+      geom_point(aes(x = irr_exp), size = 1, shape = 18) +
+      geom_errorbar(aes(xmin = lci_exp, xmax = uci_exp), width = 0.4, linewidth = 0.4) +
+      scale_y_continuous(breaks = y_axis$lab_pos, labels = y_axis$exp_var_long) +
+      scale_color_viridis(discrete=TRUE, option="viridis") +
+      labs(x = "IRR (95%CI)", 
+           title = paste0(title1, ", ", title2),
+           color = "Cohort") +
+      theme_classic() +
+      theme(plot.title = element_text(hjust = 0.5, size = 7),
+            axis.title.x = element_text(size = 5),
+            axis.text.x = element_text(size = 5),
+            axis.title.y = element_blank(),
+            axis.text.y = element_text(size = 5),
+            plot.margin = margin(1, 1, 1, 1),
+            aspect.ratio = 2.5)
+    
+    return(p)
 }
 
-# FUNCTION: make the forest plot
-make_forest_plot <- function(data, cohort_name, outcome_name, model_name, show_yaxis = FALSE) {
-  plot_data <- data %>% 
-    filter(cohort == cohort_name, 
-           out_var == outcome_name, 
-           model_form == model_name)
-  
-  p <- ggplot(plot_data, aes(y = fct_rev(exp_var_long))) +
-    geom_vline(xintercept = 1, linetype = "dashed", color = "gray50", linewidth = 0.4) +
-    geom_errorbar(aes(xmin = lci_exp, xmax = uci_exp), width = 0.4, linewidth = 0.4) +
-    geom_point(aes(x = irr_exp), size = 1, shape = 18) +
-    labs(title = cohort_name, x = "IRR") +
-    theme_classic() +
-    theme(
-      plot.margin = margin(1, 1, 1, 1),
-      panel.grid.major.x = element_line(color = "gray90", linewidth = 0.3),
-      plot.title = element_text(face = "bold", size = 6, hjust = 0.5),
-      axis.title.x = element_text(size = 6)
-    )
-  if (!show_yaxis) {
-    p <- p + theme(
-      axis.line.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      axis.text.y = element_blank(),
-      axis.title.y = element_blank()
-    )
-  } else {
-    p <- p + labs(y = "") + 
-      theme(axis.text.y = element_text(size = 5))
-  }
-  
-  return(p)
-}
+#Looping through all model forms, outcomes, and adjustment types & creating forest plots for each 
+# Create plots for all cohorts, outcomes, and models 
+plot_list <- list()
+  for (c in covariates) {
+    for (o in outcomes) {
+      for (m in models) {
 
-
-# A loop to go through the combined datasets, by cohort and adjustment type
-# And then create the plots for each  
-
-for (adjustment_type in c("adjusted", "unadjusted")) {
-  # Combine all cohorts for this adjustment type
-  all_cond <- bind_rows(datasets[[adjustment_type]], .id = "cohort_id")
-  
-  #Order cohorts
-  cohorts <- unique(all_cond$cohort)
-  
-  # Adding formatted labels to the data
-  all_cond <- all_cond %>%
-    arrange(exp_var_num) %>%
-    mutate(
-      exp_var_long = fct_reorder(exp_var_long, exp_var_num),
-      irr_formatted = sprintf("%.2f", irr_exp),
-      lci_formatted = sprintf("%.2f", lci_exp),
-      uci_formatted = sprintf("%.2f", uci_exp),
-      irr_lab = paste0(irr_formatted, " (", lci_formatted, "-", uci_formatted, ")"),
-      var_lb_ri_formatted = sprintf("%.2f", lb_ri_irr),
-      var_ub_ri_formatted = sprintf("%.2f", ub_ri_irr),
-      var_lab = paste0(var_lb_ri_formatted, "-", var_ub_ri_formatted)
-    )
-
-  # Create plots for all cohorts, outcomes, and models 
-  plot_list <- list()
-  
-  for (cohort in cohorts) {
-    for (outcome in outcomes) {
-      for (model in models) {
-        model_short <- ifelse(model == "Negative binomial random intercepts", "m1", "m2")
+        m2 <- ifelse(m == "Negative binomial random intercepts", "nb", "pois")
+        c2 <- ifelse(c == "yes", "adj", "unadj")
         
-        text_name <- paste0("text_", outcome, "_", gsub(" ", "_", model_short), "_", cohort)
-        fp_name <- paste0("fp_", outcome, "_", gsub(" ", "_", model_short), "_", cohort)
+        #text_name <- paste0("text_", outcome, "_", gsub(" ", "_", model_short), "_", cohort)
+        #plot_list[[text_name]] <- make_text_plot(all_cond, cohort, outcome, model)
         
-        plot_list[[text_name]] <- make_text_plot(all_cond, cohort, outcome, model)
-        plot_list[[fp_name]] <- make_forest_plot(all_cond, cohort, outcome, model, show_yaxis = TRUE)
+        fp_name <- paste0("fp_", m2, "_", o, "_",  c2)
+        plot_list[[fp_name]] <- make_forest_plot(all_cond, o, m, c)
       }
     }
   }
+
+#Combining the plots
+#APC 
+  fp_apc <-(plot_list$fp_nb_apc_adj +plot_list$fp_nb_apc_unadj +   
+            plot_list$fp_pois_apc_adj + plot_list$fp_pois_apc_unadj + 
+            plot_layout(ncol = 4, nrow = 1, 
+                        heights = c(4), widths = c(5), guides = "collect") & 
+                        theme(legend.position = "bottom")) +
+            plot_annotation(
+              title = "APC admissions - results of one-to-one regressions with random-intercepts",
+              theme = theme(plot.title = element_text(size = 9, face = "bold", hjust = 0.5)))
   
-  # Combining the plots
-  # APC 
-  apc_m1 <- plot_list[["text_apc_m1_precovid"]] + plot_list[["fp_apc_m1_precovid"]] +
-    plot_list[["text_apc_m1_postcovid1"]] + plot_list[["fp_apc_m1_postcovid1"]] +
-    plot_list[["text_apc_m1_postcovid2"]] + plot_list[["fp_apc_m1_postcovid2"]] +
-    plot_list[["text_apc_m1_postcovid3"]] + plot_list[["fp_apc_m1_postcovid3"]] + 
-    plot_layout(ncol = 2, nrow=4, widths = c(2, 3, 2, 3, 2, 3, 2, 3)) +
-    plot_annotation(
-      title = paste0("APC admissions - negative binomial model with random-intercepts (", adjustment_type, ")"),
-      subtitle = "Forest plots show the incidence rate ratios for each exposure, obtained from one-to-one regressions",
-      theme = theme(
-        plot.title = element_text(size = 10, face = "bold", hjust = 0),
-        plot.subtitle = element_text(size = 8, hjust = 0)))    
+  ggsave(filename = paste0("fp_apc.svg"), path=outdir, plot= fp_apc, width = 10, height = 5)    
+
+#EC
+  fp_ec <-(plot_list$fp_nb_ec_adj + plot_list$fp_nb_ec_unadj + 
+           plot_list$fp_pois_ec_adj +  plot_list$fp_pois_ec_unadj + 
+           plot_layout(ncol = 4, nrow = 1, 
+                       heights = c(4), widths = c(5), guides = "collect") & 
+                       theme(legend.position = "bottom")) +
+           plot_annotation(
+              title = "EC admissions - results of one-to-one regressions with random-intercepts",
+              theme = theme(plot.title = element_text(size = 9, face = "bold", hjust = 0.5)))
   
-  apc_m2 <- plot_list[["text_apc_m2_precovid"]] + plot_list[["fp_apc_m2_precovid"]] +
-    plot_list[["text_apc_m2_postcovid1"]] + plot_list[["fp_apc_m2_postcovid1"]] +
-    plot_list[["text_apc_m2_postcovid2"]] + plot_list[["fp_apc_m2_postcovid2"]] +
-    plot_list[["text_apc_m2_postcovid3"]] + plot_list[["fp_apc_m2_postcovid3"]] +
-    plot_layout(ncol = 2, nrow = 4, widths = c(2, 3, 2, 3, 2, 3, 2, 3)) +
-    plot_annotation(
-      title = paste0("APC admissions - Poisson model with random-intercepts (", adjustment_type, ")"),
-      subtitle = "Forest plots show the incidence rate ratios for each exposure, obtained from one-to-one regressions",
-      theme = theme(
-        plot.title = element_text(size = 10, face = "bold", hjust = 0),
-        plot.subtitle = element_text(size = 8, hjust = 0)))    
-  
-  # EC
-  ec_m1 <- plot_list[["text_ec_m1_precovid"]] + plot_list[["fp_ec_m1_precovid"]] +
-    plot_list[["text_ec_m1_postcovid1"]] + plot_list[["fp_ec_m1_postcovid1"]] +
-    plot_list[["text_ec_m1_postcovid2"]] + plot_list[["fp_ec_m1_postcovid2"]] +
-    plot_list[["text_ec_m1_postcovid3"]] + plot_list[["fp_ec_m1_postcovid3"]] +
-    plot_layout(ncol = 2, widths = c(2, 3, 2, 3, 2, 3, 2, 3)) +
-    plot_annotation(
-      title = paste0("EC admissions - negative binomial model with random-intercepts (", adjustment_type, ")"),
-      subtitle = "Forest plots show the incidence rate ratios for each exposure, obtained from one-to-one regressions",
-      theme = theme(
-        plot.title = element_text(size = 10, face = "bold", hjust = 0),
-        plot.subtitle = element_text(size = 8, hjust = 0)))    
-  
-  ec_m2 <- plot_list[["text_ec_m2_precovid"]] + plot_list[["fp_ec_m2_precovid"]] +
-    plot_list[["text_ec_m2_postcovid1"]] + plot_list[["fp_ec_m2_postcovid1"]] +
-    plot_list[["text_ec_m2_postcovid2"]] + plot_list[["fp_ec_m2_postcovid2"]] +
-    plot_list[["text_ec_m2_postcovid3"]] + plot_list[["fp_ec_m2_postcovid3"]] +
-    plot_layout(ncol = 2, widths = c(2, 3, 2, 3, 2, 3, 2, 3)) +
-    plot_annotation(
-      title = paste0("EC admissions - Poisson model with random-intercepts (", adjustment_type, ")"),
-      subtitle = "Forest plots show the incidence rate ratios for each exposure, obtained from one-to-one regressions",
-      theme = theme(
-        plot.title = element_text(size = 10, face = "bold", hjust = 0),
-        plot.subtitle = element_text(size = 8, hjust = 0)))    
-  
-  # Saving the graphs with adjustment type in filename
-  ggsave(filename = paste0("fp_apc_m1_", adjustment_type, ".svg"), path=outdir, plot= apc_m1, width = 7, height = 10)    
-  ggsave(filename = paste0("fp_apc_m2_", adjustment_type, ".svg"), path=outdir, plot= apc_m2, width = 7, height = 10)    
-  ggsave(filename = paste0("fp_ec_m1_", adjustment_type, ".svg"), path=outdir, plot= ec_m1, width = 7, height = 10)    
-  ggsave(filename = paste0("fp_ec_m2_", adjustment_type, ".svg"), path=outdir, plot= ec_m2, width = 7, height = 10)    
-}
+  ggsave(filename = paste0("fp_ec.svg"), path=outdir, plot= fp_ec, width = 10, height = 5)    
