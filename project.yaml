@@ -2240,7 +2240,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: precovid 
 
   generate_merged_precovid:
-    run: r:latest analysis/dataset_clean/dataset_merge.R precovid 2018-10-01
+    run: r:latest analysis/dataset_clean/measures_merge.R precovid 2018-10-01
     needs:
     - generate_measures_precovid_2018-10-01_age
     - generate_measures_precovid_2018-10-01_sex
@@ -2285,7 +2285,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: postcovid1 
 
   generate_merged_postcovid1:
-    run: r:latest analysis/dataset_clean/dataset_merge.R postcovid1 2022-10-01
+    run: r:latest analysis/dataset_clean/measures_merge.R postcovid1 2022-10-01
     needs:
     - generate_measures_postcovid1_2022-10-01_age
     - generate_measures_postcovid1_2022-10-01_sex
@@ -2331,7 +2331,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: postcovid2 
 
   generate_merged_postcovid2:
-    run: r:latest analysis/dataset_clean/dataset_merge.R postcovid2 2023-10-01
+    run: r:latest analysis/dataset_clean/measures_merge.R postcovid2 2023-10-01
     needs:
     - generate_measures_postcovid2_2023-10-01_age
     - generate_measures_postcovid2_2023-10-01_sex
@@ -2377,7 +2377,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: postcovid3 
 
   generate_merged_postcovid3:
-    run: r:latest analysis/dataset_clean/dataset_merge.R postcovid3 2024-10-01
+    run: r:latest analysis/dataset_clean/measures_merge.R postcovid3 2024-10-01
     needs:
     - generate_measures_postcovid3_2024-10-01_age
     - generate_measures_postcovid3_2024-10-01_sex

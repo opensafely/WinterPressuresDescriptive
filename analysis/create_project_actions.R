@@ -340,7 +340,7 @@ for (cohort in cohorts_all) {
     glue("^generate_measures_{cohort}_")
   )]
 
-  #Actually defining the action to run the analysis/datset_clean/dataset_merge.R script for each cohort
+  #Actually defining the action to run the analysis/datset_clean/measures_merge.R script for each cohort
   check_and_merge_action <- c(
     comment(glue(
       "Check measures files & generate merged datasets for cohort: {cohort}"
@@ -348,7 +348,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_merged_{cohort}"),
       run = glue(
-        "r:latest analysis/dataset_clean/dataset_merge.R {cohort} {date}"
+        "r:latest analysis/dataset_clean/measures_merge.R {cohort} {date}"
       ),
       needs = generate_measures_list,
       moderately_sensitive = list(
