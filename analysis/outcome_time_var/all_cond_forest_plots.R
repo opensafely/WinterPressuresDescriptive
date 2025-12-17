@@ -42,12 +42,16 @@ results <- list.files(path = outdir, pattern = paste0("all_cond.*\\.csv$"), full
   all_cond <- bind_rows(all_cond_list, .id = "cohort") %>%
     mutate(cohort_year = str_remove_all(cohort, "all_cond_adj_|all_cond_unadj_"),
            cohort_year = str_replace_all(
-                            cohort_year, c("postcovid1" = "2018/19", "postcovid2" = "2022/23", 
-                            "postcovid3" = "2023/24","precovid" = "2024/25")),
+                            cohort_year, c("precovid" = "2018/19", "postcovid1" = "2022/23", 
+                            "postcovid2" = "2023/24","postcovid3" = "2024/25")),
+           cohort_year = factor(cohort_year,
+                                levels = c("2018/19", "2022/23", "2023/24", "2024/25"),
+                                ordered = TRUE),
            cohort_num = as.numeric(factor(cohort_year, 
                             levels = c("2018/19", "2022/23", "2023/24", "2024/25"))),
-           adjusted = case_when(!is.na(co_var) ~ "yes", is.na(co_var) ~"no")) 
-    
+           adjusted = if_else(!is.na(co_var), "yes", "no"))
+  
+ 
 
 #FUNCTION: make the forest plot
 make_forest_plot <- function(data, outcome, model, covariates) {
@@ -62,8 +66,9 @@ make_forest_plot <- function(data, outcome, model, covariates) {
   #Then create a dataframe containg the y-axis label positions & text
     y_axis <- plot_data  %>% 
       group_by(exp_var_long) %>% 
-      summarise(hline_pos = last(row_id)+0.5,
+      summarise(hline_pos = max(row_id)+0.5,
                 lab_pos = mean(row_id))
+    
   #Vector to hold clean titles 
     title1 <- ifelse(model == "Negative binomial random intercepts", "Negative binomial", "Poisson") 
     title2 <- ifelse(covariates == "yes", "adjusted", "not adjusted")
