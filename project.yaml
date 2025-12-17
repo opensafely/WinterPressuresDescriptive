@@ -2439,8 +2439,17 @@ actions:
     - generate_input_precovid_clean
     outputs:
       moderately_sensitive:
-        table1: output/table1/table1-cohort_precovid.csv
         table1_midpoint6: output/table1/table1-cohort_precovid-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - precovid 
+
+  generate_table2_precovid:
+    run: r:latest analysis/table2/table2.R precovid
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      moderately_sensitive:
+        table2_midpoint6: output/table2/table2-cohort_precovid-midpoint6.csv
 
   ## Generate cleaned input dataset - postcovid1 
 
@@ -2461,8 +2470,17 @@ actions:
     - generate_input_postcovid1_clean
     outputs:
       moderately_sensitive:
-        table1: output/table1/table1-cohort_postcovid1.csv
         table1_midpoint6: output/table1/table1-cohort_postcovid1-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - postcovid1 
+
+  generate_table2_postcovid1:
+    run: r:latest analysis/table2/table2.R postcovid1
+    needs:
+    - generate_input_postcovid1_clean
+    outputs:
+      moderately_sensitive:
+        table2_midpoint6: output/table2/table2-cohort_postcovid1-midpoint6.csv
 
   ## Generate cleaned input dataset - postcovid2 
 
@@ -2483,8 +2501,17 @@ actions:
     - generate_input_postcovid2_clean
     outputs:
       moderately_sensitive:
-        table1: output/table1/table1-cohort_postcovid2.csv
         table1_midpoint6: output/table1/table1-cohort_postcovid2-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - postcovid2 
+
+  generate_table2_postcovid2:
+    run: r:latest analysis/table2/table2.R postcovid2
+    needs:
+    - generate_input_postcovid2_clean
+    outputs:
+      moderately_sensitive:
+        table2_midpoint6: output/table2/table2-cohort_postcovid2-midpoint6.csv
 
   ## Generate cleaned input dataset - postcovid3 
 
@@ -2505,8 +2532,17 @@ actions:
     - generate_input_postcovid3_clean
     outputs:
       moderately_sensitive:
-        table1: output/table1/table1-cohort_postcovid3.csv
         table1_midpoint6: output/table1/table1-cohort_postcovid3-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - postcovid3 
+
+  generate_table2_postcovid3:
+    run: r:latest analysis/table2/table2.R postcovid3
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      moderately_sensitive:
+        table2_midpoint6: output/table2/table2-cohort_postcovid3-midpoint6.csv
 
   ## Generates dataset for the outcome graphs, cohort: precovid 
 

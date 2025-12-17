@@ -169,9 +169,27 @@ generate_table1 <- function(cohort) {
         glue("generate_input_{cohort}_clean")
       ),
       moderately_sensitive = list(
-        table1 = glue("output/table1/table1-cohort_{cohort}.csv"),
         table1_midpoint6 = glue(
           "output/table1/table1-cohort_{cohort}-midpoint6.csv"
+        )
+      )
+    )
+  )
+}
+
+# Generate Table 2
+generate_table2 <- function(cohort) {
+  splice(
+    comment(glue("Generate Table 2 summary statistics - {cohort}")),
+    action(
+      name = glue("generate_table2_{cohort}"),
+      run = glue("r:latest analysis/table2/table2.R {cohort}"),
+      needs = list(
+        glue("generate_input_{cohort}_clean")
+      ),
+      moderately_sensitive = list(
+        table2_midpoint6 = glue(
+          "output/table2/table2-cohort_{cohort}-midpoint6.csv"
         )
       )
     )
@@ -362,11 +380,14 @@ for (cohort in cohorts_all) {
   #Append check_and_merge actions to main action list
   actions_list <- c(actions_list, check_and_merge_action)
 }
-# Append input_clean + Table 1 actions -------------------------------------------
+
+# Append input_clean + Table 1 + Table 2 actions -------------------------------------------
 for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_input_clean(cohort))
   actions_list <- c(actions_list, generate_table1(cohort))
+  actions_list <- c(actions_list, generate_table2(cohort))
 }
+
 #Add action: generate the tables used for the descriptive outcome graphs
 for (cohort in cohorts_all) {
   date <- cohort_dates[[cohort]] #Pull in the date for the cohort
