@@ -3,12 +3,13 @@ restrict_variables <- function(input) {
     message("Restricting to relevant variables only")
 
     # ----------------------------------------------------------------------
-    # 1. Remove all unrounded numerator/denominator variables
+    # 1. Remove all unrounded numerator/denominator of exposure variables
     # ----------------------------------------------------------------------
 
     drop_raw_num_denom <- names(input)[
         grepl("^(num_|denom_)", names(input)) & # any num_ or denom_
-            !grepl("_mp6$", names(input)) # but NOT ending in _mp6
+            !grepl("_mp6$", names(input)) & # but NOT ending in _mp6
+            !grepl("apc_|ec_", names(input)) # but NOT ending in _mp7
     ]
 
     # Count how many will be removed
