@@ -789,7 +789,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_consultation_postcovid3.csv
 
-  ## Generate measures for ec_all (longitudinal) - precovid - main 
+  ## Generate measures for ec_all - precovid - main 
 
   generate_measures_precovid_2018-10-01-main-ec_all:
     run: |-
@@ -803,7 +803,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_precovid_main.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid1 - main 
+  ## Generate measures for ec_all - postcovid1 - main 
 
   generate_measures_postcovid1_2022-10-01-main-ec_all:
     run: |-
@@ -817,7 +817,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid1_main.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid2 - main 
+  ## Generate measures for ec_all - postcovid2 - main 
 
   generate_measures_postcovid2_2023-10-01-main-ec_all:
     run: |-
@@ -831,7 +831,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2_main.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid3 - main 
+  ## Generate measures for ec_all - postcovid3 - main 
 
   generate_measures_postcovid3_2024-10-01-main-ec_all:
     run: |-
@@ -845,7 +845,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid3_main.csv
 
-  ## Generate measures for apc_all (longitudinal) - precovid - main 
+  ## Generate measures for apc_all - precovid - main 
 
   generate_measures_precovid_2018-10-01-main-apc_all:
     run: |-
@@ -859,7 +859,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_precovid_main.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid1 - main 
+  ## Generate measures for apc_all - postcovid1 - main 
 
   generate_measures_postcovid1_2022-10-01-main-apc_all:
     run: |-
@@ -873,7 +873,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid1_main.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid2 - main 
+  ## Generate measures for apc_all - postcovid2 - main 
 
   generate_measures_postcovid2_2023-10-01-main-apc_all:
     run: |-
@@ -887,7 +887,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2_main.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid3 - main 
+  ## Generate measures for apc_all - postcovid3 - main 
 
   generate_measures_postcovid3_2024-10-01-main-apc_all:
     run: |-
@@ -901,7 +901,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid3_main.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - precovid - main 
+  ## Generate measures for ec_ACSCs - precovid - main 
 
   generate_measures_precovid_2018-10-01-main-ec_acscs:
     run: |-
@@ -915,7 +915,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_precovid_main.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 - main 
+  ## Generate measures for ec_ACSCs - postcovid1 - main 
 
   generate_measures_postcovid1_2022-10-01-main-ec_acscs:
     run: |-
@@ -929,7 +929,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid1_main.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 - main 
+  ## Generate measures for ec_ACSCs - postcovid2 - main 
 
   generate_measures_postcovid2_2023-10-01-main-ec_acscs:
     run: |-
@@ -943,7 +943,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2_main.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 - main 
+  ## Generate measures for ec_ACSCs - postcovid3 - main 
 
   generate_measures_postcovid3_2024-10-01-main-ec_acscs:
     run: |-
@@ -957,7 +957,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid3_main.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - precovid - main 
+  ## Generate measures for apc_ACSCs - precovid - main 
 
   generate_measures_precovid_2018-10-01-main-apc_acscs:
     run: |-
@@ -971,7 +971,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_precovid_main.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 - main 
+  ## Generate measures for apc_ACSCs - postcovid1 - main 
 
   generate_measures_postcovid1_2022-10-01-main-apc_acscs:
     run: |-
@@ -985,7 +985,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid1_main.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 - main 
+  ## Generate measures for apc_ACSCs - postcovid2 - main 
 
   generate_measures_postcovid2_2023-10-01-main-apc_acscs:
     run: |-
@@ -999,7 +999,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2_main.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 - main 
+  ## Generate measures for apc_ACSCs - postcovid3 - main 
 
   generate_measures_postcovid3_2024-10-01-main-apc_acscs:
     run: |-
@@ -1013,7 +1013,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_main.csv
 
-  ## Generate measures for ec_all (longitudinal) - precovid - sub_asthma 
+  ## Generate measures for ec_all - precovid - sub_asthma 
 
   generate_measures_precovid_2018-10-01-sub_asthma-ec_all:
     run: |-
@@ -1027,7 +1027,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_precovid_sub_asthma.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid1 - sub_asthma 
+  ## Generate measures for ec_all - postcovid1 - sub_asthma 
 
   generate_measures_postcovid1_2022-10-01-sub_asthma-ec_all:
     run: |-
@@ -1041,7 +1041,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid1_sub_asthma.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid2 - sub_asthma 
+  ## Generate measures for ec_all - postcovid2 - sub_asthma 
 
   generate_measures_postcovid2_2023-10-01-sub_asthma-ec_all:
     run: |-
@@ -1055,7 +1055,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2_sub_asthma.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid3 - sub_asthma 
+  ## Generate measures for ec_all - postcovid3 - sub_asthma 
 
   generate_measures_postcovid3_2024-10-01-sub_asthma-ec_all:
     run: |-
@@ -1069,7 +1069,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid3_sub_asthma.csv
 
-  ## Generate measures for apc_all (longitudinal) - precovid - sub_asthma 
+  ## Generate measures for apc_all - precovid - sub_asthma 
 
   generate_measures_precovid_2018-10-01-sub_asthma-apc_all:
     run: |-
@@ -1083,7 +1083,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_precovid_sub_asthma.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid1 - sub_asthma 
+  ## Generate measures for apc_all - postcovid1 - sub_asthma 
 
   generate_measures_postcovid1_2022-10-01-sub_asthma-apc_all:
     run: |-
@@ -1097,7 +1097,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid1_sub_asthma.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid2 - sub_asthma 
+  ## Generate measures for apc_all - postcovid2 - sub_asthma 
 
   generate_measures_postcovid2_2023-10-01-sub_asthma-apc_all:
     run: |-
@@ -1111,7 +1111,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2_sub_asthma.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid3 - sub_asthma 
+  ## Generate measures for apc_all - postcovid3 - sub_asthma 
 
   generate_measures_postcovid3_2024-10-01-sub_asthma-apc_all:
     run: |-
@@ -1125,7 +1125,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid3_sub_asthma.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - precovid - sub_asthma 
+  ## Generate measures for ec_ACSCs - precovid - sub_asthma 
 
   generate_measures_precovid_2018-10-01-sub_asthma-ec_acscs:
     run: |-
@@ -1139,9 +1139,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_precovid_sub_asthma.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 - sub_asthma
-
-    
+  ## Generate measures for ec_ACSCs - postcovid1 - sub_asthma 
 
   generate_measures_postcovid1_2022-10-01-sub_asthma-ec_acscs:
     run: |-
@@ -1155,9 +1153,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid1_sub_asthma.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 - sub_asthma
-
-    
+  ## Generate measures for ec_ACSCs - postcovid2 - sub_asthma 
 
   generate_measures_postcovid2_2023-10-01-sub_asthma-ec_acscs:
     run: |-
@@ -1171,9 +1167,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2_sub_asthma.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 - sub_asthma
-
-    
+  ## Generate measures for ec_ACSCs - postcovid3 - sub_asthma 
 
   generate_measures_postcovid3_2024-10-01-sub_asthma-ec_acscs:
     run: |-
@@ -1187,7 +1181,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid3_sub_asthma.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - precovid - sub_asthma 
+  ## Generate measures for apc_ACSCs - precovid - sub_asthma 
 
   generate_measures_precovid_2018-10-01-sub_asthma-apc_acscs:
     run: |-
@@ -1201,9 +1195,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_precovid_sub_asthma.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 - sub_asthma
-
-    
+  ## Generate measures for apc_ACSCs - postcovid1 - sub_asthma 
 
   generate_measures_postcovid1_2022-10-01-sub_asthma-apc_acscs:
     run: |-
@@ -1217,9 +1209,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid1_sub_asthma.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 - sub_asthma
-
-    
+  ## Generate measures for apc_ACSCs - postcovid2 - sub_asthma 
 
   generate_measures_postcovid2_2023-10-01-sub_asthma-apc_acscs:
     run: |-
@@ -1233,9 +1223,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2_sub_asthma.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 - sub_asthma
-
-    
+  ## Generate measures for apc_ACSCs - postcovid3 - sub_asthma 
 
   generate_measures_postcovid3_2024-10-01-sub_asthma-apc_acscs:
     run: |-
@@ -1249,7 +1237,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_asthma.csv
 
-  ## Generate measures for ec_all (longitudinal) - precovid - sub_copd 
+  ## Generate measures for ec_all - precovid - sub_copd 
 
   generate_measures_precovid_2018-10-01-sub_copd-ec_all:
     run: |-
@@ -1263,7 +1251,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_precovid_sub_copd.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid1 - sub_copd 
+  ## Generate measures for ec_all - postcovid1 - sub_copd 
 
   generate_measures_postcovid1_2022-10-01-sub_copd-ec_all:
     run: |-
@@ -1277,7 +1265,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid1_sub_copd.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid2 - sub_copd 
+  ## Generate measures for ec_all - postcovid2 - sub_copd 
 
   generate_measures_postcovid2_2023-10-01-sub_copd-ec_all:
     run: |-
@@ -1291,7 +1279,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2_sub_copd.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid3 - sub_copd 
+  ## Generate measures for ec_all - postcovid3 - sub_copd 
 
   generate_measures_postcovid3_2024-10-01-sub_copd-ec_all:
     run: |-
@@ -1305,7 +1293,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid3_sub_copd.csv
 
-  ## Generate measures for apc_all (longitudinal) - precovid - sub_copd 
+  ## Generate measures for apc_all - precovid - sub_copd 
 
   generate_measures_precovid_2018-10-01-sub_copd-apc_all:
     run: |-
@@ -1319,7 +1307,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_precovid_sub_copd.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid1 - sub_copd 
+  ## Generate measures for apc_all - postcovid1 - sub_copd 
 
   generate_measures_postcovid1_2022-10-01-sub_copd-apc_all:
     run: |-
@@ -1333,7 +1321,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid1_sub_copd.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid2 - sub_copd 
+  ## Generate measures for apc_all - postcovid2 - sub_copd 
 
   generate_measures_postcovid2_2023-10-01-sub_copd-apc_all:
     run: |-
@@ -1347,7 +1335,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2_sub_copd.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid3 - sub_copd 
+  ## Generate measures for apc_all - postcovid3 - sub_copd 
 
   generate_measures_postcovid3_2024-10-01-sub_copd-apc_all:
     run: |-
@@ -1361,7 +1349,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid3_sub_copd.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - precovid - sub_copd 
+  ## Generate measures for ec_ACSCs - precovid - sub_copd 
 
   generate_measures_precovid_2018-10-01-sub_copd-ec_acscs:
     run: |-
@@ -1375,7 +1363,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_precovid_sub_copd.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 - sub_copd 
+  ## Generate measures for ec_ACSCs - postcovid1 - sub_copd 
 
   generate_measures_postcovid1_2022-10-01-sub_copd-ec_acscs:
     run: |-
@@ -1389,7 +1377,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid1_sub_copd.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 - sub_copd 
+  ## Generate measures for ec_ACSCs - postcovid2 - sub_copd 
 
   generate_measures_postcovid2_2023-10-01-sub_copd-ec_acscs:
     run: |-
@@ -1403,7 +1391,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2_sub_copd.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 - sub_copd 
+  ## Generate measures for ec_ACSCs - postcovid3 - sub_copd 
 
   generate_measures_postcovid3_2024-10-01-sub_copd-ec_acscs:
     run: |-
@@ -1417,7 +1405,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid3_sub_copd.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - precovid - sub_copd 
+  ## Generate measures for apc_ACSCs - precovid - sub_copd 
 
   generate_measures_precovid_2018-10-01-sub_copd-apc_acscs:
     run: |-
@@ -1431,7 +1419,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_precovid_sub_copd.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 - sub_copd 
+  ## Generate measures for apc_ACSCs - postcovid1 - sub_copd 
 
   generate_measures_postcovid1_2022-10-01-sub_copd-apc_acscs:
     run: |-
@@ -1445,7 +1433,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid1_sub_copd.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 - sub_copd 
+  ## Generate measures for apc_ACSCs - postcovid2 - sub_copd 
 
   generate_measures_postcovid2_2023-10-01-sub_copd-apc_acscs:
     run: |-
@@ -1459,7 +1447,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2_sub_copd.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 - sub_copd 
+  ## Generate measures for apc_ACSCs - postcovid3 - sub_copd 
 
   generate_measures_postcovid3_2024-10-01-sub_copd-apc_acscs:
     run: |-
@@ -1473,9 +1461,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_copd.csv
 
-  ## Generate measures for ec_all (longitudinal) - precovid - sub_hypertension
-
-    
+  ## Generate measures for ec_all - precovid - sub_hypertension 
 
   generate_measures_precovid_2018-10-01-sub_hypertension-ec_all:
     run: |-
@@ -1489,9 +1475,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_precovid_sub_hypertension.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid1 - sub_hypertension
-
-    
+  ## Generate measures for ec_all - postcovid1 - sub_hypertension 
 
   generate_measures_postcovid1_2022-10-01-sub_hypertension-ec_all:
     run: |-
@@ -1505,9 +1489,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid1_sub_hypertension.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid2 - sub_hypertension
-
-    
+  ## Generate measures for ec_all - postcovid2 - sub_hypertension 
 
   generate_measures_postcovid2_2023-10-01-sub_hypertension-ec_all:
     run: |-
@@ -1521,9 +1503,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2_sub_hypertension.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid3 - sub_hypertension
-
-    
+  ## Generate measures for ec_all - postcovid3 - sub_hypertension 
 
   generate_measures_postcovid3_2024-10-01-sub_hypertension-ec_all:
     run: |-
@@ -1537,9 +1517,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid3_sub_hypertension.csv
 
-  ## Generate measures for apc_all (longitudinal) - precovid - sub_hypertension
-
-    
+  ## Generate measures for apc_all - precovid - sub_hypertension 
 
   generate_measures_precovid_2018-10-01-sub_hypertension-apc_all:
     run: |-
@@ -1553,9 +1531,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_precovid_sub_hypertension.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid1 - sub_hypertension
-
-    
+  ## Generate measures for apc_all - postcovid1 - sub_hypertension 
 
   generate_measures_postcovid1_2022-10-01-sub_hypertension-apc_all:
     run: |-
@@ -1569,9 +1545,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid1_sub_hypertension.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid2 - sub_hypertension
-
-    
+  ## Generate measures for apc_all - postcovid2 - sub_hypertension 
 
   generate_measures_postcovid2_2023-10-01-sub_hypertension-apc_all:
     run: |-
@@ -1585,9 +1559,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2_sub_hypertension.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid3 - sub_hypertension
-
-    
+  ## Generate measures for apc_all - postcovid3 - sub_hypertension 
 
   generate_measures_postcovid3_2024-10-01-sub_hypertension-apc_all:
     run: |-
@@ -1601,9 +1573,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid3_sub_hypertension.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - precovid - sub_hypertension
-
-    
+  ## Generate measures for ec_ACSCs - precovid - sub_hypertension 
 
   generate_measures_precovid_2018-10-01-sub_hypertension-ec_acscs:
     run: |-
@@ -1617,9 +1587,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_precovid_sub_hypertension.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 - sub_hypertension
-
-    
+  ## Generate measures for ec_ACSCs - postcovid1 - sub_hypertension 
 
   generate_measures_postcovid1_2022-10-01-sub_hypertension-ec_acscs:
     run: |-
@@ -1633,9 +1601,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid1_sub_hypertension.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 - sub_hypertension
-
-    
+  ## Generate measures for ec_ACSCs - postcovid2 - sub_hypertension 
 
   generate_measures_postcovid2_2023-10-01-sub_hypertension-ec_acscs:
     run: |-
@@ -1649,9 +1615,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2_sub_hypertension.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 - sub_hypertension
-
-    
+  ## Generate measures for ec_ACSCs - postcovid3 - sub_hypertension 
 
   generate_measures_postcovid3_2024-10-01-sub_hypertension-ec_acscs:
     run: |-
@@ -1665,9 +1629,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid3_sub_hypertension.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - precovid - sub_hypertension
-
-    
+  ## Generate measures for apc_ACSCs - precovid - sub_hypertension 
 
   generate_measures_precovid_2018-10-01-sub_hypertension-apc_acscs:
     run: |-
@@ -1681,9 +1643,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_precovid_sub_hypertension.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 - sub_hypertension
-
-    
+  ## Generate measures for apc_ACSCs - postcovid1 - sub_hypertension 
 
   generate_measures_postcovid1_2022-10-01-sub_hypertension-apc_acscs:
     run: |-
@@ -1697,9 +1657,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid1_sub_hypertension.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 - sub_hypertension
-
-    
+  ## Generate measures for apc_ACSCs - postcovid2 - sub_hypertension 
 
   generate_measures_postcovid2_2023-10-01-sub_hypertension-apc_acscs:
     run: |-
@@ -1713,9 +1671,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2_sub_hypertension.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 - sub_hypertension
-
-    
+  ## Generate measures for apc_ACSCs - postcovid3 - sub_hypertension 
 
   generate_measures_postcovid3_2024-10-01-sub_hypertension-apc_acscs:
     run: |-
@@ -1729,7 +1685,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_hypertension.csv
 
-  ## Generate measures for ec_all (longitudinal) - precovid - sub_diabetes 
+  ## Generate measures for ec_all - precovid - sub_diabetes 
 
   generate_measures_precovid_2018-10-01-sub_diabetes-ec_all:
     run: |-
@@ -1743,9 +1699,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_precovid_sub_diabetes.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid1 - sub_diabetes
-
-    
+  ## Generate measures for ec_all - postcovid1 - sub_diabetes 
 
   generate_measures_postcovid1_2022-10-01-sub_diabetes-ec_all:
     run: |-
@@ -1759,9 +1713,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid1_sub_diabetes.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid2 - sub_diabetes
-
-    
+  ## Generate measures for ec_all - postcovid2 - sub_diabetes 
 
   generate_measures_postcovid2_2023-10-01-sub_diabetes-ec_all:
     run: |-
@@ -1775,9 +1727,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2_sub_diabetes.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid3 - sub_diabetes
-
-    
+  ## Generate measures for ec_all - postcovid3 - sub_diabetes 
 
   generate_measures_postcovid3_2024-10-01-sub_diabetes-ec_all:
     run: |-
@@ -1791,7 +1741,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid3_sub_diabetes.csv
 
-  ## Generate measures for apc_all (longitudinal) - precovid - sub_diabetes 
+  ## Generate measures for apc_all - precovid - sub_diabetes 
 
   generate_measures_precovid_2018-10-01-sub_diabetes-apc_all:
     run: |-
@@ -1805,9 +1755,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_precovid_sub_diabetes.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid1 - sub_diabetes
-
-    
+  ## Generate measures for apc_all - postcovid1 - sub_diabetes 
 
   generate_measures_postcovid1_2022-10-01-sub_diabetes-apc_all:
     run: |-
@@ -1821,9 +1769,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid1_sub_diabetes.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid2 - sub_diabetes
-
-    
+  ## Generate measures for apc_all - postcovid2 - sub_diabetes 
 
   generate_measures_postcovid2_2023-10-01-sub_diabetes-apc_all:
     run: |-
@@ -1837,9 +1783,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2_sub_diabetes.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid3 - sub_diabetes
-
-    
+  ## Generate measures for apc_all - postcovid3 - sub_diabetes 
 
   generate_measures_postcovid3_2024-10-01-sub_diabetes-apc_all:
     run: |-
@@ -1853,9 +1797,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid3_sub_diabetes.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - precovid - sub_diabetes
-
-    
+  ## Generate measures for ec_ACSCs - precovid - sub_diabetes 
 
   generate_measures_precovid_2018-10-01-sub_diabetes-ec_acscs:
     run: |-
@@ -1869,9 +1811,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_precovid_sub_diabetes.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 - sub_diabetes
-
-    
+  ## Generate measures for ec_ACSCs - postcovid1 - sub_diabetes 
 
   generate_measures_postcovid1_2022-10-01-sub_diabetes-ec_acscs:
     run: |-
@@ -1885,9 +1825,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid1_sub_diabetes.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 - sub_diabetes
-
-    
+  ## Generate measures for ec_ACSCs - postcovid2 - sub_diabetes 
 
   generate_measures_postcovid2_2023-10-01-sub_diabetes-ec_acscs:
     run: |-
@@ -1901,9 +1839,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2_sub_diabetes.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 - sub_diabetes
-
-    
+  ## Generate measures for ec_ACSCs - postcovid3 - sub_diabetes 
 
   generate_measures_postcovid3_2024-10-01-sub_diabetes-ec_acscs:
     run: |-
@@ -1917,9 +1853,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid3_sub_diabetes.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - precovid - sub_diabetes
-
-    
+  ## Generate measures for apc_ACSCs - precovid - sub_diabetes 
 
   generate_measures_precovid_2018-10-01-sub_diabetes-apc_acscs:
     run: |-
@@ -1933,9 +1867,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_precovid_sub_diabetes.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 - sub_diabetes
-
-    
+  ## Generate measures for apc_ACSCs - postcovid1 - sub_diabetes 
 
   generate_measures_postcovid1_2022-10-01-sub_diabetes-apc_acscs:
     run: |-
@@ -1949,9 +1881,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid1_sub_diabetes.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 - sub_diabetes
-
-    
+  ## Generate measures for apc_ACSCs - postcovid2 - sub_diabetes 
 
   generate_measures_postcovid2_2023-10-01-sub_diabetes-apc_acscs:
     run: |-
@@ -1965,9 +1895,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2_sub_diabetes.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 - sub_diabetes
-
-    
+  ## Generate measures for apc_ACSCs - postcovid3 - sub_diabetes 
 
   generate_measures_postcovid3_2024-10-01-sub_diabetes-apc_acscs:
     run: |-
@@ -1981,9 +1909,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_diabetes.csv
 
-  ## Generate measures for ec_all (longitudinal) - precovid - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_all - precovid - sub_sev_mental_ill 
 
   generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_all:
     run: |-
@@ -1997,9 +1923,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_precovid_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid1 - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_all - postcovid1 - sub_sev_mental_ill 
 
   generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ec_all:
     run: |-
@@ -2013,9 +1937,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid1_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid2 - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_all - postcovid2 - sub_sev_mental_ill 
 
   generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ec_all:
     run: |-
@@ -2029,9 +1951,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid2_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_all (longitudinal) - postcovid3 - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_all - postcovid3 - sub_sev_mental_ill 
 
   generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ec_all:
     run: |-
@@ -2045,9 +1965,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_all_postcovid3_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_all (longitudinal) - precovid - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_all - precovid - sub_sev_mental_ill 
 
   generate_measures_precovid_2018-10-01-sub_sev_mental_ill-apc_all:
     run: |-
@@ -2061,9 +1979,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_precovid_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid1 - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_all - postcovid1 - sub_sev_mental_ill 
 
   generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-apc_all:
     run: |-
@@ -2077,9 +1993,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid1_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid2 - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_all - postcovid2 - sub_sev_mental_ill 
 
   generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-apc_all:
     run: |-
@@ -2093,9 +2007,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid2_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_all (longitudinal) - postcovid3 - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_all - postcovid3 - sub_sev_mental_ill 
 
   generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-apc_all:
     run: |-
@@ -2109,9 +2021,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_all_postcovid3_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - precovid - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_ACSCs - precovid - sub_sev_mental_ill 
 
   generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_acscs:
     run: |-
@@ -2125,9 +2035,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_precovid_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid1 - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_ACSCs - postcovid1 - sub_sev_mental_ill 
 
   generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ec_acscs:
     run: |-
@@ -2141,9 +2049,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid1_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid2 - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_ACSCs - postcovid2 - sub_sev_mental_ill 
 
   generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ec_acscs:
     run: |-
@@ -2157,9 +2063,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid2_sub_sev_mental_ill.csv
 
-  ## Generate measures for ec_ACSCs (longitudinal) - postcovid3 - sub_sev_mental_ill
-
-    
+  ## Generate measures for ec_ACSCs - postcovid3 - sub_sev_mental_ill 
 
   generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ec_acscs:
     run: |-
@@ -2173,9 +2077,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_ec_acscs_postcovid3_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - precovid - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_ACSCs - precovid - sub_sev_mental_ill 
 
   generate_measures_precovid_2018-10-01-sub_sev_mental_ill-apc_acscs:
     run: |-
@@ -2189,9 +2091,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_precovid_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid1 - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_ACSCs - postcovid1 - sub_sev_mental_ill 
 
   generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-apc_acscs:
     run: |-
@@ -2205,9 +2105,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid1_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid2 - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_ACSCs - postcovid2 - sub_sev_mental_ill 
 
   generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-apc_acscs:
     run: |-
@@ -2221,9 +2119,7 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid2_sub_sev_mental_ill.csv
 
-  ## Generate measures for apc_ACSCs (longitudinal) - postcovid3 - sub_sev_mental_ill
-
-    
+  ## Generate measures for apc_ACSCs - postcovid3 - sub_sev_mental_ill 
 
   generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-apc_acscs:
     run: |-

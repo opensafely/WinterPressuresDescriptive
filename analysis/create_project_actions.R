@@ -303,7 +303,7 @@ for (flag in long_args_all) {
     date <- cohort_dates[[cohort]]
     if (flag %in% long_args_outcomes) {
       comment_text <- glue(
-        "Generate measures for {flag} (longitudinal) - {cohort} - main"
+        "Generate measures for {flag} - {cohort} - main"
       )
       name <- glue("generate_measures_{cohort}_{date}-main-{tolower(flag)}")
       file <- glue("output/measures/measures_{tolower(flag)}_{cohort}_main.csv")
@@ -345,7 +345,7 @@ for (subgroup in subgroups) {
     for (cohort in cohorts_all) {
       date <- cohort_dates[[cohort]]
       comment_text <- glue(
-        "Generate measures for {flag} (longitudinal) - {cohort} - {subgroup}"
+        "Generate measures for {flag} - {cohort} - {subgroup}"
       )
       name <- glue(
         "generate_measures_{cohort}_{date}-{subgroup}-{tolower(flag)}"
