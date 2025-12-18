@@ -17,7 +17,6 @@ cohort_dates <- list(
 
 # Define subgroups ----
 subgroups <- c(
-    "main",
     "sub_asth",
     "sub_copd",
     "sub_htn",
@@ -269,3 +268,10 @@ df$name <- paste0(
     "-",
     gsub("(_main|_sub_[a-z]+)", "", df$outcome)
 )
+
+# Check names are unique and save active analyses list ----
+if (length(unique(df$name)) == nrow(df)) {
+  saveRDS(df, file = "lib/active_analyses.rds", compress = "gzip")
+} else {
+  stop("ERROR: names must be unique in active analyses table")
+}
