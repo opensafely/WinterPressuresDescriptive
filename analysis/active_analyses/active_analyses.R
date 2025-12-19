@@ -69,7 +69,7 @@ exposure_listsize <- c(
 
 ## Exposure: region
 exposure_region <- c(
-    "exp_cat_region"
+    "practice_region"
 )
 
 ## Exposure: demographic exposures
@@ -186,7 +186,7 @@ exposure_names <- c(
 ## Define covariates ----
 covariate_age <- "age_80"
 covariate_sex <- "sex_female"
-covariate_region <- "exp_cat_region"
+covariate_region <- "practice_region"
 covariate_ethnicity <- c("ethnicity_white")
 covariate_imd <- c("imd_1_most")
 covariate_rurality <- c("rurality_urban_comb")
