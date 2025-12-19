@@ -39,15 +39,14 @@ if (length(args) == 0) {
     cohort <- args[[1]]
 }
 
-# Define input file path ---------------------------------------------------------
-print('Define input file path')
-
-file_path <- paste0("output/dataset_clean/input_", cohort, "_clean.csv")
-
 # Load data ----------------------------------------------------------------------
 print('Load data')
 
-input <- read_csv(file_path)
+input <- readr::read_rds(paste0(
+    "output/dataset_clean/input_",
+    cohort,
+    "_clean.rds"
+))
 message(paste0(
     "Dataset has been read successfully with N = ",
     nrow(input),
