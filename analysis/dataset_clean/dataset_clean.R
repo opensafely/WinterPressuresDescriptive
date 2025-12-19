@@ -122,6 +122,6 @@ if (apply_inex) {
 
 # Save clean dataset ---------------------------------------------------
 print('Save clean dataset')
-output_path <- paste0(dataclean_dir, "input_", cohort, "_clean.csv")
-write_csv(input, output_path)
-message(paste0("Practice-level clean wide dataset saved to ", output_path))
+
+saveRDS(input, paste0(dataclean_dir, "input_", cohort, "_clean.rds"), compress = TRUE)
+

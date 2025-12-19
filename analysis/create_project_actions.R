@@ -151,8 +151,8 @@ generate_input_clean <- function(cohort) {
         glue("generate_cohort_{cohort}"),
         glue("generate_merged_{cohort}")
       ),
-      moderately_sensitive = list(
-        cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.csv")
+      highly_sensitive = list(
+        cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.rds")
       )
     )
   )
