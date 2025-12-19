@@ -212,7 +212,7 @@ apply_model_function <- function(
     ),
     action(
       name = glue("run_regression_model-{name}"),
-      run = "stata-mp:latest analysis/model/regression_model.do",
+      run = glue("stata-mp:latest analysis/model/regression_model.do {name}"),
       needs = c(as.list(glue("make_model_input-{name}"))),
       moderately_sensitive = list(
         model_output = glue("output/model/model_output-{name}.csv")

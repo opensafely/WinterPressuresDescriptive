@@ -43,4 +43,4 @@ model_input <- check_vitals(model_input)
 # Save prepared model input ----------------------------------------------------
 print("Save prepared model input")
 
-saveRDS(model_input, paste0(model_dir, "model_input_", name, ".rds"))
+foreign::write.dta(model_input, paste0(model_dir, "model_input-", name, ".dta"))
