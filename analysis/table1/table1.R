@@ -63,7 +63,7 @@ input <- input %>%
   select(
     practice_id,
     matches("^list_size"),
-    starts_with("exp_cat_region"),
+    starts_with("practice_region"),
     matches("^age"),
     matches("^sex"),
     matches("^ethnicity"),
@@ -173,7 +173,7 @@ print("Create long version of data")
 table1_long <- input %>%
   select(
     practice_id,
-    exp_cat_region,
+    practice_region,
     matches("_mp6$"),
     starts_with("strata_")
   ) %>%
@@ -183,7 +183,7 @@ table1_long <- input %>%
     names_pattern = "^([^_]+)(?:_(.*))?_mp6$",
     values_to = "value"
   ) %>%
-  rename(strata_region = exp_cat_region) %>%
+  rename(strata_region = practice_region) %>%
   mutate(
     strata_region = coalesce(strata_region, "Unknown"),
     subcharacteristic = ifelse(
