@@ -197,33 +197,25 @@ generate_table2 <- function(cohort) {
 }
 
 # Create function to run a model -----------------------------------------------
-apply_regression_model_function <- function(
+apply_model_function <- function(
   name,
-  cohort,
-  analysis,
-  exposure,
-  outcome,
-  covariate_core,
-  covariate_other
+  cohort
 ) {
   splice(
     action(
-      name = glue("stata-{name}"),
+      name = glue("make_model_input-{name}"),
+      run = glue("r:v2 analysis/model/make_model_input.R {name}"),
+      needs = as.list(glue("generate_input_{cohort}_clean")),
+      highly_sensitive = list(
+        model_input = glue("output/model/model_input-{name}.dta")
+      )
+    ),
+    action(
+      name = glue("run_regression_model-{name}"),
       run = "stata-mp:latest analysis/model/regression_model.do",
-      arguments = c(
-        "--",
-        paste0("--",cohort),
-        paste0("--",analysis),
-        paste0("--",exposure),
-        paste0("--",outcome),
-        paste0("--",covariate_core),
-        paste0("--",covariate_other)
-      ),
-      needs = list(
-        glue("generate_input_{cohort}_clean")
-      ),
+      needs = c(as.list(glue("make_model_input-{name}"))),
       moderately_sensitive = list(
-        model_output = glue("output/model/regression_model_output-{name}.csv")
+        model_output = glue("output/model/model_output-{name}.csv")
       )
     )
   )
@@ -421,19 +413,17 @@ for (cohort in cohorts_all) {
 }
 
 # Run models for all active analyses ----------------------------------------------
-actions_list <- c(actions_list, comment("Run regression models for all active analyses"))
+actions_list <- c(
+  actions_list,
+  comment("Run regression models for all active analyses")
+)
 
 run_models_action <- lapply(
   1:nrow(active_analyses),
   function(x) {
-    apply_regression_model_function(
+    apply_model_function(
       name = active_analyses$name[x],
-      cohort = active_analyses$cohort[x],
-      analysis = active_analyses$analysis[x],
-      exposure = active_analyses$exposure[x],
-      outcome = active_analyses$outcome[x],
-      covariate_core = active_analyses$covariate_core[x],
-      covariate_other = active_analyses$covariate_other[x]
+      cohort = active_analyses$cohort[x]
     )
   }
 )
