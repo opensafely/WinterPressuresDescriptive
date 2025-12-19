@@ -35,6 +35,7 @@ restrict_variables <- function(input) {
     # ----------------------------------------------------------------------
 
     #Check for duplicate denominator vars for outcomes - drop the duplicates, highlight any that are unique
+    
     denom_main_vars_mp6 <- grep(
         "^denom_.*main.*_mp6$",
         names(input),
