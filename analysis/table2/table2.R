@@ -71,7 +71,7 @@ input <- input %>%
         matches("^smoking"),
         matches("^obesity"),
         -matches("_mp6$"), # drop mp6 versions of the above, as we only need raw data for generating strata
-        matches("^exp_cat_region$"),
+        matches("^practice_region$"),
         matches("^cons_.*_mean"),
         matches("^apc_.*_(mean|cumu)_mp6$"),
         matches("^ec_.*_(mean|cumu)_mp6$"),
@@ -180,7 +180,7 @@ print("Create long version of data")
 table2_long <- input %>%
     select(
         practice_id,
-        exp_cat_region,
+        practice_region,
         matches("_mp6$"),
         starts_with("strata_")
     ) %>%
@@ -189,7 +189,7 @@ table2_long <- input %>%
         names_to = "outcome_name",
         values_to = "value"
     ) %>%
-    rename(strata_region = exp_cat_region) %>%
+    rename(strata_region = practice_region) %>%
     mutate(
         strata_region = coalesce(strata_region, "Unknown")
     )
