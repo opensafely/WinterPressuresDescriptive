@@ -35,36 +35,35 @@ restrict_variables <- function(input) {
     # ----------------------------------------------------------------------
 
     #Check for duplicate denominator vars for outcomes - drop the duplicates, highlight any that are unique
-    denom_main_vars <- grep("^denom_.*main.*_mp6$", names(input), value = TRUE)
-    if (length(denom_main_vars) > 0) {
-        denom_main_vars_mp6 <- grep(
-            "^denom_.*main.*_mp6$",
-            names(input),
-            value = TRUE
+
+    denom_main_vars_mp6 <- grep(
+        "^denom_.*main.*_mp6$",
+        names(input),
+        value = TRUE
+    )
+    denom_main_vars <- names(input)[
+        grepl("^denom_.*main", names(input)) &
+            !grepl("_mp6$", names(input))
+    ]
+
+    if (length(denom_main_vars_mp6) > 0) {
+        input <- drop_all_duplicates(
+            input,
+            df_name = "input",
+            denom_main_vars_mp6,
+            new_name = "denom_main_mp6"
         )
-        denom_main_vars <- names(input)[
-            grepl("^denom_.*main", names(input)) &
-                !grepl("_mp6$", names(input))
-        ]
-
-        if (length(denom_main_vars_mp6) > 0) {
-            input <- drop_all_duplicates(
-                input,
-                df_name = "input",
-                denom_main_vars_mp6,
-                new_name = "denom_main_mp6"
-            )
-        }
-
-        if (length(denom_main_vars) > 0) {
-            input <- drop_all_duplicates(
-                input,
-                df_name = "input",
-                denom_main_vars,
-                new_name = "denom_main"
-            )
-        }
     }
+
+    if (length(denom_main_vars) > 0) {
+        input <- drop_all_duplicates(
+            input,
+            df_name = "input",
+            denom_main_vars,
+            new_name = "denom_main"
+        )
+    }
+
     #Check for duplicate denominator vars within each subgroup
 
     subgroups <- c("asth", "copd", "htn", "diab", "sevmh")
