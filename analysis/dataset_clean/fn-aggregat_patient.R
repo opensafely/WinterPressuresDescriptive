@@ -55,7 +55,10 @@ aggregat <- function(input) {
     # or the exp_num_* / *_cms variables in the analytic dataset,
     # edit the select() line below to keep additional columns.
     practice_summary <- practice_summary %>%
-        select(practice_id, exp_cat_region)
+        select(practice_id, exp_cat_region) %>%
+        rename(
+            practice_region = exp_cat_region
+        )
 
     return(practice_summary)
 }
