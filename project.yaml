@@ -3061,16 +3061,56 @@ actions:
   generate_merged_summary:
     run: stata-mp:latest analysis/outcome_time_var/regressions_merge.do
     needs:
-    - generate_regressions_all_cond_precovid
-    - generate_regressions_all_cond_postcovid1
-    - generate_regressions_all_cond_postcovid2
-    - generate_regressions_all_cond_postcovid3
-    - generate_regressions_acsc_precovid
-    - generate_regressions_acsc_postcovid1
-    - generate_regressions_acsc_postcovid2
-    - generate_regressions_acsc_postcovid3
+    - generate_reg_all_cond_unadjusted_precovid
+    - generate_reg_all_cond_unadjusted_postcovid1
+    - generate_reg_all_cond_unadjusted_postcovid2
+    - generate_reg_all_cond_unadjusted_postcovid3
+    - generate_reg_all_cond_adjusted_precovid
+    - generate_reg_all_cond_adjusted_postcovid1
+    - generate_reg_all_cond_adjusted_postcovid2
+    - generate_reg_all_cond_adjusted_postcovid3
     outputs:
       moderately_sensitive:
-        merged_results_all_cond_csv: output/regressions/results_all_cond.csv
-        merged_results_acsc_csv: output/regressions/results_acsc.csv
+        fp_apc_svg: output/regressions/fp_apc.svg
+        fp_ec_svg: output/regressions/fp_ec.svg
+
+  ## Correlation plots checking a linear exp & out relationship, precovid 
+
+  linear_check_corr_plots_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do precovid
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_precovid.svg
+
+  ## Correlation plots checking a linear exp & out relationship, postcovid1 
+
+  linear_check_corr_plots_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do postcovid1
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_postcovid1.svg
+
+  ## Correlation plots checking a linear exp & out relationship, postcovid2 
+
+  linear_check_corr_plots_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do postcovid2
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_postcovid2.svg
+
+  ## Correlation plots checking a linear exp & out relationship, postcovid3 
+
+  linear_check_corr_plots_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/exp_out_plots.do postcovid3
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        graph1: output/regressions/exp_all_postcovid3.svg
 
