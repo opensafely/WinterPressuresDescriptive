@@ -2976,45 +2976,85 @@ actions:
       moderately_sensitive:
         outcome_summary_stats_csv: output/regressions/outcome_summary_stats.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: precovid 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, precovid 
 
-  generate_regressions_all_cond_precovid:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do precovid
+  generate_reg_all_cond_unadjusted_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do precovid unadjusted
     needs:
     - generate_merged_precovid
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_precovid.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_precovid.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid1 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, postcovid1 
 
-  generate_regressions_all_cond_postcovid1:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid1
+  generate_reg_all_cond_unadjusted_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid1 unadjusted
     needs:
     - generate_merged_postcovid1
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_postcovid1.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_postcovid1.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid2 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, postcovid2 
 
-  generate_regressions_all_cond_postcovid2:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid2
+  generate_reg_all_cond_unadjusted_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid2 unadjusted
     needs:
     - generate_merged_postcovid2
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_postcovid2.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_postcovid2.csv
 
-  ## Runs RI poisson & nb regressions for APC/EC, cohort: postcovid3 
+  ## Runs unadjusted RI poisson & nb regs for APC/EC, postcovid3 
 
-  generate_regressions_all_cond_postcovid3:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_all_cond.do postcovid3
+  generate_reg_all_cond_unadjusted_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid3 unadjusted
     needs:
     - generate_merged_postcovid3
     outputs:
       moderately_sensitive:
-        results_all_cond_csv: output/regressions/results_all_cond_postcovid3.csv
+        results_all_cond_csv: output/regressions/results_all_cond_unadjusted_postcovid3.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, precovid 
+
+  generate_reg_all_cond_adjusted_precovid:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do precovid adjusted
+    needs:
+    - generate_merged_precovid
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_precovid.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, postcovid1 
+
+  generate_reg_all_cond_adjusted_postcovid1:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid1 adjusted
+    needs:
+    - generate_merged_postcovid1
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_postcovid1.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, postcovid2 
+
+  generate_reg_all_cond_adjusted_postcovid2:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid2 adjusted
+    needs:
+    - generate_merged_postcovid2
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_postcovid2.csv
+
+  ## Runs adjusted RI poisson & nb regs for APC/EC, postcovid3 
+
+  generate_reg_all_cond_adjusted_postcovid3:
+    run: stata-mp:latest analysis/outcome_time_var/reg_all_cond.do postcovid3 adjusted
+    needs:
+    - generate_merged_postcovid3
+    outputs:
+      moderately_sensitive:
+        results_all_cond_csv: output/regressions/results_all_cond_adjusted_postcovid3.csv
 
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: precovid 
 
@@ -3056,10 +3096,10 @@ actions:
       moderately_sensitive:
         results_acsc_csv: output/regressions/results_acsc_postcovid3.csv
 
-  ## Generate a merged regression results table 
+  ## Create the forest plots 
 
-  generate_merged_summary:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_merge.do
+  generate_forest_plots:
+    run: r:latest analysis/outcome_time_var/all_cond_forest_plots.R
     needs:
     - generate_reg_all_cond_unadjusted_precovid
     - generate_reg_all_cond_unadjusted_postcovid1
