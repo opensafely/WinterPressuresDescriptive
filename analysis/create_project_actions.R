@@ -752,7 +752,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_regressions_acsc_{cohort}"),
       run = glue(
-        "stata-mp:latest analysis/outcome_time_var/regressions_acsc.do {cohort}"
+        "stata-mp:latest analysis/outcome_time_var/reg_acsc.do {cohort}"
       ),
       needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(

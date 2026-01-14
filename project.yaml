@@ -3059,7 +3059,7 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: precovid 
 
   generate_regressions_acsc_precovid:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do precovid
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do precovid
     needs:
     - generate_merged_precovid
     outputs:
@@ -3069,7 +3069,7 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid1 
 
   generate_regressions_acsc_postcovid1:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid1
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do postcovid1
     needs:
     - generate_merged_postcovid1
     outputs:
@@ -3079,7 +3079,7 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid2 
 
   generate_regressions_acsc_postcovid2:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid2
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do postcovid2
     needs:
     - generate_merged_postcovid2
     outputs:
@@ -3089,7 +3089,7 @@ actions:
   ## Runs poisson, nb, zinb regressions for ACSCs, cohort: postcovid3 
 
   generate_regressions_acsc_postcovid3:
-    run: stata-mp:latest analysis/outcome_time_var/regressions_acsc.do postcovid3
+    run: stata-mp:latest analysis/outcome_time_var/reg_acsc.do postcovid3
     needs:
     - generate_merged_postcovid3
     outputs:
