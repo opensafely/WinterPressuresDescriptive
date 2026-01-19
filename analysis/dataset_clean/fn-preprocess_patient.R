@@ -1,6 +1,6 @@
 # First function to preprocess patient-level dataset
 
-preprocess_patients <- function(cohort) {
+preprocess_patient <- function(cohort) {
   # Get column names ----
   print('Get column names')
 

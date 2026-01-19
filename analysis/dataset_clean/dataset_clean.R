@@ -43,7 +43,7 @@ apply_inex <- FALSE # Set to TRUE for real run, FALSE for testing
 
 # Preprocess patient-level data --------------------------------------------------------------
 print('Preprocess patient-level data')
-input <- preprocess_patients(cohort)
+input <- preprocess_patient(cohort)
 message(paste0("Preprocessed data has N = ", nrow(input), " rows"))
 
 # Create practice-level summary dataset from patient-level data ----------------------------------------
