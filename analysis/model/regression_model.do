@@ -149,6 +149,8 @@ foreach mdl of local models {
                 (.) (.) (.) (.) (.) (.) ///
                 (.) (.) (.) ///
                 (_rc)
+            
+            continue
         }
         else {
             est store `analysis'_`mdl'
