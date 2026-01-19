@@ -184,7 +184,7 @@ exposure_names <- c(
 )
 
 ## Define covariates ----
-covariate_age <- "age_80"
+covariate_age <- c("age_0_4", "age_80")
 covariate_sex <- "sex_female"
 covariate_region <- "practice_region"
 covariate_ethnicity <- c("ethnicity_white")
