@@ -190,7 +190,7 @@ foreach mdl of local models {
 			if "`term'" == "log_dnm" continue
 			
 			* Skip distributional overdispersion parameter in the negative binomial models (we will use lrtest for decision making)
-			if "`term'" == "lnalpha" continue
+			* if "`term'" == "lnalpha" continue
 			
 			* Skip random-effect variance
 			if strpos("`term'", "var(") continue
