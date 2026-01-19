@@ -43,6 +43,7 @@ DESCRIPTION:                 This do-file runs regression models for the followi
 							 chi2_lr 
 							 p_lr 
 							 n_obs
+                             error (to capture error codes)
 NOTES:                       This script is adapted from:
                              /analysis/outcome_time_var/reg_all_cond.do
 *****************************************************************************************************/	
@@ -89,14 +90,16 @@ frame create results_poisson ///
     str50 term ///
     double irr lci uci se_coef p_value ///
     double ri_variance ri_se ri_lci ri_uci ri_lb ri_ub ///
-    double n_obs aic bic
+    double n_obs aic bic ///
+	double error
 
 frame create results_negbin ///
     str15 model ///
     str50 term ///
     double irr lci uci se_coef p_value ///
     double ri_variance ri_se ri_lci ri_uci ri_lb ri_ub ///
-    double n_obs aic bic
+    double n_obs aic bic ///
+	double error
 
 frame create results_lrtest ///
     str15 model ///
@@ -131,82 +134,97 @@ foreach mdl of local models {
             local cmd "menbreg"
         }
 
-        quietly `cmd' out_num exp_prop `covs', ///
+        capture `cmd' out_num exp_prop `covs', ///
             offset(log_dnm) ///
             || practice_id:, irr
 
-        est store `analysis'_`mdl'
-
-        * ---- copy coefficient table ----
-		matrix b = r(table)
-		scalar n_obs = e(N)
-		
-		* ---- model-level statistics
-		estat ic
-		matrix IC = r(S)
-		scalar aic = IC[1,5]
-		scalar bic = IC[1,6]
-
-		* ---- fixed-effect coefficients and random-intercept variance ----
-        local colnames : colnames b
-		
-		** random-intercept variance
-		local ri_col = .
-		local c = 1
-		foreach cn of local colnames {
-			if strpos("`cn'", "var(") {
-				local ri_col = `c'
-			}
-			local ++c
-		}
-		
-		if `ri_col' < . {
-			scalar ri_variance = b[1, `ri_col']
-			scalar ri_se = b[2, `ri_col']
-			scalar ri_lci = b[5, `ri_col']
-			scalar ri_uci = b[6, `ri_col']
-			scalar ri_lb = exp(-1.96 * sqrt(ri_variance))
-			scalar ri_ub = exp( 1.96 * sqrt(ri_variance))
-		}
-		else {
-			scalar ri_variance = .
-			scalar ri_se = .
-			scalar ri_lci = .
-			scalar ri_uci = .
-			scalar ri_lb = .
-			scalar ri_ub = .
-		}
-		
-		** fixed-effect coefficients
-        local k = colsof(b)
-
-        forvalues j = 1/`k' {
-            local term : word `j' of `colnames'
-
-            * Skip intercept
-            if "`term'" == "_cons" continue
-			
-			* Skip offset
-			if "`term'" == "log_dnm" continue
-			
-			* Skip distributional overdispersion parameter in the negative binomial models (we will use lrtest for decision making)
-			* if "`term'" == "lnalpha" continue
-			
-			* Skip random-effect variance
-			if strpos("`term'", "var(") continue
-
-            scalar irr = b[1,`j']
-            scalar se_coef  = b[2,`j']
-            scalar p_value   = b[4,`j']
-            scalar lci = b[5,`j']
-            scalar uci = b[6,`j']
-
+        if _rc != 0 {
+            di _n "`cmd' failed for model `mdl'"
+            di "STATA error code: " _rc
+            * Post a placeholder row so the failure is logged
             frame post results_`analysis' ///
                 ("`mdl'") ///
-                ("`term'") ///
-                (irr) (lci) (uci) (se_coef) (p_value) ///
-				(ri_variance) (ri_se) (ri_lci) (ri_uci) (ri_lb) (ri_ub) ///
-				(n_obs) (aic) (bic)
+                ("MODEL_FAILED") ///
+                (.) (.) (.) (.) (.) ///
+                (.) (.) (.) (.) (.) (.) ///
+                (.) (.) (.) ///
+                (_rc)
+        }
+        else {
+            est store `analysis'_`mdl'
+
+            * ---- copy coefficient table ----
+            matrix b = r(table)
+            scalar n_obs = e(N)
+            
+            * ---- model-level statistics
+            estat ic
+            matrix IC = r(S)
+            scalar aic = IC[1,5]
+            scalar bic = IC[1,6]
+
+            * ---- fixed-effect coefficients and random-intercept variance ----
+            local colnames : colnames b
+            
+            ** random-intercept variance
+            local ri_col = .
+            local c = 1
+            foreach cn of local colnames {
+                if strpos("`cn'", "var(") {
+                    local ri_col = `c'
+                }
+                local ++c
+            }
+            
+            if `ri_col' < . {
+                scalar ri_variance = b[1, `ri_col']
+                scalar ri_se = b[2, `ri_col']
+                scalar ri_lci = b[5, `ri_col']
+                scalar ri_uci = b[6, `ri_col']
+                scalar ri_lb = exp(-1.96 * sqrt(ri_variance))
+                scalar ri_ub = exp( 1.96 * sqrt(ri_variance))
+            }
+            else {
+                scalar ri_variance = .
+                scalar ri_se = .
+                scalar ri_lci = .
+                scalar ri_uci = .
+                scalar ri_lb = .
+                scalar ri_ub = .
+            }
+            
+            ** fixed-effect coefficients
+            local k = colsof(b)
+
+            forvalues j = 1/`k' {
+                local term : word `j' of `colnames'
+
+                * Skip intercept
+                if "`term'" == "_cons" continue
+                
+                * Skip offset
+                if "`term'" == "log_dnm" continue
+                
+                * Skip distributional overdispersion parameter in the negative binomial models (we will use lrtest for decision making)
+                * if "`term'" == "lnalpha" continue
+                
+                * Skip random-effect variance
+                if strpos("`term'", "var(") continue
+
+                scalar irr = b[1,`j']
+                scalar se_coef  = b[2,`j']
+                scalar p_value   = b[4,`j']
+                scalar lci = b[5,`j']
+                scalar uci = b[6,`j']
+
+                frame post results_`analysis' ///
+                    ("`mdl'") ///
+                    ("`term'") ///
+                    (irr) (lci) (uci) (se_coef) (p_value) ///
+                    (ri_variance) (ri_se) (ri_lci) (ri_uci) (ri_lb) (ri_ub) ///
+                    (n_obs) (aic) (bic) ///
+                    (.)
+            }
         }
     }
 
