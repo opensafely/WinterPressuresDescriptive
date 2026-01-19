@@ -39,16 +39,16 @@ if (length(args) == 0) {
 }
 
 # Flag to control whether inclusion/exclusion criteria are applied
-apply_inex <- FALSE # Set to TRUE for real run, FALSE for testing
+apply_inex <- TRUE # Set to TRUE for real run, FALSE for testing
 
 # Preprocess patient-level data --------------------------------------------------------------
 print('Preprocess patient-level data')
-input <- preprocess_patients(cohort)
+input <- preprocess_patient(cohort)
 message(paste0("Preprocessed data has N = ", nrow(input), " rows"))
 
 # Create practice-level summary dataset from patient-level data ----------------------------------------
 print('Create practice-level summary dataset')
-practice_summary <- aggregat(input)
+practice_summary <- aggregate_patient(input)
 message(paste0(
   "Practice-level summary dataset has N = ",
   nrow(practice_summary),
@@ -98,17 +98,11 @@ print('Apply redaction')
 input <- redact(input)
 message("Redaction applied")
 
-# Restrict to relevant variables only ----------------------------------------
-print('Restrict to relevant variables only')
-
-input <- restrict_variables(input)
-message("Restricted to relevant variables only")
-
 # Apply inclusion/exclusion criteria ----------------------------------------
 print('Apply inclusion/exclusion criteria')
 
 if (apply_inex) {
-  input <- inex(input)
+  input <- inex_practice(input)
   message(paste0(
     "Practice summary dataset AFTER applying inclusion/exclusion criteria has N = ",
     nrow(input),
@@ -120,8 +114,15 @@ if (apply_inex) {
   )
 }
 
+# Restrict to relevant variables only ----------------------------------------
+print('Restrict to relevant variables only')
+
+input <- restrict_variables(input)
+message("Restricted to relevant variables only")
+
 # Remove prop_ from variable names ----------------------------------------
 print('Remove prop_ from variable names')
+
 input <- input %>%
   rename_with(~ gsub("^prop_", "", .x))
 message("Removed prop_ from variable names")

@@ -1,6 +1,6 @@
 # Function to apply inclusion/exclusion criteria
 
-inex <- function(
+inex_practice <- function(
     input
 ) {
     # Remove practices with <1000 patients ----------------------------------------
