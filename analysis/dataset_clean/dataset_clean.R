@@ -48,7 +48,7 @@ message(paste0("Preprocessed data has N = ", nrow(input), " rows"))
 
 # Create practice-level summary dataset from patient-level data ----------------------------------------
 print('Create practice-level summary dataset')
-practice_summary <- aggregat(input)
+practice_summary <- aggregate_patient(input)
 message(paste0(
   "Practice-level summary dataset has N = ",
   nrow(practice_summary),

@@ -1,6 +1,6 @@
 # First function to collapse data to practice level
 
-aggregat <- function(input) {
+aggregate_patient <- function(input) {
     # Check for practices with multiple regions ------------------------------------
     region_check <- input %>%
         filter(!is.na(practice_id), !is.na(exp_cat_region)) %>%
