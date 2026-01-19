@@ -102,7 +102,7 @@ message("Redaction applied")
 print('Apply inclusion/exclusion criteria')
 
 if (apply_inex) {
-  input <- inex(input)
+  input <- inex_practice(input)
   message(paste0(
     "Practice summary dataset AFTER applying inclusion/exclusion criteria has N = ",
     nrow(input),
