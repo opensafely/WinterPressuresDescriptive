@@ -10,7 +10,7 @@ inex_practice <- function(
     n_before <- nrow(input)
 
     input <- input %>%
-        filter(exp_denom_total >= 1000)
+        filter(list_size >= 1000)
 
     n_after <- nrow(input)
 
