@@ -153,6 +153,7 @@ summarise_dist <- function(x) {
     q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
     tibble(
         n_practices = sum(!is.na(x)), # total practices with non-missing values
+        prop_zero = sum(x == 0, na.rm = TRUE) / sum(!is.na(x)), # count_zero / count_total
         min = min(x, na.rm = TRUE),
         max = max(x, na.rm = TRUE),
         range = max - min,
