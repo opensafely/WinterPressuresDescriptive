@@ -1,6 +1,6 @@
 # First function to collapse data to practice level
 
-collapse <- function(input) {
+aggregate_patient <- function(input) {
     # Check for practices with multiple regions ------------------------------------
     region_check <- input %>%
         filter(!is.na(practice_id), !is.na(exp_cat_region)) %>%
@@ -34,6 +34,11 @@ collapse <- function(input) {
                 ~ sum(.x, na.rm = TRUE),
                 .names = "{.col}"
             ),
+            across(
+                contains("_cms"),
+                ~ sum(.x, na.rm = TRUE),
+                .names = "{.col}"
+            ),
             .groups = "drop"
         ) %>%
         # rename exp_bin_* to exp_num_*
@@ -43,5 +48,17 @@ collapse <- function(input) {
         nrow(practice_summary),
         " rows"
     ))
+
+    # NOTE:
+    # For now we only keep practice_id and exp_cat_region for merging into
+    # the measures tables. If we later want to include list size (exp_num_listsize)
+    # or the exp_num_* / *_cms variables in the analytic dataset,
+    # edit the select() line below to keep additional columns.
+    practice_summary <- practice_summary %>%
+        select(practice_id, exp_cat_region) %>%
+        rename(
+            practice_region = exp_cat_region
+        )
+
     return(practice_summary)
 }

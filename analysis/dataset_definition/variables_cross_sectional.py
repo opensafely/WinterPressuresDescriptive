@@ -9,6 +9,7 @@ from variable_helper_functions import (
     last_matching_event_clinical_snomed_on_or_before,
     last_matching_event_apc_before,
     filter_codes_by_category,
+    last_matching_med_dmd_before,
 )
 
 # Define generate variables function
@@ -41,6 +42,71 @@ def generate_dataset_variables(cohort_start):
 
     ### Region is known
     inex_bin_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name.is_not_null()
+
+    ### Had asthma ever recorded prior to the cohort start date
+    sub_bin_asthma = (
+        (last_matching_event_clinical_snomed_before( 
+            asthma_snomed, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_event_apc_before(
+            asthma_icd10, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_med_dmd_before(
+            asthma_drugs_dmd, cohort_start
+        ).exists_for_patient())
+    )
+
+    ### Had COPD ever recorded prior to the cohort start date
+    sub_bin_copd = (
+        (last_matching_event_clinical_snomed_before(
+            multimorbidity_dict["MS_COPD_snomed"], cohort_start
+        ).exists_for_patient()) |
+        (last_matching_event_apc_before(
+            copd_icd10, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_med_dmd_before(
+            copd_drugs_dmd, cohort_start
+        ).exists_for_patient())
+    )
+
+    ### Had hypertension ever recorded prior to the cohort start date
+    sub_bin_hypertension = (
+        (last_matching_event_clinical_ctv3_before(
+            multimorbidity_dict["MS_Hypertension_ctv3"], cohort_start
+        ).exists_for_patient()) |
+        (last_matching_event_apc_before(
+            hypertension_icd10, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_med_dmd_before(
+            hypertension_drugs_dmd, cohort_start
+        ).exists_for_patient())
+    )
+
+    ### Had diabetes ever recorded prior to the cohort start date
+    sub_bin_diabetes = (
+        (last_matching_event_clinical_snomed_before(
+            diabetes_snomed, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_event_apc_before(
+            diabetes_icd10, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_med_dmd_before(
+            diabetes_drugs_dmd, cohort_start
+        ).exists_for_patient())
+    )
+
+    ### Had severe mental illness ever recorded prior to the cohort start date
+    sub_bin_sev_mental_ill = (
+        (last_matching_event_clinical_snomed_before(
+            severe_mental_illness_snomed + self_harm_aged10_snomed + self_harm_aged15_snomed, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_event_apc_before(
+            bipolar_and_mood_disorders_icd10 + other_psychotic_disorders_icd10 + schizophrenia_icd10 + self_harm_aged10_icd10 + self_harm_aged15_icd10, cohort_start
+        ).exists_for_patient()) |
+        (last_matching_med_dmd_before(
+            second_generation_antipsychotics_drugs_dmd + prochlorperazine_drugs_dmd, cohort_start
+        ).exists_for_patient())
+    )
 
     ### Region
     exp_cat_region = practice_registrations.for_patient_on(cohort_start).practice_nuts1_region_name
@@ -205,6 +271,12 @@ def generate_dataset_variables(cohort_start):
         inex_bin_ethinicity = inex_bin_ethinicity,
         inex_bin_imd        = inex_bin_imd,
         inex_bin_region     = inex_bin_region,
+        # Inclusion for subgroups
+        sub_bin_asthma     = sub_bin_asthma,
+        sub_bin_copd       = sub_bin_copd,
+        sub_bin_hypertension = sub_bin_hypertension,
+        sub_bin_diabetes   = sub_bin_diabetes,
+        sub_bin_sev_mental_ill = sub_bin_sev_mental_ill,
         # Cambridge Multimorbidity Conditions (20)
         exp_bin_af                = exp_bin_af,                # Atrial fibrillation
         exp_bin_alcoholproblem    = exp_bin_alcoholproblem,    # Alcohol problems
@@ -327,6 +399,13 @@ def generate_measure_variables(cohort_start):
     exp_bin_imd_4        = (tmp_exp_cat_imd == "4")
     exp_bin_imd_5_least  = (tmp_exp_cat_imd == "5 (least deprived)")
 
+    ### Care home status
+    exp_bin_carehome = (
+        addresses.for_patient_on(cohort_start).care_home_is_potential_match |
+        addresses.for_patient_on(cohort_start).care_home_requires_nursing |
+        addresses.for_patient_on(cohort_start).care_home_does_not_require_nursing
+    )
+
     ### Smoking status
     tmp_most_recent_smoking_cat = (
         last_matching_event_clinical_ctv3_before(smoking_clear, cohort_start)
@@ -422,6 +501,8 @@ def generate_measure_variables(cohort_start):
         exp_bin_imd_4       = exp_bin_imd_4,
         exp_bin_imd_5_least = exp_bin_imd_5_least,
         exp_bin_imd_missing = exp_bin_imd_missing,
+        # Care home status
+        exp_bin_carehome = exp_bin_carehome,
         # Smoking status binary flags
         exp_bin_smoker_current = exp_bin_smoker_current,
         exp_bin_smoker_ever    = exp_bin_smoker_ever,

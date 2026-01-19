@@ -7,13 +7,19 @@ parser = argparse.ArgumentParser() # Instantiate parser
 parser.add_argument("--patient_measures", action= 'store_true', help = "Sets measures defaults to patient-level subgroups.")
 parser.add_argument("--practice_measures", action= 'store_true', help = "Sets measures defaults to practice-level subrgoups.")
 parser.add_argument("--CS", action = 'store_true', help = "The study period is cross-sectional.")
-parser.add_argument("--Long", action = 'store_true', help = "The study period is longitudinal.")
+parser.add_argument("--Long_all", action = 'store_true', help = "The study period is longitudinal.")
+parser.add_argument("--Long_sub_asthma", action = 'store_true', help = "The study period is longitudinal for asthma sub-cohort.")
+parser.add_argument("--Long_sub_copd", action = 'store_true', help = "The study period is longitudinal for COPD sub-cohort.")
+parser.add_argument("--Long_sub_hypertension", action = 'store_true', help = "The study period is longitudinal for hypertension sub-cohort.")
+parser.add_argument("--Long_sub_diabetes", action = 'store_true', help = "The study period is longitudinal for diabetes sub-cohort.")
+parser.add_argument("--Long_sub_sev_mental_ill", action = 'store_true', help = "The study period is longitudinal for severe mental illness sub-cohort.")
 ## Measures configuration
 parser.add_argument("--Age", action = 'store_true', help = "Gets measures for age if flag is added to action.")
 parser.add_argument("--Sex", action = 'store_true', help = "Gets measures for sex if flag is added to action.") 
 parser.add_argument("--Ethnicity", action = 'store_true', help = "Gets measures for ethnicity if flag is added to action.") 
 parser.add_argument("--IMD", action= 'store_true', help = "Gets measures for IMD if flag is added to action.")
 parser.add_argument("--Rurality", action= 'store_true', help = "Gets measures for rurality if flag is added to action.")
+parser.add_argument("--Carehome", action= 'store_true', help = "Gets measures for care home status if flag is added to action.")
 parser.add_argument("--Smoking", action= 'store_true', help = "Gets measures for smoking if flag is added to action.")
 parser.add_argument("--Obesity", action= 'store_true', help = "Gets measures for obesity if flag is added to action.")
 parser.add_argument("--vax_flu", action= 'store_true', help = "Gets measures for vaccination status for flu if flag is added to action.")
@@ -32,7 +38,12 @@ parser.add_argument("--start_cohort", help="cohort start date")
 args = parser.parse_args() # Stores arguments in 'args'
 
 # Extract arguments into variables
-Long = args.Long
+Long_all = args.Long_all
+Long_sub_asthma = args.Long_sub_asthma
+Long_sub_copd = args.Long_sub_copd
+Long_sub_hypertension = args.Long_sub_hypertension
+Long_sub_diabetes = args.Long_sub_diabetes
+Long_sub_sev_mental_ill = args.Long_sub_sev_mental_ill
 CS = args.CS
 patient_measures = args.patient_measures
 practice_measures = args.practice_measures
@@ -41,6 +52,7 @@ Sex = args.Sex
 Ethnicity = args.Ethnicity
 IMD = args.IMD
 Rurality = args.Rurality
+Carehome = args.Carehome
 Smoking = args.Smoking
 Obesity = args.Obesity
 vax_flu = args.vax_flu
