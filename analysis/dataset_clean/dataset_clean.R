@@ -98,12 +98,6 @@ print('Apply redaction')
 input <- redact(input)
 message("Redaction applied")
 
-# Restrict to relevant variables only ----------------------------------------
-print('Restrict to relevant variables only')
-
-input <- restrict_variables(input)
-message("Restricted to relevant variables only")
-
 # Apply inclusion/exclusion criteria ----------------------------------------
 print('Apply inclusion/exclusion criteria')
 
@@ -119,6 +113,12 @@ if (apply_inex) {
     "Skipping inclusion/exclusion (apply_inex = FALSE) using full dataset for testing."
   )
 }
+
+# Restrict to relevant variables only ----------------------------------------
+print('Restrict to relevant variables only')
+
+input <- restrict_variables(input)
+message("Restricted to relevant variables only")
 
 # Save clean dataset ---------------------------------------------------
 print('Save clean dataset')
