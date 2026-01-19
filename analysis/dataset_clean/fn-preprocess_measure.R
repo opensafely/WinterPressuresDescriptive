@@ -71,12 +71,10 @@ preprocess_measure <- function(cohort) {
   cons_cols <- grep("^prop_cons_", names(input), value = TRUE)
 
   if (length(cons_cols) > 0) {
-    input <- input %>%
-      rowwise() %>%
-      mutate(
-        prop_cons_mean = mean(c_across(all_of(cons_cols)), na.rm = TRUE)
-      ) %>%
-      ungroup()
+    input$prop_cons_mean <- rowMeans(
+      input[, cons_cols, drop = FALSE],
+      na.rm = TRUE
+    )
     message(
       "Added prop_cons_mean (average across prop_cons_M columns)."
     )
