@@ -350,9 +350,6 @@ table2_summary_strata <- table2_long_strata %>%
 table2_summary <- table2_summary %>%
     rename(strata = strata_region)
 
-table2_summary_strata <- table2_summary_strata %>%
-    mutate(strata = strata)
-
 # Bind together overall and strata summaries ----
 print("Bind together overall and strata summaries")
 table2_summary_all <- bind_rows(table2_summary, table2_summary_strata)
