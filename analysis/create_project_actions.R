@@ -356,10 +356,9 @@ for (cohort in cohorts_all) {
   #Define a list of all "generate_measures" actions for the relevant cohort
   #This is what goes into the needs argument in the .yaml action
   measure_action_names <- names(measure_actions)[names(measure_actions) != ""] #Remove all list elements that are empty strings
-  generate_measures_list <- measure_action_names[str_detect(
-    measure_action_names,
-    glue("^generate_measures_{cohort}_")
-  )]
+  generate_measures_list <- measure_action_names %>%
+    keep(~ str_detect(.x, glue("^generate_measures_{cohort}_"))) %>%
+    discard(~ str_detect(.x, "sub_"))
 
   #Actually defining the action to run the analysis/datset_clean/measures_merge.R script for each cohort
   check_and_merge_action <- c(
