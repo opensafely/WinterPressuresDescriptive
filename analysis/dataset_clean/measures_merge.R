@@ -364,7 +364,7 @@ date_check_out <- date_check_long(
 print("if date_check_out passed")
 if (date_check_out$date_check_passed) {
   ##Pre-allocating objects
-  wide_out_measures <- vector("list", length(out_main_measures_csv)) #list containing transformed datasets
+  wide_out_measures <- vector("list", length(out_measures_csv)) #list containing transformed datasets
   rename_list <- c(
     "numerator" = "num",
     "denominator" = "denom",
