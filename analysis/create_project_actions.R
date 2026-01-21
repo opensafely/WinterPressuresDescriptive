@@ -65,6 +65,9 @@ long_args_all <- c(
   long_args_outcomes
 )
 
+#Define regression categories [only for the old codes when unadjsuted and adjusted models were run separately in different actions]
+covariates_all <- c("unadjusted", "adjusted")
+
 # Create generic action function -----------------------------------------------
 
 action <- function(
