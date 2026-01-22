@@ -35,6 +35,14 @@ subgroups <- c(
   "sub_sev_mental_ill"
 )
 
+subgroups_short <- c(
+  "sub_asth",
+  "sub_copd",
+  "sub_htn",
+  "sub_diab",
+  "sub_sevmh"
+)
+
 # Define arguments for measure generation actions
 cs_args <- c(
   "Age",
@@ -218,10 +226,63 @@ apply_model_function <- function(
       run = glue("stata-mp:latest analysis/model/regression_model.do {name}"),
       needs = c(as.list(glue("make_model_input-{name}"))),
       moderately_sensitive = list(
-        model_output_poisson = glue("output/model/model_output_poisson-{name}.csv"),
-        model_output_negbin = glue("output/model/model_output_negbin-{name}.csv"),
-        model_output_lrtest = glue("output/model/model_output_lrtest-{name}.csv")
+        model_output_poisson = glue(
+          "output/model/model_output_poisson-{name}.csv"
+        ),
+        model_output_negbin = glue(
+          "output/model/model_output_negbin-{name}.csv"
+        ),
+        model_output_lrtest = glue(
+          "output/model/model_output_lrtest-{name}.csv"
+        )
+      )
+    )
+  )
+}
 
+# Create function for making model outputs --------------------------------------
+
+make_model_output <- function(cohort, subgroup) {
+  splice(
+    comment(glue("Generate model_output for {cohort} - {subgroup}")),
+    action(
+      name = glue(
+        "make_model_output-{cohort}-{subgroup}"
+      ),
+      run = glue(
+        "r:v2 analysis/make_output/make_model_output.R {cohort} {subgroup}"
+      ),
+      needs = as.list(c(
+        paste0(
+          "run_regression_model-",
+          active_analyses$name[
+            str_detect(
+              active_analyses$analysis,
+              subgroup
+            ) &
+              active_analyses$cohort == cohort
+          ]
+        )
+      )),
+      moderately_sensitive = list(
+        model_output_regression = glue(
+          "output/make_output/model_output-{cohort}-{subgroup}.csv"
+        ),
+        model_output_lrtest = paste0(
+          "output/make_output/",
+          glue(
+            "model_output_lrtest-{cohort}-{subgroup}.csv"
+          )
+        ),
+        model_output_regression_midpoint6 = glue(
+          "output/make_output/model_output-{cohort}-{subgroup}-midpoint6.csv"
+        ),
+        model_output_lrtest_midpoint6 = paste0(
+          "output/make_output/",
+          glue(
+            "model_output_lrtest-{cohort}-{subgroup}-midpoint6.csv"
+          )
+        )
       )
     )
   )
@@ -438,6 +499,16 @@ actions_list <- c(
   actions_list,
   unlist(run_models_action, recursive = FALSE)
 )
+
+# Generate model outputs for all cohort-subgroup combinations -----------------
+for (subgroup in c("main", subgroups_short)) {
+  for (cohort in cohorts_all) {
+    actions_list <- c(
+      actions_list,
+      make_model_output(cohort, subgroup)
+    )
+  }
+}
 
 #Add action: generate the tables used for the descriptive outcome graphs
 for (cohort in cohorts_all) {
