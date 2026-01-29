@@ -1,90 +1,103 @@
 term,label,group,ref
-cons_201710,Oct 2017,Consultations,
-cons_201711,Nov 2017,Consultations,
-cons_201712,Dec 2017,Consultations,
-cons_201801,Jan 2018,Consultations,
-cons_201802,Feb 2018,Consultations,
-cons_201803,Mar 2018,Consultations,
-cons_201804,Apr 2018,Consultations,
-cons_201805,May 2018,Consultations,
-cons_201806,Jun 2018,Consultations,
-cons_201807,Jul 2018,Consultations,
-cons_201808,Aug 2018,Consultations,
-cons_201809,Sep 2018,Consultations,
-cons_202110,Oct 2021,Consultations,
-cons_202111,Nov 2021,Consultations,
-cons_202112,Dec 2021,Consultations,
-cons_202201,Jan 2022,Consultations,
-cons_202202,Feb 2022,Consultations,
-cons_202203,Mar 2022,Consultations,
-cons_202204,Apr 2022,Consultations,
-cons_202205,May 2022,Consultations,
-cons_202206,Jun 2022,Consultations,
-cons_202207,Jul 2022,Consultations,
-cons_202208,Aug 2022,Consultations,
-cons_202209,Sep 2022,Consultations,
-cons_202210,Oct 2022,Consultations,
-cons_202211,Nov 2022,Consultations,
-cons_202212,Dec 2022,Consultations,
-cons_202301,Jan 2023,Consultations,
-cons_202302,Feb 2023,Consultations,
-cons_202303,Mar 2023,Consultations,
-cons_202304,Apr 2023,Consultations,
-cons_202305,May 2023,Consultations,
-cons_202306,Jun 2023,Consultations,
-cons_202307,Jul 2023,Consultations,
-cons_202308,Aug 2023,Consultations,
-cons_202309,Sep 2023,Consultations,
-cons_202310,Oct 2023,Consultations,
-cons_202311,Nov 2023,Consultations,
-cons_202312,Dec 2023,Consultations,
-cons_202401,Jan 2024,Consultations,
-cons_202402,Feb 2024,Consultations,
-cons_202403,Mar 2024,Consultations,
-cons_202404,Apr 2024,Consultations,
-cons_202405,May 2024,Consultations,
-cons_202406,Jun 2024,Consultations,
-cons_202407,Jul 2024,Consultations,
-cons_202408,Aug 2024,Consultations,
-cons_202409,Sep 2024,Consultations,
-total,Total patients,Total,
-under5y,Under 5,Age,1
-5_to_11,5–11,Age,2
-12_to_17,12–17,Age,3
-18_to_29,18–29,Age,4
-30_to_44,30–44,Age,5
-45_to_54,45–54,Age,6
-55_to_64,55–64,Age,7
-65_to_74,65–74,Age,8
-75_to_79,75–79,Age,9
-80_to_84,80–84,Age,10
-age_85_plus,85+,Age,11
+cons_oct_precovid,Oct 2017,Consultations,
+cons_nov_precovid,Nov 2017,Consultations,
+cons_dec_precovid,Dec 2017,Consultations,
+cons_jan_precovid,Jan 2018,Consultations,
+cons_feb_precovid,Feb 2018,Consultations,
+cons_mar_precovid,Mar 2018,Consultations,
+cons_apr_precovid,Apr 2018,Consultations,
+cons_may_precovid,May 2018,Consultations,
+cons_jun_precovid,Jun 2018,Consultations,
+cons_jul_precovid,Jul 2018,Consultations,
+cons_aug_precovid,Aug 2018,Consultations,
+cons_sep_precovid,Sep 2018,Consultations,
+cons_oct_postcovid1,Oct 2021,Consultations,
+cons_nov_postcovid1,Nov 2021,Consultations,
+cons_dec_postcovid1,Dec 2021,Consultations,
+cons_jan_postcovid1,Jan 2022,Consultations,
+cons_feb_postcovid1,Feb 2022,Consultations,
+cons_mar_postcovid1,Mar 2022,Consultations,
+cons_apr_postcovid1,Apr 2022,Consultations,
+cons_may_postcovid1,May 2022,Consultations,
+cons_jun_postcovid1,Jun 2022,Consultations,
+cons_jul_postcovid1,Jul 2022,Consultations,
+cons_aug_postcovid1,Aug 2022,Consultations,
+cons_sep_postcovid1,Sep 2022,Consultations,
+cons_oct_postcovid2,Oct 2022,Consultations,
+cons_nov_postcovid2,Nov 2022,Consultations,
+cons_dec_postcovid2,Dec 2022,Consultations,
+cons_jan_postcovid2,Jan 2023,Consultations,
+cons_feb_postcovid2,Feb 2023,Consultations,
+cons_mar_postcovid2,Mar 2023,Consultations,
+cons_apr_postcovid2,Apr 2023,Consultations,
+cons_may_postcovid2,May 2023,Consultations,
+cons_jun_postcovid2,Jun 2023,Consultations,
+cons_jul_postcovid2,Jul 2023,Consultations,
+cons_aug_postcovid2,Aug 2023,Consultations,
+cons_sep_postcovid2,Sep 2023,Consultations,
+cons_oct_postcovid3,Oct 2023,Consultations,
+cons_nov_postcovid3,Nov 2023,Consultations,
+cons_dec_postcovid3,Dec 2023,Consultations,
+cons_jan_postcovid3,Jan 2024,Consultations,
+cons_feb_postcovid3,Feb 2024,Consultations,
+cons_mar_postcovid3,Mar 2024,Consultations,
+cons_apr_postcovid3,Apr 2024,Consultations,
+cons_may_postcovid3,May 2024,Consultations,
+cons_jun_postcovid3,Jun 2024,Consultations,
+cons_jul_postcovid3,Jul 2024,Consultations,
+cons_aug_postcovid3,Aug 2024,Consultations,
+cons_sep_postcovid3,Sep 2024,Consultations,
+cons_mean,Monthly consultation rate, Monthly consultation,
+cons_oct,October,Monthly consultation,1
+cons_nov,November,Monthly consultation,2
+cons_dec,December,Monthly consultation,3
+cons_jan,January,Monthly consultation,4
+cons_feb,February,Monthly consultation,5
+cons_mar,March,Monthly consultation,6
+cons_apr,April,Monthly consultation,7
+cons_may,May,Monthly consultation,8
+cons_jun,June,Monthly consultation,9
+cons_jul,July,Monthly consultation,10
+cons_aug,August,Monthly consultation,11
+cons_sep,September,Monthly consultation,12
+list_size,List size,List size,
+obesity_True,Obesity,Obesity,
+age_0_4,Under 5 years,Age,1
+age_5_11,5–11 years,Age,2
+age_12_17,12–17 years,Age,3
+age_18_29,18–29 years,Age,4
+age_30_44,30–44 years,Age,5
+age_45_54,45–54 years,Age,6
+age_55_64,55–64 years,Age,7
+age_65_74,65–74 years,Age,8
+age_75_79,75–79 years,Age,9
+age_80,80–84 years,Age,10
 age_missing,Missing age,Age,12
-female,Female,Sex,1
-male,Male,Sex,2
+sex_female,Female,Sex,1
+sex_male,Male,Sex,2
 sex_missing,Missing sex,Sex,3
-eth_white,White,Ethnicity,1
-eth_asian,Asian,Ethnicity,2
-eth_black,Black,Ethnicity,3
-eth_mixed,Mixed,Ethnicity,4
-eth_other,Other,Ethnicity,5
-eth_missing,Missing ethnicity,Ethnicity,6
+ethnicity_white,White,Ethnicity,1
+ethnicity_asian,Asian,Ethnicity,2
+ethnicity_black,Black,Ethnicity,3
+ethnicity_mixed,Mixed,Ethnicity,4
+ethnicity_other,Other,Ethnicity,5
+ethnicity_missing,Missing ethnicity,Ethnicity,6
 imd_1_most,IMD 1 (most deprived),Deprivation,1
 imd_2,IMD 2,Deprivation,2
 imd_3,IMD 3,Deprivation,3
 imd_4,IMD 4,Deprivation,4
 imd_5_least,IMD 5 (least deprived),Deprivation,5
 imd_missing,Missing IMD,Deprivation,6
-urb_major,Urban major conurbation,Rurality,1
-urb_minor,Urban minor conurbation,Rurality,2
-urb_town,Urban town,Rurality,3
-rural_fringe,Rural fringe,Rurality,4
-rural_village,Rural village,Rurality,5
-rurality_missing,Missing rurality,Rurality,6
-smoker_never,Never smoker,Smoking Status,1
-smoker_current,Current smoker,Smoking Status,3
-smoker_ever,Eever smoker,Smoking Status,2
-smoker_missing,Missing smoking,Smoking Status,4
+rurality_urban_comb,Urban conurbation,Rurality,1
+rurality_urban_town,Urban town,Rurality,2
+rurality_rural_fringe,Rural fringe,Rurality,3
+rurality_rural_village,Rural village,Rurality,4
+rurality_missing,Missing rurality,Rurality,5
+smoking_never,Never smoker,Smoking Status,1
+smoking_current,Current smoker,Smoking Status,3
+smoking_ever,Eever smoker,Smoking Status,2
+smoking_missing,Missing smoking,Smoking Status,4
+carehome_True, Care home residence, Care home residence,
 af,Atrial fibrillation,Condition,
 alcoholproblem,Alcohol problems,Condition,
 anxietydepression,Anxiety or depression,Condition,
