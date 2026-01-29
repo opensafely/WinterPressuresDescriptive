@@ -11,7 +11,6 @@ library(VennDiagram)
 library(grid)
 library(gridExtra)
 library(ggtext)
-library(ggtext)
 
 # Specify paths ----------------------------------------------------------------
 print('Specify paths')
@@ -48,14 +47,14 @@ df <- file_list %>%
     }) %>%
     bind_rows()
 
-readr::write_csv(df, paste0(output_folder, "/table1.csv"), na = "-")
+readr::write_csv(df, paste0(output_folder, "/table1_raw.csv"), na = "-")
 
 
 # Load data --------------------------------------------------------------------
 print("Load data")
 
 df <- readr::read_csv(
-    "output/post_release/table1.csv",
+    "output/post_release/table1_raw.csv",
     show_col_types = FALSE
 )
 

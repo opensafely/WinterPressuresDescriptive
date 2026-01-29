@@ -125,3 +125,19 @@ precovid,Pre-COVID19 (2018-10-01),,
 postcovid1,Post-COVID19 I (2022-10-01),,
 postcovid2,Post-COVID19 II (2023-10-01),,
 postcovid3,Post-COVID19 III (2024-10-01),,
+apc_main_cumu,Admitted patient care (all),cumulative hospital use,1
+ec_main_cumu,Emergency care,cumulative hospital use,2
+apc_unpl_main_cumu,Unplanned admitted patient care,cumulative hospital use,3
+apc_plan_main_cumu,Planned admitted patient care,cumulative hospital use,4
+apc_main_mean,Admitted patient care (all),average weekly hospital use,1
+ec_main_mean,Emergency care,average weekly hospital use,2
+apc_unpl_main_mean,Unplanned admitted patient care,average weekly hospital use,3
+apc_plan_main_mean,Planned admitted patient care,average weekly hospital use,4
+apc_acsc_any_main_cumu,Admitted patient care (ACSC admissions),cumulative ACSC-related hospital use,1
+ec_acsc_any_main_cumu,Emergency care (ACSC attendances),cumulative ACSC-related hospital use,2
+apc_unpl_acsc_any_main_cumu,Unplanned admitted patient care (ACSC admissions),cumulative ACSC-related hospital use,3
+apc_plan_acsc_any_main_cumu,Planned admitted patient care (ACSC admissions),cumulative ACSC-related hospital use,4
+apc_acsc_any_main_mean,Admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,1
+ec_acsc_any_main_mean,Emergency care (ACSC attendances),average weekly ACSC-related hospital use,2
+apc_unpl_acsc_any_main_mean,Unplanned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,3
+apc_plan_acsc_any_main_mean,Planned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,4
