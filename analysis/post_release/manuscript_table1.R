@@ -199,7 +199,7 @@ df_table1_wide <- df_table1 %>%
   ) %>%
   arrange(group, ref)
 
-# ---- ADD REGION DISTRIBUTION TO TABLE 1 ----
+# Add distribution of region and practice counts ------------------------------------------------------------
 
 region_df <- df %>%
   filter(
@@ -212,6 +212,29 @@ total_practices <- df %>%
   filter(strata == "Overall", category == "list_size") %>%
   select(cohort, n_practices_midpoint6) %>%
   distinct()
+
+df_n_practice_row <- total_practices %>%
+  mutate(
+    group = "N",
+    category_label = "Number of practices",
+    value = as.character(n_practices_midpoint6),
+    cohort = factor(
+      cohort,
+      levels = c("precovid", "postcovid1", "postcovid2", "postcovid3"),
+      labels = c(
+        "Pre-COVID",
+        "Post-COVID 1",
+        "Post-COVID 2",
+        "Post-COVID 3"
+      )
+    )
+  ) %>%
+  select(group, category_label, cohort, value) %>%
+  pivot_wider(
+    names_from = cohort,
+    values_from = value,
+    names_glue = "Median (IQR) [{cohort}]"
+  )
 
 df_region_wide <- region_df %>%
   select(
@@ -266,6 +289,7 @@ df_region_wide <- region_df %>%
   arrange(category_label)
 
 df_table1_wide <- bind_rows(
+  df_n_practice_row,
   df_region_wide,
   df_table1_wide
 )
