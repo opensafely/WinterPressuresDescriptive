@@ -98,6 +98,8 @@ smoking_current,Current smoker,Smoking Status,3
 smoking_ever,Eever smoker,Smoking Status,2
 smoking_missing,Missing smoking,Smoking Status,4
 carehome_True, Care home residence, Care home residence,
+carehome,Care home residence, Care home residence,
+practice_region, Practice region, Practice region,
 af,Atrial fibrillation,Condition,
 alcoholproblem,Alcohol problems,Condition,
 anxietydepression,Anxiety or depression,Condition,
@@ -116,7 +118,7 @@ hf,Heart failure,Condition,
 hypertension,Hypertension,Condition,
 hypt,Hypothyroidism,Condition,
 ibs,Irritable bowel syndrome,Condition,
-obesity,Obesity,Condition,
+obesity,Obesity,Obesity,
 osteoarthritis,Osteoarthritis,Condition,
 psychosis,Psychosis,Condition,
 stroketia,Stroke or TIA,Condition,
@@ -141,3 +143,11 @@ apc_acsc_any_main_mean,Admitted patient care (ACSC admissions),average weekly AC
 ec_acsc_any_main_mean,Emergency care (ACSC attendances),average weekly ACSC-related hospital use,2
 apc_unpl_acsc_any_main_mean,Unplanned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,3
 apc_plan_acsc_any_main_mean,Planned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,4
+apc_main,Admitted patient care (all),hospital use,
+ec_main,Emergency care,hospital use,
+apc_unpl_main,Unplanned admitted patient care,hospital use,
+apc_plan_main,Planned admitted patient care,hospital use,
+apc_acsc_any_main,Admitted patient care (ACSC admissions),ACSC-related hospital use,
+ec_acsc_any_main,Emergency care (ACSC attendances),ACSC-related hospital use,
+apc_unpl_acsc_any_main,Unplanned admitted patient care (ACSC admissions),ACSC-related hospital use,
+apc_plan_acsc_any_main,Planned admitted patient care (ACSC admissions),ACSC-related hospital use,
