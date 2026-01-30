@@ -276,7 +276,7 @@ plot_irr <- function(regression, outcome_name) {
         guides(
             colour = guide_legend(
                 title = "",
-                nrow = 2,
+                nrow = 1,
                 byrow = TRUE,
                 override.aes = list(size = 2)
             ),
