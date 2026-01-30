@@ -95,7 +95,7 @@ rurality_rural_village,Rural village,Rurality,4
 rurality_missing,Missing rurality,Rurality,5
 smoking_never,Never smoker,Smoking Status,1
 smoking_current,Current smoker,Smoking Status,3
-smoking_ever,Eever smoker,Smoking Status,2
+smoking_ever,Ever smoker,Smoking Status,2
 smoking_missing,Missing smoking,Smoking Status,4
 carehome_True, Care home residence, Care home residence,
 carehome,Care home residence, Care home residence,
