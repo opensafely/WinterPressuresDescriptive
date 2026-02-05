@@ -132,23 +132,24 @@ walk(groups, function(g) {
         geom_col(
             position = position_dodge(width = 0.7),
             width = 0.6,
-            colour = "grey30"
+            alpha = 0.7
         ) +
         geom_errorbar(
             aes(ymin = q1, ymax = q3),
             position = position_dodge(width = 0.7),
             width = 0.2,
-            linewidth = 0.6
+            linewidth = 0.6,
+            alpha = 0.8
         ) +
         labs(
             title = title,
             x = NULL,
             y = y_label,
-            fill = "Cohort"
+            fill = "Cohorts"
         ) +
         theme_bw() +
         theme(
-            plot.title = element_text(size = 12),
+            plot.title = element_markdown(),
             axis.text.x = element_text(size = 9),
             axis.title.y = element_text(size = 10),
             legend.position = "bottom",
