@@ -139,29 +139,38 @@ df_table1 <- df %>%
     )
   ) %>%
   mutate(
-    `Median (IQR)` = if_else(
-      group == "List size",
-      sprintf(
+    `Median (IQR)` = case_when(
+      group == "List size" ~ sprintf(
         "%d (%d-%d)",
         round(median),
         round(q1),
         round(q3)
       ),
-      sprintf(
+      group == "Monthly consultation" ~ sprintf(
+        "%.1f (%.1f-%.1f)",
+        median,
+        q1,
+        q3
+      ),
+      TRUE ~ sprintf(
         "%.2f (%.2f-%.2f)",
         median,
         q1,
         q3
       )
     ),
-    `Mean (SD)` = if_else(
-      group == "List size",
-      sprintf(
+    `Mean (SD)` = case_when(
+      group == "List size" ~ sprintf(
         "%d (%d)",
         round(mean),
         round(sd)
       ),
-      sprintf(
+      group == "Monthly consultation" ~ sprintf(
+        "%.1f (%.1f)",
+        mean,
+        sd
+      ),
+      TRUE ~ sprintf(
         "%.2f (%.2f)",
         mean,
         sd
