@@ -72,7 +72,7 @@ age_55_64,55-64 years,Age,7
 age_65_74,65-74 years,Age,8
 age_75_79,75-79 years,Age,9
 age_80,80-110 years,Age,10
-age_missing,Missing age,Age,12
+age_missing,Missing age,Age,11
 sex_female,Female,Sex,1
 sex_male,Male,Sex,2
 sex_missing,Missing sex,Sex,3

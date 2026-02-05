@@ -126,7 +126,17 @@ df_table1 <- df %>%
       group == "List size" ~ q3_midpoint6,
       group == "Monthly consultation" ~ q3_midpoint6 * 1000,
       TRUE ~ q3_midpoint6 * 100
-    ),
+    )
+  )
+
+readr::write_csv(
+  df_table1,
+  paste0(output_folder, "/table1_plot_data.csv"),
+  na = "-"
+)
+
+df_table1 <- df_table1 %>%
+  mutate(
     mean = case_when(
       group == "List size" ~ mean_midpoint6,
       group == "Monthly consultation" ~ mean_midpoint6 * 1000,
