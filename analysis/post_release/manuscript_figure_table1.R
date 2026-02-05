@@ -10,6 +10,7 @@ library(svglite)
 library(VennDiagram)
 library(grid)
 library(gridExtra)
+library(ggtext)
 
 # Specify paths ----------------------------------------------------------------
 print('Specify paths')
@@ -89,6 +90,36 @@ walk(groups, function(g) {
     if (nrow(plot_data) == 0) {
         return(NULL)
     }
+    # Y-axis label
+    y_label <- case_when(
+        g == "List size" ~ "Number of registered patients, median(IQR)",
+        g == "Monthly consultation" ~ "Consultations per 1,000 patients, median(IQR)",
+        TRUE ~ "Proportion (%), median(IQR)"
+    )
+
+    # Plot title
+    title <- case_when(
+        g == "List size" ~
+            paste(
+                "Practice",
+                paste0("**", tolower(g), "**"),
+                "across practices by cohort"
+            ),
+
+        g == "Monthly consultation" ~
+            paste(
+                "Practice",
+                paste0("**", tolower(g), "**"),
+                "rate per 1,000 registered patients across practices by cohort"
+            ),
+
+        TRUE ~
+            paste(
+                "Practice composition of",
+                paste0("**", tolower(g), "**"),
+                "by cohort"
+            )
+    )
 
     p <- ggplot(
         plot_data,
@@ -110,14 +141,14 @@ walk(groups, function(g) {
             linewidth = 0.6
         ) +
         labs(
-            title = g,
+            title = title,
             x = NULL,
-            y = "Median (IQR)",
+            y = y_label,
             fill = "Cohort"
         ) +
         theme_bw() +
         theme(
-            plot.title = element_text(face = "bold", size = 12),
+            plot.title = element_text(size = 12),
             axis.text.x = element_text(size = 9),
             axis.title.y = element_text(size = 10),
             legend.position = "bottom",
