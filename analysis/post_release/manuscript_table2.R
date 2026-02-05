@@ -56,7 +56,7 @@ df <- readr::read_csv(
   show_col_types = FALSE
 )
 
-perpeople_cumu <- 100
+perpeople_cumu <- 1000
 perpeople_mean <- 1000
 
 # Filter outcomes to whole population; all practices; unplanned apc and/or ec due to all causes or any acsc conditions
@@ -137,13 +137,13 @@ df_table2 <- df %>%
   ) %>%
   mutate(
     `Median (IQR)` = sprintf(
-      "%.2f (%.2f-%.2f)",
+      "%.1f (%.1f-%.1f)",
       median,
       q1,
       q3
     ),
     `Mean (SD)` = sprintf(
-      "%.2f (%.2f)",
+      "%.1f (%.1f)",
       mean,
       sd
     )
