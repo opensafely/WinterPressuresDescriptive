@@ -161,7 +161,7 @@ df_table3 <- df %>%
   )
 
 format_irr <- function(irr, lci, uci) {
-  sprintf("%.2f (%.2f–%.2f)", irr, lci, uci)
+  sprintf("%.3f (%.3f-%.3f)", irr, lci, uci)
 }
 
 df_table3 <- df_table3 %>%
@@ -190,6 +190,30 @@ df_table3 <- df_table3 %>%
 
 df_table3 <- df_table3 %>%
   tidyr::pivot_wider(
-    names_from  = cohort_label,
+    names_from = cohort_label,
     values_from = estimate
   )
+
+df_table3 <- df_table3 %>%
+  rename(
+    "Outcome" = outcome_label,
+    "Exposure" = exposure_label,
+    "Pre-COVID (2018-2019)" = `Pre-COVID19 (2018-10-01)`,
+    "Post-lockdown I (2022-2023)" = `Post-lockdown I (2022-10-01)`,
+    "Post-lockdown II (2023-2024)" = `Post-lockdown II (2023-10-01)`,
+    "Post-lockdown III (2024-2025)" = `Post-lockdown III (2024-10-01)`
+  ) %>%
+  select(
+    Outcome,
+    Exposure,
+    `Pre-COVID (2018-2019)`,
+    `Post-lockdown I (2022-2023)`,
+    `Post-lockdown II (2023-2024)`,
+    `Post-lockdown III (2024-2025)`
+  )
+
+readr::write_csv(
+  df_table3,
+  paste0(output_folder, "/table3_all_outcomes_negbin_age_sex.csv"),
+  na = "-"
+)
