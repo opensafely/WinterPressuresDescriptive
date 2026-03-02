@@ -3,7 +3,7 @@ from ehrql import claim_permissions
 from module_table_imports import *
 from config_setup import *
 
-claim_permissions("appointments")
+claim_permissions("appointments", "sgss_covid_all_tests", "occupation_on_covid_vaccine_record")
 
 if practice_measures:
 
