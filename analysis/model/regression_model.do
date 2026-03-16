@@ -63,16 +63,6 @@ describe
 	
 //Genarating key variables 	
 gen log_dnm = log(out_denom)
-		
-//Make every exposure variable scale from 0 - 100
-replace exp_prop = exp_prop*100
-// Make every covariate variable scale from 0-100 maybe cov_core and cov_other need to be rescale as well??
-ds cov_*, has(type numeric)
-foreach var of varlist `r(varlist)' {
-    if strpos("`var'", "_practice") == 0 {
-        replace `var' = `var' * 100
-    }
-}
 
 //Setting as a panel variable
 xtset practice_id week_number

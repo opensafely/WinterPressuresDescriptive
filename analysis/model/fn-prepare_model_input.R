@@ -109,6 +109,15 @@ prepare_model_input <- function(name) {
 
     input <- dplyr::rename(input, !!!rename_map)
 
+    if (is.numeric(input$exp_prop)) {
+        med <- median(input$exp_prop, na.rm = TRUE)
+        mad_value <- mad(input$exp_prop, na.rm = TRUE)  # Median Absolute Deviation
+
+        if (mad_value > 0) {
+            input$exp_prop <- (input$exp_prop - med) / mad_value
+        }
+    }
+
     # Identify final list of variables to keep -----------------------------------
     print("Identify final list of variables to keep")
 
