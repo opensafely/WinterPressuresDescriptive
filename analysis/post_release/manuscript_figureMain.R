@@ -213,7 +213,7 @@ plot_irr <- function(regression, outcome_name) {
             x = irr,
             y = exposure_label_full,
             colour = cohort_label,
-            linetype = model,
+            alpha = model,
             group = interaction(cohort_label, model)
         )
     ) +
@@ -224,14 +224,23 @@ plot_irr <- function(regression, outcome_name) {
             linewidth = 0.6
         ) +
         geom_errorbarh(
-            aes(xmin = lci, xmax = uci),
-            position = position_dodge(width = 0.7),
+            aes(xmin = lci, xmax = uci, alpha = model),
+            position = position_dodge(width = 0.5),
             height = 0.2,
             linewidth = 0.7
         ) +
         geom_point(
-            position = position_dodge(width = 0.7),
-            size = 1.6
+            position = position_dodge(width = 0.5),
+            size =2.5
+        ) +
+        # --- Scales ---
+        scale_alpha_manual(
+            values = c("Crude" = 0.35, "Age-sex adjusted" = 1),
+            name = "Model"
+        ) +
+        scale_size_manual(
+            values = c("Crude" = 1.6, "Age-sex adjusted" = 2.2),
+            name = "Model"
         ) +
         scale_x_log10(
             breaks = x_breaks,
@@ -251,8 +260,7 @@ plot_irr <- function(regression, outcome_name) {
             plot.title = ggtext::element_markdown(
                 hjust = 0,
                 size = 12,
-                margin = margin(b = 8),
-                face = "plain"
+                margin = margin(b = 8)
             ),
             plot.caption = element_text(
                 size = 8,
@@ -278,12 +286,13 @@ plot_irr <- function(regression, outcome_name) {
                 title = "",
                 nrow = 1,
                 byrow = TRUE,
-                override.aes = list(size = 2)
+                override.aes = list(size = 2, alpha = 1)
             ),
-            linetype = guide_legend(
+            alpha = guide_legend(
                 title = "Model",
-                override.aes = list(size = 0.8)
-            )
+                override.aes = list(colour = "black")
+            ),
+            size = "none" # hide duplicate legend
         )
     ggsave(
         filename = file.path(
