@@ -2154,6 +2154,26 @@ actions:
     - generate_measures_precovid_2018-10-01-main-apc_all
     - generate_measures_precovid_2018-10-01-main-ec_acscs
     - generate_measures_precovid_2018-10-01-main-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_asthma-ec_all
+    - generate_measures_precovid_2018-10-01-sub_asthma-apc_all
+    - generate_measures_precovid_2018-10-01-sub_asthma-ec_acscs
+    - generate_measures_precovid_2018-10-01-sub_asthma-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_copd-ec_all
+    - generate_measures_precovid_2018-10-01-sub_copd-apc_all
+    - generate_measures_precovid_2018-10-01-sub_copd-ec_acscs
+    - generate_measures_precovid_2018-10-01-sub_copd-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_hypertension-ec_all
+    - generate_measures_precovid_2018-10-01-sub_hypertension-apc_all
+    - generate_measures_precovid_2018-10-01-sub_hypertension-ec_acscs
+    - generate_measures_precovid_2018-10-01-sub_hypertension-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_diabetes-ec_all
+    - generate_measures_precovid_2018-10-01-sub_diabetes-apc_all
+    - generate_measures_precovid_2018-10-01-sub_diabetes-ec_acscs
+    - generate_measures_precovid_2018-10-01-sub_diabetes-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_all
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-apc_all
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_acscs
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-apc_acscs
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_precovid.csv
@@ -2180,6 +2200,26 @@ actions:
     - generate_measures_postcovid1_2022-10-01-main-apc_all
     - generate_measures_postcovid1_2022-10-01-main-ec_acscs
     - generate_measures_postcovid1_2022-10-01-main-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-ec_all
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-apc_all
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-ec_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_copd-ec_all
+    - generate_measures_postcovid1_2022-10-01-sub_copd-apc_all
+    - generate_measures_postcovid1_2022-10-01-sub_copd-ec_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_copd-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-ec_all
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-apc_all
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-ec_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-ec_all
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-apc_all
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-ec_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ec_all
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-apc_all
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ec_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-apc_acscs
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_postcovid1.csv
@@ -2206,6 +2246,26 @@ actions:
     - generate_measures_postcovid2_2023-10-01-main-apc_all
     - generate_measures_postcovid2_2023-10-01-main-ec_acscs
     - generate_measures_postcovid2_2023-10-01-main-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-ec_all
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-apc_all
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-ec_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_copd-ec_all
+    - generate_measures_postcovid2_2023-10-01-sub_copd-apc_all
+    - generate_measures_postcovid2_2023-10-01-sub_copd-ec_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_copd-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-ec_all
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-apc_all
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-ec_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-ec_all
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-apc_all
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-ec_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ec_all
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-apc_all
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ec_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-apc_acscs
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_postcovid2.csv
@@ -2232,6 +2292,26 @@ actions:
     - generate_measures_postcovid3_2024-10-01-main-apc_all
     - generate_measures_postcovid3_2024-10-01-main-ec_acscs
     - generate_measures_postcovid3_2024-10-01-main-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-ec_all
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-apc_all
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-ec_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_copd-ec_all
+    - generate_measures_postcovid3_2024-10-01-sub_copd-apc_all
+    - generate_measures_postcovid3_2024-10-01-sub_copd-ec_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_copd-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-ec_all
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-apc_all
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-ec_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-ec_all
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-apc_all
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-ec_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ec_all
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-apc_all
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ec_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-apc_acscs
     outputs:
       moderately_sensitive:
         dataset1: output/dataset_clean/merged_data_long_postcovid3.csv
