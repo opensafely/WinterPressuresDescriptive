@@ -155,6 +155,7 @@ summarise_dist <- function(x) {
     q1 = quantile(x, 0.25, na.rm = TRUE),
     q3 = quantile(x, 0.75, na.rm = TRUE),
     iqr = IQR(x, na.rm = TRUE),
+    mad = stats::mad(x, na.rm = TRUE), # median absolute deviation
     p10 = q[[1]],
     p20 = q[[2]],
     p30 = q[[3]],
