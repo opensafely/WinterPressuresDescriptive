@@ -8,8 +8,7 @@ library(dplyr)
 
 # Specify defaults -------------------------------------------------------------
 defaults_list <- list(
-  version = "3.0",
-  expectations = list(population_size = 1000L)
+  version = "5.0"
 )
 
 active_analyses <- read_rds("lib/active_analyses.rds")
@@ -223,7 +222,7 @@ apply_model_function <- function(
     ),
     action(
       name = glue("run_regression_model-{name}"),
-      run = glue("stata-mp:latest analysis/model/regression_model.do {name}"),
+      run = glue("stata-mp:v1 analysis/model/regression_model.do {name}"),
       needs = c(as.list(glue("make_model_input-{name}"))),
       moderately_sensitive = list(
         model_output_poisson = glue(
@@ -447,9 +446,10 @@ for (cohort in cohorts_all) {
   #Define a list of all "generate_measures" actions for the relevant cohort
   #This is what goes into the needs argument in the .yaml action
   measure_action_names <- names(measure_actions)[names(measure_actions) != ""] #Remove all list elements that are empty strings
-  generate_measures_list <- measure_action_names %>%
-    keep(~ str_detect(.x, glue("^generate_measures_{cohort}_"))) %>%
-    discard(~ str_detect(.x, "sub_"))
+  generate_measures_list <- measure_action_names[str_detect(
+    measure_action_names,
+    glue("^generate_measures_{cohort}_")
+  )]
 
   #Actually defining the action to run the analysis/datset_clean/measures_merge.R script for each cohort
   check_and_merge_action <- c(
@@ -520,7 +520,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_table_for_outcome_graph_{cohort}"),
       run = glue(
-        "stata-mp:latest analysis/figures_graphs_out.do {cohort} {date}"
+        "stata-mp:v1 analysis/figures_graphs_out.do {cohort} {date}"
       ),
       needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(
@@ -655,7 +655,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_outcome_histograms_{cohort}"),
       run = glue(
-        "stata-mp:latest analysis/figures_graphs_outcome_histogram.do {cohort} {date}"
+        "stata-mp:v1 analysis/figures_graphs_outcome_histogram.do {cohort} {date}"
       ),
       needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(
@@ -746,7 +746,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_out_dec_vars_{cohort}"),
       run = glue(
-        "stata-mp:latest analysis/f1_out_dec_variables.do {cohort} {date}"
+        "stata-mp:v1 analysis/f1_out_dec_variables.do {cohort} {date}"
       ),
       needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(
@@ -764,7 +764,7 @@ out_dec_week_simple_graphs <- c(
   comment(glue("Generates the SIMPLE outcome decile graphs by week")),
   action(
     name = glue("generate_out_dec_week_simple_graphs"),
-    run = glue("stata-mp:latest analysis/f1_out_dec_week_simple_graphs.do"),
+    run = glue("stata-mp:v1 analysis/f1_out_dec_week_simple_graphs.do"),
     needs = list(
       glue("generate_out_dec_vars_precovid"),
       glue("generate_out_dec_vars_postcovid1"),
@@ -792,7 +792,7 @@ out_dec_week_cumulative_graphs <- c(
   comment(glue("Generates the CUMULATIVE outcome decile graphs by week")),
   action(
     name = glue("generate_out_dec_week_cumulative_graphs"),
-    run = glue("stata-mp:latest analysis/f1_out_dec_week_cumulative_graphs.do"),
+    run = glue("stata-mp:v1 analysis/f1_out_dec_week_cumulative_graphs.do"),
     needs = list(
       glue("generate_out_dec_vars_precovid"),
       glue("generate_out_dec_vars_postcovid1"),
@@ -820,7 +820,7 @@ model_variance <- c(
   comment(glue("Runs simple regressions to estimate practice variance ")),
   action(
     name = glue("generate_model_variance"),
-    run = glue("stata-mp:latest analysis/simple_model_variance.do"),
+    run = glue("stata-mp:v1 analysis/simple_model_variance.do"),
     needs = list(
       glue("generate_merged_precovid"),
       glue("generate_merged_postcovid1"),
@@ -843,7 +843,7 @@ outcome_summary <- c(
   action(
     name = glue("generate_outcome_summary"),
     run = glue(
-      "stata-mp:latest analysis/outcome_time_var/outcome_summary_stats.do"
+      "stata-mp:v1 analysis/outcome_time_var/outcome_summary_stats.do"
     ),
     needs = list(
       glue("generate_merged_precovid"),
@@ -871,7 +871,7 @@ for (covariate in covariates_all) {
       action(
         name = glue("generate_reg_all_cond_{covariate}_{cohort}"),
         run = glue(
-          "stata-mp:latest analysis/outcome_time_var/reg_all_cond.do {cohort} {covariate}"
+          "stata-mp:v1 analysis/outcome_time_var/reg_all_cond.do {cohort} {covariate}"
         ),
         needs = list(glue("generate_merged_{cohort}")),
         moderately_sensitive = list(
@@ -895,7 +895,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_regressions_acsc_{cohort}"),
       run = glue(
-        "stata-mp:latest analysis/outcome_time_var/reg_acsc.do {cohort}"
+        "stata-mp:v1 analysis/outcome_time_var/reg_acsc.do {cohort}"
       ),
       needs = list(glue("generate_merged_{cohort}")),
       moderately_sensitive = list(
@@ -941,7 +941,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("linear_check_corr_plots_{cohort}"),
       run = glue(
-        "stata-mp:latest analysis/outcome_time_var/exp_out_plots.do {cohort}"
+        "stata-mp:v1 analysis/outcome_time_var/exp_out_plots.do {cohort}"
       ),
       needs = list(
         glue("generate_merged_{cohort}")
