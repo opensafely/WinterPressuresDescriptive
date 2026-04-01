@@ -10,7 +10,7 @@ actions:
   ## Define study dates 
 
   study_dates:
-    run: r:latest analysis/dataset_definition/study_dates.R
+    run: r:v2 analysis/dataset_definition/study_dates.R
     outputs:
       highly_sensitive:
         study_dates_json: output/dataset_definition/study_dates.json
@@ -2132,7 +2132,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: precovid 
 
   generate_merged_precovid:
-    run: r:latest analysis/dataset_clean/measures_merge.R precovid 2018-10-01
+    run: r:v2 analysis/dataset_clean/measures_merge.R precovid 2018-10-01
     needs:
     - generate_measures_precovid_2018-10-01_age
     - generate_measures_precovid_2018-10-01_sex
@@ -2177,7 +2177,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: postcovid1 
 
   generate_merged_postcovid1:
-    run: r:latest analysis/dataset_clean/measures_merge.R postcovid1 2022-10-01
+    run: r:v2 analysis/dataset_clean/measures_merge.R postcovid1 2022-10-01
     needs:
     - generate_measures_postcovid1_2022-10-01_age
     - generate_measures_postcovid1_2022-10-01_sex
@@ -2223,7 +2223,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: postcovid2 
 
   generate_merged_postcovid2:
-    run: r:latest analysis/dataset_clean/measures_merge.R postcovid2 2023-10-01
+    run: r:v2 analysis/dataset_clean/measures_merge.R postcovid2 2023-10-01
     needs:
     - generate_measures_postcovid2_2023-10-01_age
     - generate_measures_postcovid2_2023-10-01_sex
@@ -2269,7 +2269,7 @@ actions:
   ## Check measures files & generate merged datasets for cohort: postcovid3 
 
   generate_merged_postcovid3:
-    run: r:latest analysis/dataset_clean/measures_merge.R postcovid3 2024-10-01
+    run: r:v2 analysis/dataset_clean/measures_merge.R postcovid3 2024-10-01
     needs:
     - generate_measures_postcovid3_2024-10-01_age
     - generate_measures_postcovid3_2024-10-01_sex
@@ -2315,7 +2315,7 @@ actions:
   ## Generate cleaned input dataset - precovid 
 
   generate_input_precovid_clean:
-    run: r:latest analysis/dataset_clean/dataset_clean.R precovid
+    run: r:v2 analysis/dataset_clean/dataset_clean.R precovid
     needs:
     - generate_cohort_precovid
     - generate_merged_precovid
@@ -2326,7 +2326,7 @@ actions:
   ## Generate Table 1 summary statistics - precovid 
 
   generate_table1_precovid:
-    run: r:latest analysis/table1/table1.R precovid
+    run: r:v2 analysis/table1/table1.R precovid
     needs:
     - generate_input_precovid_clean
     outputs:
@@ -2336,7 +2336,7 @@ actions:
   ## Generate Table 2 summary statistics - precovid 
 
   generate_table2_precovid:
-    run: r:latest analysis/table2/table2.R precovid
+    run: r:v2 analysis/table2/table2.R precovid
     needs:
     - generate_input_precovid_clean
     outputs:
@@ -2346,7 +2346,7 @@ actions:
   ## Generate cleaned input dataset - postcovid1 
 
   generate_input_postcovid1_clean:
-    run: r:latest analysis/dataset_clean/dataset_clean.R postcovid1
+    run: r:v2 analysis/dataset_clean/dataset_clean.R postcovid1
     needs:
     - generate_cohort_postcovid1
     - generate_merged_postcovid1
@@ -2357,7 +2357,7 @@ actions:
   ## Generate Table 1 summary statistics - postcovid1 
 
   generate_table1_postcovid1:
-    run: r:latest analysis/table1/table1.R postcovid1
+    run: r:v2 analysis/table1/table1.R postcovid1
     needs:
     - generate_input_postcovid1_clean
     outputs:
@@ -2367,7 +2367,7 @@ actions:
   ## Generate Table 2 summary statistics - postcovid1 
 
   generate_table2_postcovid1:
-    run: r:latest analysis/table2/table2.R postcovid1
+    run: r:v2 analysis/table2/table2.R postcovid1
     needs:
     - generate_input_postcovid1_clean
     outputs:
@@ -2377,7 +2377,7 @@ actions:
   ## Generate cleaned input dataset - postcovid2 
 
   generate_input_postcovid2_clean:
-    run: r:latest analysis/dataset_clean/dataset_clean.R postcovid2
+    run: r:v2 analysis/dataset_clean/dataset_clean.R postcovid2
     needs:
     - generate_cohort_postcovid2
     - generate_merged_postcovid2
@@ -2388,7 +2388,7 @@ actions:
   ## Generate Table 1 summary statistics - postcovid2 
 
   generate_table1_postcovid2:
-    run: r:latest analysis/table1/table1.R postcovid2
+    run: r:v2 analysis/table1/table1.R postcovid2
     needs:
     - generate_input_postcovid2_clean
     outputs:
@@ -2398,7 +2398,7 @@ actions:
   ## Generate Table 2 summary statistics - postcovid2 
 
   generate_table2_postcovid2:
-    run: r:latest analysis/table2/table2.R postcovid2
+    run: r:v2 analysis/table2/table2.R postcovid2
     needs:
     - generate_input_postcovid2_clean
     outputs:
@@ -2408,7 +2408,7 @@ actions:
   ## Generate cleaned input dataset - postcovid3 
 
   generate_input_postcovid3_clean:
-    run: r:latest analysis/dataset_clean/dataset_clean.R postcovid3
+    run: r:v2 analysis/dataset_clean/dataset_clean.R postcovid3
     needs:
     - generate_cohort_postcovid3
     - generate_merged_postcovid3
@@ -2419,7 +2419,7 @@ actions:
   ## Generate Table 1 summary statistics - postcovid3 
 
   generate_table1_postcovid3:
-    run: r:latest analysis/table1/table1.R postcovid3
+    run: r:v2 analysis/table1/table1.R postcovid3
     needs:
     - generate_input_postcovid3_clean
     outputs:
@@ -2429,7 +2429,7 @@ actions:
   ## Generate Table 2 summary statistics - postcovid3 
 
   generate_table2_postcovid3:
-    run: r:latest analysis/table2/table2.R postcovid3
+    run: r:v2 analysis/table2/table2.R postcovid3
     needs:
     - generate_input_postcovid3_clean
     outputs:
@@ -70017,7 +70017,7 @@ actions:
   ## Generates exposure correlation figures - precovid 
 
   generate_exposure_correlation_figures_precovid:
-    run: r:latest analysis/graphs/correlations_exposures.R precovid
+    run: r:v2 analysis/graphs/correlations_exposures.R precovid
     needs:
     - generate_input_precovid_clean
     outputs:
@@ -70044,7 +70044,7 @@ actions:
   ## Generates exposure correlation figures - postcovid1 
 
   generate_exposure_correlation_figures_postcovid1:
-    run: r:latest analysis/graphs/correlations_exposures.R postcovid1
+    run: r:v2 analysis/graphs/correlations_exposures.R postcovid1
     needs:
     - generate_input_postcovid1_clean
     outputs:
@@ -70071,7 +70071,7 @@ actions:
   ## Generates exposure correlation figures - postcovid2 
 
   generate_exposure_correlation_figures_postcovid2:
-    run: r:latest analysis/graphs/correlations_exposures.R postcovid2
+    run: r:v2 analysis/graphs/correlations_exposures.R postcovid2
     needs:
     - generate_input_postcovid2_clean
     outputs:
@@ -70098,7 +70098,7 @@ actions:
   ## Generates exposure correlation figures - postcovid3 
 
   generate_exposure_correlation_figures_postcovid3:
-    run: r:latest analysis/graphs/correlations_exposures.R postcovid3
+    run: r:v2 analysis/graphs/correlations_exposures.R postcovid3
     needs:
     - generate_input_postcovid3_clean
     outputs:
@@ -70349,7 +70349,7 @@ actions:
   ## Create the forest plots 
 
   generate_forest_plots:
-    run: r:latest analysis/outcome_time_var/all_cond_forest_plots.R
+    run: r:v2 analysis/outcome_time_var/all_cond_forest_plots.R
     needs:
     - generate_reg_all_cond_unadjusted_precovid
     - generate_reg_all_cond_unadjusted_postcovid1
