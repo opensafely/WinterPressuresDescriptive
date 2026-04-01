@@ -156,7 +156,7 @@ generate_input_clean <- function(cohort) {
     comment(glue("Generate cleaned input dataset - {cohort}")),
     action(
       name = glue("generate_input_{cohort}_clean"),
-      run = glue("r:latest analysis/dataset_clean/dataset_clean.R {cohort}"),
+      run = glue("r:v2 analysis/dataset_clean/dataset_clean.R {cohort}"),
       needs = list(
         glue("generate_cohort_{cohort}"),
         glue("generate_merged_{cohort}")
@@ -174,7 +174,7 @@ generate_table1 <- function(cohort) {
     comment(glue("Generate Table 1 summary statistics - {cohort}")),
     action(
       name = glue("generate_table1_{cohort}"),
-      run = glue("r:latest analysis/table1/table1.R {cohort}"),
+      run = glue("r:v2 analysis/table1/table1.R {cohort}"),
       needs = list(
         glue("generate_input_{cohort}_clean")
       ),
@@ -193,7 +193,7 @@ generate_table2 <- function(cohort) {
     comment(glue("Generate Table 2 summary statistics - {cohort}")),
     action(
       name = glue("generate_table2_{cohort}"),
-      run = glue("r:latest analysis/table2/table2.R {cohort}"),
+      run = glue("r:v2 analysis/table2/table2.R {cohort}"),
       needs = list(
         glue("generate_input_{cohort}_clean")
       ),
@@ -303,7 +303,7 @@ actions_list <- c(
 
   action(
     name = "study_dates",
-    run = "r:latest analysis/dataset_definition/study_dates.R",
+    run = "r:v2 analysis/dataset_definition/study_dates.R",
     highly_sensitive = list(
       study_dates_json = "output/dataset_definition/study_dates.json"
     )
@@ -459,7 +459,7 @@ for (cohort in cohorts_all) {
     action(
       name = glue("generate_merged_{cohort}"),
       run = glue(
-        "r:latest analysis/dataset_clean/measures_merge.R {cohort} {date}"
+        "r:v2 analysis/dataset_clean/measures_merge.R {cohort} {date}"
       ),
       needs = generate_measures_list,
       moderately_sensitive = list(
@@ -677,7 +677,7 @@ for (cohort in cohorts_all) {
     comment(glue("Generates exposure correlation figures - {cohort}")),
     action(
       name = glue("generate_exposure_correlation_figures_{cohort}"),
-      run = glue("r:latest analysis/graphs/correlations_exposures.R {cohort}"),
+      run = glue("r:v2 analysis/graphs/correlations_exposures.R {cohort}"),
       needs = list(glue("generate_input_{cohort}_clean")),
       moderately_sensitive = list(
         heatmap_age = glue("output/correlations/heatmap_age_{cohort}.png"),
@@ -912,7 +912,7 @@ forest_plots <- c(
   comment(glue("Create the forest plots")),
   action(
     name = glue("generate_forest_plots"),
-    run = glue("r:latest analysis/outcome_time_var/all_cond_forest_plots.R"),
+    run = glue("r:v2 analysis/outcome_time_var/all_cond_forest_plots.R"),
     needs = list(
       glue("generate_reg_all_cond_unadjusted_precovid"),
       glue("generate_reg_all_cond_unadjusted_postcovid1"),
