@@ -32,6 +32,11 @@ smoking_clear = codelist_from_csv(
 )
 
 # BMI
+bmi_weight_status_snomed = codelist_from_csv(
+    "codelists/bristol-body-mass-index-weight-status-codes.csv", 
+    column="code"
+)
+
 bmi_obesity_snomed = codelist_from_csv(
     "codelists/user-elsie_horne-bmi_obesity_snomed.csv",
     column="code"

@@ -10,6 +10,7 @@ from variable_helper_functions import (
     last_matching_event_apc_before,
     filter_codes_by_category,
     last_matching_med_dmd_before,
+    most_recent_bmi,
 )
 
 # Define generate variables function
@@ -426,15 +427,87 @@ def generate_measure_variables(cohort_start):
     exp_bin_smoker_never = (tmp_cat_smoking == "N")
     exp_bin_smoker_missing = (tmp_cat_smoking == "M")
 
-    ### Obesity
-    exp_bin_obesity = (
-        last_matching_event_clinical_snomed_before(
-            bmi_obesity_snomed, cohort_start
-        ).exists_for_patient()
-        |
-        last_matching_event_apc_before(
-            bmi_obesity_icd10, cohort_start
-        ).exists_for_patient()
+    ### BMI
+    recent_bmi_date = most_recent_bmi(cohort_start).date
+    recent_bmi_age = patients.age_on(recent_bmi_date)
+
+    recent_bmi = most_recent_bmi(cohort_start).numeric_value
+
+    ### BMI 30 or above (obese) based on age and sex specific BMI thresholds (https://www.bmj.com/content/320/7244/1240.full)
+    tmp_bin_bmi30 = case(
+    when(recent_bmi_age == 2  & patients.sex == "male"   & recent_bmi >= 20.09).then(True),
+    when(recent_bmi_age == 2  & patients.sex == "female" & recent_bmi >= 19.81).then(True),
+
+    when(recent_bmi_age == 3  & patients.sex == "male"   & recent_bmi >= 19.57).then(True),
+    when(recent_bmi_age == 3  & patients.sex == "female" & recent_bmi >= 19.36).then(True),
+
+    when(recent_bmi_age == 4  & patients.sex == "male"   & recent_bmi >= 19.29).then(True),
+    when(recent_bmi_age == 4  & patients.sex == "female" & recent_bmi >= 19.15).then(True),
+
+    when(recent_bmi_age == 5  & patients.sex == "male"   & recent_bmi >= 19.30).then(True),
+    when(recent_bmi_age == 5  & patients.sex == "female" & recent_bmi >= 19.17).then(True),
+
+    when(recent_bmi_age == 6  & patients.sex == "male"   & recent_bmi >= 19.78).then(True),
+    when(recent_bmi_age == 6  & patients.sex == "female" & recent_bmi >= 19.65).then(True),
+
+    when(recent_bmi_age == 7  & patients.sex == "male"   & recent_bmi >= 20.63).then(True),
+    when(recent_bmi_age == 7  & patients.sex == "female" & recent_bmi >= 20.51).then(True),
+
+    when(recent_bmi_age == 8  & patients.sex == "male"   & recent_bmi >= 21.60).then(True),
+    when(recent_bmi_age == 8  & patients.sex == "female" & recent_bmi >= 21.57).then(True),
+
+    when(recent_bmi_age == 9  & patients.sex == "male"   & recent_bmi >= 22.77).then(True),
+    when(recent_bmi_age == 9  & patients.sex == "female" & recent_bmi >= 22.81).then(True),
+
+    when(recent_bmi_age == 10 & patients.sex == "male"   & recent_bmi >= 24.00).then(True),
+    when(recent_bmi_age == 10 & patients.sex == "female" & recent_bmi >= 24.11).then(True),
+
+    when(recent_bmi_age == 11 & patients.sex == "male"   & recent_bmi >= 25.10).then(True),
+    when(recent_bmi_age == 11 & patients.sex == "female" & recent_bmi >= 25.42).then(True),
+
+    when(recent_bmi_age == 12 & patients.sex == "male"   & recent_bmi >= 26.02).then(True),
+    when(recent_bmi_age == 12 & patients.sex == "female" & recent_bmi >= 26.67).then(True),
+
+    when(recent_bmi_age == 13 & patients.sex == "male"   & recent_bmi >= 26.84).then(True),
+    when(recent_bmi_age == 13 & patients.sex == "female" & recent_bmi >= 27.76).then(True),
+
+    when(recent_bmi_age == 14 & patients.sex == "male"   & recent_bmi >= 27.63).then(True),
+    when(recent_bmi_age == 14 & patients.sex == "female" & recent_bmi >= 28.57).then(True),
+
+    when(recent_bmi_age == 15 & patients.sex == "male"   & recent_bmi >= 28.30).then(True),
+    when(recent_bmi_age == 15 & patients.sex == "female" & recent_bmi >= 29.11).then(True),
+
+    when(recent_bmi_age == 16 & patients.sex == "male"   & recent_bmi >= 28.88).then(True),
+    when(recent_bmi_age == 16 & patients.sex == "female" & recent_bmi >= 29.43).then(True),
+
+    when(recent_bmi_age == 17 & patients.sex == "male"   & recent_bmi >= 29.41).then(True),
+    when(recent_bmi_age == 17 & patients.sex == "female" & recent_bmi >= 29.69).then(True),
+
+    when(recent_bmi_age >= 18 & recent_bmi >= 30).then(True),
+    otherwise=False
+    )
+
+    recent_weight_status_gp = last_matching_event_clinical_snomed_before(bmi_weight_status_snomed, cohort_start)
+    recent_date_weight_status_gp = recent_weight_status_gp.date
+
+    tmp_bin_obesity_gp = case(
+        when(recent_weight_status_gp.snomedct_code.is_in(bmi_obesity_snomed)).then(True),
+        otherwise=False
+    )
+    
+    recent_date_obesity_apc = last_matching_event_apc_before(
+        bmi_obesity_icd10, cohort_start
+    ).admission_date
+
+    recent_weight_status_date = maximum_of(recent_date_weight_status_gp, recent_date_obesity_apc)
+
+    exp_bin_bmi_missing = recent_bmi.is_null() | recent_weight_status_date.is_null()
+
+    exp_bin_obesity = case(
+        when(recent_bmi_date.is_not_null() & (recent_weight_status_date.is_null() | recent_weight_status_date.is_before(recent_bmi_date))).then(tmp_bin_bmi30),
+        when(recent_date_weight_status_gp.is_not_null() & (recent_date_obesity_apc.is_null() | recent_date_obesity_apc.is_before(recent_date_weight_status_gp))).then(tmp_bin_obesity_gp),
+        when(recent_date_obesity_apc.is_not_null()).then(True),
+        otherwise=False
     )
 
     ### Consultation rate in 2019 (using seen maybe)
@@ -510,6 +583,7 @@ def generate_measure_variables(cohort_start):
         exp_bin_smoker_missing = exp_bin_smoker_missing,
         # Obesity
         exp_bin_obesity = exp_bin_obesity,
+        exp_bin_bmi_missing = exp_bin_bmi_missing,
         # Consultation rate in 2019
         exp_num_consrate2019 = exp_num_consrate2019,   
     )
