@@ -110,6 +110,7 @@ if practice_measures:
     # =========================
     measures_obesity = {
         "obesity": exp_bin_obesity,
+        "obesity_missing": exp_bin_bmi_missing,
     }
 
     # =========================
