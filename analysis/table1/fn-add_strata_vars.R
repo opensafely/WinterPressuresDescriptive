@@ -1,7 +1,6 @@
 add_strata_vars <- function(
     input,
-    Strata = TRUE,
-    rounded = TRUE
+    Strata = TRUE
 ) {
 
     if (Strata) {

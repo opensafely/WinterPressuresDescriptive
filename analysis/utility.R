@@ -484,6 +484,8 @@ drop_all_duplicates <- function(
   return(df)
 }
 
+# Generate function to summarise distribution for exposures ----
+print("Generate function to summarise distribution for exposures")
 summarise_dist <- function(x) {
   q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
   tibble(
@@ -505,4 +507,29 @@ summarise_dist <- function(x) {
     p80 = q[[8]],
     p90 = q[[9]]
   )
+}
+
+# Generate function to summarise distribution for outcomes ----
+print("Generate function to summarise distribution for outcomes")
+summarise_dist_outcome <- function(x) {
+    q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
+    tibble(
+        n_practices = sum(!is.na(x)), # total practices with non-missing values
+        prop_zero = sum(x == 0, na.rm = TRUE) / sum(!is.na(x)), # count_zero / count_total
+        mean = mean(x, na.rm = TRUE),
+        sd = sd(x, na.rm = TRUE),
+        median = median(x, na.rm = TRUE),
+        q1 = quantile(x, 0.25, na.rm = TRUE),
+        q3 = quantile(x, 0.75, na.rm = TRUE),
+        iqr = IQR(x, na.rm = TRUE),
+        p10 = q[[1]],
+        p20 = q[[2]],
+        p30 = q[[3]],
+        p40 = q[[4]],
+        p50 = q[[5]],
+        p60 = q[[6]],
+        p70 = q[[7]],
+        p80 = q[[8]],
+        p90 = q[[9]]
+    )
 }
