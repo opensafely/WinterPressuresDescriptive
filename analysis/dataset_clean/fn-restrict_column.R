@@ -1,41 +1,13 @@
-# Function to restrict to relevant variables ----------------------------------------
-restrict_variables <- function(input) {
+# Function to restrict to unrounded variables ----------------------------------------
+restrict_column <- function(input) {
     message("Restricting to relevant variables only")
 
     # ----------------------------------------------------------------------
-    # 1. Remove all unrounded numerator/denominator of exposure variables
-    # ----------------------------------------------------------------------
-
-    drop_raw_num_denom <- names(input)[
-        grepl("^(num_|denom_)", names(input)) & # any num_ or denom_
-            !grepl("_mp6$", names(input)) & # but NOT ending in _mp6
-            !grepl("apc_|ec_", names(input)) # but NOT related to outcomes
-    ]
-
-    # Count how many will be removed
-    n_drop <- length(drop_raw_num_denom)
-
-    message("--------------------------------------------------")
-    message("Dropping NON-mp6 numerator/denominator variables")
-    message("Number of variables removed: ", n_drop)
-
-    if (n_drop > 0) {
-        message("Variables removed:")
-        print(drop_raw_num_denom)
-    } else {
-        message("No variables met criteria for removal.")
-    }
-
-    # Remove them from dataset
-    input <- input %>%
-        select(-all_of(drop_raw_num_denom))
-
-    # ----------------------------------------------------------------------
-    # 2. Remove duplicate denominators for outcomes (main and subgroups)
+    # 1. Remove duplicate denominators for outcomes (main and subgroups)
     # ----------------------------------------------------------------------
 
     #Check for duplicate denominator vars for outcomes - drop the duplicates, highlight any that are unique
-    
+
     denom_main_vars_mp6 <- grep(
         "^denom_.*main.*_mp6$",
         names(input),
@@ -94,6 +66,33 @@ restrict_variables <- function(input) {
             )
         }
     }
+
+    # ----------------------------------------------------------------------
+    # 2. Remove all rounded numerator/denominator variables
+    # ----------------------------------------------------------------------
+
+    drop_rounded_vars <- names(input)[
+        grepl("^(num_|denom_)", names(input)) & # any num_ or denom_
+            grepl("_mp6$", names(input)) # ending in _mp6
+    ]
+
+    # Count how many will be removed
+    n_drop <- length(drop_rounded_vars)
+
+    message("--------------------------------------------------")
+    message("Dropping mp6 numerator/denominator variables")
+    message("Number of variables removed: ", n_drop)
+
+    if (n_drop > 0) {
+        message("Variables removed:")
+        print(drop_rounded_vars)
+    } else {
+        message("No variables met criteria for removal.")
+    }
+
+    # Remove them from dataset
+    input <- input %>%
+        select(-all_of(drop_rounded_vars))
 
     return(input)
 }
