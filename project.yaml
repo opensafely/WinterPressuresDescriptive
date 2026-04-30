@@ -2331,7 +2331,8 @@ actions:
     - generate_input_precovid_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6: output/table1/table1-cohort_precovid-midpoint6.csv
+        table1_midpoint6_TRUE: output/table1/table1-cohort_precovid-midpoint6.csv
+        table1_midpoint6_FALSE: output/table1/table1-cohort_precovid.csv
 
   ## Generate Table 2 summary statistics - precovid 
 
@@ -2341,7 +2342,8 @@ actions:
     - generate_input_precovid_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6: output/table2/table2-cohort_precovid-midpoint6.csv
+        table2_midpoint6_TRUE: output/table2/table2-cohort_precovid-midpoint6.csv
+        table2_midpoint6_FALSE: output/table2/table2-cohort_precovid.csv
 
   ## Generate cleaned input dataset - postcovid1 
 
@@ -2362,7 +2364,8 @@ actions:
     - generate_input_postcovid1_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6: output/table1/table1-cohort_postcovid1-midpoint6.csv
+        table1_midpoint6_TRUE: output/table1/table1-cohort_postcovid1-midpoint6.csv
+        table1_midpoint6_FALSE: output/table1/table1-cohort_postcovid1.csv
 
   ## Generate Table 2 summary statistics - postcovid1 
 
@@ -2372,7 +2375,8 @@ actions:
     - generate_input_postcovid1_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6: output/table2/table2-cohort_postcovid1-midpoint6.csv
+        table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid1-midpoint6.csv
+        table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid1.csv
 
   ## Generate cleaned input dataset - postcovid2 
 
@@ -2393,7 +2397,8 @@ actions:
     - generate_input_postcovid2_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6: output/table1/table1-cohort_postcovid2-midpoint6.csv
+        table1_midpoint6_TRUE: output/table1/table1-cohort_postcovid2-midpoint6.csv
+        table1_midpoint6_FALSE: output/table1/table1-cohort_postcovid2.csv
 
   ## Generate Table 2 summary statistics - postcovid2 
 
@@ -2403,7 +2408,8 @@ actions:
     - generate_input_postcovid2_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6: output/table2/table2-cohort_postcovid2-midpoint6.csv
+        table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid2-midpoint6.csv
+        table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid2.csv
 
   ## Generate cleaned input dataset - postcovid3 
 
@@ -2424,7 +2430,8 @@ actions:
     - generate_input_postcovid3_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6: output/table1/table1-cohort_postcovid3-midpoint6.csv
+        table1_midpoint6_TRUE: output/table1/table1-cohort_postcovid3-midpoint6.csv
+        table1_midpoint6_FALSE: output/table1/table1-cohort_postcovid3.csv
 
   ## Generate Table 2 summary statistics - postcovid3 
 
@@ -2434,7 +2441,8 @@ actions:
     - generate_input_postcovid3_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6: output/table2/table2-cohort_postcovid3-midpoint6.csv
+        table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid3-midpoint6.csv
+        table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid3.csv
 
   ## Run regression models for all active analyses 
 

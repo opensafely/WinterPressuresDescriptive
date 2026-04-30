@@ -117,8 +117,8 @@ if (apply_inex) {
 # Restrict to relevant variables only ----------------------------------------
 print('Restrict to relevant variables only')
 
-input <- restrict_variables(input)
-message("Restricted to relevant variables only")
+input <- restrict_column(input)
+message("restricted to relevant variables only")
 
 # Remove prop_ from variable names ----------------------------------------
 print('Remove prop_ from variable names')
@@ -130,5 +130,8 @@ message("Removed prop_ from variable names")
 # Save clean dataset ---------------------------------------------------
 print('Save clean dataset')
 
-saveRDS(input, paste0(dataclean_dir, "input_", cohort, "_clean.rds"), compress = TRUE)
-
+saveRDS(
+  input,
+  paste0(dataclean_dir, "input_", cohort, "_clean.rds"),
+  compress = TRUE
+)

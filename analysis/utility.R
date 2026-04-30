@@ -10,7 +10,7 @@ roundmid_num <- function(x, to = 6) {
 roundmid_prop <- function(x) {
   x <- as.numeric(x)
   m <- mean(x, na.rm = TRUE)
-  
+
   # If very rare (<1%), round to 0.0006 (0.06%)
   if (m < 0.01) {
     to <- 0.0006
@@ -19,10 +19,10 @@ roundmid_prop <- function(x) {
     to <- 0.006
   }
   y <- ceiling(x / to) * to - (floor(to / 2) * (x != 0))
-  
+
   # clamp values to [0,1]
   y <- pmin(pmax(y, 0), 1)
-  
+
   return(y)
 }
 
@@ -48,7 +48,7 @@ describe_data <- function(df, name) {
 
 # Function for creating a median (iqr_low-iqr_high) string ----
 
-create_median_iqr_string <- function(x)
+create_median_iqr_string <- function(x) {
   return(paste0(
     quantile(x)[3],
     " (",
@@ -57,6 +57,7 @@ create_median_iqr_string <- function(x)
     quantile(x)[4],
     ")"
   ))
+}
 
 # Function to convert numerical data to categorical data, following chosen bounds
 
@@ -482,4 +483,42 @@ drop_all_duplicates <- function(
   df <- df %>% select(-all_of(remove_vars))
 
   return(df)
+}
+
+# Generate function to summarise distribution  ----
+print("Generate function to summarise distribution")
+
+summarise_dist <- function(x, is_outcome = FALSE) {
+  q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
+
+  res <- tibble(
+    n_practices = sum(!is.na(x)),
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    median = median(x, na.rm = TRUE),
+    q1 = quantile(x, 0.25, na.rm = TRUE),
+    q3 = quantile(x, 0.75, na.rm = TRUE),
+    iqr = IQR(x, na.rm = TRUE),
+    p10 = q[[1]],
+    p20 = q[[2]],
+    p30 = q[[3]],
+    p40 = q[[4]],
+    p50 = q[[5]],
+    p60 = q[[6]],
+    p70 = q[[7]],
+    p80 = q[[8]],
+    p90 = q[[9]]
+  )
+
+  # Add outcome-specific metric
+  if (is_outcome) {
+    res <- res |>
+      mutate(prop_zero = sum(x == 0, na.rm = TRUE) / sum(!is.na(x)))
+  } else {
+    # Add exposure-specific metric
+    res <- res |>
+      mutate(mad = stats::mad(x, na.rm = TRUE))
+  }
+
+  return(res)
 }

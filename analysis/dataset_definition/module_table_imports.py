@@ -12,6 +12,7 @@ from ehrql import (
     weeks,
     days, 
     minimum_of, 
+    maximum_of,
     case, 
     show,
     INTERVAL, 

@@ -179,8 +179,11 @@ generate_table1 <- function(cohort) {
         glue("generate_input_{cohort}_clean")
       ),
       moderately_sensitive = list(
-        table1_midpoint6 = glue(
+        table1_midpoint6_TRUE = glue(
           "output/table1/table1-cohort_{cohort}-midpoint6.csv"
+        ),
+        table1_midpoint6_FALSE = glue(
+          "output/table1/table1-cohort_{cohort}.csv"
         )
       )
     )
@@ -198,8 +201,11 @@ generate_table2 <- function(cohort) {
         glue("generate_input_{cohort}_clean")
       ),
       moderately_sensitive = list(
-        table2_midpoint6 = glue(
+        table2_midpoint6_TRUE = glue(
           "output/table2/table2-cohort_{cohort}-midpoint6.csv"
+        ),
+        table2_midpoint6_FALSE = glue(
+          "output/table2/table2-cohort_{cohort}.csv"
         )
       )
     )

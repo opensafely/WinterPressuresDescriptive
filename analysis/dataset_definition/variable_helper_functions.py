@@ -156,3 +156,16 @@ def matching_death_between(codelist, start_date, end_date, where=True):
 # filter a codelist based on whether its values included a specified set of allowed values (include)
 def filter_codes_by_category(codelist, include):
     return {k:v for k,v in codelist.items() if v in include}
+
+# look up the most recent BMI value for each patient (>16 years old) before a specified date, ignoring out-of-range values
+def most_recent_bmi(start_date, where=True):
+    return(
+        clinical_events.where(where)
+        .where(clinical_events.snomedct_code.is_in(["60621009", "846931000000101"]) # BMI codes
+        # Ignore out-of-range values
+        & (clinical_events.numeric_value > 4)
+        & (clinical_events.numeric_value < 200))
+        .where(clinical_events.date.is_before(start_date))
+        .sort_by(clinical_events.date)
+        .last_for_patient()
+    )

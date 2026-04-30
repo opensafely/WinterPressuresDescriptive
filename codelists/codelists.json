@@ -1,5 +1,11 @@
 {
   "files": {
+    "bristol-body-mass-index-weight-status-codes.csv": {
+      "id": "bristol/body-mass-index-weight-status-codes/02bf6d5d",
+      "url": "https://www.opencodelists.org/codelist/bristol/body-mass-index-weight-status-codes/02bf6d5d/",
+      "downloaded_at": "2026-04-23 11:37:22.473521Z",
+      "sha": "00a689aa8e609d266c9eff3e19aaf269ae3947a7"
+    },
     "opensafely-ethnicity-snomed-0removed.csv": {
       "id": "opensafely/ethnicity-snomed-0removed/22911876",
       "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/22911876/",
