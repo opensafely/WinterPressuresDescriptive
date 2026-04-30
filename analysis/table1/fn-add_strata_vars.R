@@ -4,7 +4,7 @@ add_strata_vars <- function(
 ) {
 
     if (Strata) {
-        message("Creating stata variables for stratification")
+        message("Creating strata variables for stratification")
         # GP characteristics of interest for making strata and calculating cutoffs ----
 
         vars_interest <- c(
