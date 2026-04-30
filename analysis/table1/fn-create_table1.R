@@ -57,12 +57,12 @@ create_table1 <- function(
     # ---------------------------
     table1_summary <- table1_long %>%
         group_by(characteristic, subcharacteristic) %>%
-        summarise(summarise_dist(value), .groups = "drop") %>%
+        summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
         mutate(strata = "Overall") %>%
         bind_rows(
             table1_long %>%
                 group_by(strata_region, characteristic, subcharacteristic) %>%
-                summarise(summarise_dist(value), .groups = "drop") %>%
+                summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
                 rename(strata = strata_region)
         ) %>%
         mutate(
@@ -103,7 +103,7 @@ create_table1 <- function(
 
         table1_summary_strata <- table1_long_strata %>%
             group_by(strata, characteristic, subcharacteristic) %>%
-            summarise(summarise_dist(value), .groups = "drop") %>%
+            summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
             mutate(
                 across(
                     matches("n_practices"),

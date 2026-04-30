@@ -49,12 +49,12 @@ create_table2 <- function(
     print("Create summary of overall data")
     table2_summary <- table2_long %>%
         group_by(outcome_name) %>%
-        summarise(summarise_dist_outcome(value), .groups = "drop") %>%
+        summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop") %>%
         mutate(strata_region = "Overall") %>%
         bind_rows(
             table2_long %>%
                 group_by(strata_region, outcome_name) %>%
-                summarise(summarise_dist_outcome(value), .groups = "drop")
+                summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop")
         ) %>%
         mutate(
             across(
@@ -138,7 +138,7 @@ create_table2 <- function(
         print("Summarise strata data")
         table2_summary_strata <- table2_long_strata %>%
             group_by(strata, outcome_name) %>%
-            summarise(summarise_dist_outcome(value), .groups = "drop") %>%
+            summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop") %>%
             mutate(
                 across(
                     matches("n_practices"),
