@@ -419,7 +419,17 @@ merge_and_drop <- function(
   join_var,
   merged_df_name = "merged_df"
 ) {
-  merged_df <- reduce(df_list, full_join, by = join_var)
+  full_df <- reduce(df_list, full_join, by = join_var)
+  merged_df <- reduce(df_list, inner_join, by = join_var)
+  n_ids_full <- n_distinct(full_df[[join_var]])
+  n_ids_inner <- n_distinct(merged_df[[join_var]])
+  n_removed <- n_ids_full - n_ids_inner
+  message(
+    n_removed,
+    " new IDs removed during merge (",
+    n_ids_inner,
+    " matched IDs retained)"
+  )
 
   #Identify if any of the vars in var_list are now duplicates, post-merge
   duplicate_vars <- grep(
