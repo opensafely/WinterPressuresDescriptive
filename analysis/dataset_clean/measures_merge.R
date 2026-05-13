@@ -448,7 +448,7 @@ if (date_check_out$date_check_passed) {
 }
 
 #Merging the exposures, exposures_vax, exposures_cons, outcomes, and outcomes_acscs data together
-exp_data <- left_join(
+exp_data <- inner_join(
   merged_exp_measures,
   merged_exp_vax_measures,
   by = "practice_id"
@@ -470,7 +470,7 @@ exp_data <- drop_all_duplicates(
 
 #Now merge in the wide GP consulations data
 #Do in this order so that the denom vars in GP cons are not dropped!
-exp_data <- left_join(
+exp_data <- inner_join(
   exp_data,
   wide_exp_cons_measures,
   by = "practice_id"
@@ -478,16 +478,12 @@ exp_data <- left_join(
 
 out_data <- merged_out_measures
 
-#Restrict out_data to only the practices in exp_data
-out_data <- out_data %>%
-  semi_join(exp_data, by = "practice_id")
-
 #Merging the exposure and outcome data together to create the final analytic dataset
-analytic_data_long <- left_join(
+analytic_data_long <- inner_join(
   out_data,
   exp_data,
   by = "practice_id"
-) %>% #Merging the exp data to the longitudinal outcomes
+) %>% #Merging the exp data to the longitudinal outcomes, excluding the new practice apears after winter.
   rename(
     out_interval_start = interval_start,
     out_interval_end = interval_end
