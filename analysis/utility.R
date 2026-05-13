@@ -421,8 +421,8 @@ merge_and_drop <- function(
 ) {
   full_df <- reduce(df_list, full_join, by = join_var)
   merged_df <- reduce(df_list, inner_join, by = join_var)
-  n_ids_full <- n_distinct(full_df[[join_var]])
-  n_ids_inner <- n_distinct(merged_df[[join_var]])
+  n_ids_full <- n_distinct(full_df$practice_id)
+  n_ids_inner <- n_distinct(merged_df$practice_id)
   n_removed <- n_ids_full - n_ids_inner
   message(
     n_removed,
