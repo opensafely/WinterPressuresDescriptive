@@ -476,11 +476,9 @@ exp_data <- inner_join(
   by = "practice_id"
 )
 
-out_data <- merged_out_measures
-
 #Merging the exposure and outcome data together to create the final analytic dataset
 analytic_data_long <- inner_join(
-  out_data,
+  merged_out_measures,
   exp_data,
   by = "practice_id"
 ) %>% #Merging the exp data to the longitudinal outcomes, excluding the new practice apears after winter.
