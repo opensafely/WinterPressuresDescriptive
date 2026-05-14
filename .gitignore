@@ -11,3 +11,4 @@ venv/
 .Rproj.user/
 *.stswp
 *.stswp
+analysis/specify_paths.R
