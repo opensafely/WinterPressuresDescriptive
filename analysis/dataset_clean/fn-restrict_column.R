@@ -6,7 +6,7 @@ restrict_column <- function(input) {
     # 1. Remove duplicate denominators for outcomes (main and subgroups)
     # ----------------------------------------------------------------------
 
-    #Check for duplicate denominator vars for outcomes - drop the duplicates, highlight any that are unique
+    # Check for duplicate denominator vars for outcomes - drop the duplicates, highlight any that are unique
 
     denom_main_vars_mp6 <- grep(
         "^denom_.*main.*_mp6$",
@@ -36,7 +36,7 @@ restrict_column <- function(input) {
         )
     }
 
-    #Check for duplicate denominator vars within each subgroup
+    # Check for duplicate denominator vars within each subgroup
 
     subgroups <- c("asth", "copd", "htn", "diab", "sevmh")
 
@@ -94,5 +94,28 @@ restrict_column <- function(input) {
     input <- input %>%
         select(-all_of(drop_rounded_vars))
 
-    return(input)
+    # Remove prop_ from variable names ----------------------------------------
+    print("Remove prop_ from variable names")
+
+    input <- input %>%
+        rename_with(~ gsub("^prop_", "", .x))
+    message("Removed prop_ from variable names")
+
+    # ----------------------------------------------------------------------
+    # 3. Make ICC input dataset
+    # ----------------------------------------------------------------------
+
+    outcome_vars <- names(input)[
+        grepl("^(apc|ec)_", names(input)) & 
+            !grepl("(mean|cumu|mp6)", names(input)) &
+            !grepl("acsc_(asth|copd|htn|diab|ang)", names(input))
+    ]
+
+    icc <- input %>% select(
+        practice_id,
+        week_number,
+        all_of(outcome_vars)
+    )
+
+    return(list(icc = icc, input = input))
 }
