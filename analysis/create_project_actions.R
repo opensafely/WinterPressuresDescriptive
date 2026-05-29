@@ -162,7 +162,25 @@ generate_input_clean <- function(cohort) {
         glue("generate_merged_{cohort}")
       ),
       highly_sensitive = list(
-        cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.rds")
+        cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.rds"),
+        icc_input = glue("output/dataset_clean/icc_input-{cohort}.dta")
+      )
+    )
+  )
+}
+
+# Generate icc_outcome output
+generate_icc_outcome <- function(cohort) {
+  splice(
+    comment(glue("Generate icc_outcome - {cohort}")),
+    action(
+      name = glue("generate_icc_outcome_{cohort}"),
+      run = glue("stata-mp:v1 analysis/icc/icc_outcome.do {cohort}"),
+      needs = list(
+        glue("generate_input_{cohort}_clean")
+      ),
+      moderately_sensitive = list(
+        icc_outcome = glue("output/icc_outcome/icc_outcome-{cohort}.csv")
       )
     )
   )
@@ -482,6 +500,7 @@ for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_input_clean(cohort))
   actions_list <- c(actions_list, generate_table1(cohort))
   actions_list <- c(actions_list, generate_table2(cohort))
+  actions_list <- c(actions_list, generate_icc_outcome(cohort))
 }
 
 # Run models for all active analyses ----------------------------------------------
