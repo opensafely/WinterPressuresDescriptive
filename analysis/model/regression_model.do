@@ -53,7 +53,7 @@ adopath + "analysis/ado"
 * Specify parameters
 local name "`1'"
 
-* Sepecify parameters locally
+* Specify parameters locally
 *local name "cohort_precovid-main-age_80-apc_plan_acsc_any"
 
 //Read and describe data
