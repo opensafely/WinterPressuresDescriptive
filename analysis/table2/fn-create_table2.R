@@ -1,10 +1,11 @@
 create_table2 <- function(
-    input,
-    rounded_vars,
-    unrounded_vars,
-    Strata = TRUE,
-    rounded = FALSE,
-    threshold
+  input,
+  rounded_vars,
+  unrounded_vars,
+  Strata = TRUE,
+  rounded = FALSE,
+  threshold,
+  threshold_practice
 ) {
     name_pattern <- if (rounded) {
         "^([^_]+)(?:_(.*))?_mp6$"
@@ -56,13 +57,7 @@ create_table2 <- function(
                 group_by(strata_region, outcome_name) %>%
                 summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop")
         ) %>%
-        mutate(
-            across(
-                matches("n_practices"),
-                ~ roundmid_num(., to = threshold)
-            )
-        ) %>%
-        rename(n_practices_midpoint6 = n_practices) %>%
+        mutate(n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)) %>%
         rename(strata = strata_region) %>%
         mutate(
             # sample: main or sub_xxx
@@ -140,12 +135,8 @@ create_table2 <- function(
             group_by(strata, outcome_name) %>%
             summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop") %>%
             mutate(
-                across(
-                    matches("n_practices"),
-                    ~ roundmid_num(., to = threshold)
-                )
+                n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)
             ) %>%
-            rename(n_practices_midpoint6 = n_practices) %>%
             mutate(
                 # sample: main or sub_xxx
                 group = str_extract(outcome_name, "(main|sub_[a-z]+)"),
@@ -199,8 +190,14 @@ create_table2 <- function(
         table2_summary_all <- table2_summary
     }
 
-    if (rounded) {
+    # Remove rows with insufficient practices if unrounded, and rename variables if rounded ---------------------------
+    if (!rounded) {
         table2_summary_all <- table2_summary_all %>%
+            filter(n_practices > threshold_practice) %>%
+            select(-n_practices)
+    } else {
+        table2_summary_all <- table2_summary_all %>%
+            select(-n_practices) %>%
             rename_with(
                 ~ ifelse(
                     grepl("_midpoint6$", .x),

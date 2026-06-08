@@ -22,6 +22,7 @@ fs::dir_create(here::here(table2_dir))
 print('Specify redaction threshold')
 
 threshold <- 6
+threshold_practice <- 50
 
 # Source common functions ------------------------------------------------------
 print('Source common functions')
@@ -109,7 +110,8 @@ table2_summary_all_rounded <- create_table2(
   Strata = TRUE,
   rounded_vars = rounded_vars,
   unrounded_vars = unrounded_vars,
-  threshold = threshold
+  threshold = threshold,
+  threshold_practice = threshold_practice
 )
 message("Created Table 2 summary with rounded variables")
 
@@ -119,7 +121,8 @@ table2_summary_all_unrounded <- create_table2(
   Strata = TRUE,
   rounded_vars = rounded_vars,
   unrounded_vars = unrounded_vars,
-  threshold = threshold
+  threshold = threshold,
+  threshold_practice = threshold_practice
 )
 message("Created Table 2 summary with unrounded variables")
 

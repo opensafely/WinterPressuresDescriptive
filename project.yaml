@@ -2322,6 +2322,7 @@ actions:
     outputs:
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_precovid_clean.rds
+        icc_input: output/dataset_clean/icc_input-precovid.dta
 
   ## Generate Table 1 summary statistics - precovid 
 
@@ -2345,6 +2346,16 @@ actions:
         table2_midpoint6_TRUE: output/table2/table2-cohort_precovid-midpoint6.csv
         table2_midpoint6_FALSE: output/table2/table2-cohort_precovid.csv
 
+  ## Generate icc_outcome - precovid 
+
+  generate_icc_outcome_precovid:
+    run: stata-mp:v1 analysis/icc/icc_outcome.do precovid
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      moderately_sensitive:
+        icc_outcome: output/icc_outcome/icc_outcome-precovid.csv
+
   ## Generate cleaned input dataset - postcovid1 
 
   generate_input_postcovid1_clean:
@@ -2355,6 +2366,7 @@ actions:
     outputs:
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid1_clean.rds
+        icc_input: output/dataset_clean/icc_input-postcovid1.dta
 
   ## Generate Table 1 summary statistics - postcovid1 
 
@@ -2378,6 +2390,16 @@ actions:
         table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid1-midpoint6.csv
         table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid1.csv
 
+  ## Generate icc_outcome - postcovid1 
+
+  generate_icc_outcome_postcovid1:
+    run: stata-mp:v1 analysis/icc/icc_outcome.do postcovid1
+    needs:
+    - generate_input_postcovid1_clean
+    outputs:
+      moderately_sensitive:
+        icc_outcome: output/icc_outcome/icc_outcome-postcovid1.csv
+
   ## Generate cleaned input dataset - postcovid2 
 
   generate_input_postcovid2_clean:
@@ -2388,6 +2410,7 @@ actions:
     outputs:
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid2_clean.rds
+        icc_input: output/dataset_clean/icc_input-postcovid2.dta
 
   ## Generate Table 1 summary statistics - postcovid2 
 
@@ -2411,6 +2434,16 @@ actions:
         table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid2-midpoint6.csv
         table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid2.csv
 
+  ## Generate icc_outcome - postcovid2 
+
+  generate_icc_outcome_postcovid2:
+    run: stata-mp:v1 analysis/icc/icc_outcome.do postcovid2
+    needs:
+    - generate_input_postcovid2_clean
+    outputs:
+      moderately_sensitive:
+        icc_outcome: output/icc_outcome/icc_outcome-postcovid2.csv
+
   ## Generate cleaned input dataset - postcovid3 
 
   generate_input_postcovid3_clean:
@@ -2421,6 +2454,7 @@ actions:
     outputs:
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid3_clean.rds
+        icc_input: output/dataset_clean/icc_input-postcovid3.dta
 
   ## Generate Table 1 summary statistics - postcovid3 
 
@@ -2443,6 +2477,16 @@ actions:
       moderately_sensitive:
         table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid3-midpoint6.csv
         table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid3.csv
+
+  ## Generate icc_outcome - postcovid3 
+
+  generate_icc_outcome_postcovid3:
+    run: stata-mp:v1 analysis/icc/icc_outcome.do postcovid3
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      moderately_sensitive:
+        icc_outcome: output/icc_outcome/icc_outcome-postcovid3.csv
 
   ## Run regression models for all active analyses 
 
