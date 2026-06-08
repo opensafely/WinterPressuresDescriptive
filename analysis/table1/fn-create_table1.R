@@ -1,10 +1,11 @@
 create_table1 <- function(
-    input,
-    rounded_vars,
-    unrounded_vars,
-    Strata = TRUE,
-    rounded = FALSE,
-    threshold
+  input,
+  rounded_vars,
+  unrounded_vars,
+  Strata = TRUE,
+  rounded = FALSE,
+  threshold,
+  threshold_practice
 ) {
     name_pattern <- if (rounded) {
         "^([^_]+)(?:_(.*))?_mp6$"
@@ -66,12 +67,8 @@ create_table1 <- function(
                 rename(strata = strata_region)
         ) %>%
         mutate(
-            across(
-                matches("n_practices"),
-                ~ roundmid_num(., to = threshold)
-            )
-        ) %>%
-        rename(n_practices_midpoint6 = n_practices)
+            n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)
+        )
 
     # ---------------------------
     # Strata-specific summary
@@ -105,20 +102,22 @@ create_table1 <- function(
             group_by(strata, characteristic, subcharacteristic) %>%
             summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
             mutate(
-                across(
-                    matches("n_practices"),
-                    ~ roundmid_num(., to = threshold)
-                )
-            ) %>%
-            rename(n_practices_midpoint6 = n_practices)
+                n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)
+            )
 
         table1_summary_all <- bind_rows(table1_summary, table1_summary_strata)
     } else {
         table1_summary_all <- table1_summary
     }
 
-    if (rounded) {
+    # Remove rows with insufficient practices if unrounded, and rename variables if rounded ---------------------------
+    if (!rounded) {
         table1_summary_all <- table1_summary_all %>%
+            filter(n_practices > threshold_practice) %>%
+            select(-n_practices)
+    } else {
+        table1_summary_all <- table1_summary_all %>%
+            select(-n_practices) %>%
             rename_with(
                 ~ ifelse(
                     grepl("_midpoint6$", .x),
