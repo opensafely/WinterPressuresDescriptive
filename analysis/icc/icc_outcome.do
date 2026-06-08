@@ -52,7 +52,7 @@ adopath + "analysis/ado"
 * Specify parameters
 local cohort "`1'"
 
-* Sepecify parameters locally
+* Specify parameters locally
 *local cohort "precovid"
 
 //Creating the file paths for outputs
@@ -70,10 +70,6 @@ xtset practice_id week_number
 //Identify outcome (starting with apc or ec)
 ds apc_* ec_*
 local outcomes `r(varlist)'
-
-//Identify covariates
-ds week_number
-local cov_core `r(varlist)'
 
 //Results frame
 frame create icc_outcome ///
