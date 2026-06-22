@@ -1,5 +1,5 @@
 # Load libraries ---------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(magrittr)
 library(tidyverse)
@@ -13,7 +13,7 @@ library(gridExtra)
 library(ggtext)
 
 # Specify paths ----------------------------------------------------------------
-print('Specify paths')
+print("Specify paths")
 
 # NOTE:
 # This file is used to specify paths and is in the .gitignore to keep your information secret.
@@ -23,7 +23,7 @@ print('Specify paths')
 source("analysis/specify_paths.R")
 
 # Make post-release directory --------------------------------------------------
-print('Make post-release directory')
+print("Make post-release directory")
 
 dir.create("output/post_release/", recursive = TRUE, showWarnings = FALSE)
 output_folder <- "output/post_release"
@@ -54,7 +54,7 @@ group_order <- c(
 
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
-plot_irr <- function(regression, outcome_name) {
+plot_irr <- function(regression, sub_group, outcome_name) {
     # Load data --------------------------------------------------------------------
     print("Load model output")
 
@@ -63,11 +63,16 @@ plot_irr <- function(regression, outcome_name) {
         show_col_types = FALSE
     )
 
+    df <- df %>% mutate(
+        outcome = str_remove(outcome, paste0("_", analysis))
+    )
+
     # Filter data ------------------------------------------------------------------
     print("Filter data")
 
     df <- df %>%
         filter(
+            analysis == sub_group,
             outcome == outcome_name,
             model_type == regression,
             term == "exp_prop",
@@ -75,6 +80,7 @@ plot_irr <- function(regression, outcome_name) {
         ) %>%
         select(
             cohort,
+            analysis,
             exposure,
             outcome,
             model,
@@ -132,6 +138,13 @@ plot_irr <- function(regression, outcome_name) {
         ) %>%
         rename(cohort_label = label)
 
+    # --- Join analysis labels ---
+    analysis_label <- labels %>%
+        filter(
+            term %in% c(sub_group)
+        ) %>%
+        pull(label)
+
     # --- Factor setup ---
     df <- df %>%
         mutate(
@@ -180,6 +193,10 @@ plot_irr <- function(regression, outcome_name) {
         "General practice characteristics and ",
         "**",
         tolower(outcome_label),
+        "**",
+        " in ",
+        "**",
+        tolower(analysis_label),
         "**"
     )
 
@@ -231,7 +248,7 @@ plot_irr <- function(regression, outcome_name) {
         ) +
         geom_point(
             position = position_dodge(width = 0.5),
-            size =2.5
+            size = 2.5
         ) +
         # --- Scales ---
         scale_alpha_manual(
@@ -308,14 +325,14 @@ plot_irr <- function(regression, outcome_name) {
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
 
-plot_irr("negbin", "apc_main")
-plot_irr("poisson", "apc_main")
-plot_irr("negbin", "ec_main")
-plot_irr("poisson", "ec_main")
-plot_irr("negbin", "apc_unpl_main")
-plot_irr("poisson", "apc_unpl_main")
+plot_irr("negbin", "main", "apc")
+plot_irr("poisson", "main", "apc")
+plot_irr("negbin", "main", "ec")
+plot_irr("poisson", "main", "ec")
+plot_irr("negbin", "main", "apc_unpl")
+plot_irr("poisson", "main", "apc_unpl")
 
-plot_irr("negbin", "apc_acsc_any_main")
-plot_irr("poisson", "apc_acsc_any_main")
-plot_irr("negbin", "ec_acsc_any_main")
-plot_irr("poisson", "ec_acsc_any_main")
+plot_irr("negbin", "main", "apc_acsc_any_main")
+plot_irr("poisson", "main", "apc_acsc_any_main")
+plot_irr("negbin", "main", "ec_acsc_any_main")
+plot_irr("poisson", "main", "ec_acsc_any_main")
