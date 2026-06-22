@@ -33,7 +33,7 @@ print("Load model output")
 # List all CSV files matching the pattern
 file_list <- list.files(
   path = table2,
-  pattern = "^table2-.*-midpoint6\\.csv$",
+  pattern = "^table2-cohort_.*\\.csv$",
   full.names = TRUE
 )
 
@@ -41,7 +41,7 @@ file_list <- list.files(
 df <- file_list %>%
   lapply(function(f) {
     df <- read_csv(f)
-    cohort <- str_match(basename(f), "table2-cohort_(.*)-midpoint6")[, 2]
+    cohort <- str_match(basename(f), "^table2-cohort_(.*)\\.csv$")[, 2]
     df %>% mutate(cohort = cohort)
   }) %>%
   bind_rows()

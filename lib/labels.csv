@@ -61,7 +61,8 @@ cons_jul,July,Monthly consultation,10
 cons_aug,August,Monthly consultation,11
 cons_sep,September,Monthly consultation,12
 list_size,List size,List size,
-obesity_True,Obesity,Obesity,
+obesity_True,Obesity,Obesity,1
+obesity_missing,Missing BMI,Obesity,2
 age_0_4,Under 5 years,Age,1
 age_5_11,5-11 years,Age,2
 age_12_17,12-17 years,Age,3

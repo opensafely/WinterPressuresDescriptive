@@ -1,5 +1,5 @@
 # Load libraries ---------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(magrittr)
 library(tidyverse)
@@ -12,7 +12,7 @@ library(grid)
 library(gridExtra)
 
 # Specify paths ----------------------------------------------------------------
-print('Specify paths')
+print("Specify paths")
 
 # NOTE:
 # This file is used to specify paths and is in the .gitignore to keep your information secret.
@@ -22,7 +22,7 @@ print('Specify paths')
 source("analysis/specify_paths.R")
 
 # Make post-release directory --------------------------------------------------
-print('Make post-release directory')
+print("Make post-release directory")
 
 dir.create("output/post_release/", recursive = TRUE, showWarnings = FALSE)
 output_folder <- "output/post_release"
@@ -33,7 +33,7 @@ print("Load model output")
 # List all CSV files matching the pattern
 file_list <- list.files(
   path = table1,
-  pattern = "^table1-.*-midpoint6\\.csv$",
+  pattern = "^table1-cohort_.*\\.csv$",
   full.names = TRUE
 )
 
@@ -41,7 +41,7 @@ file_list <- list.files(
 df <- file_list %>%
   lapply(function(f) {
     df <- read_csv(f)
-    cohort <- str_match(basename(f), "table1-cohort_(.*)-midpoint6")[, 2]
+    cohort <- str_match(basename(f), "^table1-cohort_(.*)\\.csv$")[, 2]
     df %>% mutate(cohort = cohort)
   }) %>%
   bind_rows()
@@ -113,19 +113,19 @@ df_table1 <- df %>%
   ) %>%
   mutate(
     median = case_when(
-      group == "List size" ~ median_midpoint6,
-      group == "Monthly consultation" ~ median_midpoint6 * 1000,
-      TRUE ~ median_midpoint6 * 100
+      group == "List size" ~ median,
+      group == "Monthly consultation" ~ median * 1000,
+      TRUE ~ median * 100
     ),
     q1 = case_when(
-      group == "List size" ~ q1_midpoint6,
-      group == "Monthly consultation" ~ q1_midpoint6 * 1000,
-      TRUE ~ q1_midpoint6 * 100
+      group == "List size" ~ q1,
+      group == "Monthly consultation" ~ q1 * 1000,
+      TRUE ~ q1 * 100
     ),
     q3 = case_when(
-      group == "List size" ~ q3_midpoint6,
-      group == "Monthly consultation" ~ q3_midpoint6 * 1000,
-      TRUE ~ q3_midpoint6 * 100
+      group == "List size" ~ q3,
+      group == "Monthly consultation" ~ q3 * 1000,
+      TRUE ~ q3 * 100
     )
   )
 
@@ -138,14 +138,14 @@ readr::write_csv(
 df_table1 <- df_table1 %>%
   mutate(
     mean = case_when(
-      group == "List size" ~ mean_midpoint6,
-      group == "Monthly consultation" ~ mean_midpoint6 * 1000,
-      TRUE ~ mean_midpoint6 * 100
+      group == "List size" ~ mean,
+      group == "Monthly consultation" ~ mean * 1000,
+      TRUE ~ mean * 100
     ),
     sd = case_when(
-      group == "List size" ~ sd_midpoint6,
-      group == "Monthly consultation" ~ sd_midpoint6 * 1000,
-      TRUE ~ sd_midpoint6 * 100
+      group == "List size" ~ sd,
+      group == "Monthly consultation" ~ sd * 1000,
+      TRUE ~ sd * 100
     )
   ) %>%
   mutate(
@@ -185,6 +185,23 @@ df_table1 <- df_table1 %>%
         mean,
         sd
       )
+    ),
+    `Median (MAD)` = case_when(
+      group == "List size" ~ sprintf(
+        "%d (%d)",
+        round(median),
+        round(mad)
+      ),
+      group == "Monthly consultation" ~ sprintf(
+        "%.1f (%.1f)",
+        median,
+        mad * 1000
+      ),
+      TRUE ~ sprintf(
+        "%.2f (%.2f)",
+        median,
+        mad * 100
+      )
     )
   ) %>%
   select(
@@ -193,7 +210,8 @@ df_table1 <- df_table1 %>%
     category_label,
     cohort,
     "Median (IQR)",
-    "Mean (SD)"
+    "Mean (SD)",
+    "Median (MAD)"
   )
 
 df_table1 <- df_table1 %>%
@@ -213,7 +231,7 @@ df_table1 <- df_table1 %>%
 df_table1_wide <- df_table1 %>%
   pivot_wider(
     names_from = cohort,
-    values_from = c("Median (IQR)", "Mean (SD)"),
+    values_from = c("Median (IQR)", "Mean (SD)", "Median (MAD)"),
     names_glue = "{.value} [{cohort}]"
   ) %>%
   arrange(group, ref)
@@ -319,12 +337,16 @@ df_table1_wide <- df_table1_wide %>%
     category_label,
     "Median (IQR) [Pre-COVID]",
     "Mean (SD) [Pre-COVID]",
+    "Median (MAD) [Pre-COVID]",
     "Median (IQR) [Post-COVID 1]",
     "Mean (SD) [Post-COVID 1]",
+    "Median (MAD) [Post-COVID 1]",
     "Median (IQR) [Post-COVID 2]",
     "Mean (SD) [Post-COVID 2]",
+    "Median (MAD) [Post-COVID 2]",
     "Median (IQR) [Post-COVID 3]",
-    "Mean (SD) [Post-COVID 3]"
+    "Mean (SD) [Post-COVID 3]",
+    "Median (MAD) [Post-COVID 3]"
   )
 
 readr::write_csv(df_table1_wide, paste0(output_folder, "/table1.csv"), na = "-")
