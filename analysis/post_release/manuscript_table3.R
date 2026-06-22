@@ -71,6 +71,7 @@ df <- df %>%
   ) %>%
   select(
     cohort,
+    analysis,
     exposure,
     outcome,
     model_type,
@@ -115,6 +116,10 @@ outcome_labels <- labels %>%
   filter(str_detect(term, "^apc|^ec")) %>%
   select(term, outcome_label = label, outcome_group = group, outcome_ref = ref)
 
+df <- df %>% mutate(
+  outcome = str_remove(outcome, paste0("_", analysis))
+)
+
 df <- df %>%
   left_join(
     outcome_labels,
@@ -135,6 +140,20 @@ df <- df %>%
   ) %>%
   rename(cohort_label = label)
 
+# --- Join analysis labels ---
+subgroups <- unique(df$analysis)
+analysis_labels <- labels %>%
+  filter(
+    term %in% c(subgroups)
+  ) %>%
+  select(term, analysis_label = label, analysis_group = group, analysis_ref = ref)
+
+df <- df %>%
+  left_join(
+    analysis_labels,
+    by = c("analysis" = "term")
+  ) 
+
 # --- Factor setup ---
 df <- df %>%
   mutate(
@@ -142,6 +161,20 @@ df <- df %>%
       cohort_label,
       levels = cohort_labels$label
     )
+  ) %>%
+  mutate(
+    analysis_group = factor(
+      analysis_group,
+      levels = c("main", "subgroup")
+    ),
+    analysis_ref_order = if_else(is.na(analysis_ref), Inf, analysis_ref)
+  ) %>%
+  mutate(
+    outcome_group = factor(
+      outcome_group,
+      levels = c("hospital use", "ACSC-related hospital use")
+    ),
+    outcome_ref_order = if_else(is.na(outcome_ref), Inf, outcome_ref)
   ) %>%
   mutate(
     group = factor(
@@ -171,6 +204,10 @@ df_table3 <- df_table3 %>%
 
 df_table3 <- df_table3 %>%
   select(
+    analysis,
+    analysis_label,
+    analysis_group,
+    analysis_ref_order,
     outcome,
     outcome_label,
     outcome_group,
@@ -182,6 +219,8 @@ df_table3 <- df_table3 %>%
     estimate
   ) %>%
   arrange(
+    analysis_group,
+    analysis_ref_order,
     outcome_group,
     outcome_ref,
     group,
@@ -196,6 +235,7 @@ df_table3 <- df_table3 %>%
 
 df_table3 <- df_table3 %>%
   rename(
+    "Subgroup" = analysis_label,
     "Outcome" = outcome_label,
     "Exposure" = exposure_label,
     "Pre-COVID (2018-2019)" = `Pre-COVID19 (2018-10-01)`,
@@ -204,6 +244,7 @@ df_table3 <- df_table3 %>%
     "Post-lockdown III (2024-2025)" = `Post-lockdown III (2024-10-01)`
   ) %>%
   select(
+    Subgroup,
     Outcome,
     Exposure,
     `Pre-COVID (2018-2019)`,
