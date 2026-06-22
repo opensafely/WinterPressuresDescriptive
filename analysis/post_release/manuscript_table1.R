@@ -242,11 +242,11 @@ region_df <- df %>%
   filter(
     strata != "Overall",
     !str_detect(strata, "^strata_"),
-    category == "list_size"
+    category == "list_size_mp6"
   )
 
 total_practices <- df %>%
-  filter(strata == "Overall", category == "list_size") %>%
+  filter(strata == "Overall", category == "list_size_mp6") %>%
   select(cohort, n_practices_midpoint6) %>%
   distinct()
 
