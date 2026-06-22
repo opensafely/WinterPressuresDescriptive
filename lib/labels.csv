@@ -153,9 +153,9 @@ apc_acsc_any,Admitted patient care (ACSC admissions),ACSC-related hospital use,1
 ec_acsc_any,Emergency care (ACSC attendances),ACSC-related hospital use,2
 apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),ACSC-related hospital use,3
 apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),ACSC-related hospital use,4
-main,Main analysis,main,
-sub_asth,Asthma,subgroup,1
-sub_copd,COPD,subgroup,2
-sub_diab,Diabetes,subgroup,3
-sub_htn,Hypertension,subgroup,4
-sub_sevmh,Severe Mental Illness,subgroup,5
+main,All people,main,
+sub_asth,People with asthma,subgroup,1
+sub_copd,People with COPD,subgroup,2
+sub_diab,People with diabetes,subgroup,3
+sub_htn,People with hypertension,subgroup,4
+sub_sevmh,People with severe mental illness,subgroup,5
