@@ -34,7 +34,7 @@ print("Load model output")
 # List all CSV files matching the pattern
 file_list <- list.files(
   path = table1,
-  pattern = "^table1-.*-midpoint6\\.csv$",
+  pattern = "^table1-cohort_.*\\.csv$",
   full.names = TRUE
 )
 
@@ -42,13 +42,12 @@ file_list <- list.files(
 df <- file_list %>%
   lapply(function(f) {
     df <- read_csv(f)
-    cohort <- str_match(basename(f), "table1-cohort_(.*)-midpoint6")[, 2]
+    cohort <- str_match(basename(f), "^table1-cohort_(.*)\\.csv$")[, 2]
     df %>% mutate(cohort = cohort)
   }) %>%
   bind_rows()
 
 readr::write_csv(df, paste0(output_folder, "/table1_raw.csv"), na = "-")
-
 
 # Load data --------------------------------------------------------------------
 print("Load data")
@@ -175,15 +174,15 @@ df_long <- df_prop %>%
     decile = factor(
       decile,
       levels = c(
-        "p10_midpoint6",
-        "p20_midpoint6",
-        "p30_midpoint6",
-        "p40_midpoint6",
-        "p50_midpoint6",
-        "p60_midpoint6",
-        "p70_midpoint6",
-        "p80_midpoint6",
-        "p90_midpoint6"
+        "p10",
+        "p20",
+        "p30",
+        "p40",
+        "p50",
+        "p60",
+        "p70",
+        "p80",
+        "p90"
       ),
       labels = c(
         "P10",

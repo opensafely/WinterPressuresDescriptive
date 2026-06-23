@@ -1,5 +1,5 @@
 # Load libraries ---------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(magrittr)
 library(tidyverse)
@@ -13,7 +13,7 @@ library(gridExtra)
 library(ggtext)
 
 # Specify paths ----------------------------------------------------------------
-print('Specify paths')
+print("Specify paths")
 
 # NOTE:
 # This file is used to specify paths and is in the .gitignore to keep your information secret.
@@ -23,7 +23,7 @@ print('Specify paths')
 source("analysis/specify_paths.R")
 
 # Make post-release directory --------------------------------------------------
-print('Make post-release directory')
+print("Make post-release directory")
 
 dir.create("output/post_release/", recursive = TRUE, showWarnings = FALSE)
 output_folder <- "output/post_release"
@@ -105,14 +105,12 @@ walk(groups, function(g) {
                 paste0("**", tolower(g), "**"),
                 "across practices by cohort"
             ),
-
         g == "Monthly consultation" ~
             paste(
                 "Practice",
                 paste0("**", tolower(g), "**"),
                 "rate per 1,000 registered patients across practices by cohort"
             ),
-
         TRUE ~
             paste(
                 "Practice composition of",
@@ -120,6 +118,17 @@ walk(groups, function(g) {
                 "by cohort"
             )
     )
+    # X-axis text formatting
+    x_text <- if (g == "Monthly consultation") {
+        element_text(
+            size = 9,
+            angle = 30,
+            hjust = 1,
+            vjust = 1
+        )
+    } else {
+        element_text(size = 9)
+    }
 
     p <- ggplot(
         plot_data,
