@@ -203,15 +203,15 @@ plot_irr <- function(regression, sub_group, outcome_name) {
     is_acsc <- str_detect(outcome_name, "acsc")
 
     x_limits <- if (is_acsc) {
-        c(0.8, 1.15)
+        c(0.7, 1.4)
     } else {
-        c(0.9, 1.15)
+        c(0.8, 1.3)
     }
 
     x_breaks <- if (is_acsc) {
-        c(0.8, 0.9, 1.0, 1.1)
+        c(0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4)
     } else {
-        c(0.9, 1.0, 1.1)
+        c(0.8, 0.9, 1.0, 1.1, 1.2, 1.3)
     }
 
     caption_text <- str_wrap(
@@ -260,10 +260,10 @@ plot_irr <- function(regression, sub_group, outcome_name) {
             name = "Model"
         ) +
         scale_x_log10(
+            limits = x_limits,
             breaks = x_breaks,
             labels = scales::number_format(accuracy = 0.01)
         ) +
-        coord_cartesian(xlim = x_limits) +
         labs(
             title = title_text,
             x = "Incidence rate ratio (IRR)",
@@ -314,7 +314,7 @@ plot_irr <- function(regression, sub_group, outcome_name) {
     ggsave(
         filename = file.path(
             plot_dir,
-            paste0("forest_", outcome_name, "_", regression, ".png")
+            paste0("forest_", sub_group, "_", regression, "_", outcome_name, ".png")
         ),
         plot = p,
         width = 10,
@@ -332,7 +332,67 @@ plot_irr("poisson", "main", "ec")
 plot_irr("negbin", "main", "apc_unpl")
 plot_irr("poisson", "main", "apc_unpl")
 
-plot_irr("negbin", "main", "apc_acsc_any_main")
-plot_irr("poisson", "main", "apc_acsc_any_main")
-plot_irr("negbin", "main", "ec_acsc_any_main")
-plot_irr("poisson", "main", "ec_acsc_any_main")
+plot_irr("negbin", "main", "apc_acsc_any")
+plot_irr("poisson", "main", "apc_acsc_any")
+plot_irr("negbin", "main", "ec_acsc_any")
+plot_irr("poisson", "main", "ec_acsc_any")
+
+plot_irr("negbin", "sub_asth", "apc")
+plot_irr("poisson", "sub_asth", "apc")
+plot_irr("negbin", "sub_asth", "ec")
+plot_irr("poisson", "sub_asth", "ec")
+plot_irr("negbin", "sub_asth", "apc_unpl")
+plot_irr("poisson", "sub_asth", "apc_unpl")
+
+plot_irr("negbin", "sub_asth", "apc_acsc_any")
+plot_irr("poisson", "sub_asth", "apc_acsc_any")
+plot_irr("negbin", "sub_asth", "ec_acsc_any")
+plot_irr("poisson", "sub_asth", "ec_acsc_any")
+
+plot_irr("negbin", "sub_copd", "apc")
+plot_irr("poisson", "sub_copd", "apc")
+plot_irr("negbin", "sub_copd", "ec")
+plot_irr("poisson", "sub_copd", "ec")
+plot_irr("negbin", "sub_copd", "apc_unpl")
+plot_irr("poisson", "sub_copd", "apc_unpl")
+
+plot_irr("negbin", "sub_copd", "apc_acsc_any")
+plot_irr("poisson", "sub_copd", "apc_acsc_any")
+plot_irr("negbin", "sub_copd", "ec_acsc_any")
+plot_irr("poisson", "sub_copd", "ec_acsc_any")
+
+plot_irr("negbin", "sub_diab", "apc")
+plot_irr("poisson", "sub_diab", "apc")
+plot_irr("negbin", "sub_diab", "ec")
+plot_irr("poisson", "sub_diab", "ec")
+plot_irr("negbin", "sub_diab", "apc_unpl")
+plot_irr("poisson", "sub_diab", "apc_unpl")
+
+plot_irr("negbin", "sub_diab", "apc_acsc_any")
+plot_irr("poisson", "sub_diab", "apc_acsc_any")
+plot_irr("negbin", "sub_diab", "ec_acsc_any")
+plot_irr("poisson", "sub_diab", "ec_acsc_any")
+
+plot_irr("negbin", "sub_htn", "apc")
+plot_irr("poisson", "sub_htn", "apc")
+plot_irr("negbin", "sub_htn", "ec")
+plot_irr("poisson", "sub_htn", "ec")
+plot_irr("negbin", "sub_htn", "apc_unpl")
+plot_irr("poisson", "sub_htn", "apc_unpl")
+
+plot_irr("negbin", "sub_htn", "apc_acsc_any")
+plot_irr("poisson", "sub_htn", "apc_acsc_any")
+plot_irr("negbin", "sub_htn", "ec_acsc_any")
+plot_irr("poisson", "sub_htn", "ec_acsc_any")
+
+plot_irr("negbin", "sub_sevmh", "apc")
+plot_irr("poisson", "sub_sevmh", "apc")
+plot_irr("negbin", "sub_sevmh", "ec")
+plot_irr("poisson", "sub_sevmh", "ec")
+plot_irr("negbin", "sub_sevmh", "apc_unpl")
+plot_irr("poisson", "sub_sevmh", "apc_unpl")
+
+plot_irr("negbin", "sub_sevmh", "apc_acsc_any")
+plot_irr("poisson", "sub_sevmh", "apc_acsc_any")
+plot_irr("negbin", "sub_sevmh", "ec_acsc_any")
+plot_irr("poisson", "sub_sevmh", "ec_acsc_any")

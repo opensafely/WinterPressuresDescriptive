@@ -47,7 +47,7 @@ cons_jun_postcovid3,Jun 2024,Consultations,
 cons_jul_postcovid3,Jul 2024,Consultations,
 cons_aug_postcovid3,Aug 2024,Consultations,
 cons_sep_postcovid3,Sep 2024,Consultations,
-cons_mean,Monthly consultation rate, Monthly consultation,
+cons_mean,Mean,Monthly consultation,
 cons_oct,October,Monthly consultation,1
 cons_nov,November,Monthly consultation,2
 cons_dec,December,Monthly consultation,3
