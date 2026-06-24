@@ -223,10 +223,10 @@ else {
                     local region : label `vallab' `code'
 
                     if strpos("`term'", "b.") {
-                        local term "`region' (ref)"
+                        local term "exp_prop_`region' (ref)"
                     }
                     else {
-                        local term "`region'"
+                        local term "exp_prop_`region'"
                     }
                 }
 
