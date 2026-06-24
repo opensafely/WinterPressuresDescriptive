@@ -24,15 +24,15 @@ prepare_model_input <- function(name) {
 
     ## ---- Ensure practice_region is a factor ------------------------------------
     region_levels <- c(
+        "East",
+        "East Midlands",
+        "London",
         "North East",
         "North West",
-        "Yorkshire and The Humber",
-        "East Midlands",
-        "West Midlands",
-        "East",
-        "London",
         "South East",
-        "South West"
+        "South West",
+        "West Midlands",
+        "Yorkshire and The Humber"
     )
 
     if ("practice_region" %in% names(input)) {
@@ -40,6 +40,7 @@ prepare_model_input <- function(name) {
             input$practice_region,
             levels = region_levels
         )
+        input$practice_region <- relevel(input$practice_region, ref = "East")
     }
 
     ## ---- Parse covariates -------------------------------------------------------
@@ -111,7 +112,7 @@ prepare_model_input <- function(name) {
 
     if (is.numeric(input$exp_prop)) {
         med <- median(input$exp_prop, na.rm = TRUE)
-        mad_value <- mad(input$exp_prop, na.rm = TRUE)  # Median Absolute Deviation
+        mad_value <- mad(input$exp_prop, na.rm = TRUE) # Median Absolute Deviation
 
         if (mad_value > 0) {
             input$exp_prop <- (input$exp_prop - med) / mad_value
