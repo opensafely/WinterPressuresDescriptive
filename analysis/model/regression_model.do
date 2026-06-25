@@ -114,6 +114,14 @@ foreach mdl of local models {
         local covs "`cov_core' `cov_other'"
     }
 
+// Define exposure specifications (any categorical exposure)
+if strpos("`name'", "practice_region") {
+    local exposure "i.exp_prop"
+}
+else {
+    local exposure "exp_prop"
+}
+
 // Fit poisson and negative binomial models
     foreach analysis in poisson negbin {
 
@@ -124,7 +132,7 @@ foreach mdl of local models {
             local cmd "menbreg"
         }
 
-        capture `cmd' out_num exp_prop `covs', ///
+        capture `cmd' out_num `exposure' `covs', ///
             offset(log_dnm) ///
             || practice_id:, irr
 
@@ -187,6 +195,7 @@ foreach mdl of local models {
             
             ** fixed-effect coefficients
             local k = colsof(b)
+            local vallab : value label exp_prop
 
             forvalues j = 1/`k' {
                 local term : word `j' of `colnames'
@@ -202,6 +211,24 @@ foreach mdl of local models {
                 
                 * Skip random-effect variance
                 if strpos("`term'", "var(") continue
+
+                * Translate region factor terms to region names
+
+                if strpos("`name'", "practice_region") & strpos("`term'", ".exp_prop") {
+
+                    local code = substr("`term'",1,strpos("`term'",".")-1)
+
+                    local code = subinstr("`code'","b","",.)
+
+                    local region : label `vallab' `code'
+
+                    if strpos("`term'", "b.") {
+                        local term "exp_prop_`region' (ref)"
+                    }
+                    else {
+                        local term "exp_prop_`region'"
+                    }
+                }
 
                 scalar irr = b[1,`j']
                 scalar se_coef  = b[2,`j']
