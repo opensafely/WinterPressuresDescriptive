@@ -114,7 +114,7 @@ foreach mdl of local models {
         local covs "`cov_core' `cov_other'"
     }
 
-// Define exposure specifications
+// Define exposure specifications (any categorical exposure)
 if strpos("`name'", "practice_region") {
     local exposure "i.exp_prop"
 }
