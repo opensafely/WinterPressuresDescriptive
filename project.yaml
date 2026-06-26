@@ -65994,10 +65994,10 @@ actions:
         model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cons_mean-ec.csv
         model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cons_mean-ec.csv
 
-  ## Generate model_output for precovid - main 
+  ## Generate model_output for precovid - main - practice 
 
-  make_model_output-precovid-main:
-    run: r:v2 analysis/make_output/make_model_output.R precovid main
+  make_model_output-precovid-main-practice:
+    run: r:v2 analysis/make_output/make_model_output.R precovid main practice
     needs:
     - run_regression_model-cohort_precovid-main-list_size-apc_acsc_any
     - run_regression_model-cohort_precovid-main-list_size-apc_unpl_acsc_any
@@ -66013,6 +66013,25 @@ actions:
     - run_regression_model-cohort_precovid-main-practice_region-apc_unpl
     - run_regression_model-cohort_precovid-main-practice_region-ec_acsc_any
     - run_regression_model-cohort_precovid-main-practice_region-ec
+    - run_regression_model-cohort_precovid-main-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-main-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-main-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-main-cons_mean-apc
+    - run_regression_model-cohort_precovid-main-cons_mean-apc_unpl
+    - run_regression_model-cohort_precovid-main-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-main-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-precovid-main-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-main-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-main-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-main-practice-midpoint6.csv
+
+  ## Generate model_output for precovid - main - case_mix 
+
+  make_model_output-precovid-main-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R precovid main case_mix
+    needs:
     - run_regression_model-cohort_precovid-main-age_0_4-apc_acsc_any
     - run_regression_model-cohort_precovid-main-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_precovid-main-age_0_4-apc_plan_acsc_any
@@ -66139,24 +66158,17 @@ actions:
     - run_regression_model-cohort_precovid-main-smoking_never-apc_unpl
     - run_regression_model-cohort_precovid-main-smoking_never-ec_acsc_any
     - run_regression_model-cohort_precovid-main-smoking_never-ec
-    - run_regression_model-cohort_precovid-main-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_precovid-main-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_precovid-main-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_precovid-main-cons_mean-apc
-    - run_regression_model-cohort_precovid-main-cons_mean-apc_unpl
-    - run_regression_model-cohort_precovid-main-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_precovid-main-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-precovid-main.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-precovid-main.csv
-        model_output_regression_midpoint6: output/make_output/model_output-precovid-main-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-main-midpoint6.csv
+        model_output_regression: output/make_output/model_output-precovid-main-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-main-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-main-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-main-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid1 - main 
+  ## Generate model_output for postcovid1 - main - practice 
 
-  make_model_output-postcovid1-main:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid1 main
+  make_model_output-postcovid1-main-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 main practice
     needs:
     - run_regression_model-cohort_postcovid1-main-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid1-main-list_size-apc_unpl_acsc_any
@@ -66172,6 +66184,25 @@ actions:
     - run_regression_model-cohort_postcovid1-main-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid1-main-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid1-main-practice_region-ec
+    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid1-main-cons_mean-apc
+    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid1-main-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid1-main-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid1-main-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-main-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-main-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-main-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid1 - main - case_mix 
+
+  make_model_output-postcovid1-main-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 main case_mix
+    needs:
     - run_regression_model-cohort_postcovid1-main-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid1-main-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid1-main-age_0_4-apc_plan_acsc_any
@@ -66298,24 +66329,17 @@ actions:
     - run_regression_model-cohort_postcovid1-main-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid1-main-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid1-main-smoking_never-ec
-    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid1-main-cons_mean-apc
-    - run_regression_model-cohort_postcovid1-main-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid1-main-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid1-main-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid1-main.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-main.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-main-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-main-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid1-main-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-main-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-main-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-main-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid2 - main 
+  ## Generate model_output for postcovid2 - main - practice 
 
-  make_model_output-postcovid2-main:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid2 main
+  make_model_output-postcovid2-main-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 main practice
     needs:
     - run_regression_model-cohort_postcovid2-main-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid2-main-list_size-apc_unpl_acsc_any
@@ -66331,6 +66355,25 @@ actions:
     - run_regression_model-cohort_postcovid2-main-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid2-main-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid2-main-practice_region-ec
+    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid2-main-cons_mean-apc
+    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid2-main-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid2-main-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid2-main-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-main-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-main-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-main-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid2 - main - case_mix 
+
+  make_model_output-postcovid2-main-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 main case_mix
+    needs:
     - run_regression_model-cohort_postcovid2-main-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid2-main-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid2-main-age_0_4-apc_plan_acsc_any
@@ -66457,24 +66500,17 @@ actions:
     - run_regression_model-cohort_postcovid2-main-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid2-main-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid2-main-smoking_never-ec
-    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid2-main-cons_mean-apc
-    - run_regression_model-cohort_postcovid2-main-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid2-main-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid2-main-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid2-main.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-main.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-main-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-main-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid2-main-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-main-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-main-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-main-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid3 - main 
+  ## Generate model_output for postcovid3 - main - practice 
 
-  make_model_output-postcovid3-main:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid3 main
+  make_model_output-postcovid3-main-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 main practice
     needs:
     - run_regression_model-cohort_postcovid3-main-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid3-main-list_size-apc_unpl_acsc_any
@@ -66490,6 +66526,25 @@ actions:
     - run_regression_model-cohort_postcovid3-main-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid3-main-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid3-main-practice_region-ec
+    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cons_mean-apc
+    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-main-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid3-main-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-main-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-main-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-main-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid3 - main - case_mix 
+
+  make_model_output-postcovid3-main-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 main case_mix
+    needs:
     - run_regression_model-cohort_postcovid3-main-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid3-main-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid3-main-age_0_4-apc_plan_acsc_any
@@ -66616,24 +66671,17 @@ actions:
     - run_regression_model-cohort_postcovid3-main-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid3-main-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid3-main-smoking_never-ec
-    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid3-main-cons_mean-apc
-    - run_regression_model-cohort_postcovid3-main-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid3-main-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid3-main-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid3-main.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-main.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-main-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-main-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid3-main-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-main-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-main-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-main-case_mix-midpoint6.csv
 
-  ## Generate model_output for precovid - sub_asth 
+  ## Generate model_output for precovid - sub_asth - practice 
 
-  make_model_output-precovid-sub_asth:
-    run: r:v2 analysis/make_output/make_model_output.R precovid sub_asth
+  make_model_output-precovid-sub_asth-practice:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_asth practice
     needs:
     - run_regression_model-cohort_precovid-sub_asth-list_size-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_asth-list_size-apc_unpl_acsc_any
@@ -66649,6 +66697,25 @@ actions:
     - run_regression_model-cohort_precovid-sub_asth-practice_region-apc_unpl
     - run_regression_model-cohort_precovid-sub_asth-practice_region-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_asth-practice_region-ec
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-precovid-sub_asth-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_asth-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_asth-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_asth-practice-midpoint6.csv
+
+  ## Generate model_output for precovid - sub_asth - case_mix 
+
+  make_model_output-precovid-sub_asth-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_asth case_mix
+    needs:
     - run_regression_model-cohort_precovid-sub_asth-age_0_4-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_asth-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_precovid-sub_asth-age_0_4-apc_plan_acsc_any
@@ -66775,24 +66842,17 @@ actions:
     - run_regression_model-cohort_precovid-sub_asth-smoking_never-apc_unpl
     - run_regression_model-cohort_precovid-sub_asth-smoking_never-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_asth-smoking_never-ec
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-apc_unpl
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_precovid-sub_asth-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-precovid-sub_asth.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_asth.csv
-        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_asth-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_asth-midpoint6.csv
+        model_output_regression: output/make_output/model_output-precovid-sub_asth-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_asth-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_asth-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_asth-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid1 - sub_asth 
+  ## Generate model_output for postcovid1 - sub_asth - practice 
 
-  make_model_output-postcovid1-sub_asth:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_asth
+  make_model_output-postcovid1-sub_asth-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_asth practice
     needs:
     - run_regression_model-cohort_postcovid1-sub_asth-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_asth-list_size-apc_unpl_acsc_any
@@ -66808,6 +66868,25 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_asth-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_asth-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_asth-practice_region-ec
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid1-sub_asth-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_asth-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_asth-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_asth-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid1 - sub_asth - case_mix 
+
+  make_model_output-postcovid1-sub_asth-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_asth case_mix
+    needs:
     - run_regression_model-cohort_postcovid1-sub_asth-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_asth-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid1-sub_asth-age_0_4-apc_plan_acsc_any
@@ -66934,24 +67013,17 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_asth-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_asth-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_asth-smoking_never-ec
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_asth-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid1-sub_asth.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_asth.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_asth-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_asth-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid1-sub_asth-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_asth-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_asth-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_asth-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid2 - sub_asth 
+  ## Generate model_output for postcovid2 - sub_asth - practice 
 
-  make_model_output-postcovid2-sub_asth:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_asth
+  make_model_output-postcovid2-sub_asth-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_asth practice
     needs:
     - run_regression_model-cohort_postcovid2-sub_asth-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_asth-list_size-apc_unpl_acsc_any
@@ -66967,6 +67039,25 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_asth-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_asth-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_asth-practice_region-ec
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid2-sub_asth-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_asth-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_asth-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_asth-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid2 - sub_asth - case_mix 
+
+  make_model_output-postcovid2-sub_asth-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_asth case_mix
+    needs:
     - run_regression_model-cohort_postcovid2-sub_asth-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_asth-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid2-sub_asth-age_0_4-apc_plan_acsc_any
@@ -67093,24 +67184,17 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_asth-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_asth-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_asth-smoking_never-ec
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_asth-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid2-sub_asth.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_asth.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_asth-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_asth-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid2-sub_asth-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_asth-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_asth-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_asth-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid3 - sub_asth 
+  ## Generate model_output for postcovid3 - sub_asth - practice 
 
-  make_model_output-postcovid3-sub_asth:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_asth
+  make_model_output-postcovid3-sub_asth-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_asth practice
     needs:
     - run_regression_model-cohort_postcovid3-sub_asth-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_asth-list_size-apc_unpl_acsc_any
@@ -67126,6 +67210,25 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_asth-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_asth-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_asth-practice_region-ec
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid3-sub_asth-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_asth-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_asth-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_asth-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid3 - sub_asth - case_mix 
+
+  make_model_output-postcovid3-sub_asth-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_asth case_mix
+    needs:
     - run_regression_model-cohort_postcovid3-sub_asth-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_asth-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid3-sub_asth-age_0_4-apc_plan_acsc_any
@@ -67252,24 +67355,17 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_asth-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_asth-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_asth-smoking_never-ec
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_asth-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid3-sub_asth.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_asth.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_asth-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_asth-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid3-sub_asth-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_asth-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_asth-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_asth-case_mix-midpoint6.csv
 
-  ## Generate model_output for precovid - sub_copd 
+  ## Generate model_output for precovid - sub_copd - practice 
 
-  make_model_output-precovid-sub_copd:
-    run: r:v2 analysis/make_output/make_model_output.R precovid sub_copd
+  make_model_output-precovid-sub_copd-practice:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_copd practice
     needs:
     - run_regression_model-cohort_precovid-sub_copd-list_size-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_copd-list_size-apc_unpl_acsc_any
@@ -67285,6 +67381,25 @@ actions:
     - run_regression_model-cohort_precovid-sub_copd-practice_region-apc_unpl
     - run_regression_model-cohort_precovid-sub_copd-practice_region-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_copd-practice_region-ec
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-precovid-sub_copd-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_copd-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_copd-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_copd-practice-midpoint6.csv
+
+  ## Generate model_output for precovid - sub_copd - case_mix 
+
+  make_model_output-precovid-sub_copd-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_copd case_mix
+    needs:
     - run_regression_model-cohort_precovid-sub_copd-age_0_4-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_copd-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_precovid-sub_copd-age_0_4-apc_plan_acsc_any
@@ -67411,24 +67526,17 @@ actions:
     - run_regression_model-cohort_precovid-sub_copd-smoking_never-apc_unpl
     - run_regression_model-cohort_precovid-sub_copd-smoking_never-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_copd-smoking_never-ec
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-apc_unpl
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_precovid-sub_copd-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-precovid-sub_copd.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_copd.csv
-        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_copd-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_copd-midpoint6.csv
+        model_output_regression: output/make_output/model_output-precovid-sub_copd-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_copd-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_copd-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_copd-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid1 - sub_copd 
+  ## Generate model_output for postcovid1 - sub_copd - practice 
 
-  make_model_output-postcovid1-sub_copd:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_copd
+  make_model_output-postcovid1-sub_copd-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_copd practice
     needs:
     - run_regression_model-cohort_postcovid1-sub_copd-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_copd-list_size-apc_unpl_acsc_any
@@ -67444,6 +67552,25 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_copd-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_copd-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_copd-practice_region-ec
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid1-sub_copd-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_copd-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_copd-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_copd-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid1 - sub_copd - case_mix 
+
+  make_model_output-postcovid1-sub_copd-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_copd case_mix
+    needs:
     - run_regression_model-cohort_postcovid1-sub_copd-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_copd-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid1-sub_copd-age_0_4-apc_plan_acsc_any
@@ -67570,24 +67697,17 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_copd-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_copd-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_copd-smoking_never-ec
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_copd-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid1-sub_copd.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_copd.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_copd-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_copd-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid1-sub_copd-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_copd-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_copd-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_copd-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid2 - sub_copd 
+  ## Generate model_output for postcovid2 - sub_copd - practice 
 
-  make_model_output-postcovid2-sub_copd:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_copd
+  make_model_output-postcovid2-sub_copd-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_copd practice
     needs:
     - run_regression_model-cohort_postcovid2-sub_copd-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_copd-list_size-apc_unpl_acsc_any
@@ -67603,6 +67723,25 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_copd-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_copd-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_copd-practice_region-ec
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid2-sub_copd-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_copd-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_copd-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_copd-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid2 - sub_copd - case_mix 
+
+  make_model_output-postcovid2-sub_copd-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_copd case_mix
+    needs:
     - run_regression_model-cohort_postcovid2-sub_copd-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_copd-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid2-sub_copd-age_0_4-apc_plan_acsc_any
@@ -67729,24 +67868,17 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_copd-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_copd-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_copd-smoking_never-ec
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_copd-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid2-sub_copd.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_copd.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_copd-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_copd-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid2-sub_copd-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_copd-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_copd-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_copd-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid3 - sub_copd 
+  ## Generate model_output for postcovid3 - sub_copd - practice 
 
-  make_model_output-postcovid3-sub_copd:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_copd
+  make_model_output-postcovid3-sub_copd-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_copd practice
     needs:
     - run_regression_model-cohort_postcovid3-sub_copd-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_copd-list_size-apc_unpl_acsc_any
@@ -67762,6 +67894,25 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_copd-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_copd-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_copd-practice_region-ec
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid3-sub_copd-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_copd-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_copd-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_copd-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid3 - sub_copd - case_mix 
+
+  make_model_output-postcovid3-sub_copd-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_copd case_mix
+    needs:
     - run_regression_model-cohort_postcovid3-sub_copd-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_copd-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid3-sub_copd-age_0_4-apc_plan_acsc_any
@@ -67888,24 +68039,17 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_copd-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_copd-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_copd-smoking_never-ec
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_copd-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid3-sub_copd.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_copd.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_copd-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_copd-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid3-sub_copd-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_copd-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_copd-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_copd-case_mix-midpoint6.csv
 
-  ## Generate model_output for precovid - sub_htn 
+  ## Generate model_output for precovid - sub_htn - practice 
 
-  make_model_output-precovid-sub_htn:
-    run: r:v2 analysis/make_output/make_model_output.R precovid sub_htn
+  make_model_output-precovid-sub_htn-practice:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_htn practice
     needs:
     - run_regression_model-cohort_precovid-sub_htn-list_size-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_htn-list_size-apc_unpl_acsc_any
@@ -67921,6 +68065,25 @@ actions:
     - run_regression_model-cohort_precovid-sub_htn-practice_region-apc_unpl
     - run_regression_model-cohort_precovid-sub_htn-practice_region-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_htn-practice_region-ec
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-precovid-sub_htn-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_htn-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_htn-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_htn-practice-midpoint6.csv
+
+  ## Generate model_output for precovid - sub_htn - case_mix 
+
+  make_model_output-precovid-sub_htn-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_htn case_mix
+    needs:
     - run_regression_model-cohort_precovid-sub_htn-age_0_4-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_htn-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_precovid-sub_htn-age_0_4-apc_plan_acsc_any
@@ -68047,24 +68210,17 @@ actions:
     - run_regression_model-cohort_precovid-sub_htn-smoking_never-apc_unpl
     - run_regression_model-cohort_precovid-sub_htn-smoking_never-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_htn-smoking_never-ec
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-apc_unpl
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_precovid-sub_htn-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-precovid-sub_htn.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_htn.csv
-        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_htn-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_htn-midpoint6.csv
+        model_output_regression: output/make_output/model_output-precovid-sub_htn-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_htn-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_htn-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_htn-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid1 - sub_htn 
+  ## Generate model_output for postcovid1 - sub_htn - practice 
 
-  make_model_output-postcovid1-sub_htn:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_htn
+  make_model_output-postcovid1-sub_htn-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_htn practice
     needs:
     - run_regression_model-cohort_postcovid1-sub_htn-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_htn-list_size-apc_unpl_acsc_any
@@ -68080,6 +68236,25 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_htn-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_htn-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_htn-practice_region-ec
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid1-sub_htn-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_htn-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_htn-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_htn-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid1 - sub_htn - case_mix 
+
+  make_model_output-postcovid1-sub_htn-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_htn case_mix
+    needs:
     - run_regression_model-cohort_postcovid1-sub_htn-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_htn-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid1-sub_htn-age_0_4-apc_plan_acsc_any
@@ -68206,24 +68381,17 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_htn-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_htn-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_htn-smoking_never-ec
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_htn-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid1-sub_htn.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_htn.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_htn-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_htn-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid1-sub_htn-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_htn-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_htn-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_htn-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid2 - sub_htn 
+  ## Generate model_output for postcovid2 - sub_htn - practice 
 
-  make_model_output-postcovid2-sub_htn:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_htn
+  make_model_output-postcovid2-sub_htn-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_htn practice
     needs:
     - run_regression_model-cohort_postcovid2-sub_htn-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_htn-list_size-apc_unpl_acsc_any
@@ -68239,6 +68407,25 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_htn-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_htn-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_htn-practice_region-ec
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid2-sub_htn-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_htn-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_htn-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_htn-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid2 - sub_htn - case_mix 
+
+  make_model_output-postcovid2-sub_htn-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_htn case_mix
+    needs:
     - run_regression_model-cohort_postcovid2-sub_htn-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_htn-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid2-sub_htn-age_0_4-apc_plan_acsc_any
@@ -68365,24 +68552,17 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_htn-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_htn-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_htn-smoking_never-ec
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_htn-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid2-sub_htn.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_htn.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_htn-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_htn-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid2-sub_htn-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_htn-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_htn-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_htn-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid3 - sub_htn 
+  ## Generate model_output for postcovid3 - sub_htn - practice 
 
-  make_model_output-postcovid3-sub_htn:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_htn
+  make_model_output-postcovid3-sub_htn-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_htn practice
     needs:
     - run_regression_model-cohort_postcovid3-sub_htn-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_htn-list_size-apc_unpl_acsc_any
@@ -68398,6 +68578,25 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_htn-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_htn-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_htn-practice_region-ec
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid3-sub_htn-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_htn-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_htn-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_htn-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid3 - sub_htn - case_mix 
+
+  make_model_output-postcovid3-sub_htn-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_htn case_mix
+    needs:
     - run_regression_model-cohort_postcovid3-sub_htn-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_htn-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid3-sub_htn-age_0_4-apc_plan_acsc_any
@@ -68524,24 +68723,17 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_htn-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_htn-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_htn-smoking_never-ec
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_htn-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid3-sub_htn.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_htn.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_htn-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_htn-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid3-sub_htn-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_htn-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_htn-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_htn-case_mix-midpoint6.csv
 
-  ## Generate model_output for precovid - sub_diab 
+  ## Generate model_output for precovid - sub_diab - practice 
 
-  make_model_output-precovid-sub_diab:
-    run: r:v2 analysis/make_output/make_model_output.R precovid sub_diab
+  make_model_output-precovid-sub_diab-practice:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_diab practice
     needs:
     - run_regression_model-cohort_precovid-sub_diab-list_size-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_diab-list_size-apc_unpl_acsc_any
@@ -68557,6 +68749,25 @@ actions:
     - run_regression_model-cohort_precovid-sub_diab-practice_region-apc_unpl
     - run_regression_model-cohort_precovid-sub_diab-practice_region-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_diab-practice_region-ec
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-precovid-sub_diab-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_diab-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_diab-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_diab-practice-midpoint6.csv
+
+  ## Generate model_output for precovid - sub_diab - case_mix 
+
+  make_model_output-precovid-sub_diab-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_diab case_mix
+    needs:
     - run_regression_model-cohort_precovid-sub_diab-age_0_4-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_diab-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_precovid-sub_diab-age_0_4-apc_plan_acsc_any
@@ -68683,24 +68894,17 @@ actions:
     - run_regression_model-cohort_precovid-sub_diab-smoking_never-apc_unpl
     - run_regression_model-cohort_precovid-sub_diab-smoking_never-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_diab-smoking_never-ec
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-apc_unpl
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_precovid-sub_diab-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-precovid-sub_diab.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_diab.csv
-        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_diab-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_diab-midpoint6.csv
+        model_output_regression: output/make_output/model_output-precovid-sub_diab-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_diab-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_diab-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_diab-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid1 - sub_diab 
+  ## Generate model_output for postcovid1 - sub_diab - practice 
 
-  make_model_output-postcovid1-sub_diab:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_diab
+  make_model_output-postcovid1-sub_diab-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_diab practice
     needs:
     - run_regression_model-cohort_postcovid1-sub_diab-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_diab-list_size-apc_unpl_acsc_any
@@ -68716,6 +68920,25 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_diab-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_diab-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_diab-practice_region-ec
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid1-sub_diab-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_diab-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_diab-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_diab-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid1 - sub_diab - case_mix 
+
+  make_model_output-postcovid1-sub_diab-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_diab case_mix
+    needs:
     - run_regression_model-cohort_postcovid1-sub_diab-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_diab-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid1-sub_diab-age_0_4-apc_plan_acsc_any
@@ -68842,24 +69065,17 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_diab-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_diab-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_diab-smoking_never-ec
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_diab-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid1-sub_diab.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_diab.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_diab-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_diab-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid1-sub_diab-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_diab-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_diab-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_diab-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid2 - sub_diab 
+  ## Generate model_output for postcovid2 - sub_diab - practice 
 
-  make_model_output-postcovid2-sub_diab:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_diab
+  make_model_output-postcovid2-sub_diab-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_diab practice
     needs:
     - run_regression_model-cohort_postcovid2-sub_diab-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_diab-list_size-apc_unpl_acsc_any
@@ -68875,6 +69091,25 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_diab-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_diab-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_diab-practice_region-ec
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid2-sub_diab-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_diab-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_diab-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_diab-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid2 - sub_diab - case_mix 
+
+  make_model_output-postcovid2-sub_diab-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_diab case_mix
+    needs:
     - run_regression_model-cohort_postcovid2-sub_diab-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_diab-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid2-sub_diab-age_0_4-apc_plan_acsc_any
@@ -69001,24 +69236,17 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_diab-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_diab-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_diab-smoking_never-ec
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_diab-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid2-sub_diab.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_diab.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_diab-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_diab-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid2-sub_diab-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_diab-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_diab-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_diab-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid3 - sub_diab 
+  ## Generate model_output for postcovid3 - sub_diab - practice 
 
-  make_model_output-postcovid3-sub_diab:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_diab
+  make_model_output-postcovid3-sub_diab-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_diab practice
     needs:
     - run_regression_model-cohort_postcovid3-sub_diab-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_diab-list_size-apc_unpl_acsc_any
@@ -69034,6 +69262,25 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_diab-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_diab-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_diab-practice_region-ec
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid3-sub_diab-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_diab-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_diab-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_diab-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid3 - sub_diab - case_mix 
+
+  make_model_output-postcovid3-sub_diab-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_diab case_mix
+    needs:
     - run_regression_model-cohort_postcovid3-sub_diab-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_diab-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid3-sub_diab-age_0_4-apc_plan_acsc_any
@@ -69160,24 +69407,17 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_diab-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_diab-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_diab-smoking_never-ec
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_diab-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid3-sub_diab.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_diab.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_diab-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_diab-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid3-sub_diab-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_diab-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_diab-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_diab-case_mix-midpoint6.csv
 
-  ## Generate model_output for precovid - sub_sevmh 
+  ## Generate model_output for precovid - sub_sevmh - practice 
 
-  make_model_output-precovid-sub_sevmh:
-    run: r:v2 analysis/make_output/make_model_output.R precovid sub_sevmh
+  make_model_output-precovid-sub_sevmh-practice:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_sevmh practice
     needs:
     - run_regression_model-cohort_precovid-sub_sevmh-list_size-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_sevmh-list_size-apc_unpl_acsc_any
@@ -69193,6 +69433,25 @@ actions:
     - run_regression_model-cohort_precovid-sub_sevmh-practice_region-apc_unpl
     - run_regression_model-cohort_precovid-sub_sevmh-practice_region-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_sevmh-practice_region-ec
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-precovid-sub_sevmh-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_sevmh-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_sevmh-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_sevmh-practice-midpoint6.csv
+
+  ## Generate model_output for precovid - sub_sevmh - case_mix 
+
+  make_model_output-precovid-sub_sevmh-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R precovid sub_sevmh case_mix
+    needs:
     - run_regression_model-cohort_precovid-sub_sevmh-age_0_4-apc_acsc_any
     - run_regression_model-cohort_precovid-sub_sevmh-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_precovid-sub_sevmh-age_0_4-apc_plan_acsc_any
@@ -69319,24 +69578,17 @@ actions:
     - run_regression_model-cohort_precovid-sub_sevmh-smoking_never-apc_unpl
     - run_regression_model-cohort_precovid-sub_sevmh-smoking_never-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_sevmh-smoking_never-ec
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-apc_unpl
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_precovid-sub_sevmh-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-precovid-sub_sevmh.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_sevmh.csv
-        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_sevmh-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_sevmh-midpoint6.csv
+        model_output_regression: output/make_output/model_output-precovid-sub_sevmh-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-precovid-sub_sevmh-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-precovid-sub_sevmh-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-precovid-sub_sevmh-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid1 - sub_sevmh 
+  ## Generate model_output for postcovid1 - sub_sevmh - practice 
 
-  make_model_output-postcovid1-sub_sevmh:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_sevmh
+  make_model_output-postcovid1-sub_sevmh-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_sevmh practice
     needs:
     - run_regression_model-cohort_postcovid1-sub_sevmh-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_sevmh-list_size-apc_unpl_acsc_any
@@ -69352,6 +69604,25 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_sevmh-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_sevmh-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_sevmh-practice_region-ec
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid1-sub_sevmh-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_sevmh-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_sevmh-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_sevmh-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid1 - sub_sevmh - case_mix 
+
+  make_model_output-postcovid1-sub_sevmh-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid1 sub_sevmh case_mix
+    needs:
     - run_regression_model-cohort_postcovid1-sub_sevmh-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid1-sub_sevmh-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid1-sub_sevmh-age_0_4-apc_plan_acsc_any
@@ -69478,24 +69749,17 @@ actions:
     - run_regression_model-cohort_postcovid1-sub_sevmh-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid1-sub_sevmh-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid1-sub_sevmh-smoking_never-ec
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid1-sub_sevmh-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid1-sub_sevmh.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_sevmh.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_sevmh-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_sevmh-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid1-sub_sevmh-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid1-sub_sevmh-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid1-sub_sevmh-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid1-sub_sevmh-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid2 - sub_sevmh 
+  ## Generate model_output for postcovid2 - sub_sevmh - practice 
 
-  make_model_output-postcovid2-sub_sevmh:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_sevmh
+  make_model_output-postcovid2-sub_sevmh-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_sevmh practice
     needs:
     - run_regression_model-cohort_postcovid2-sub_sevmh-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_sevmh-list_size-apc_unpl_acsc_any
@@ -69511,6 +69775,25 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_sevmh-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_sevmh-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_sevmh-practice_region-ec
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid2-sub_sevmh-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_sevmh-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_sevmh-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_sevmh-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid2 - sub_sevmh - case_mix 
+
+  make_model_output-postcovid2-sub_sevmh-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid2 sub_sevmh case_mix
+    needs:
     - run_regression_model-cohort_postcovid2-sub_sevmh-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid2-sub_sevmh-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid2-sub_sevmh-age_0_4-apc_plan_acsc_any
@@ -69637,24 +69920,17 @@ actions:
     - run_regression_model-cohort_postcovid2-sub_sevmh-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid2-sub_sevmh-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid2-sub_sevmh-smoking_never-ec
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid2-sub_sevmh-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid2-sub_sevmh.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_sevmh.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_sevmh-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_sevmh-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid2-sub_sevmh-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid2-sub_sevmh-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid2-sub_sevmh-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid2-sub_sevmh-case_mix-midpoint6.csv
 
-  ## Generate model_output for postcovid3 - sub_sevmh 
+  ## Generate model_output for postcovid3 - sub_sevmh - practice 
 
-  make_model_output-postcovid3-sub_sevmh:
-    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_sevmh
+  make_model_output-postcovid3-sub_sevmh-practice:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_sevmh practice
     needs:
     - run_regression_model-cohort_postcovid3-sub_sevmh-list_size-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_sevmh-list_size-apc_unpl_acsc_any
@@ -69670,6 +69946,25 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_sevmh-practice_region-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_sevmh-practice_region-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_sevmh-practice_region-ec
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_regression: output/make_output/model_output-postcovid3-sub_sevmh-practice.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_sevmh-practice.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_sevmh-practice-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_sevmh-practice-midpoint6.csv
+
+  ## Generate model_output for postcovid3 - sub_sevmh - case_mix 
+
+  make_model_output-postcovid3-sub_sevmh-case_mix:
+    run: r:v2 analysis/make_output/make_model_output.R postcovid3 sub_sevmh case_mix
+    needs:
     - run_regression_model-cohort_postcovid3-sub_sevmh-age_0_4-apc_acsc_any
     - run_regression_model-cohort_postcovid3-sub_sevmh-age_0_4-apc_unpl_acsc_any
     - run_regression_model-cohort_postcovid3-sub_sevmh-age_0_4-apc_plan_acsc_any
@@ -69796,19 +70091,12 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_sevmh-smoking_never-apc_unpl
     - run_regression_model-cohort_postcovid3-sub_sevmh-smoking_never-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_sevmh-smoking_never-ec
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_unpl_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_plan_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-apc_unpl
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-ec_acsc_any
-    - run_regression_model-cohort_postcovid3-sub_sevmh-cons_mean-ec
     outputs:
       moderately_sensitive:
-        model_output_regression: output/make_output/model_output-postcovid3-sub_sevmh.csv
-        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_sevmh.csv
-        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_sevmh-midpoint6.csv
-        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_sevmh-midpoint6.csv
+        model_output_regression: output/make_output/model_output-postcovid3-sub_sevmh-case_mix.csv
+        model_output_lrtest: output/make_output/model_output_lrtest-postcovid3-sub_sevmh-case_mix.csv
+        model_output_regression_midpoint6: output/make_output/model_output-postcovid3-sub_sevmh-case_mix-midpoint6.csv
+        model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-sub_sevmh-case_mix-midpoint6.csv
 
   ## Generates dataset for the outcome graphs, cohort: precovid 
 

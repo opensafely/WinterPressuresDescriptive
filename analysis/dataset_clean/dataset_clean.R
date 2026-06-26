@@ -40,7 +40,7 @@ if (length(args) == 0) {
 }
 
 # Flag to control whether inclusion/exclusion criteria are applied
-apply_inex <- FALSE # Set to TRUE for real run, FALSE for testing
+apply_inex <- TRUE # Set to TRUE for real run, FALSE for testing
 
 # Preprocess patient-level data --------------------------------------------------------------
 print("Preprocess patient-level data")

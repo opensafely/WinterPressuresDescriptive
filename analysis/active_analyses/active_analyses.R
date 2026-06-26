@@ -183,6 +183,19 @@ exposure_names <- c(
     exposure_consultation
 )
 
+# Practice characteristics
+exposure_practice <- c(
+    exposure_listsize,
+    exposure_region,
+    exposure_consultation
+)
+
+# Patient case-mix characteristics
+exposure_case_mix <- setdiff(
+  exposure_names,
+  exposure_practice
+)
+
 ## Define covariates ----
 covariate_age <- c("age_0_4", "age_80")
 covariate_sex <- "sex_female"
@@ -209,6 +222,7 @@ df <- data.frame(
     cohort = character(),
     outcome_start = character(),
     exposure = character(),
+    exposure_group = character(),
     outcome = character(),
     covariate_core = character(),
     covariate_other = character(),
@@ -220,6 +234,13 @@ df <- data.frame(
 for (i in cohorts) {
     outcome_start <- cohort_dates[[i]]
     for (j in exposure_names) {
+        exposure_group <- if (j %in% exposure_practice) {
+            "practice"
+        } else if (j %in% exposure_case_mix) {
+            "case_mix"
+        } else {
+            stop(paste0("ERROR: exposure variable ", j, " not in practice or case-mix group"))
+        }
         covariate_core <- if (grepl("^age_", j)) {
             paste0(covariate_sex, collapse = ";")
         } else if (grepl("^sex_", j)) {
@@ -245,6 +266,7 @@ for (i in cohorts) {
                     cohort = i,
                     outcome_start = outcome_start,
                     exposure = j,
+                    exposure_group = exposure_group,
                     outcome = k,
                     covariate_core = covariate_core,
                     covariate_other = covariate_other_clean,
