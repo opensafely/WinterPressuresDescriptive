@@ -25,6 +25,7 @@ source("analysis/specify_paths.R")
 # Make post-release directory --------------------------------------------------
 print("Make post-release directory")
 
+
 dir.create("output/post_release/", recursive = TRUE, showWarnings = FALSE)
 output_folder <- "output/post_release"
 
