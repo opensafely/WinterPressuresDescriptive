@@ -47,7 +47,7 @@ cons_jun_postcovid3,Jun 2024,Consultations,
 cons_jul_postcovid3,Jul 2024,Consultations,
 cons_aug_postcovid3,Aug 2024,Consultations,
 cons_sep_postcovid3,Sep 2024,Consultations,
-cons_mean,Mean,Monthly consultation,
+cons_mean,Monthly consultation (mean),Monthly consultation,
 cons_oct,October,Monthly consultation,1
 cons_nov,November,Monthly consultation,2
 cons_dec,December,Monthly consultation,3
@@ -101,16 +101,15 @@ smoking_ever,Ever smoker,Smoking Status,2
 smoking_missing,Missing smoking,Smoking Status,4
 carehome_True, Care home residence,Care home residence,
 carehome,Care home residence,Care home residence,
-practice_region,Practice region,Practice region,
-East (ref),Region: East (ref),Practice region,1
-East Midlands,Region: East Midlands,Practice region,2
-London,Region: London,Practice region,3
-North East,Region: North East,Practice region,4
-North West,Region: North West,Practice region,5
-South East,Region: South East,Practice region,6
-South West,Region: South West,Practice region,7
-West Midlands,Region: West Midlands,Practice region,8
-Yorkshire and The Humber,Region: Yorkshire and The Humber,Practice region,9
+exp_prop_East (ref),Region: East (ref),Practice region,1
+exp_prop_East Midlands,Region: East Midlands,Practice region,2
+exp_prop_London,Region: London,Practice region,3
+exp_prop_North East,Region: North East,Practice region,4
+exp_prop_North West,Region: North West,Practice region,5
+exp_prop_South East,Region: South East,Practice region,6
+exp_prop_South West,Region: South West,Practice region,7
+exp_prop_West Midlands,Region: West Midlands,Practice region,8
+exp_prop_Yorkshire and The Humber,Region: Yorkshire and The Humber,Practice region,9
 af,Atrial fibrillation,Condition,
 alcoholproblem,Alcohol problems,Condition,
 anxietydepression,Anxiety or depression,Condition,
@@ -156,12 +155,12 @@ apc_unpl_acsc_any_mean,Unplanned Hospital admitted patient care (ACSC admissions
 apc_plan_acsc_any_mean,Planned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,4
 apc,Admitted patient care (all),hospital use,1
 ec,Emergency care,hospital use,2
-apc_unpl,Unplanned admitted patient care,hospital use,3
-apc_plan,Planned admitted patient care,hospital use,4
+apc_unpl,Unplanned admitted patient care,admitted patient care,3
+apc_plan,Planned admitted patient care,admitted patient care,4
 apc_acsc_any,Admitted patient care (ACSC admissions),ACSC-related hospital use,1
 ec_acsc_any,Emergency care (ACSC attendances),ACSC-related hospital use,2
-apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),ACSC-related hospital use,3
-apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),ACSC-related hospital use,4
+apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),ACSC-related admitted patient care,3
+apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),ACSC-related admitted patient care,4
 main,All people,main,
 sub_asth,People with asthma,subgroup,1
 sub_copd,People with COPD,subgroup,2
