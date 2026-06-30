@@ -63,16 +63,17 @@ df_mad <- readr::read_csv(
 df_mad <- df_mad %>%
   mutate(
     exposure = paste(characteristic, subcharacteristic, sep = "_"),
-    exposure = str_remove(exposure, "_TRUE$"),
+    exposure = str_remove(exposure, "_True$"),
     exposure = str_remove(exposure, "_mp6$")
   ) %>%
-  select(exposure, mad) %>%
-  distinct()
+  filter(strata == "Overall") %>%
+  select(exposure, mad, cohort) %>%
+  distinct(exposure, cohort, .keep_all = TRUE)
 
 df <- df %>%
   left_join(
     df_mad,
-    by = "exposure"
+    by = c("exposure", "cohort")
   )
 
 readr::write_csv(df, paste0(output_folder, "/plot_model_output.csv"))
