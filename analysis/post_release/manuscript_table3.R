@@ -39,6 +39,7 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 group_order <- c(
   "List size",
   "Practice region",
+  "Monthly consultation",
   "Age",
   "Sex",
   "Ethnicity",
@@ -46,8 +47,7 @@ group_order <- c(
   "Rurality",
   "Smoking Status",
   "Obesity",
-  "Care home residence",
-  "Monthly consultation"
+  "Care home residence"
 )
 
 # regression can be negbin or poisson

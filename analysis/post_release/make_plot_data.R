@@ -1,5 +1,5 @@
 # Load libraries ---------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(magrittr)
 library(tidyverse)
@@ -12,7 +12,7 @@ library(grid)
 library(gridExtra)
 
 # Specify paths ----------------------------------------------------------------
-print('Specify paths')
+print("Specify paths")
 
 # NOTE:
 # This file is used to specify paths and is in the .gitignore to keep your information secret.
@@ -22,7 +22,7 @@ print('Specify paths')
 source("analysis/specify_paths.R")
 
 # Make post-release directory --------------------------------------------------
-print('Make post-release directory')
+print("Make post-release directory")
 
 dir.create("output/post_release/", recursive = TRUE, showWarnings = FALSE)
 output_folder <- "output/post_release"
@@ -30,7 +30,7 @@ output_folder <- "output/post_release"
 # Load data --------------------------------------------------------------------
 print("Load model output")
 
-# List all poisson/negbin CSV files 
+# List all poisson/negbin CSV files
 file_list <- list.files(
   path = table3,
   pattern = "^model_output-.*-midpoint6\\.csv$",
@@ -47,11 +47,33 @@ file_list_lr <- list.files(
 # Read and combine all CSV files into one data frame
 df <- file_list %>%
   lapply(read_csv, show_col_types = FALSE) %>%
-  bind_rows()
+  bind_rows() %>%
+  distinct()
 
 df_lr <- file_list_lr %>%
   lapply(read_csv, show_col_types = FALSE) %>%
   bind_rows()
+
+# Add MAD for each exposure
+df_mad <- readr::read_csv(
+  "output/post_release/table1_raw.csv",
+  show_col_types = FALSE
+)
+# Add exposure name matching plot_model_output
+df_mad <- df_mad %>%
+  mutate(
+    exposure = paste(characteristic, subcharacteristic, sep = "_"),
+    exposure = str_remove(exposure, "_TRUE$"),
+    exposure = str_remove(exposure, "_mp6$")
+  ) %>%
+  select(exposure, mad) %>%
+  distinct()
+
+df <- df %>%
+  left_join(
+    df_mad,
+    by = "exposure"
+  )
 
 readr::write_csv(df, paste0(output_folder, "/plot_model_output.csv"))
 readr::write_csv(df_lr, paste0(output_folder, "/plot_model_output_lr.csv"))

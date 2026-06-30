@@ -39,8 +39,9 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 
 # Define group order for plotting
 group_order <- c(
-    "List size",
     "Practice region",
+    "List size",
+    "Monthly consultation",
     "Age",
     "Sex",
     "Ethnicity",
@@ -48,13 +49,12 @@ group_order <- c(
     "Rurality",
     "Smoking Status",
     "Obesity",
-    "Care home residence",
-    "Monthly consultation"
+    "Care home residence"
 )
 
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
-plot_irr <- function(regression, sub_group, outcome_name) {
+plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
     # Load data --------------------------------------------------------------------
     print("Load model output")
 
@@ -72,11 +72,17 @@ plot_irr <- function(regression, sub_group, outcome_name) {
 
     df <- df %>%
         filter(
+            cohort %in% cohorts,
             analysis == sub_group,
-            outcome == outcome_name,
+            outcome %in% outcome_names,
             model_type == regression,
-            term == "exp_prop",
-            model %in% c("mdl_crude", "mdl_age_sex")
+            grepl("^exp_prop(_|$)", term),
+            model %in% c("mdl_age_sex")
+        ) %>%
+        mutate(
+            exposure = if_else(
+                term == "exp_prop", exposure, term
+            )
         ) %>%
         select(
             cohort,
@@ -117,18 +123,23 @@ plot_irr <- function(regression, sub_group, outcome_name) {
         left_join(
             exposure_labels,
             by = c("exposure" = "term")
-        )
+        ) %>%
+        filter(!is.na(exposure_label))
 
     # --- Join OUTCOME label ---
-    outcome_label <- labels %>%
-        filter(term == outcome_name) %>%
-        pull(label)
+    outcome_labels <- labels %>%
+        select(term, outcome_label = label, outcome_group = group)
+
+    df <- df %>%
+        left_join(
+            outcome_labels,
+            by = c("outcome" = "term")
+        )
+    outcome_group <- unique(df$outcome_group)
 
     # --- Join COHORT labels ---
     cohort_labels <- labels %>%
-        filter(
-            term %in% c("precovid", "postcovid1", "postcovid2", "postcovid3")
-        ) %>%
+        filter(term %in% cohorts) %>%
         select(term, label)
 
     df <- df %>%
@@ -137,6 +148,20 @@ plot_irr <- function(regression, sub_group, outcome_name) {
             by = c("cohort" = "term")
         ) %>%
         rename(cohort_label = label)
+
+    cohort_suffix <- if (identical(
+        cohorts,
+        c("precovid", "postcovid1", "postcovid2", "postcovid3")
+    )) {
+        "all"
+    } else if (identical(
+        cohorts,
+        c("precovid", "postcovid3")
+    )) {
+        "prepost3"
+    } else {
+        paste(gsub("postcovid", "post", cohorts), collapse = "_")
+    }
 
     # --- Join analysis labels ---
     analysis_label <- labels %>%
@@ -180,9 +205,11 @@ plot_irr <- function(regression, sub_group, outcome_name) {
 
     df <- df %>%
         mutate(
-            exposure_label_full = factor(
-                exposure_label_full,
-                levels = unique(exposure_label_full)
+            exposure_label_full = forcats::fct_rev(
+                factor(
+                    exposure_label_full,
+                    levels = unique(exposure_label_full)
+                )
             )
         )
 
@@ -192,7 +219,7 @@ plot_irr <- function(regression, sub_group, outcome_name) {
     title_text <- paste0(
         "General practice characteristics and ",
         "**",
-        tolower(outcome_label),
+        tolower(outcome_group),
         "**",
         " in ",
         "**",
@@ -200,19 +227,26 @@ plot_irr <- function(regression, sub_group, outcome_name) {
         "**"
     )
 
-    is_acsc <- str_detect(outcome_name, "acsc")
+    is_acsc <- any(str_detect(outcome_names, "acsc"))
 
     x_limits <- if (is_acsc) {
-        c(0.7, 1.4)
+        c(0.6, 1.6)
     } else {
-        c(0.8, 1.3)
+        c(0.6, 1.4)
     }
 
     x_breaks <- if (is_acsc) {
-        c(0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4)
+        c(0.6, 0.8, 1.0, 1.2, 1.4, 1.6)
     } else {
-        c(0.8, 0.9, 1.0, 1.1, 1.2, 1.3)
+        c(0.6, 0.8, 1.0, 1.2, 1.4)
     }
+
+    # Clip confidence intervals to plotting range
+    df <- df %>%
+        mutate(
+            lci_plot = pmax(lci, x_limits[1]),
+            uci_plot = pmin(uci, x_limits[2])
+        )
 
     caption_text <- str_wrap(
         paste0(
@@ -241,7 +275,7 @@ plot_irr <- function(regression, sub_group, outcome_name) {
             linewidth = 0.6
         ) +
         geom_errorbarh(
-            aes(xmin = lci, xmax = uci, alpha = model),
+            aes(xmin = lci_plot, xmax = uci_plot, alpha = model),
             position = position_dodge(width = 0.5),
             height = 0.2,
             linewidth = 0.7
@@ -255,14 +289,28 @@ plot_irr <- function(regression, sub_group, outcome_name) {
             values = c("Crude" = 0.35, "Age-sex adjusted" = 1),
             name = "Model"
         ) +
+        scale_colour_manual(
+            values = c(
+                "Pre-COVID19 (2018-10-01)"         = "#F8766D",
+                "Post-lockdown I (2022-10-01)"     = "#7CAE00",
+                "Post-lockdown II (2023-10-01)"    = "#00BFC4",
+                "Post-lockdown III (2024-10-01)"   = "#C77CFF"
+            ),
+            drop = FALSE
+        ) +
         scale_size_manual(
             values = c("Crude" = 1.6, "Age-sex adjusted" = 2.2),
             name = "Model"
         ) +
         scale_x_log10(
-            limits = x_limits,
             breaks = x_breaks,
             labels = scales::number_format(accuracy = 0.01)
+        ) +
+        coord_cartesian(
+            xlim = x_limits
+        ) +
+        facet_grid(
+            ~outcome_label
         ) +
         labs(
             title = title_text,
@@ -314,28 +362,34 @@ plot_irr <- function(regression, sub_group, outcome_name) {
     ggsave(
         filename = file.path(
             plot_dir,
-            paste0("forest_", sub_group, "_", regression, "_", outcome_name, ".png")
+            paste0("forest_", sub_group, "_", regression, "_", paste(outcome_names, collapse = "_"), "_", cohort_suffix, ".png")
         ),
         plot = p,
-        width = 10,
-        height = 9
+        width = 16,
+        height = 9,
+        dpi = 300
     )
 }
 
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
 
-plot_irr("negbin", "main", "apc")
-plot_irr("poisson", "main", "apc")
-plot_irr("negbin", "main", "ec")
-plot_irr("poisson", "main", "ec")
-plot_irr("negbin", "main", "apc_unpl")
-plot_irr("poisson", "main", "apc_unpl")
+# Hospital use
+plot_irr("negbin", "main", c("apc", "ec"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 
-plot_irr("negbin", "main", "apc_acsc_any")
-plot_irr("poisson", "main", "apc_acsc_any")
-plot_irr("negbin", "main", "ec_acsc_any")
-plot_irr("poisson", "main", "ec_acsc_any")
+plot_irr("negbin", "main", c("apc", "ec"), c("precovid", "postcovid3"))
+plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid3"))
+
+plot_irr("negbin", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+plot_irr("poisson", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+
+# ACSC-related hospital use
+plot_irr("negbin", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+plot_irr("poisson", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+
+plot_irr("negbin", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+plot_irr("poisson", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 
 plot_irr("negbin", "sub_asth", "apc")
 plot_irr("poisson", "sub_asth", "apc")
