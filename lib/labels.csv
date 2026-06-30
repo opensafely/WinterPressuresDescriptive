@@ -99,9 +99,18 @@ smoking_never,Never smoker,Smoking Status,1
 smoking_current,Current smoker,Smoking Status,3
 smoking_ever,Ever smoker,Smoking Status,2
 smoking_missing,Missing smoking,Smoking Status,4
-carehome_True, Care home residence, Care home residence,
-carehome,Care home residence, Care home residence,
-practice_region, Practice region, Practice region,
+carehome_True, Care home residence,Care home residence,
+carehome,Care home residence,Care home residence,
+practice_region,Practice region,Practice region,
+East (ref),Region: East (ref),Practice region,1
+East Midlands,Region: East Midlands,Practice region,2
+London,Region: London,Practice region,3
+North East,Region: North East,Practice region,4
+North West,Region: North West,Practice region,5
+South East,Region: South East,Practice region,6
+South West,Region: South West,Practice region,7
+West Midlands,Region: West Midlands,Practice region,8
+Yorkshire and The Humber,Region: Yorkshire and The Humber,Practice region,9
 af,Atrial fibrillation,Condition,
 alcoholproblem,Alcohol problems,Condition,
 anxietydepression,Anxiety or depression,Condition,

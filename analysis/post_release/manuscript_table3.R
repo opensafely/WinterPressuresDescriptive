@@ -1,5 +1,5 @@
 # Load libraries ---------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(magrittr)
 library(tidyverse)
@@ -13,7 +13,7 @@ library(gridExtra)
 library(ggtext)
 
 # Specify paths ----------------------------------------------------------------
-print('Specify paths')
+print("Specify paths")
 
 # NOTE:
 # This file is used to specify paths and is in the .gitignore to keep your information secret.
@@ -23,7 +23,7 @@ print('Specify paths')
 source("analysis/specify_paths.R")
 
 # Make post-release directory --------------------------------------------------
-print('Make post-release directory')
+print("Make post-release directory")
 
 dir.create("output/post_release/", recursive = TRUE, showWarnings = FALSE)
 output_folder <- "output/post_release"
@@ -67,7 +67,12 @@ df <- df %>%
   filter(
     model == "mdl_age_sex",
     model_type == "negbin",
-    term == "exp_prop"
+    grepl("^exp_prop(_|$)", term)
+  ) %>%
+  mutate(
+    exposure = if_else(
+      term == "exp_prop", exposure, term
+    )
   ) %>%
   select(
     cohort,
@@ -152,7 +157,7 @@ df <- df %>%
   left_join(
     analysis_labels,
     by = c("analysis" = "term")
-  ) 
+  )
 
 # --- Factor setup ---
 df <- df %>%
