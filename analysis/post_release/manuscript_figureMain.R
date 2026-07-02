@@ -11,6 +11,7 @@ library(VennDiagram)
 library(grid)
 library(gridExtra)
 library(ggtext)
+library(patchwork)
 
 # Specify paths ----------------------------------------------------------------
 print("Specify paths")
@@ -52,6 +53,10 @@ group_order <- c(
     "Care home residence"
 )
 
+# regression <- "negbin"
+# sub_group <- "main"
+# outcome_names <- c("apc", "ec")
+# cohorts <- c("precovid", "postcovid1", "postcovid2", "postcovid3")
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
 plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
@@ -93,7 +98,8 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
             irr,
             lci,
             uci,
-            n_obs_midpoint6
+            n_obs_midpoint6,
+            mad
         ) %>%
         mutate(
             # model aesthetics
@@ -187,29 +193,151 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
         ) %>%
         arrange(group, ref_order)
 
+    table_df <- df %>%
+        select(
+            cohort,
+            cohort_label,
+            exposure_label,
+            group,
+            ref,
+            mad
+        ) %>%
+        distinct() %>%
+        arrange(cohort_label, group, ref) %>%
+        select(
+            cohort_label,
+            exposure_label,
+            mad
+        )
+    table_df_wide <- table_df %>%
+        pivot_wider(
+            names_from = cohort_label,
+            values_from = mad
+        )
+
+    practice_header <- table_df_wide[1, ]
+    practice_header[, ] <- NA
+    practice_header$exposure_label <- "Practice"
+
+    casemix_header <- table_df_wide[1, ]
+    casemix_header[, ] <- NA
+    casemix_header$exposure_label <- "Patient case-mix (% of patients in practice)"
+
+    table_side <- bind_rows(
+        practice_header,
+        table_df_wide[1:11, ],
+        casemix_header,
+        table_df_wide[12:nrow(table_df_wide), ]
+    )
+
+    # set a flag for the top header row to be bolded in the table
+    table_side <- table_side %>%
+        mutate(
+            is_header = if_else(
+                exposure_label %in% c("Practice", "Patient case-mix (% of patients in practice)"),
+                TRUE,
+                FALSE
+            )
+        )
+
+    cohort_cols <- names(table_side)[
+        !(names(table_side) %in% c("exposure_label", "is_header"))
+    ]
+
+    n_cohorts <- length(cohort_cols)
+
+    if (n_cohorts == 4) {
+        widths <- c(0.65, 0.35)
+    } else {
+        widths <- c(0.70, 0.30)
+    }
+
+    row_levels <- rev(table_side$exposure_label)
+
+    table_side <- table_side %>%
+        mutate(
+            exposure_label = factor(
+                exposure_label,
+                levels = row_levels
+            )
+        )
+
+    # Calculate median MAD for each exposure across cohorts and create a new label for the exposure label that includes the median MAD value in parentheses, unless the row is a header or the median MAD is NaN
+
+    table_side <- table_side %>%
+        rowwise() %>%
+        mutate(
+            mad_median = median(
+                c_across(all_of(cohort_cols)),
+                na.rm = TRUE
+            ),
+            exposure_label_full = case_when(
+                is_header ~ exposure_label,
+                is.na(mad_median) ~ exposure_label,
+                mad_median <= 100 ~ sprintf(
+                    "%s (%.1f%%)",
+                    exposure_label,
+                    mad_median
+                ),
+                TRUE ~ sprintf(
+                    "%s (%.0f)",
+                    exposure_label,
+                    mad_median
+                )
+            )
+        ) %>%
+        ungroup()
+
+    # Set the y-axis labels for the forest plot to be the exposure_label_full values, with names corresponding to the exposure_label values
+    y_labels <- table_side$exposure_label_full
+    names(y_labels) <- table_side$exposure_label
+
+    # Set the y-axis labels for the forest plot to be bold for the header rows
+    y_labels[y_labels == "Practice"] <-
+        "<b>Practice</b>"
+
+    y_labels[y_labels == "Patient case-mix (% of patients in practice)"] <-
+        "<b>Patient case-mix (% of patients in practice)</b>"
+
+    # Add dummy rows to ensure that the table and forest plot have the same number of rows
+    dummy_rows <- df %>%
+        distinct(
+            cohort,
+            analysis,
+            outcome,
+            model,
+            outcome_label,
+            outcome_group,
+            cohort_label
+        ) %>%
+        slice(rep(1:n(), each = 2)) %>%
+        mutate(
+            exposure = NA_character_,
+            exposure_label = rep(
+                c(
+                    "Practice",
+                    "Patient case-mix (% of patients in practice)"
+                ),
+                times = n() / 2
+            ),
+            group = NA_character_,
+            ref = NA_real_,
+            ref_order = NA_real_,
+            irr = NA_real_,
+            lci = NA_real_,
+            uci = NA_real_,
+            n_obs_midpoint6 = NA_real_,
+            mad = NA_real_
+        )
+
+    df <- bind_rows(df, dummy_rows)
+
+    # set the order of the exposure_label factor to match the order in the table
     df <- df %>%
         mutate(
             exposure_label = factor(
                 exposure_label,
-                levels = unique(exposure_label)
-            )
-        )
-    df <- df %>%
-        mutate(
-            exposure_label_full = if_else(
-                !is.na(ref),
-                paste0(group, ": ", exposure_label),
-                exposure_label
-            )
-        )
-
-    df <- df %>%
-        mutate(
-            exposure_label_full = forcats::fct_rev(
-                factor(
-                    exposure_label_full,
-                    levels = unique(exposure_label_full)
-                )
+                levels = row_levels
             )
         )
 
@@ -230,15 +358,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
     is_acsc <- any(str_detect(outcome_names, "acsc"))
 
     x_limits <- if (is_acsc) {
-        c(0.6, 1.6)
+        c(0.3, 2.5)
     } else {
-        c(0.6, 1.4)
+        c(0.6, 1.6)
     }
 
     x_breaks <- if (is_acsc) {
-        c(0.6, 0.8, 1.0, 1.2, 1.4, 1.6)
+        c(0.35, 0.5, 0.7, 1.0, 1.3, 1.5, 2.0, 2.5)
     } else {
-        c(0.6, 0.8, 1.0, 1.2, 1.4)
+        c(0.6, 0.8, 1.0, 1.2, 1.4, 1.6)
     }
 
     # Clip confidence intervals to plotting range
@@ -253,16 +381,18 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
             "Points show incidence rate ratios (IRRs) with 95% confidence intervals. ",
             "Estimates from random-intercept ",
             ifelse(regression == "negbin", "negative binomial", "Poisson"),
-            " regression models."
+            " regression models.",
+            "\n\n",
+            " MAD: median absolute deviation. The median MAD across cohorts is shown in parentheses for each continuous characteristic, representing a one-unit increase in the standardised exposure."
         ),
-        width = 500
+        width = 250
     )
 
     p <- ggplot(
         df,
         aes(
             x = irr,
-            y = exposure_label_full,
+            y = exposure_label,
             colour = cohort_label,
             alpha = model,
             group = interaction(cohort_label, model)
@@ -291,11 +421,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
         ) +
         scale_colour_manual(
             values = c(
-                "Pre-COVID19 (2018-10-01)"         = "#F8766D",
-                "Post-lockdown I (2022-10-01)"     = "#7CAE00",
-                "Post-lockdown II (2023-10-01)"    = "#00BFC4",
-                "Post-lockdown III (2024-10-01)"   = "#C77CFF"
+                "Pre-COVID19" = "#F8766D",
+                "2022/23" = "#7CAE00",
+                "2023/24" = "#00BFC4",
+                "2024/25" = "#C77CFF"
             ),
+            drop = FALSE
+        ) +
+        scale_y_discrete(
+            labels = y_labels,
             drop = FALSE
         ) +
         scale_size_manual(
@@ -315,7 +449,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
         labs(
             title = title_text,
             x = "Incidence rate ratio (IRR)",
-            y = NULL,
+            y = "Characteristics (median MAD across cohorts)",
             colour = "",
             linetype = "Model",
             caption = caption_text
@@ -335,8 +469,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
                 margin = margin(t = 8)
             ),
             legend.position = "bottom",
-            panel.grid.minor = element_blank(),
-            axis.text.y = element_text(size = 9),
+            axis.text.y = ggtext::element_markdown(size = 9),
             plot.margin = margin(t = 14, r = 10, b = 14, l = 10),
             legend.box = "vertical",
             legend.key.width = unit(12, "pt"),
@@ -359,6 +492,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts) {
             ),
             size = "none" # hide duplicate legend
         )
+
     ggsave(
         filename = file.path(
             plot_dir,
@@ -384,12 +518,21 @@ plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid3"))
 plot_irr("negbin", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 plot_irr("poisson", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 
+plot_irr("negbin", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid3"))
+plot_irr("poisson", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid3"))
+
 # ACSC-related hospital use
 plot_irr("negbin", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 plot_irr("poisson", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 
+plot_irr("negbin", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid3"))
+plot_irr("poisson", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid3"))
+
 plot_irr("negbin", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 plot_irr("poisson", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+
+plot_irr("negbin", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"))
+plot_irr("poisson", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"))
 
 plot_irr("negbin", "sub_asth", "apc")
 plot_irr("poisson", "sub_asth", "apc")

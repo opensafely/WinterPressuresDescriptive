@@ -67,6 +67,13 @@ df_mad <- df_mad %>%
     exposure = str_remove(exposure, "_mp6$")
   ) %>%
   filter(strata == "Overall") %>%
+  mutate(
+    mad = case_when(
+      exposure == "list_size" ~ sprintf("%d", round(mad)),
+      exposure == "cons_mean" ~ sprintf("%.1f", mad * 1000),
+      TRUE ~ sprintf("%.1f", mad * 100)
+    )
+  ) %>%
   select(exposure, mad, cohort) %>%
   distinct(exposure, cohort, .keep_all = TRUE)
 
