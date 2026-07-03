@@ -39,7 +39,7 @@ outcome_bases <- c(
     # APC – overall
     "apc",
     "apc_unpl",
-    # "apc_plan",
+    "apc_plan",
 
     # EC – ACSC
     # "ec_acsc_copd",
