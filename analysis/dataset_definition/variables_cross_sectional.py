@@ -129,7 +129,7 @@ def generate_dataset_variables(cohort_start):
         # Practice region
         exp_cat_region       = exp_cat_region,
         #Patient rurality
-        exp_cat_rur_urb        = exp_cat_rurality,
+        exp_cat_rurality     = exp_cat_rurality,
         # Patient age
         exp_num_age          = exp_num_age,
         # Inclusion/exclusion criteria
@@ -167,7 +167,7 @@ def generate_dataset_variables(cohort_start):
         exp_bin_osteoarthritis    = cms_parts["pain"],           # Osteoarthritis
         exp_bin_psychosis         = cms_parts["psychosis"],      # Psychosis
         exp_bin_stroketia         = cms_parts["stroke"],         # Stroke and Transient Ischaemic Attack
-        exp_num_cms_score         = cms_parts["cms"],            # Cambridge Multimorbidity Score
+        exp_num_cms               = cms_parts["cms"],            # Cambridge Multimorbidity Score
     )
     return cs_dataset_variables
 
