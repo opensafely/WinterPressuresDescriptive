@@ -29,6 +29,7 @@ create_table2 <- function(
         select(
             practice_id,
             practice_region,
+            practice_rurality,
             all_of(rate_vars),
             all_of(strata_cols)
         )
@@ -40,25 +41,41 @@ create_table2 <- function(
             cols = all_of(rate_vars),
             names_to = "outcome_name",
             values_to = "value"
-        ) %>%
-        rename(strata_region = practice_region) %>%
-        mutate(
-            strata_region = coalesce(strata_region, "Unknown")
         )
 
     # Summarise overall data ----
     print("Create summary of overall data")
-    table2_summary <- table2_long %>%
+
+    # Overall
+    table2_summary_overall <- table2_long %>%
         group_by(outcome_name) %>%
         summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop") %>%
-        mutate(strata_region = "Overall") %>%
-        bind_rows(
-            table2_long %>%
-                group_by(strata_region, outcome_name) %>%
-                summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop")
+        mutate(strata = "Overall")
+
+    # Practice region
+    table2_summary_region <- table2_long %>%
+        mutate(
+            strata = coalesce(practice_region, "Unknown region")
         ) %>%
-        mutate(n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)) %>%
-        rename(strata = strata_region) %>%
+        group_by(strata, outcome_name) %>%
+        summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop")
+
+    # Practice rurality
+    table2_summary_rurality <- table2_long %>%
+        mutate(
+            strata = coalesce(practice_rurality, "Unknown rurality")
+        ) %>%
+        group_by(strata, outcome_name) %>%
+        summarise(summarise_dist(value, is_outcome = TRUE), .groups = "drop")
+
+    table2_summary <- bind_rows(
+        table2_summary_overall,
+        table2_summary_region,
+        table2_summary_rurality
+    ) %>%
+        mutate(
+            n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)
+        ) %>%
         mutate(
             # sample: main or sub_xxx
             group = str_extract(outcome_name, "(main|sub_[a-z]+)"),

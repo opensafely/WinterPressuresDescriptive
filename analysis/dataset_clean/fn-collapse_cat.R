@@ -1,6 +1,25 @@
 # Function to collapse categorical variables ----------------------------------------
 collapse_categories <- function(input) {
-    message("Collapse categorical variables (age 80+, urban combined)")
+    message("Collapse categorical variables (age 80+, practice rurality, and case-mix)")
+
+    # Practice rurality
+    input <- input %>%
+        mutate(
+            practice_rurality = case_when(
+                practice_rurality %in% c("1", "2") ~ "Urban conurbation",
+                practice_rurality %in% c("3", "4") ~ "Urban town",
+                practice_rurality %in% c("5", "6", "7", "8") ~ "Rural",
+                TRUE ~ NA_character_
+            ),
+            practice_rurality = factor(
+                practice_rurality,
+                levels = c(
+                    "Urban conurbation",
+                    "Urban town",
+                    "Rural"
+                )
+            )
+        )
 
     # Variables to remove
     vars_to_remove <- c(grep(

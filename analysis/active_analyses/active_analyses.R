@@ -39,7 +39,7 @@ outcome_bases <- c(
     # APC – overall
     "apc",
     "apc_unpl",
-    # "apc_plan",
+    "apc_plan",
 
     # EC – ACSC
     # "ec_acsc_copd",
@@ -70,6 +70,11 @@ exposure_listsize <- c(
 ## Exposure: region
 exposure_region <- c(
     "practice_region"
+)
+
+## Exposure: rurality
+exposure_rurality <- c(
+    "practice_rurality"
 )
 
 ## Exposure: demographic exposures
@@ -110,14 +115,6 @@ exposure_imd <- c(
     # "imd_4",
     "imd_5_least"
     # "imd_missing"
-)
-
-exposure_rurality <- c(
-    # "rurality_urban_town",
-    # "rurality_rural_fringe",
-    # "rurality_rural_village",
-    "rurality_urban_comb"
-    # "rurality_missing"
 )
 
 # Exposure: health-related exposures
@@ -171,11 +168,11 @@ exposure_vax <- c(
 exposure_names <- c(
     exposure_listsize,
     exposure_region,
+    exposure_rurality,
     exposure_age,
     exposure_sex,
     exposure_ethnicity,
     exposure_imd,
-    exposure_rurality,
     # exposure_conditions,
     exposure_other_health,
     exposure_smoking,
@@ -187,13 +184,14 @@ exposure_names <- c(
 exposure_practice <- c(
     exposure_listsize,
     exposure_region,
+    exposure_rurality,
     exposure_consultation
 )
 
 # Patient case-mix characteristics
 exposure_case_mix <- setdiff(
-  exposure_names,
-  exposure_practice
+    exposure_names,
+    exposure_practice
 )
 
 ## Define covariates ----
@@ -202,7 +200,7 @@ covariate_sex <- "sex_female"
 covariate_region <- "practice_region"
 covariate_ethnicity <- c("ethnicity_white")
 covariate_imd <- c("imd_1_most")
-covariate_rurality <- c("rurality_urban_comb")
+covariate_rurality <- c("practice_rurality")
 covariate_smoking <- c("smoking_current")
 covariate_carehome <- c("carehome")
 covariate_obesity <- c("obesity")
@@ -293,7 +291,7 @@ df$name <- paste0(
 
 # Check names are unique and save active analyses list ----
 if (length(unique(df$name)) == nrow(df)) {
-  saveRDS(df, file = "lib/active_analyses.rds", compress = "gzip")
+    saveRDS(df, file = "lib/active_analyses.rds", compress = "gzip")
 } else {
-  stop("ERROR: names must be unique in active analyses table")
+    stop("ERROR: names must be unique in active analyses table")
 }

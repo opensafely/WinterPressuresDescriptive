@@ -29,6 +29,7 @@ create_table1 <- function(
         select(
             practice_id,
             practice_region,
+            practice_rurality,
             list_size_mp6,
             all_of(rate_vars),
             all_of(strata_cols)
@@ -44,9 +45,7 @@ create_table1 <- function(
             names_pattern = name_pattern,
             values_to = "value"
         ) %>%
-        rename(strata_region = practice_region) %>%
         mutate(
-            strata_region = coalesce(strata_region, "Unknown"),
             subcharacteristic = ifelse(
                 is.na(subcharacteristic) | subcharacteristic == "",
                 "True",
@@ -56,18 +55,35 @@ create_table1 <- function(
     # ---------------------------
     # Overall summary
     # ---------------------------
-    table1_summary <- table1_long %>%
+    # Overall
+    table1_summary_overall <- table1_long %>%
         group_by(characteristic, subcharacteristic) %>%
         summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
-        mutate(strata = "Overall") %>%
-        bind_rows(
-            table1_long %>%
-                group_by(strata_region, characteristic, subcharacteristic) %>%
-                summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
-                rename(strata = strata_region)
-        ) %>%
+        mutate(strata = "Overall")
+
+    # Practice region
+    table1_summary_region <- table1_long %>%
+        mutate(strata = coalesce(practice_region, "Unknown region")) %>%
+        group_by(strata, characteristic, subcharacteristic) %>%
+        summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop")
+
+    # Practice rurality
+    table1_summary_rurality <- table1_long %>%
+        mutate(strata = coalesce(practice_rurality, "Unknown rurality")) %>%
+        group_by(strata, characteristic, subcharacteristic) %>%
+        summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop")
+
+    # Bind together overall, region, and rurality summaries
+    table1_summary <- bind_rows(
+        table1_summary_overall,
+        table1_summary_region,
+        table1_summary_rurality
+    ) %>%
         mutate(
-            n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)
+            n_practices_midpoint6 = roundmid_num(
+                n_practices,
+                to = threshold
+            )
         )
 
     # ---------------------------

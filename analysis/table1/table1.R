@@ -83,6 +83,7 @@ input <- input %>%
     practice_id,
     list_size_mp6,
     practice_region,
+    practice_rurality,
     matches(table1_patient_vars_pattern)
   ) %>%
   distinct(practice_id, .keep_all = TRUE)

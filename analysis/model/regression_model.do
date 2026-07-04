@@ -115,7 +115,8 @@ foreach mdl of local models {
     }
 
 // Define exposure specifications (any categorical exposure)
-if strpos("`name'", "practice_region") {
+if strpos("`name'", "practice_region") ///
+    | strpos("`name'", "practice_rurality") {
     local exposure "i.exp_prop"
 }
 else {
@@ -212,21 +213,20 @@ else {
                 * Skip random-effect variance
                 if strpos("`term'", "var(") continue
 
-                * Translate region factor terms to region names
+                * Translate factor variable terms to value labels
+                if strpos("`term'", ".exp_prop") {
 
-                if strpos("`name'", "practice_region") & strpos("`term'", ".exp_prop") {
+                    local code = substr("`term'", 1, strpos("`term'", ".") - 1)
 
-                    local code = substr("`term'",1,strpos("`term'",".")-1)
+                    local code = subinstr("`code'", "b", "", .)
 
-                    local code = subinstr("`code'","b","",.)
-
-                    local region : label `vallab' `code'
+                    local label : label `vallab' `code'
 
                     if strpos("`term'", "b.") {
-                        local term "exp_prop_`region' (ref)"
+                        local term "exp_prop_`label' (ref)"
                     }
                     else {
-                        local term "exp_prop_`region'"
+                        local term "exp_prop_`label'"
                     }
                 }
 

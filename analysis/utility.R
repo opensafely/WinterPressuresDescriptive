@@ -532,3 +532,11 @@ summarise_dist <- function(x, is_outcome = FALSE) {
 
   return(res)
 }
+
+#Function to get the majority category of a vector ----
+get_majority_category <- function(x) {
+  x <- x[!is.na(x)]
+  if (length(x) == 0) return(NA)
+
+  names(sort(table(x), decreasing = TRUE))[1]
+}

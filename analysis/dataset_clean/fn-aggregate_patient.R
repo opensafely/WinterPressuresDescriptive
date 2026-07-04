@@ -28,6 +28,7 @@ aggregate_patient <- function(input) {
         ) %>%
         summarise(
             exp_cat_region = first(exp_cat_region),
+            exp_cat_rurality = get_majority_category(exp_cat_rurality),
             exp_num_listsize = n(), # patient count per practice
             across(
                 starts_with("exp_bin_"),
@@ -36,8 +37,8 @@ aggregate_patient <- function(input) {
             ),
             across(
                 contains("_cms"),
-                ~ sum(.x, na.rm = TRUE),
-                .names = "{.col}"
+                ~ mean(.x, na.rm = TRUE),
+                .names = "{.col}_mean"
             ),
             .groups = "drop"
         ) %>%
@@ -55,9 +56,11 @@ aggregate_patient <- function(input) {
     # or the exp_num_* / *_cms variables in the analytic dataset,
     # edit the select() line below to keep additional columns.
     practice_summary <- practice_summary %>%
-        select(practice_id, exp_cat_region) %>%
+        select(practice_id, exp_cat_region, exp_cat_rurality, exp_num_cms_mean) %>%
         rename(
-            practice_region = exp_cat_region
+            practice_region = exp_cat_region,
+            practice_rurality = exp_cat_rurality,
+            cms_mean = exp_num_cms_mean
         )
 
     return(practice_summary)
