@@ -45,9 +45,9 @@ prepare_model_input <- function(name) {
 
     ## ---- Ensure practice_rurality is a factor ------------------------------------
     rurality_levels <- c(
-        "Rural",
+        "Urban conurbation",
         "Urban town",
-        "Urban conurbation"
+        "Rural"
     )
 
     if ("practice_rurality" %in% names(input)) {
@@ -55,7 +55,7 @@ prepare_model_input <- function(name) {
             input$practice_rurality,
             levels = rurality_levels
         )
-        input$practice_rurality <- relevel(input$practice_rurality, ref = "Rural")
+        input$practice_rurality <- relevel(input$practice_rurality, ref = "Urban conurbation")
     }
 
     ## ---- Parse covariates -------------------------------------------------------
