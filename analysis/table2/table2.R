@@ -89,6 +89,7 @@ input <- input %>%
     select(
         practice_id,
         practice_region,
+        practice_rurality,
         matches(patient_vars_pattern),
         -matches("_mp6$"), # only keep raw data of the above, as we need it for generating strata
         matches(table2_outcome_vars),

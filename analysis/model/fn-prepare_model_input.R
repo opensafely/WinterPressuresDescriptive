@@ -43,6 +43,21 @@ prepare_model_input <- function(name) {
         input$practice_region <- relevel(input$practice_region, ref = "East")
     }
 
+    ## ---- Ensure practice_rurality is a factor ------------------------------------
+    rurality_levels <- c(
+        "Urban conurbation",
+        "Urban town",
+        "Rural"
+    )
+
+    if ("practice_rurality" %in% names(input)) {
+        input$practice_rurality <- factor(
+            input$practice_rurality,
+            levels = rurality_levels
+        )
+        input$practice_rurality <- relevel(input$practice_rurality, ref = "Urban conurbation")
+    }
+
     ## ---- Parse covariates -------------------------------------------------------
     cov_core_vars <- if (
         !is.na(active_analyses$covariate_core) &&

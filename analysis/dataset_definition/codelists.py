@@ -109,75 +109,77 @@ jcvi_dict = create_codelist_dict(jcvi_dict)
 
 # For multimorbidity groups
 
+# Multimorbidity groups (20 conditions, alphabetical order)
+
 multimorbidity_dict = {
-    ## Hypertension
-    "MS_Hypertension_ctv3": "codelists/user-ZoeMZou-multimorbidity_hypertension.csv",  
-
-    ## Anxiety/Depression
-    "MS_AnxietyDepression_ctv3": "codelists/user-ZoeMZou-multimorbidity_anxietydepression.csv",  
-    "MS_AnxietyDepression_snomed": "codelists/bristol-multimorbidity_anxietydepression.csv", 
-    ## Hearing Loss
-    "MS_HL_ctv3": "codelists/user-ZoeMZou-multimorbidity_hearing-loss.csv",  
-
-    ## Irritable Bowel Syndrome
-    "MS_IBS_ctv3": "codelists/user-ZoeMZou-multimorbidity_irritable-bowel-syndrome.csv",  
-    "MS_IBS_snomed": "codelists/bristol-multimorbidity_irritable-bowel-syndrome.csv", 
-
-    ## Asthma
-    "MS_Asthma_ctv3": "codelists/user-ZoeMZou-multimorbidity_asthma.csv",  
-
-    ## Diabetes Mellitus
-    "MS_Diabetes_ctv3": "codelists/user-ZoeMZou-multimorbidity_diabetes.csv",  
-    "MS_Diabetes_snomed": "codelists/bristol-multimorbidity_diabetes.csv",  
-
-    ## Coronary Heart Disease
-    "MS_CHD_ctv3": "codelists/user-ZoeMZou-multimorbidity_coronary-heart-disease.csv",  
-
-    ## Chronic Kidney Disease
-    "MS_CKD_ctv3": "codelists/user-ZoeMZou-multimorbidity_chronic-kidney-disease.csv",  
-    "MS_CKD_snomed": "codelists/bristol-multimorbidity_chronic-kidney-disease.csv", 
-
-    ## Atrial Fibrillation
-    "MS_AF_ctv3": "codelists/user-ZoeMZou-multimorbidity_atrial-fibrillation.csv", 
-    "MS_AF_snomed": "codelists/bristol-multimorbidity_atrial-fibrillation.csv",  
-
-    ## Constipation-not found in CMS
-    "MS_Constipation_snomed": "codelists/nhsd-primary-care-domain-refsets-chronconstip_cod.csv",  
-
-    ## Stroke/Transient Ischemic Attack (TIA)
-    "MS_StrokeTIA_ctv3": "codelists/user-ZoeMZou-multimorbidity_stroketransient-ischemic-attack.csv",  
-
-    ## COPD
-    "MS_COPD_ctv3": "codelists/user-ZoeMZou-multimorbidity_copd.csv",
-    "MS_COPD_snomed": "codelists/bristol-multimorbidity_copd.csv",   
-
-    ## Connective Tissue Disorder
-    "MS_CTD_ctv3": "codelists/user-ZoeMZou-multimorbidity_connective-tissue-disorder.csv",  
-
-    ## Cancer
-    "MS_Cancer_ctv3": "codelists/user-ZoeMZou-multimorbidity_cancer.csv",  
-    "MS_Cancer_snomed": "codelists/bristol-multimorbidity_cancer.csv", 
-
     ## Alcohol Problems
-    "MS_AlcoholProblem_ctv3": "codelists/user-ZoeMZou-alcohol_problems.csv",
     "MS_AlcoholProblem_snomed": "codelists/bristol-multimorbidity_alcoholproblems.csv",
 
-    ## Heart Failure
-    "MS_HF_ctv3": "codelists/user-ZoeMZou-multimorbidity_heart-failure.csv", 
-    "MS_HF_snomed": "codelists/bristol-multimorbidity_heart-failure.csv", 
+    ## Anxiety/Depression (medication to be added)
+    "MS_AnxietyDepression_snomed": "codelists/bristol-multimorbidity_anxietydepression.csv",
+    "MS_AnxietyDepression_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_anxiolytics_anti_depressants.csv",
+
+    ## Asthma (medication to be added)
+    "MS_Asthma_snomed": "codelists/nhsd-primary-care-domain-refsets-ast_cod.csv",
+    "MS_Asthma_dmd": "codelists/opensafely-asthma-inhaler-salbutamol-medication.csv",
+
+    ## Atrial Fibrillation
+    "MS_AF_snomed": "codelists/bristol-multimorbidity_atrial-fibrillation.csv",
+
+    ## Cancer
+    "MS_Cancer_snomed": "codelists/bristol-multimorbidity_cancer.csv",
+
+    ## Chronic Kidney Disease
+    "MS_CKD_snomed": "codelists/bristol-multimorbidity_chronic-kidney-disease.csv",
+
+    ## Constipation (medication only)
+    "MS_Constipation_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_chronic_constipation.csv",
+
+    ## Connective Tissue Disorder
+    "MS_CTD_snomed": "codelists/bristol-multimorbidity_connective-tissue-disorder.csv",
+
+    ## COPD
+    "MS_COPD_snomed": "codelists/bristol-multimorbidity_copd.csv",
+
+    ## Coronary Heart Disease
+    "MS_CHD_snomed": "codelists/bristol-multimorbidity_coronary-heart-disease.csv",
 
     ## Dementia
-    "MS_Dementia_ctv3": "codelists/user-ZoeMZou-multimorbidity_dementia.csv",  
-    "MS_Dementia_snomed": "codelists/bristol-multimorbidity_dementia.csv",  
+    "MS_Dementia_snomed": "codelists/bristol-multimorbidity_dementia.csv",
 
-    ## Psychosis/Bipolar Disorder
-    "MS_Psychosis_ctv3": "codelists/user-ZoeMZou-multimorbidity_psychosisbipolar-disorder.csv",  
+    ## Diabetes Mellitus
+    "MS_Diabetes_snomed": "codelists/bristol-multimorbidity_diabetes.csv",
+
+    ## Epilepsy (medication to be added)
+    "MS_Epilepsy_snomed": "codelists/bristol-multimorbidity_epilepsy.csv",
+    "MS_Epilepsy_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_epilepsy.csv",
+
+    ## Hearing Loss
+    "MS_HL_snomed": "codelists/bristol-multimorbidity_hearing-loss.csv",
+
+    ## Heart Failure
+    "MS_HF_snomed": "codelists/bristol-multimorbidity_heart-failure.csv",
+
+    ## Hypertension
+    "MS_Hypertension_snomed": "codelists/nhsd-primary-care-domain-refsets-hyp_cod.csv",
+
+    ## Irritable Bowel Syndrome (medication to be added)
+    "MS_IBS_snomed": "codelists/bristol-multimorbidity_irritable-bowel-syndrome.csv",
+    "MS_IBS_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_anti_spasmodic.csv",
+    
+    ## Painful Condition (Osteoarthritis)
+    "MS_PC_Analgesics_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_analgesics_opiods_not_migraine.csv",
+    "MS_PC_Antiepileptic_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_anti_epileptic_for_pain_only.csv",
+
+    ## Psychosis/Bipolar Disorder (medication to be added)
     "MS_Psychosis_snomed": "codelists/bristol-multimorbidity_psychosisbipolar-disorder.csv",
+    "MS_Psychosis_dmd": "codelists/user-ZoeMZou-multimorbidity_prescription_schizophrenia_bipolar_disorder.csv",
 
-    ## Epilepsy
-    "MS_Epilepsy_ctv3": "codelists/user-ZoeMZou-multimorbidity_epilepsy.csv", 
-    "MS_Epilepsy_snomed": "codelists/bristol-multimorbidity_epilepsy.csv", 
+    ## Stroke/Transient Ischemic Attack (TIA)
+    "MS_StrokeTIA_snomed": "codelists/bristol-multimorbidity_stroketransient-ischemic-attack.csv",
 }
+
+# Apply helper to load
 multimorbidity_dict = create_codelist_dict(multimorbidity_dict)
 
     ## Painful Condition (Osteoarthritis)-not found in CMS
