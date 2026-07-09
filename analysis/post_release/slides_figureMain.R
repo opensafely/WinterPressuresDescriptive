@@ -204,21 +204,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         ) %>%
         arrange(group, ref_order)
 
-    practice_char <- match.arg(
-        practice_char,
-        c("all", "practice", "case_mix")
-    )
-
-    # filter the df according to the practice_char argument 
-    if (practice_char == "practice") {
-        df <- df %>%
-            filter(group %in% practice_groups)
-    } else if (practice_char == "case_mix") {
-        df <- df %>%
-            filter(group %in% case_mix_groups)
-    }
-
-
     table_df <- df %>%
         select(
             cohort,
@@ -249,24 +234,12 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     casemix_header[, ] <- NA
     casemix_header$exposure_label <- "Patient case-mix (% of patients in practice)"
 
-    if (practice_char == "all") {
-        table_side <- bind_rows(
-            practice_header,
-            table_df_wide[1:11, ],
-            casemix_header,
-            table_df_wide[12:nrow(table_df_wide), ]
-        )
-    } else if (practice_char == "practice") {
-        table_side <- bind_rows(
-            practice_header,
-            table_df_wide
-        )
-    } else {
-        table_side <- bind_rows(
-            casemix_header,
-            table_df_wide
-        )
-    }
+    table_side <- bind_rows(
+        practice_header,
+        table_df_wide[1:11, ],
+        casemix_header,
+        table_df_wide[12:nrow(table_df_wide), ]
+    )
 
     # set a flag for the top header row to be bolded in the table
     table_side <- table_side %>%
@@ -331,25 +304,13 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     names(y_labels) <- table_side$exposure_label
 
     # Set the y-axis labels for the forest plot to be bold for the header rows
-    if ("Practice" %in% y_labels) {
-        y_labels["Practice"] <- "<b>Practice</b>"
-    }
+    y_labels[y_labels == "Practice"] <-
+        "<b>Practice</b>"
 
-    if ("Patient case-mix (% of patients in practice)" %in% y_labels) {
-        y_labels["Patient case-mix (% of patients in practice)"] <-
-            "<b>Patient case-mix (% of patients in practice)</b>"
-    }
+    y_labels[y_labels == "Patient case-mix (% of patients in practice)"] <-
+        "<b>Patient case-mix (% of patients in practice)</b>"
 
     # Add dummy rows to ensure that the table and forest plot have the same number of rows
-    header_names <- switch(practice_char,
-        all = c(
-            "Practice",
-            "Patient case-mix (% of patients in practice)"
-        ),
-        practice = "Practice",
-        case_mix = "Patient case-mix (% of patients in practice)"
-    )
-
     dummy_rows <- df %>%
         distinct(
             cohort,
@@ -360,12 +321,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             outcome_group,
             cohort_label
         ) %>%
-        slice(rep(1:n(), each = length(header_names))) %>%
+        slice(rep(1:n(), each = 2)) %>%
         mutate(
             exposure = NA_character_,
             exposure_label = rep(
-                header_names,
-                times = n() / length(header_names)
+                c(
+                    "Practice",
+                    "Patient case-mix (% of patients in practice)"
+                ),
+                times = n() / 2
             ),
             group = NA_character_,
             ref = NA_real_,
@@ -387,6 +351,20 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 levels = row_levels
             )
         )
+    
+    # Select the characteristics to be included in the forest plot
+    practice_char <- match.arg(
+        practice_char,
+        c("all", "practice", "case_mix")
+    )
+
+    if (practice_char == "practice") {
+        df <- df %>%
+            filter(group %in% practice_groups)
+    } else if (practice_char == "case_mix") {
+        df <- df %>%
+            filter(group %in% case_mix_groups)
+    }
 
     # Make forest plot -----------------------------------------------------------
     print("Make forest plot")
@@ -552,7 +530,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     )
 }
 
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+plot_irr("negbin", "main", c("apc","apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"))
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
 
@@ -563,7 +541,7 @@ plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid1", "postcov
 plot_irr("negbin", "main", c("apc", "ec"), c("precovid", "postcovid3"))
 plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid3"))
 
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"))
+plot_irr("negbin", "main", c("apc","apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"))
 plot_irr("poisson", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
 
 plot_irr("negbin", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid3"))

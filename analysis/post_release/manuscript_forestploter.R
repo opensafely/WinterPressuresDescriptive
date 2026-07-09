@@ -5,6 +5,7 @@ library(forestploter)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(grid)
 
 # Specify paths ----------------------------------------------------------------
 print("Specify paths")
@@ -66,14 +67,14 @@ nested_groups <- c(
     "Smoking Status"
 )
 
-regression <- "negbin"
-sub_group <- "main"
-outcome_names <- c("apc", "apc_unpl")
-cohorts <- c("precovid", "postcovid3")
-practice_char = TRUE
+# regression <- "negbin"
+# sub_group <- "main"
+# outcome_names <- c("apc", "apc_unpl")
+# cohorts <- c("precovid", "postcovid3")
+# practice_char <- "all"
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
-plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_char = TRUE) {
+plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_char) {
     # Load data --------------------------------------------------------------------
     print("Load model output")
 
@@ -112,9 +113,9 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             irr,
             lci,
             uci,
-            irr_display,
+            IRR = irr_display,
             n_obs_midpoint6,
-            mad
+            MAD = mad
         ) %>%
         mutate(
             cohort = factor(
@@ -149,7 +150,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             outcome_labels,
             by = c("outcome" = "term")
         )
-    outcome_group <- unique(df$outcome_group)
+    outcome_group <- unique(df$outcome_group)[1]
 
     # --- Join COHORT labels ---
     cohort_labels <- labels %>%
@@ -200,41 +201,56 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             ref_order = if_else(is.na(ref), Inf, ref)
         ) %>%
         arrange(group, ref_order, cohort_label)
-    
+
+    # Create the Characteristics column for the forest plot
+    df <- df %>%
+        mutate(
+            characteristics = if_else(
+                group %in% practice_groups,
+                "Practice characteristics",
+                "Patient case-mix"
+            )
+        )
+
     forest_table <- df %>%
-    select(
-        group,
-        exposure_label,
-        cohort_label,
-        mad,
-        outcome,
-        irr,
-        lci,
-        uci,
-        irr_display
-    ) %>%
-    pivot_wider(
-        names_from = outcome,
-        values_from = c(
+        select(
+            characteristics,
+            group,
+            sub_characteristics = exposure_label,
+            cohort_label,
+            MAD,
+            outcome,
             irr,
             lci,
             uci,
-            irr_display
+            IRR
+        ) %>%
+        pivot_wider(
+            names_from = outcome,
+            values_from = c(
+                irr,
+                lci,
+                uci,
+                IRR
+            )
         )
-    )
-    
-    # Select the characteristics to be included in the forest plot
-    if (practice_char) {
-        forest_table <- forest_table %>%
-        filter(group %in% practice_groups)
-    } else {
 
+    # Select the characteristics to be included in the forest plot
+    practice_char <- match.arg(
+        practice_char,
+        c("all", "practice", "case_mix")
+    )
+
+    if (practice_char == "practice") {
+        forest_table <- forest_table %>%
+            filter(group %in% practice_groups)
+    } else if (practice_char == "case_mix") {
         forest_table <- forest_table %>%
             filter(group %in% case_mix_groups)
     }
 
     value_types <- c(
-        "irr_display",
+        "IRR",
         "irr",
         "lci",
         "uci"
@@ -247,214 +263,192 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     )
 
     forest_table <- forest_table %>%
-    select(
-        group,
-        exposure_label,
-        cohort_label,
-        mad,
-        all_of(value_cols)
-    )
+        select(
+            characteristics,
+            group,
+            sub_characteristics,
+            cohort_label,
+            MAD,
+            all_of(value_cols)
+        )
 
     # Forest estimates
     est <- lapply(outcome_names, \(x) forest_table[[paste0("irr_", x)]])
     lower <- lapply(outcome_names, \(x) forest_table[[paste0("lci_", x)]])
     upper <- lapply(outcome_names, \(x) forest_table[[paste0("uci_", x)]])
 
-    #Header for the forest plot
+    # Header for the forest plot
     outcome_headers <- labels %>%
-    filter(term %in% outcome_names) %>%
-    arrange(match(term, outcome_names))
+        filter(term %in% outcome_names) %>%
+        arrange(match(term, outcome_names))
 
 
-    #Build display table for the forest plot
+    # Build display table for the forest plot
     forest_table <- forest_table %>%
-        group_by(group, exposure_label) %>%
+        group_by(characteristics, group, sub_characteristics) %>%
         mutate(
-            Characteristics = case_when(
+            Levels = case_when(
                 row_number() == 1 &
                     group %in% nested_groups ~
-                    paste0("    ", exposure_label),
-
+                    paste0("\u00A0\u00A0", sub_characteristics),
                 row_number() == 1 ~
-                    exposure_label,
-
+                    sub_characteristics,
                 TRUE ~
                     ""
             )
         ) %>%
         ungroup()
-    
-    # Blank repeated group and exposure labels for the forest plot
+
+    # Blank repeated characteristics, group and sub_characteristics for the forest plot
     forest_table <- forest_table %>%
-    group_by(group, exposure_label) %>%
-    mutate(
-        exposure_label = if_else(
-            row_number() == 1,
-            exposure_label,
-            ""
-        )
-    ) %>%
-    ungroup()
-
-    forest_table <- forest_table %>%
-    group_by(group) %>%
-    mutate(
-        group = if_else(
-            row_number() == 1,
-            as.character(group),
-            ""
-        )
-    ) %>%
-    ungroup()
-
-
-
-
-
-    table_df <- df %>%
-        select(
-            cohort,
-            cohort_label,
-            exposure_label,
-            group,
-            ref,
-            mad
-        ) %>%
-        distinct() %>%
-        arrange(cohort_label, group, ref) %>%
-        select(
-            cohort_label,
-            exposure_label,
-            mad
-        )
-    table_df_wide <- table_df %>%
-        pivot_wider(
-            names_from = cohort_label,
-            values_from = mad
-        )
-
-    practice_header <- table_df_wide[1, ]
-    practice_header[, ] <- NA
-    practice_header$exposure_label <- "Practice"
-
-    casemix_header <- table_df_wide[1, ]
-    casemix_header[, ] <- NA
-    casemix_header$exposure_label <- "Patient case-mix (% of patients in practice)"
-
-    table_side <- bind_rows(
-        practice_header,
-        table_df_wide[1:11, ],
-        casemix_header,
-        table_df_wide[12:nrow(table_df_wide), ]
-    )
-
-    # set a flag for the top header row to be bolded in the table
-    table_side <- table_side %>%
+        group_by(characteristics, group) %>%
         mutate(
-            is_header = if_else(
-                exposure_label %in% c("Practice", "Patient case-mix (% of patients in practice)"),
-                TRUE,
-                FALSE
-            )
-        )
-
-    cohort_cols <- names(table_side)[
-        !(names(table_side) %in% c("exposure_label", "is_header"))
-    ]
-
-    n_cohorts <- length(cohort_cols)
-
-    if (n_cohorts == 4) {
-        widths <- c(0.65, 0.35)
-    } else {
-        widths <- c(0.70, 0.30)
-    }
-
-    row_levels <- rev(table_side$exposure_label)
-
-    table_side <- table_side %>%
-        mutate(
-            exposure_label = factor(
-                exposure_label,
-                levels = row_levels
-            )
-        )
-
-    # Calculate median MAD for each exposure across cohorts and create a new label for the exposure label that includes the median MAD value in parentheses, unless the row is a header or the median MAD is NaN
-
-    table_side <- table_side %>%
-        rowwise() %>%
-        mutate(
-            mad_median = median(
-                c_across(all_of(cohort_cols)),
-                na.rm = TRUE
-            ),
-            exposure_label_full = case_when(
-                is_header ~ exposure_label,
-                is.na(mad_median) ~ exposure_label,
-                mad_median <= 100 ~ sprintf(
-                    "%s (%.1f%%)",
-                    exposure_label,
-                    mad_median
-                ),
-                TRUE ~ sprintf(
-                    "%s (%.0f)",
-                    exposure_label,
-                    mad_median
-                )
+            Characteristic = if_else(
+                row_number() == 1,
+                as.character(group),
+                ""
             )
         ) %>%
         ungroup()
 
-    # Set the y-axis labels for the forest plot to be the exposure_label_full values, with names corresponding to the exposure_label values
-    y_labels <- table_side$exposure_label_full
-    names(y_labels) <- table_side$exposure_label
-
-    # Set the y-axis labels for the forest plot to be bold for the header rows
-    y_labels[y_labels == "Practice"] <-
-        "<b>Practice</b>"
-
-    y_labels[y_labels == "Patient case-mix (% of patients in practice)"] <-
-        "<b>Patient case-mix (% of patients in practice)</b>"
-
-    # Add dummy rows to ensure that the table and forest plot have the same number of rows
-    dummy_rows <- df %>%
-        distinct(
-            cohort,
-            analysis,
-            outcome,
-            model,
-            outcome_label,
-            outcome_group,
-            cohort_label
-        ) %>%
-        slice(rep(1:n(), each = 2)) %>%
+    forest_table <- forest_table %>%
+        group_by(characteristics) %>%
         mutate(
-            exposure = NA_character_,
-            exposure_label = rep(
-                c(
-                    "Practice",
-                    "Patient case-mix (% of patients in practice)"
-                ),
-                times = n() / 2
+            Characteristics = if_else(
+                row_number() == 1,
+                as.character(characteristics),
+                ""
             ),
-            group = NA_character_,
-            ref = NA_real_,
-            ref_order = NA_real_,
-            irr = NA_real_,
-            lci = NA_real_,
-            uci = NA_real_,
-            n_obs_midpoint6 = NA_real_,
-            mad = NA_real_
+            Cohort = cohort_label
+        ) %>%
+        ungroup()
+
+    # Add placeholder columns for forest
+    plot_cols <- paste0("forest", seq_along(outcome_names))
+
+    forest_table[plot_cols] <- strrep(" ", 40)
+
+    # Reorder columns for the forest plot
+    fixed_cols <- c(
+        "Levels",
+        "Cohort",
+        "MAD"
+    )
+
+    display_cols <- unlist(
+        lapply(seq_along(outcome_names), function(i) {
+            c(
+                plot_cols[i],
+                paste0("IRR_", outcome_names[i])
+            )
+        })
+    )
+
+    forest_table <- forest_table %>%
+        select(
+            all_of(fixed_cols),
+            all_of(display_cols)
         )
 
-    df <- bind_rows(df, dummy_rows)
+    ci_column <- seq(
+        from = length(fixed_cols) + 1,
+        by = 2,
+        length.out = length(outcome_names)
+    )
 
-    # set the order of the exposure_label factor to match the order in the table
-    df <- df %>%
-        mutate(
-            exposure_label = factor(
-                exposure_label,
-                levels = row_levels
+    height <- max(2400, nrow(forest_table) * 45)
+
+    p <- forest(
+        data = forest_table,
+        est = est,
+        lower = lower,
+        upper = upper,
+        ci_column = ci_column,
+        ref_line = 1,
+        x_trans = "log",
+        xlim = c(0.9, 1.2),
+        ticks_at = c(
+            0.9,
+            1,
+            1.1,
+            1.2
+        ),
+        theme = forest_theme(
+            base_size = 7,
+
+            # Confidence intervals
+            ci_pch = 15,
+            ci_col = "#1F78B4",
+            ci_fill = "#1F78B4",
+            ci_lwd = 1.2,
+            ci_cex = 0.25,
+            ci_Theight = 0,
+
+            # Reference line
+            refline_col = "grey60",
+            refline_lwd = 1,
+
+            # X-axis
+            xaxis_gp = grid::gpar(
+                fontsize = 7
+            ),
+
+            # Table text
+            core = list(
+                fg_params = list(
+                    hjust = 0,
+                    x = 0.02,
+                    fontsize = 7
+                ),
+                padding = unit(c(2.5, 3), "mm")
+            ),
+
+            # Header
+            colhead = list(
+                fg_params = list(
+                    fontface = "bold",
+                    fontsize = 8,
+                    hjust = 0,
+                    x = 0.02
+                ),
+                padding = unit(c(3, 3), "mm")
+            ),
+
+            # Footnote
+            footnote_gp = grid::gpar(
+                fontsize = 7
             )
         )
+    )
+    # Save forest plot
+    png(
+        filename = file.path(
+            plot_dir,
+            paste0(
+                "forest_",
+                sub_group, "-",
+                regression, "-",
+                practice_char, "-",
+                outcome_group, "-",
+                cohort_suffix,
+                ".png"
+            )
+        ),
+        width = 4000,
+        height = height,
+        res = 300
+    )
+
+    grid::grid.newpage()
+    grid::grid.draw(p)
+
+    dev.off()
+}
+
+plot_irr(
+    regression = "negbin",
+    sub_group = "main",
+    outcome_names = c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"),
+    cohorts = c("precovid", "postcovid3"),
+    practice_char = "case_mix"
+)
