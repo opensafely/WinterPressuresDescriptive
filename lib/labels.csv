@@ -153,14 +153,14 @@ apc_acsc_any_mean,Admitted patient care (ACSC admissions),average weekly ACSC-re
 ec_acsc_any_mean,Emergency care (ACSC attendances),average weekly ACSC-related hospital use,2
 apc_unpl_acsc_any_mean,Unplanned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,3
 apc_plan_acsc_any_mean,Planned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,4
-apc,Admitted patient care (all),hospital use,1
-ec,Emergency care,hospital use,2
-apc_unpl,Unplanned admitted patient care,admitted patient care,3
-apc_plan,Planned admitted patient care,admitted patient care,4
-apc_acsc_any,Admitted patient care (ACSC admissions),ACSC-related hospital use,1
-ec_acsc_any,Emergency care (ACSC attendances),ACSC-related hospital use,2
-apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),ACSC-related admitted patient care,3
-apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),ACSC-related admitted patient care,4
+apc,Admitted patient care (all),admitted patient care,1
+ec,Emergency care,emergency care,1
+apc_unpl,Unplanned admitted patient care,admitted patient care,2
+apc_plan,Planned admitted patient care,admitted patient care,3
+apc_acsc_any,Admitted patient care (ACSC admissions),ACSC-related admitted patient care,1
+ec_acsc_any,Emergency care (ACSC attendances),emergency care,2
+apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),ACSC-related admitted patient care,2
+apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),ACSC-related admitted patient care,3
 main,All people,main,
 sub_asth,People with asthma,subgroup,1
 sub_copd,People with COPD,subgroup,2
