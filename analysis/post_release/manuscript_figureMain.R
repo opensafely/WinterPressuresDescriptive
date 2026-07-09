@@ -145,12 +145,23 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     # --- Join OUTCOME label ---
     outcome_labels <- labels %>%
-        select(term, outcome_label = label, outcome_group = group)
+        select(term, outcome_label = label, outcome_group = group, outcome_ref = ref)
 
     df <- df %>%
         left_join(
             outcome_labels,
             by = c("outcome" = "term")
+        ) 
+    outcome_levels <- df %>%
+        distinct(outcome_label, outcome_ref) %>%
+        arrange(outcome_ref) %>%
+        pull(outcome_label)
+    df <- df %>%
+        mutate(
+            outcome_label = factor(
+                outcome_label,
+                levels = outcome_levels
+            )
         )
     outcome_group <- unique(df$outcome_group)[1]
 
@@ -202,14 +213,14 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             ),
             ref_order = if_else(is.na(ref), Inf, ref)
         ) %>%
-        arrange(group, ref_order)
+        arrange(group, ref_order, outcome_ref)
 
     practice_char <- match.arg(
         practice_char,
         c("all", "practice", "case_mix")
     )
 
-    # filter the df according to the practice_char argument 
+    # filter the df according to the practice_char argument
     if (practice_char == "practice") {
         df <- df %>%
             filter(group %in% practice_groups)
