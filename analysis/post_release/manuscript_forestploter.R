@@ -425,7 +425,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         filename = file.path(
             plot_dir,
             paste0(
-                "forest_",
+                "vforest-",
                 sub_group, "-",
                 regression, "-",
                 practice_char, "-",
@@ -448,7 +448,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 plot_irr(
     regression = "negbin",
     sub_group = "main",
-    outcome_names = c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"),
-    cohorts = c("precovid", "postcovid3"),
-    practice_char = "case_mix"
+    outcome_names = c("ec", "ec_acsc_any"),
+    cohorts = c("postcovid3"),
+    practice_char = "all"
+)
+
+plot_irr(
+  regression = "negbin",
+  sub_group = "main",
+  outcome_names = c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"),
+  cohorts = c("precovid","postcovid3"),
+  practice_char = "all"
 )

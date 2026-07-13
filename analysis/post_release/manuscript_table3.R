@@ -37,14 +37,14 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 
 # Define group order for plotting
 group_order <- c(
-  "List size",
   "Practice region",
+  "Rurality",
+  "List size",
   "Monthly consultation",
   "Age",
   "Sex",
   "Ethnicity",
   "Deprivation",
-  "Rurality",
   "Smoking Status",
   "Obesity",
   "Care home residence"
@@ -244,19 +244,19 @@ df_table3 <- df_table3 %>%
     "Subgroup" = analysis_label,
     "Outcome" = outcome_label,
     "Exposure" = exposure_label,
-    "Pre-COVID (2018-2019)" = `Pre-COVID19 (2018-10-01)`,
-    "Post-lockdown I (2022-2023)" = `Post-lockdown I (2022-10-01)`,
-    "Post-lockdown II (2023-2024)" = `Post-lockdown II (2023-10-01)`,
-    "Post-lockdown III (2024-2025)" = `Post-lockdown III (2024-10-01)`
+    "Pre-COVID 19" = `Pre-COVID19`,
+    "Oct 2022 – Feb 2023" = `2022/23`,
+    "Oct 2023 – Feb 2024" = `2023/24`,
+    "Oct 2024 – Feb 2025" = `2024/25`
   ) %>%
   select(
     Subgroup,
     Outcome,
     Exposure,
-    `Pre-COVID (2018-2019)`,
-    `Post-lockdown I (2022-2023)`,
-    `Post-lockdown II (2023-2024)`,
-    `Post-lockdown III (2024-2025)`
+    `Pre-COVID 19`,
+    `Oct 2022 – Feb 2023`,
+    `Oct 2023 – Feb 2024`,
+    `Oct 2024 – Feb 2025`
   )
 
 readr::write_csv(

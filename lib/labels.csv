@@ -110,6 +110,9 @@ exp_prop_South East,Region: South East,Practice region,6
 exp_prop_South West,Region: South West,Practice region,7
 exp_prop_West Midlands,Region: West Midlands,Practice region,8
 exp_prop_Yorkshire and The Humber,Region: Yorkshire and The Humber,Practice region,9
+exp_prop_Urban conurbation (ref),Rurality: Urban conurbation (ref),Rurality,1
+exp_prop_Urban town,Rurality: Urban town,Rurality,2
+exp_prop_Rural,Rurality: Rural,Rurality,3
 af,Atrial fibrillation,Condition,
 alcoholproblem,Alcohol problems,Condition,
 anxietydepression,Anxiety or depression,Condition,
@@ -156,9 +159,9 @@ apc_plan_acsc_any_mean,Planned Hospital admitted patient care (ACSC admissions),
 apc,Admitted patient care (all),admitted patient care,1
 apc_unpl,Unplanned admitted patient care,admitted patient care,2
 apc_plan,Planned admitted patient care,admitted patient care,3
-apc_acsc_any,Admitted patient care (ACSC admissions),admitted patient care,4
-apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),admitted patient care,5
-apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),admitted patient care,6
+apc_acsc_any,Admitted patient care (ACSC admissions),acsc admitted patient care,1
+apc_unpl_acsc_any,Unplanned admitted patient care (ACSC admissions),acsc admitted patient care,2
+apc_plan_acsc_any,Planned admitted patient care (ACSC admissions),acsc admitted patient care,3
 ec,Emergency care,emergency care,1
 ec_acsc_any,Emergency care (ACSC attendances),emergency care,2
 main,All people,main,

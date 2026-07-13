@@ -77,15 +77,14 @@ df <- dplyr::rename(df, "category_label" = "label")
 
 group_order <- c(
   "List size",
+  "Monthly consultation",
   "Age",
   "Sex",
   "Ethnicity",
   "Deprivation",
-  "Rurality",
   "Smoking Status",
   "Obesity",
-  "Care home residence",
-  "Monthly consultation"
+  "Care home residence"
 )
 
 region_order <- c(
@@ -99,6 +98,12 @@ region_order <- c(
   "West Midlands",
   "Yorkshire and The Humber",
   "Unknown"
+)
+
+rurality_order <- c(
+  "Urban conurbation",
+  "Urban town",
+  "Rural"
 )
 
 df <- df %>%
@@ -220,10 +225,10 @@ df_table1 <- df_table1 %>%
       cohort,
       levels = c("precovid", "postcovid1", "postcovid2", "postcovid3"),
       labels = c(
-        "Pre-COVID",
-        "Post-COVID 1",
-        "Post-COVID 2",
-        "Post-COVID 3"
+        "Pre-COVID 19",
+        "Oct 2022 - Feb 2023",
+        "Oct 2023 - Feb 2024",
+        "Oct 2024 - Feb 2025"
       )
     )
   )
@@ -236,14 +241,31 @@ df_table1_wide <- df_table1 %>%
   ) %>%
   arrange(group, ref)
 
-# Add distribution of region and practice counts ------------------------------------------------------------
+# Add distribution of practice region/rurality and practice counts ------------------------------------------------------------
 
-region_df <- df %>%
-  filter(
-    strata != "Overall",
-    !str_detect(strata, "^strata_"),
-    category == "list_size_mp6"
+practice_cat_lookup <- tibble(
+  category_label = c(region_order, rurality_order),
+  group = c(
+    rep("Region", length(region_order)),
+    rep("Rurality", length(rurality_order))
+  ),
+  order = c(
+    seq_along(region_order),
+    seq_along(rurality_order)
   )
+)
+
+practice_cat_df <- df %>%
+  filter(
+    strata %in% practice_cat_lookup$category_label,
+    category == "list_size_mp6"
+  ) %>%
+  select(
+    cohort,
+    category_label = strata,
+    n_practices_midpoint6
+  ) %>%
+  left_join(practice_cat_lookup, by = "category_label")
 
 total_practices <- df %>%
   filter(strata == "Overall", category == "list_size_mp6") %>%
@@ -259,10 +281,10 @@ df_n_practice_row <- total_practices %>%
       cohort,
       levels = c("precovid", "postcovid1", "postcovid2", "postcovid3"),
       labels = c(
-        "Pre-COVID",
-        "Post-COVID 1",
-        "Post-COVID 2",
-        "Post-COVID 3"
+        "Pre-COVID 19",
+        "Oct 2022 - Feb 2023",
+        "Oct 2023 - Feb 2024",
+        "Oct 2024 - Feb 2025"
       )
     )
   ) %>%
@@ -273,10 +295,12 @@ df_n_practice_row <- total_practices %>%
     names_glue = "Median (IQR) [{cohort}]"
   )
 
-df_region_wide <- region_df %>%
+df_practivce_cat_wide <- practice_cat_df %>%
   select(
     cohort,
-    category_label = strata,
+    group,
+    order,
+    category_label,
     n_practices_midpoint6
   ) %>%
   distinct(category_label, cohort, .keep_all = TRUE) %>%
@@ -289,10 +313,13 @@ df_region_wide <- region_df %>%
     value = sprintf(
       "%d (%.1f%%)",
       n_practices_midpoint6,
-      100 * n_practices_midpoint6 / n_practices_midpoint6_total
+      100 * n_practices_midpoint6 /
+        n_practices_midpoint6_total
     )
   ) %>%
   select(
+    group,
+    order,
     category_label,
     cohort,
     value
@@ -302,10 +329,10 @@ df_region_wide <- region_df %>%
       cohort,
       levels = c("precovid", "postcovid1", "postcovid2", "postcovid3"),
       labels = c(
-        "Pre-COVID",
-        "Post-COVID 1",
-        "Post-COVID 2",
-        "Post-COVID 3"
+        "Pre-COVID 19",
+        "Oct 2022 - Feb 2023",
+        "Oct 2023 - Feb 2024",
+        "Oct 2024 - Feb 2025"
       )
     )
   ) %>%
@@ -314,20 +341,15 @@ df_region_wide <- region_df %>%
     values_from = value,
     names_glue = "Median (IQR) [{cohort}]"
   ) %>%
-  mutate(
-    group = "Region"
-  ) %>%
-  mutate(
-    category_label = factor(
-      category_label,
-      levels = region_order
-    )
-  ) %>%
-  arrange(category_label)
+  arrange(group, order) %>%
+  select(-order)
+
+# Add distribution of rurality and practice counts ------------------------------------------------------------
+
 
 df_table1_wide <- bind_rows(
   df_n_practice_row,
-  df_region_wide,
+  df_practivce_cat_wide,
   df_table1_wide
 )
 
@@ -335,18 +357,18 @@ df_table1_wide <- df_table1_wide %>%
   select(
     group,
     category_label,
-    "Median (IQR) [Pre-COVID]",
-    "Mean (SD) [Pre-COVID]",
-    "Median (MAD) [Pre-COVID]",
-    "Median (IQR) [Post-COVID 1]",
-    "Mean (SD) [Post-COVID 1]",
-    "Median (MAD) [Post-COVID 1]",
-    "Median (IQR) [Post-COVID 2]",
-    "Mean (SD) [Post-COVID 2]",
-    "Median (MAD) [Post-COVID 2]",
-    "Median (IQR) [Post-COVID 3]",
-    "Mean (SD) [Post-COVID 3]",
-    "Median (MAD) [Post-COVID 3]"
+    "Median (IQR) [Pre-COVID 19]",
+    "Mean (SD) [Pre-COVID 19]",
+    "Median (MAD) [Pre-COVID 19]",
+    "Median (IQR) [Oct 2022 - Feb 2023]",
+    "Mean (SD) [Oct 2022 - Feb 2023]",
+    "Median (MAD) [Oct 2022 - Feb 2023]",
+    "Median (IQR) [Oct 2023 - Feb 2024]",
+    "Mean (SD) [Oct 2023 - Feb 2024]",
+    "Median (MAD) [Oct 2023 - Feb 2024]",
+    "Median (IQR) [Oct 2024 - Feb 2025]",
+    "Mean (SD) [Oct 2024 - Feb 2025]",
+    "Median (MAD) [Oct 2024 - Feb 2025]"
   )
 
 readr::write_csv(df_table1_wide, paste0(output_folder, "/table1.csv"), na = "-")

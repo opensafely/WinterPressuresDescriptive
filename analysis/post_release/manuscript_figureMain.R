@@ -41,13 +41,13 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 # Define group order for plotting
 group_order <- c(
     "Practice region",
+    "Rurality",
     "List size",
     "Monthly consultation",
     "Age",
     "Sex",
     "Ethnicity",
     "Deprivation",
-    "Rurality",
     "Smoking Status",
     "Obesity",
     "Care home residence"
@@ -55,6 +55,7 @@ group_order <- c(
 
 practice_groups <- c(
     "Practice region",
+    "Rurality",
     "List size",
     "Monthly consultation"
 )
@@ -66,8 +67,9 @@ case_mix_groups <- setdiff(
 
 # regression <- "negbin"
 # sub_group <- "main"
-# outcome_names <- c("apc", "ec")
-# cohorts <- c("precovid", "postcovid1", "postcovid2", "postcovid3")
+# outcome_names <- c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any")
+# cohorts <- c("precovid", "postcovid3")
+# practice_char <- "practice"
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
 plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_char) {
@@ -151,11 +153,28 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         left_join(
             outcome_labels,
             by = c("outcome" = "term")
-        ) 
+        )
     outcome_levels <- df %>%
-        distinct(outcome_label, outcome_ref) %>%
-        arrange(outcome_ref) %>%
+        distinct(
+            outcome_group,
+            outcome_label,
+            outcome_ref
+        ) %>%
+        mutate(
+            outcome_group = factor(
+                outcome_group,
+                levels = c(
+                    "admitted patient care",
+                    "acsc admitted patient care"
+                )
+            )
+        ) %>%
+        arrange(
+            outcome_group,
+            outcome_ref
+        ) %>%
         pull(outcome_label)
+
     df <- df %>%
         mutate(
             outcome_label = factor(
@@ -221,14 +240,17 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     )
 
     # filter the df according to the practice_char argument
-    if (practice_char == "practice") {
-        df <- df %>%
-            filter(group %in% practice_groups)
-    } else if (practice_char == "case_mix") {
-        df <- df %>%
-            filter(group %in% case_mix_groups)
-    }
+    is_ec <- all(str_detect(outcome_names, "^ec"))
 
+    if (!is_ec) {
+        if (practice_char == "practice") {
+            df <- df %>%
+                filter(group %in% practice_groups)
+        } else if (practice_char == "case_mix") {
+            df <- df %>%
+                filter(group %in% case_mix_groups)
+        }
+    }
 
     table_df <- df %>%
         select(
@@ -246,53 +268,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             exposure_label,
             mad
         )
-    table_df_wide <- table_df %>%
+    table_side <- table_df %>%
         pivot_wider(
             names_from = cohort_label,
             values_from = mad
         )
 
-    practice_header <- table_df_wide[1, ]
-    practice_header[, ] <- NA
-    practice_header$exposure_label <- "Practice"
-
-    casemix_header <- table_df_wide[1, ]
-    casemix_header[, ] <- NA
-    casemix_header$exposure_label <- "Patient case-mix (% of patients in practice)"
-
-    if (practice_char == "all") {
-        table_side <- bind_rows(
-            practice_header,
-            table_df_wide[1:11, ],
-            casemix_header,
-            table_df_wide[12:nrow(table_df_wide), ]
-        )
-    } else if (practice_char == "practice") {
-        table_side <- bind_rows(
-            practice_header,
-            table_df_wide
-        )
-    } else {
-        table_side <- bind_rows(
-            casemix_header,
-            table_df_wide
-        )
-    }
-
-    # set a flag for the top header row to be bolded in the table
-    table_side <- table_side %>%
-        mutate(
-            is_header = if_else(
-                exposure_label %in% c("Practice", "Patient case-mix (% of patients in practice)"),
-                TRUE,
-                FALSE
-            )
-        )
-
     cohort_cols <- names(table_side)[
-        !(names(table_side) %in% c("exposure_label", "is_header"))
+        names(table_side) != "exposure_label"
     ]
-
     n_cohorts <- length(cohort_cols)
 
     if (n_cohorts == 4) {
@@ -321,7 +305,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 na.rm = TRUE
             ),
             exposure_label_full = case_when(
-                is_header ~ exposure_label,
                 is.na(mad_median) ~ exposure_label,
                 mad_median <= 100 ~ sprintf(
                     "%s (%.1f%%)",
@@ -341,55 +324,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     y_labels <- table_side$exposure_label_full
     names(y_labels) <- table_side$exposure_label
 
-    # Set the y-axis labels for the forest plot to be bold for the header rows
-    if ("Practice" %in% y_labels) {
-        y_labels["Practice"] <- "<b>Practice</b>"
-    }
-
-    if ("Patient case-mix (% of patients in practice)" %in% y_labels) {
-        y_labels["Patient case-mix (% of patients in practice)"] <-
-            "<b>Patient case-mix (% of patients in practice)</b>"
-    }
-
-    # Add dummy rows to ensure that the table and forest plot have the same number of rows
-    header_names <- switch(practice_char,
-        all = c(
-            "Practice",
-            "Patient case-mix (% of patients in practice)"
-        ),
-        practice = "Practice",
-        case_mix = "Patient case-mix (% of patients in practice)"
-    )
-
-    dummy_rows <- df %>%
-        distinct(
-            cohort,
-            analysis,
-            outcome,
-            model,
-            outcome_label,
-            outcome_group,
-            cohort_label
-        ) %>%
-        slice(rep(1:n(), each = length(header_names))) %>%
-        mutate(
-            exposure = NA_character_,
-            exposure_label = rep(
-                header_names,
-                times = n() / length(header_names)
-            ),
-            group = NA_character_,
-            ref = NA_real_,
-            ref_order = NA_real_,
-            irr = NA_real_,
-            lci = NA_real_,
-            uci = NA_real_,
-            n_obs_midpoint6 = NA_real_,
-            mad = NA_real_
-        )
-
-    df <- bind_rows(df, dummy_rows)
-
     # set the order of the exposure_label factor to match the order in the table
     df <- df %>%
         mutate(
@@ -399,11 +333,36 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             )
         )
 
+    if (is_ec) {
+        df <- df %>%
+            mutate(
+                facet_row = if_else(
+                    group %in% practice_groups,
+                    "Practice characteristics",
+                    "Patient case-mix (% of patients in practice with each characteristic)"
+                ),
+                facet_row = factor(
+                    facet_row,
+                    levels = c(
+                        "Practice characteristics",
+                        "Patient case-mix (% of patients in practice with each characteristic)"
+                    )
+                )
+            )
+    }
     # Make forest plot -----------------------------------------------------------
     print("Make forest plot")
 
+    title_prefix <- if (practice_char == "all") {
+        "General practice characteristics"
+    } else if (practice_char == "practice") {
+        "Practice characteristics"
+    } else {
+        "Patient case-mix (% of patients in practice with each characteristic)"
+    }
     title_text <- paste0(
-        "General practice characteristics and ",
+        title_prefix,
+        " and ",
         "**",
         tolower(outcome_group),
         "**",
@@ -413,19 +372,49 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         "**"
     )
 
-    is_acsc <- any(str_detect(outcome_names, "acsc"))
+    if (practice_char == "practice") {
+        if (is_ec) {
+            x_limits <- c(0.7, 1.8)
+            x_breaks <- c(0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8)
+        } else {
+            x_limits <- c(0.6, 1.5)
+            x_breaks <- c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.3, 1.5)
+        }
+    } else { # case_mix
 
-    x_limits <- if (is_acsc) {
-        c(0.9, 1.3)
-    } else {
-        c(0.9, 1.3)
+        if (is_ec) {
+            x_limits <- c(0.7, 1.8)
+            x_breaks <- c(0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8)
+        } else {
+            x_limits <- c(0.9, 1.3)
+            x_breaks <- c(0.9, 1.0, 1.1, 1.2, 1.3)
+        }
     }
 
-    x_breaks <- if (is_acsc) {
-        c(0.9, 1.0, 1.1, 1.2, 1.3)
+    # Plot width and height
+
+    if (is_ec) {
+        ci_cap <- 0.2
+        panel_width <- 5
+        plot_height <- 9
+        ncol <- length(outcome_names)
+    } else if (practice_char == "practice") {
+        ci_cap <- 0.4
+        panel_width <- 4.5
+        plot_height <- 9
+        ncol <- ceiling(length(outcome_names) / 2)
     } else {
-        c(0.9, 1.0, 1.1, 1.2, 1.3)
+        ci_cap <- 0.4
+        panel_width <- 3.8
+        plot_height <- 9
+        ncol <- ceiling(length(outcome_names) / 2)
     }
+
+    plot_height <- 9
+
+    plot_width <- panel_width * ncol
+
+    caption_width <- round(13 * plot_width)
 
     # Clip confidence intervals to plotting range
     df <- df %>%
@@ -443,8 +432,22 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             "\n\n",
             " MAD: median absolute deviation. The median MAD across cohorts is shown in parentheses for each continuous characteristic, representing a one-unit increase in the standardised exposure."
         ),
-        width = 250
+        width = caption_width
     )
+
+    facet_spec <- if (is_ec) {
+        facet_grid(
+            rows = vars(facet_row),
+            cols = vars(outcome_label),
+            scales = "free_y",
+            space = "free_y"
+        )
+    } else {
+        facet_wrap(
+            ~outcome_label,
+            nrow = 2
+        )
+    }
 
     p <- ggplot(
         df,
@@ -462,15 +465,19 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             linetype = "dashed",
             linewidth = 0.6
         ) +
-        geom_errorbarh(
-            aes(xmin = lci_plot, xmax = uci_plot, alpha = model),
+        geom_errorbar(
+            aes(
+                xmin = lci_plot,
+                xmax = uci_plot
+            ),
+            orientation = "y",
             position = position_dodge(width = 0.5),
-            height = 0.2,
-            linewidth = 0.7
+            width = ci_cap,
+            linewidth = 0.55
         ) +
         geom_point(
             position = position_dodge(width = 0.5),
-            size = 2.5
+            size = 2.0
         ) +
         # --- Scales ---
         scale_alpha_manual(
@@ -487,8 +494,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             drop = FALSE
         ) +
         scale_y_discrete(
-            labels = y_labels,
-            drop = FALSE
+            labels = y_labels
         ) +
         scale_size_manual(
             values = c("Crude" = 1.6, "Age-sex adjusted" = 2.2),
@@ -501,9 +507,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         coord_cartesian(
             xlim = x_limits
         ) +
-        facet_grid(
-            ~outcome_label
-        ) +
+        facet_spec +
         labs(
             title = title_text,
             x = "Incidence rate ratio (IRR)",
@@ -554,16 +558,32 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     ggsave(
         filename = file.path(
             plot_dir,
-            paste0("forest_", sub_group, "_", regression, "_", paste(outcome_names, collapse = "_"), "_", cohort_suffix, ".png")
+            paste0("forest-", sub_group, "-", regression, "-", paste(outcome_names, collapse = "_"), "-", practice_char, "-", cohort_suffix, ".png")
         ),
         plot = p,
-        width = 16,
-        height = 9,
+        width = plot_width,
+        height = plot_height,
         dpi = 300
     )
 }
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
 
+
+
+plot_irr("negbin", "main", c("apc_unpl", "apc_plan", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("apc_unpl", "apc_plan", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+
+
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "practice")
 plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "practice")
+
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
 
