@@ -74,7 +74,7 @@ outcome_traj_summary <- input %>%
 
 
 # Save unrounded table -----------------------------------------------------------------
-print("Save Table 1")
+print("Save trajectory outcomes input")
 
 write.csv(
     outcome_traj_summary,
