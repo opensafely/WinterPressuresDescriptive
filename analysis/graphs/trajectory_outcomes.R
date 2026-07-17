@@ -1,5 +1,6 @@
 # Load libraries --------------------------------------------------------------
 print("Load libraries")
+library(tidyverse)
 library(haven)
 library(dplyr)
 library(tidyr)
@@ -11,6 +12,11 @@ print("Creating output/graphs input folder")
 
 trajectory_dir <- "output/graphs/"
 fs::dir_create(here::here(trajectory_dir))
+
+# Specify redaction threshold --------------------------------------------------
+print("Specify redaction threshold")
+
+threshold <- 6
 
 # Source common functions ------------------------------------------------------
 print("Source common functions")
@@ -62,6 +68,8 @@ outcome_traj_summary <- input %>%
         summarise_dist(value, is_outcome = TRUE),
         .groups = "drop"
     ) %>%
+    mutate(n_practices_midpoint6 = roundmid_num(n_practices, to = threshold)) %>%
+    select(-n_practices) %>%
     arrange(cohort, outcome, week_number)
 
 
