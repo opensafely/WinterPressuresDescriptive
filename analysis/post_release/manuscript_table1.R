@@ -117,20 +117,18 @@ df_table1 <- df %>%
     group != "Consultations"
   ) %>%
   mutate(
-    median = case_when(
-      group == "List size" ~ median,
-      group == "Monthly consultation" ~ median * 1000,
-      TRUE ~ median * 100
-    ),
-    q1 = case_when(
-      group == "List size" ~ q1,
-      group == "Monthly consultation" ~ q1 * 1000,
-      TRUE ~ q1 * 100
-    ),
-    q3 = case_when(
-      group == "List size" ~ q3,
-      group == "Monthly consultation" ~ q3 * 1000,
-      TRUE ~ q3 * 100
+    across(
+      c(
+        median,
+        q1,
+        q3,
+        matches("^p(10|20|30|40|50|60|70|80|90)$")
+      ),
+      ~ case_when(
+        group == "List size" ~ .x,
+        group == "Monthly consultation" ~ .x * 1000,
+        TRUE ~ .x * 100
+      )
     )
   )
 

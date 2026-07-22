@@ -397,20 +397,29 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         ci_cap <- 0.2
         panel_width <- 5
         plot_height <- 9
-        ncol <- length(outcome_names)
     } else if (practice_char == "practice") {
         ci_cap <- 0.4
         panel_width <- 4.5
         plot_height <- 9
-        ncol <- ceiling(length(outcome_names) / 2)
     } else {
         ci_cap <- 0.4
         panel_width <- 3.8
         plot_height <- 9
-        ncol <- ceiling(length(outcome_names) / 2)
     }
 
-    plot_height <- 9
+    n_outcomes <- length(outcome_names)
+
+    ncol <- if (is_ec || n_outcomes == 2) {
+        n_outcomes
+    } else {
+        ceiling(n_outcomes / 2)
+    }
+
+    plot_height <- if (n_outcomes < 3 && !is_ec) {
+        6
+    } else {
+        plot_height
+    }
 
     plot_width <- panel_width * ncol
 
@@ -445,8 +454,16 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     } else {
         facet_wrap(
             ~outcome_label,
-            nrow = 2
+            ncol = ncol
         )
+    }
+
+    y_title <- if (practice_char == "all") {
+        "Characteristics (median MAD across cohorts)"
+    } else if (practice_char == "practice") {
+        "Practice characteristics"
+    } else {
+        "Patient case-mix (median MAD across cohorts)"
     }
 
     p <- ggplot(
@@ -511,7 +528,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         labs(
             title = title_text,
             x = "Incidence rate ratio (IRR)",
-            y = "Characteristics (median MAD across cohorts)",
+            y = y_title,
             colour = "",
             linetype = "Model",
             caption = caption_text
@@ -522,6 +539,10 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 hjust = 0,
                 size = 12,
                 margin = margin(b = 8)
+            ),
+            strip.text.x = element_text(
+                size = 12,
+                face = "bold"
             ),
             plot.caption = element_text(
                 size = 8,
@@ -566,7 +587,9 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         dpi = 300
     )
 }
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("apc", "apc_unpl"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "practice")
+
 plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
 plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
 
@@ -577,7 +600,7 @@ plot_irr("negbin", "main", c("apc_unpl", "apc_plan", "apc_unpl_acsc_any", "apc_p
 
 
 
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("apc", "apc_unpl"), c("precovid", "postcovid3"), "practice")
 plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "case_mix")
 
 

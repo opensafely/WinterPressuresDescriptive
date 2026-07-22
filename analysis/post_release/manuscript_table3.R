@@ -85,7 +85,8 @@ df <- df %>%
     irr,
     lci,
     uci,
-    n_obs_midpoint6
+    n_obs_midpoint6,
+    mad
   ) %>%
   mutate(
     # model aesthetics
@@ -132,6 +133,36 @@ df <- df %>%
     by = c("outcome" = "term")
   )
 
+outcome_levels <- df %>%
+  distinct(
+    outcome_group,
+    outcome_label,
+    outcome_ref
+  ) %>%
+  mutate(
+    outcome_group = factor(
+      outcome_group,
+      levels = c(
+        "admitted patient care",
+        "acsc admitted patient care",
+        "emergency care"
+      )
+    )
+  ) %>%
+  arrange(
+    outcome_group,
+    outcome_ref
+  ) %>%
+  pull(outcome_label)
+
+df <- df %>%
+  mutate(
+    outcome_label = factor(
+      outcome_label,
+      levels = outcome_levels
+    )
+  )
+
 # --- Join COHORT labels ---
 cohort_labels <- labels %>%
   filter(
@@ -176,20 +207,13 @@ df <- df %>%
     analysis_ref_order = if_else(is.na(analysis_ref), Inf, analysis_ref)
   ) %>%
   mutate(
-    outcome_group = factor(
-      outcome_group,
-      levels = c("hospital use", "ACSC-related hospital use")
-    ),
-    outcome_ref_order = if_else(is.na(outcome_ref), Inf, outcome_ref)
-  ) %>%
-  mutate(
     group = factor(
       group,
       levels = group_order
     ),
     ref_order = if_else(is.na(ref), Inf, ref)
   ) %>%
-  arrange(group, ref_order)
+  arrange(group, outcome_group, outcome_ref, ref_order)
 
 df_table3 <- df %>%
   mutate(
@@ -200,7 +224,7 @@ df_table3 <- df %>%
   )
 
 format_irr <- function(irr, lci, uci) {
-  sprintf("%.3f (%.3f-%.3f)", irr, lci, uci)
+  sprintf("%.2f (%.2f-%.2f)", irr, lci, uci)
 }
 
 df_table3 <- df_table3 %>%
@@ -222,13 +246,13 @@ df_table3 <- df_table3 %>%
     exposure_label,
     ref_order,
     cohort_label,
-    estimate
+    estimate,
+    mad
   ) %>%
   arrange(
     analysis_group,
     analysis_ref_order,
-    outcome_group,
-    outcome_ref,
+    outcome_label,
     group,
     ref_order
   )
@@ -236,7 +260,8 @@ df_table3 <- df_table3 %>%
 df_table3 <- df_table3 %>%
   tidyr::pivot_wider(
     names_from = cohort_label,
-    values_from = estimate
+    values_from = c(estimate, mad),
+    names_glue = "{cohort_label}_{.value}"
   )
 
 df_table3 <- df_table3 %>%
@@ -244,19 +269,27 @@ df_table3 <- df_table3 %>%
     "Subgroup" = analysis_label,
     "Outcome" = outcome_label,
     "Exposure" = exposure_label,
-    "Pre-COVID 19" = `Pre-COVID19`,
-    "Oct 2022 – Feb 2023" = `2022/23`,
-    "Oct 2023 – Feb 2024" = `2023/24`,
-    "Oct 2024 – Feb 2025" = `2024/25`
+    "Pre-COVID19 MAD" = `Pre-COVID19_mad`,
+    "Pre-COVID19 IRR (95% CI)" = `Pre-COVID19_estimate`,
+    "2022/23 MAD" = `2022/23_mad`,
+    "2022/23 IRR (95% CI)" = `2022/23_estimate`,
+    "2023/24 MAD" = `2023/24_mad`,
+    "2023/24 IRR (95% CI)" = `2023/24_estimate`,
+    "2024/25 MAD" = `2024/25_mad`,
+    "2024/25 IRR (95% CI)" = `2024/25_estimate`
   ) %>%
   select(
     Subgroup,
     Outcome,
     Exposure,
-    `Pre-COVID 19`,
-    `Oct 2022 – Feb 2023`,
-    `Oct 2023 – Feb 2024`,
-    `Oct 2024 – Feb 2025`
+    `Pre-COVID19 MAD`,
+    `Pre-COVID19 IRR (95% CI)`,
+    `2022/23 MAD`,
+    `2022/23 IRR (95% CI)`,
+    `2023/24 MAD`,
+    `2023/24 IRR (95% CI)`,
+    `2024/25 MAD`,
+    `2024/25 IRR (95% CI)`
   )
 
 readr::write_csv(

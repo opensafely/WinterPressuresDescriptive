@@ -37,16 +37,20 @@ df_plot <- readr::read_csv(
     show_col_types = FALSE
 )
 
+# Select cohorts for the figure
+cohorts_to_plot <- c("precovid", "postcovid3")
+
 df_plot <- df_plot %>%
+    filter(cohort %in% cohorts_to_plot) %>%
     mutate(
         cohort = factor(
             cohort,
             levels = c("precovid", "postcovid1", "postcovid2", "postcovid3"),
             labels = c(
-                "Pre-COVID",
-                "Post-lockdown I",
-                "Post-lockdown II",
-                "Post-lockdown III"
+                "Pre COVID-19",
+                "2022/23",
+                "2023/24",
+                "2024/25"
             )
         ),
         group = factor(
@@ -57,7 +61,6 @@ df_plot <- df_plot %>%
                 "Sex",
                 "Ethnicity",
                 "Deprivation",
-                "Rurality",
                 "Smoking Status",
                 "Obesity",
                 "Care home residence",
@@ -72,6 +75,12 @@ df_plot <- df_plot %>%
         )
     )
 
+cohort_colours <- c(
+    "Pre COVID-19" = "#F8766D",
+    "2022/23"     = "#7CAE00",
+    "2023/24"     = "#00BFC4",
+    "2024/25"     = "#C77CFF"
+)
 
 # Get list of unique groups
 groups <- df_plot %>%
@@ -92,9 +101,9 @@ walk(groups, function(g) {
     }
     # Y-axis label
     y_label <- case_when(
-        g == "List size" ~ "Number of registered patients, median(IQR)",
-        g == "Monthly consultation" ~ "Consultations per 1,000 patients, median(IQR)",
-        TRUE ~ "Proportion (%), median(IQR)"
+        g == "List size" ~ "Registered patients per practice",
+        g == "Monthly consultation" ~ "Consultations per 1,000 patients",
+        TRUE ~ "Percentage (%)"
     )
 
     # Plot title
@@ -113,7 +122,7 @@ walk(groups, function(g) {
             ),
         TRUE ~
             paste(
-                "Practice composition of",
+                "Proportion of",
                 paste0("**", tolower(g), "**"),
                 "by cohort"
             )
@@ -121,48 +130,103 @@ walk(groups, function(g) {
     # X-axis text formatting
     x_text <- if (g == "Monthly consultation") {
         element_text(
-            size = 9,
-            angle = 30,
-            hjust = 1,
-            vjust = 1
+            size = 9
+            # angle = 0,
+            # hjust = 1,
+            # vjust = 1
         )
     } else {
         element_text(size = 9)
     }
 
+    pd <- position_dodge(width = 0.7)
+
     p <- ggplot(
         plot_data,
         aes(
             x = category_label,
-            y = median,
-            fill = cohort
+            colour = cohort,
+            fill = cohort,
+            group = cohort
         )
     ) +
-        geom_col(
-            position = position_dodge(width = 0.7),
-            width = 0.6,
-            alpha = 0.7
-        ) +
+
+        # Whiskers: 10th–90th percentiles
         geom_errorbar(
-            aes(ymin = q1, ymax = q3),
-            position = position_dodge(width = 0.7),
-            width = 0.2,
+            aes(
+                ymin = p10,
+                ymax = p90
+            ),
+            position = pd,
+            width = 0.15,
             linewidth = 0.6,
-            alpha = 0.8
+            show.legend = FALSE
+        ) +
+
+        # Box: IQR; centre line: median
+        geom_crossbar(
+            aes(
+                ymin = q1,
+                y = median,
+                ymax = q3
+            ),
+            position = pd,
+            width = 0.50,
+            colour = "black",
+            linewidth = 0.5,
+            alpha = 1
+        ) +
+
+        # Use the same cohort colours as the model plots
+        scale_colour_manual(
+            values = cohort_colours,
+            drop = TRUE
+        ) +
+        scale_fill_manual(
+            values = cohort_colours,
+            name = "Cohort",
+            drop = TRUE
         ) +
         labs(
-            title = title,
             x = NULL,
             y = y_label,
-            fill = "Cohorts"
+            caption = paste(
+                "Boxes show the median and interquartile range;",
+                "whiskers show the 10th-90th percentiles."
+            )
         ) +
-        theme_bw() +
+        theme_classic() +
         theme(
-            plot.title = element_markdown(),
-            axis.text.x = element_text(size = 9),
+            plot.title = element_blank(),
+            panel.grid.major.y = element_line(
+                colour = "grey90",
+                linewidth = 0.4
+            ),
+            panel.grid.major.x = element_blank(),
+            panel.grid.minor = element_blank(),
+            axis.text.x = x_text,
             axis.title.y = element_text(size = 10),
+            plot.caption = element_text(
+                size = 8,
+                hjust = 0,
+                colour = "grey30",
+                lineheight = 1.2,
+                margin = margin(t = 6)
+            ),
             legend.position = "bottom",
-            panel.grid.minor = element_blank()
+            legend.title = element_text(size = 9),
+            legend.text = element_text(size = 9)
+        ) +
+
+        # Show only the filled-box legend
+        guides(
+            colour = "none",
+            fill = guide_legend(
+                title = "Cohort",
+                nrow = 1,
+                byrow = TRUE,
+                override.aes = list(alpha = 0.7)
+            )
         )
 
     ggsave(
@@ -171,7 +235,7 @@ walk(groups, function(g) {
             paste0("table1_", g, "_median_iqr.png")
         ),
         plot = p,
-        width = 14,
+        width = 13,
         height = 4
     )
 })
