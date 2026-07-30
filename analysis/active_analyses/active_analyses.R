@@ -1,6 +1,7 @@
 library(jsonlite)
 library(dplyr)
 library(stringr)
+library(tidyr)
 
 # Create output directory ----
 fs::dir_create(here::here("lib"))
@@ -247,12 +248,31 @@ for (i in cohorts) {
             paste0(c(covariate_age, covariate_sex), collapse = ";")
         }
 
-        characteristic <- sub("_.*$", "", j)
+        # Identify other covariates that overlap with the exposure ----------------
+
+        covariates_to_exclude <- if (j %in% exposure_region) {
+            covariate_region
+        } else if (j %in% exposure_rurality) {
+            covariate_rurality
+        } else if (j %in% exposure_ethnicity) {
+            covariate_ethnicity
+        } else if (j %in% exposure_imd) {
+            covariate_imd
+        } else if (j %in% exposure_smoking) {
+            covariate_smoking
+        } else if (j %in% exposure_other_health) {
+            intersect(j, covariate_other)
+        } else if (j %in% exposure_consultation) {
+            covariate_consultation
+        } else {
+            character(0)
+        }
 
         covariate_other_clean <- paste(
-            covariate_other[
-                !grepl(paste0("^", characteristic), covariate_other)
-            ],
+            setdiff(
+                covariate_other,
+                covariates_to_exclude
+            ),
             collapse = ";"
         )
 
@@ -276,18 +296,73 @@ for (i in cohorts) {
     }
 }
 
+df <- df %>%
+    mutate(
+        analysis_type = "single_exposure"
+    )
+
+# Add the mutually adjusted analyses ----
+df_mutually_adjusted <- crossing(
+    cohort = cohorts,
+    outcome = outcome_names
+) %>%
+    mutate(
+        outcome_start = unname(unlist(cohort_dates[cohort])),
+        exposure = paste(
+            exposure_names,  # we can change this to a subset of exposures if we want to limit the mutually adjusted analyses
+            collapse = ";"
+        ),
+        exposure_group = "all",
+        covariate_core = "",
+        covariate_other = "",
+        analysis = stringr::str_extract(
+            outcome,
+            "(main|sub_[a-z]+)"
+        ),
+        analysis_type = "mutually_adjusted"
+    ) %>%
+    select(
+        cohort,
+        outcome_start,
+        exposure,
+        exposure_group,
+        outcome,
+        covariate_core,
+        covariate_other,
+        analysis,
+        analysis_type
+    )
+
+# Combine the single exposure and mutually adjusted analyses ----
+df <- bind_rows(df, df_mutually_adjusted)
+
 # Add name for each analysis ----
 
-df$name <- paste0(
-    "cohort_",
-    df$cohort,
-    "-",
-    df$analysis,
-    "-",
-    df$exposure,
-    "-",
-    gsub("(_main|_sub_[a-z]+)", "", df$outcome)
-)
+# Add name for each analysis --------------------------------------------------
+
+df <- df %>%
+    mutate(
+        exposure_name = if_else(
+            analysis_type == "mutually_adjusted",
+            "all",
+            exposure
+        ),
+        name = paste0(
+            "cohort_",
+            cohort,
+            "-",
+            analysis,
+            "-",
+            exposure_name,
+            "-",
+            gsub(
+                "(_main|_sub_[a-z]+)",
+                "",
+                outcome
+            )
+        )
+    ) %>%
+    select(-exposure_name)
 
 # Check names are unique and save active analyses list ----
 if (length(unique(df$name)) == nrow(df)) {
