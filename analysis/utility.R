@@ -540,3 +540,15 @@ get_majority_category <- function(x) {
 
   names(sort(table(x), decreasing = TRUE))[1]
 }
+
+#Function to add a prefix to a vector of variable names ----
+add_prefix <- function(vars, prefix) {
+    if (length(vars) == 0) {
+        return(character(0))
+    }
+
+    paste0(
+        prefix,
+        vars
+    )
+}
