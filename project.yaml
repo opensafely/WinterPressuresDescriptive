@@ -83683,111 +83683,127 @@ actions:
         model_output_regression_midpoint6: output/make_output/model_output-postcovid3-subgroup_all-exposure_all-midpoint6.csv
         model_output_lrtest_midpoint6: output/make_output/model_output_lrtest-postcovid3-subgroup_all-exposure_all-midpoint6.csv
 
-  ## Generates exposure correlation figures - precovid 
+  ## Generate exposure-correlation outputs - precovid 
 
-  generate_exposure_correlation_figures_precovid:
+  generate_exposure_correlations_precovid:
     run: r:v2 analysis/graphs/correlations_exposures.R precovid
     needs:
     - generate_input_precovid_clean
     outputs:
       moderately_sensitive:
-        heatmap_age: output/correlations/heatmap_age_precovid.png
-        heatmap_sex: output/correlations/heatmap_sex_precovid.png
-        heatmap_eth: output/correlations/heatmap_ethnicity_precovid.png
-        heatmap_imd: output/correlations/heatmap_imd_precovid.png
-        heatmap_rur: output/correlations/heatmap_rurality_precovid.png
-        heatmap_smk: output/correlations/heatmap_smoking_precovid.png
-        heatmap_cons: output/correlations/heatmap_consultation_precovid.png
-        heatmap_morb: output/correlations/heatmap_morbidity_precovid.png
-        heatmap_all: output/correlations/heatmap_all_exposures_precovid.png
-        corr_tab_age: output/correlations/correlations_age_precovid.csv
-        corr_tab_sex: output/correlations/correlations_sex_precovid.csv
-        corr_tab_eth: output/correlations/correlations_ethnicity_precovid.csv
-        corr_tab_imd: output/correlations/correlations_imd_precovid.csv
-        corr_tab_rur: output/correlations/correlations_rurality_precovid.csv
-        corr_tab_smk: output/correlations/correlations_smoking_precovid.csv
-        corr_tab_cons: output/correlations/correlations_consultation_precovid.csv
-        corr_tab_morb: output/correlations/correlations_morbidity_precovid.csv
-        scatter_cons: output/correlations/scatter_cons_sep_vs_mean_precovid.png
+        heatmap_practice: output/correlations/precovid/heatmap_practice_precovid.png
+        heatmap_age_and_sex: output/correlations/precovid/heatmap_age_and_sex_precovid.png
+        heatmap_ethnicity: output/correlations/precovid/heatmap_ethnicity_precovid.png
+        heatmap_deprivation: output/correlations/precovid/heatmap_deprivation_precovid.png
+        heatmap_morbidity: output/correlations/precovid/heatmap_morbidity_precovid.png
+        heatmap_other_health: output/correlations/precovid/heatmap_other_health_precovid.png
+        heatmap_smoking: output/correlations/precovid/heatmap_smoking_precovid.png
+        correlations_practice: output/correlations/precovid/correlations_practice_precovid.csv
+        correlations_age_and_sex: output/correlations/precovid/correlations_age_and_sex_precovid.csv
+        correlations_ethnicity: output/correlations/precovid/correlations_ethnicity_precovid.csv
+        correlations_deprivation: output/correlations/precovid/correlations_deprivation_precovid.csv
+        correlations_morbidity: output/correlations/precovid/correlations_morbidity_precovid.csv
+        correlations_other_health: output/correlations/precovid/correlations_other_health_precovid.csv
+        correlations_smoking: output/correlations/precovid/correlations_smoking_precovid.csv
+        heatmap_all_exposures: output/correlations/precovid/heatmap_all_exposures_precovid.png
+        correlations_all_exposures: output/correlations/precovid/correlations_all_exposures_precovid.csv
+        heatmap_mutually_adjusted_exposures: output/correlations/precovid/heatmap_mutually_adjusted_exposures_precovid.png
+        correlations_mutually_adjusted_exposures: output/correlations/precovid/correlations_mutually_adjusted_exposures_precovid.csv
+        high_correlation_pairs: output/correlations/precovid/high_correlation_pairs_07_precovid.csv
+        pairwise_n_all_exposures: output/correlations/precovid/pairwise_n_all_exposures_precovid.csv
+        pairwise_n_all_exposures_midpoint6: output/correlations/precovid/pairwise_n_all_exposures_precovid-midpoint6.csv
+        correlation_pairs_all_exposures: output/correlations/precovid/correlation_pairs_all_exposures_precovid.csv
 
-  ## Generates exposure correlation figures - postcovid1 
+  ## Generate exposure-correlation outputs - postcovid1 
 
-  generate_exposure_correlation_figures_postcovid1:
+  generate_exposure_correlations_postcovid1:
     run: r:v2 analysis/graphs/correlations_exposures.R postcovid1
     needs:
     - generate_input_postcovid1_clean
     outputs:
       moderately_sensitive:
-        heatmap_age: output/correlations/heatmap_age_postcovid1.png
-        heatmap_sex: output/correlations/heatmap_sex_postcovid1.png
-        heatmap_eth: output/correlations/heatmap_ethnicity_postcovid1.png
-        heatmap_imd: output/correlations/heatmap_imd_postcovid1.png
-        heatmap_rur: output/correlations/heatmap_rurality_postcovid1.png
-        heatmap_smk: output/correlations/heatmap_smoking_postcovid1.png
-        heatmap_cons: output/correlations/heatmap_consultation_postcovid1.png
-        heatmap_morb: output/correlations/heatmap_morbidity_postcovid1.png
-        heatmap_all: output/correlations/heatmap_all_exposures_postcovid1.png
-        corr_tab_age: output/correlations/correlations_age_postcovid1.csv
-        corr_tab_sex: output/correlations/correlations_sex_postcovid1.csv
-        corr_tab_eth: output/correlations/correlations_ethnicity_postcovid1.csv
-        corr_tab_imd: output/correlations/correlations_imd_postcovid1.csv
-        corr_tab_rur: output/correlations/correlations_rurality_postcovid1.csv
-        corr_tab_smk: output/correlations/correlations_smoking_postcovid1.csv
-        corr_tab_cons: output/correlations/correlations_consultation_postcovid1.csv
-        corr_tab_morb: output/correlations/correlations_morbidity_postcovid1.csv
-        scatter_cons: output/correlations/scatter_cons_sep_vs_mean_postcovid1.png
+        heatmap_practice: output/correlations/postcovid1/heatmap_practice_postcovid1.png
+        heatmap_age_and_sex: output/correlations/postcovid1/heatmap_age_and_sex_postcovid1.png
+        heatmap_ethnicity: output/correlations/postcovid1/heatmap_ethnicity_postcovid1.png
+        heatmap_deprivation: output/correlations/postcovid1/heatmap_deprivation_postcovid1.png
+        heatmap_morbidity: output/correlations/postcovid1/heatmap_morbidity_postcovid1.png
+        heatmap_other_health: output/correlations/postcovid1/heatmap_other_health_postcovid1.png
+        heatmap_smoking: output/correlations/postcovid1/heatmap_smoking_postcovid1.png
+        correlations_practice: output/correlations/postcovid1/correlations_practice_postcovid1.csv
+        correlations_age_and_sex: output/correlations/postcovid1/correlations_age_and_sex_postcovid1.csv
+        correlations_ethnicity: output/correlations/postcovid1/correlations_ethnicity_postcovid1.csv
+        correlations_deprivation: output/correlations/postcovid1/correlations_deprivation_postcovid1.csv
+        correlations_morbidity: output/correlations/postcovid1/correlations_morbidity_postcovid1.csv
+        correlations_other_health: output/correlations/postcovid1/correlations_other_health_postcovid1.csv
+        correlations_smoking: output/correlations/postcovid1/correlations_smoking_postcovid1.csv
+        heatmap_all_exposures: output/correlations/postcovid1/heatmap_all_exposures_postcovid1.png
+        correlations_all_exposures: output/correlations/postcovid1/correlations_all_exposures_postcovid1.csv
+        heatmap_mutually_adjusted_exposures: output/correlations/postcovid1/heatmap_mutually_adjusted_exposures_postcovid1.png
+        correlations_mutually_adjusted_exposures: output/correlations/postcovid1/correlations_mutually_adjusted_exposures_postcovid1.csv
+        high_correlation_pairs: output/correlations/postcovid1/high_correlation_pairs_07_postcovid1.csv
+        pairwise_n_all_exposures: output/correlations/postcovid1/pairwise_n_all_exposures_postcovid1.csv
+        pairwise_n_all_exposures_midpoint6: output/correlations/postcovid1/pairwise_n_all_exposures_postcovid1-midpoint6.csv
+        correlation_pairs_all_exposures: output/correlations/postcovid1/correlation_pairs_all_exposures_postcovid1.csv
 
-  ## Generates exposure correlation figures - postcovid2 
+  ## Generate exposure-correlation outputs - postcovid2 
 
-  generate_exposure_correlation_figures_postcovid2:
+  generate_exposure_correlations_postcovid2:
     run: r:v2 analysis/graphs/correlations_exposures.R postcovid2
     needs:
     - generate_input_postcovid2_clean
     outputs:
       moderately_sensitive:
-        heatmap_age: output/correlations/heatmap_age_postcovid2.png
-        heatmap_sex: output/correlations/heatmap_sex_postcovid2.png
-        heatmap_eth: output/correlations/heatmap_ethnicity_postcovid2.png
-        heatmap_imd: output/correlations/heatmap_imd_postcovid2.png
-        heatmap_rur: output/correlations/heatmap_rurality_postcovid2.png
-        heatmap_smk: output/correlations/heatmap_smoking_postcovid2.png
-        heatmap_cons: output/correlations/heatmap_consultation_postcovid2.png
-        heatmap_morb: output/correlations/heatmap_morbidity_postcovid2.png
-        heatmap_all: output/correlations/heatmap_all_exposures_postcovid2.png
-        corr_tab_age: output/correlations/correlations_age_postcovid2.csv
-        corr_tab_sex: output/correlations/correlations_sex_postcovid2.csv
-        corr_tab_eth: output/correlations/correlations_ethnicity_postcovid2.csv
-        corr_tab_imd: output/correlations/correlations_imd_postcovid2.csv
-        corr_tab_rur: output/correlations/correlations_rurality_postcovid2.csv
-        corr_tab_smk: output/correlations/correlations_smoking_postcovid2.csv
-        corr_tab_cons: output/correlations/correlations_consultation_postcovid2.csv
-        corr_tab_morb: output/correlations/correlations_morbidity_postcovid2.csv
-        scatter_cons: output/correlations/scatter_cons_sep_vs_mean_postcovid2.png
+        heatmap_practice: output/correlations/postcovid2/heatmap_practice_postcovid2.png
+        heatmap_age_and_sex: output/correlations/postcovid2/heatmap_age_and_sex_postcovid2.png
+        heatmap_ethnicity: output/correlations/postcovid2/heatmap_ethnicity_postcovid2.png
+        heatmap_deprivation: output/correlations/postcovid2/heatmap_deprivation_postcovid2.png
+        heatmap_morbidity: output/correlations/postcovid2/heatmap_morbidity_postcovid2.png
+        heatmap_other_health: output/correlations/postcovid2/heatmap_other_health_postcovid2.png
+        heatmap_smoking: output/correlations/postcovid2/heatmap_smoking_postcovid2.png
+        correlations_practice: output/correlations/postcovid2/correlations_practice_postcovid2.csv
+        correlations_age_and_sex: output/correlations/postcovid2/correlations_age_and_sex_postcovid2.csv
+        correlations_ethnicity: output/correlations/postcovid2/correlations_ethnicity_postcovid2.csv
+        correlations_deprivation: output/correlations/postcovid2/correlations_deprivation_postcovid2.csv
+        correlations_morbidity: output/correlations/postcovid2/correlations_morbidity_postcovid2.csv
+        correlations_other_health: output/correlations/postcovid2/correlations_other_health_postcovid2.csv
+        correlations_smoking: output/correlations/postcovid2/correlations_smoking_postcovid2.csv
+        heatmap_all_exposures: output/correlations/postcovid2/heatmap_all_exposures_postcovid2.png
+        correlations_all_exposures: output/correlations/postcovid2/correlations_all_exposures_postcovid2.csv
+        heatmap_mutually_adjusted_exposures: output/correlations/postcovid2/heatmap_mutually_adjusted_exposures_postcovid2.png
+        correlations_mutually_adjusted_exposures: output/correlations/postcovid2/correlations_mutually_adjusted_exposures_postcovid2.csv
+        high_correlation_pairs: output/correlations/postcovid2/high_correlation_pairs_07_postcovid2.csv
+        pairwise_n_all_exposures: output/correlations/postcovid2/pairwise_n_all_exposures_postcovid2.csv
+        pairwise_n_all_exposures_midpoint6: output/correlations/postcovid2/pairwise_n_all_exposures_postcovid2-midpoint6.csv
+        correlation_pairs_all_exposures: output/correlations/postcovid2/correlation_pairs_all_exposures_postcovid2.csv
 
-  ## Generates exposure correlation figures - postcovid3 
+  ## Generate exposure-correlation outputs - postcovid3 
 
-  generate_exposure_correlation_figures_postcovid3:
+  generate_exposure_correlations_postcovid3:
     run: r:v2 analysis/graphs/correlations_exposures.R postcovid3
     needs:
     - generate_input_postcovid3_clean
     outputs:
       moderately_sensitive:
-        heatmap_age: output/correlations/heatmap_age_postcovid3.png
-        heatmap_sex: output/correlations/heatmap_sex_postcovid3.png
-        heatmap_eth: output/correlations/heatmap_ethnicity_postcovid3.png
-        heatmap_imd: output/correlations/heatmap_imd_postcovid3.png
-        heatmap_rur: output/correlations/heatmap_rurality_postcovid3.png
-        heatmap_smk: output/correlations/heatmap_smoking_postcovid3.png
-        heatmap_cons: output/correlations/heatmap_consultation_postcovid3.png
-        heatmap_morb: output/correlations/heatmap_morbidity_postcovid3.png
-        heatmap_all: output/correlations/heatmap_all_exposures_postcovid3.png
-        corr_tab_age: output/correlations/correlations_age_postcovid3.csv
-        corr_tab_sex: output/correlations/correlations_sex_postcovid3.csv
-        corr_tab_eth: output/correlations/correlations_ethnicity_postcovid3.csv
-        corr_tab_imd: output/correlations/correlations_imd_postcovid3.csv
-        corr_tab_rur: output/correlations/correlations_rurality_postcovid3.csv
-        corr_tab_smk: output/correlations/correlations_smoking_postcovid3.csv
-        corr_tab_cons: output/correlations/correlations_consultation_postcovid3.csv
-        corr_tab_morb: output/correlations/correlations_morbidity_postcovid3.csv
-        scatter_cons: output/correlations/scatter_cons_sep_vs_mean_postcovid3.png
+        heatmap_practice: output/correlations/postcovid3/heatmap_practice_postcovid3.png
+        heatmap_age_and_sex: output/correlations/postcovid3/heatmap_age_and_sex_postcovid3.png
+        heatmap_ethnicity: output/correlations/postcovid3/heatmap_ethnicity_postcovid3.png
+        heatmap_deprivation: output/correlations/postcovid3/heatmap_deprivation_postcovid3.png
+        heatmap_morbidity: output/correlations/postcovid3/heatmap_morbidity_postcovid3.png
+        heatmap_other_health: output/correlations/postcovid3/heatmap_other_health_postcovid3.png
+        heatmap_smoking: output/correlations/postcovid3/heatmap_smoking_postcovid3.png
+        correlations_practice: output/correlations/postcovid3/correlations_practice_postcovid3.csv
+        correlations_age_and_sex: output/correlations/postcovid3/correlations_age_and_sex_postcovid3.csv
+        correlations_ethnicity: output/correlations/postcovid3/correlations_ethnicity_postcovid3.csv
+        correlations_deprivation: output/correlations/postcovid3/correlations_deprivation_postcovid3.csv
+        correlations_morbidity: output/correlations/postcovid3/correlations_morbidity_postcovid3.csv
+        correlations_other_health: output/correlations/postcovid3/correlations_other_health_postcovid3.csv
+        correlations_smoking: output/correlations/postcovid3/correlations_smoking_postcovid3.csv
+        heatmap_all_exposures: output/correlations/postcovid3/heatmap_all_exposures_postcovid3.png
+        correlations_all_exposures: output/correlations/postcovid3/correlations_all_exposures_postcovid3.csv
+        heatmap_mutually_adjusted_exposures: output/correlations/postcovid3/heatmap_mutually_adjusted_exposures_postcovid3.png
+        correlations_mutually_adjusted_exposures: output/correlations/postcovid3/correlations_mutually_adjusted_exposures_postcovid3.csv
+        high_correlation_pairs: output/correlations/postcovid3/high_correlation_pairs_07_postcovid3.csv
+        pairwise_n_all_exposures: output/correlations/postcovid3/pairwise_n_all_exposures_postcovid3.csv
+        pairwise_n_all_exposures_midpoint6: output/correlations/postcovid3/pairwise_n_all_exposures_postcovid3-midpoint6.csv
+        correlation_pairs_all_exposures: output/correlations/postcovid3/correlation_pairs_all_exposures_postcovid3.csv
 

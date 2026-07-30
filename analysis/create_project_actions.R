@@ -634,64 +634,118 @@ for (cohort in cohorts_all) {
 }
 
 # Add action to generate correlation figures for exposures
+# Add actions to generate exposure-correlation outputs ------------------------
 for (cohort in cohorts_all) {
-  generate_exposure_correlations <- c(
-    comment(glue("Generates exposure correlation figures - {cohort}")),
+  actions_list <- c(
+    actions_list,
+    comment(
+      glue("Generate exposure-correlation outputs - {cohort}")
+    ),
     action(
-      name = glue("generate_exposure_correlation_figures_{cohort}"),
-      run = glue("r:v2 analysis/graphs/correlations_exposures.R {cohort}"),
-      needs = list(glue("generate_input_{cohort}_clean")),
+      name = glue("generate_exposure_correlations_{cohort}"),
+      run = glue(
+        "r:v2 analysis/graphs/correlations_exposures.R {cohort}"
+      ),
+      needs = list(
+        glue("generate_input_{cohort}_clean")
+      ),
       moderately_sensitive = list(
-        heatmap_age = glue("output/correlations/heatmap_age_{cohort}.png"),
-        heatmap_sex = glue("output/correlations/heatmap_sex_{cohort}.png"),
-        heatmap_eth = glue(
-          "output/correlations/heatmap_ethnicity_{cohort}.png"
+        # Domain-specific heatmaps
+        heatmap_practice = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_practice_{cohort}.png"
         ),
-        heatmap_imd = glue("output/correlations/heatmap_imd_{cohort}.png"),
-        heatmap_rur = glue("output/correlations/heatmap_rurality_{cohort}.png"),
-        heatmap_smk = glue("output/correlations/heatmap_smoking_{cohort}.png"),
-        heatmap_cons = glue(
-          "output/correlations/heatmap_consultation_{cohort}.png"
+        heatmap_age_and_sex = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_age_and_sex_{cohort}.png"
         ),
-        heatmap_morb = glue(
-          "output/correlations/heatmap_morbidity_{cohort}.png"
+        heatmap_ethnicity = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_ethnicity_{cohort}.png"
         ),
-        heatmap_all = glue(
-          "output/correlations/heatmap_all_exposures_{cohort}.png"
+        heatmap_deprivation = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_deprivation_{cohort}.png"
         ),
-        corr_tab_age = glue(
-          "output/correlations/correlations_age_{cohort}.csv"
+        heatmap_morbidity = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_morbidity_{cohort}.png"
         ),
-        corr_tab_sex = glue(
-          "output/correlations/correlations_sex_{cohort}.csv"
+        heatmap_other_health = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_other_health_{cohort}.png"
         ),
-        corr_tab_eth = glue(
-          "output/correlations/correlations_ethnicity_{cohort}.csv"
+        heatmap_smoking = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_smoking_{cohort}.png"
         ),
-        corr_tab_imd = glue(
-          "output/correlations/correlations_imd_{cohort}.csv"
+
+        # Domain-specific correlation matrices
+        correlations_practice = glue(
+          "output/correlations/{cohort}/",
+          "correlations_practice_{cohort}.csv"
         ),
-        corr_tab_rur = glue(
-          "output/correlations/correlations_rurality_{cohort}.csv"
+        correlations_age_and_sex = glue(
+          "output/correlations/{cohort}/",
+          "correlations_age_and_sex_{cohort}.csv"
         ),
-        corr_tab_smk = glue(
-          "output/correlations/correlations_smoking_{cohort}.csv"
+        correlations_ethnicity = glue(
+          "output/correlations/{cohort}/",
+          "correlations_ethnicity_{cohort}.csv"
         ),
-        corr_tab_cons = glue(
-          "output/correlations/correlations_consultation_{cohort}.csv"
+        correlations_deprivation = glue(
+          "output/correlations/{cohort}/",
+          "correlations_deprivation_{cohort}.csv"
         ),
-        corr_tab_morb = glue(
-          "output/correlations/correlations_morbidity_{cohort}.csv"
+        correlations_morbidity = glue(
+          "output/correlations/{cohort}/",
+          "correlations_morbidity_{cohort}.csv"
         ),
-        scatter_cons = glue(
-          "output/correlations/scatter_cons_sep_vs_mean_{cohort}.png"
+        correlations_other_health = glue(
+          "output/correlations/{cohort}/",
+          "correlations_other_health_{cohort}.csv"
+        ),
+        correlations_smoking = glue(
+          "output/correlations/{cohort}/",
+          "correlations_smoking_{cohort}.csv"
+        ),
+
+        # Overall correlation outputs
+        heatmap_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_all_exposures_{cohort}.png"
+        ),
+        correlations_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "correlations_all_exposures_{cohort}.csv"
+        ),
+        heatmap_mutually_adjusted_exposures = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_mutually_adjusted_exposures_{cohort}.png"
+        ),
+        correlations_mutually_adjusted_exposures = glue(
+          "output/correlations/{cohort}/",
+          "correlations_mutually_adjusted_exposures_{cohort}.csv"
+        ),
+        high_correlation_pairs = glue(
+          "output/correlations/{cohort}/",
+          "high_correlation_pairs_07_{cohort}.csv"
+        ),
+        pairwise_n_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "pairwise_n_all_exposures_{cohort}.csv"
+        ),
+        pairwise_n_all_exposures_midpoint6 = glue(
+          "output/correlations/{cohort}/",
+          "pairwise_n_all_exposures_{cohort}-midpoint6.csv"
+        ),
+        correlation_pairs_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "correlation_pairs_all_exposures_{cohort}.csv"
         )
       )
     )
   )
-
-  # Appending action to the list of all actions for this .yaml
-  actions_list <- c(actions_list, generate_exposure_correlations)
 }
 
 # Combine actions into project list --------------------------------------------
