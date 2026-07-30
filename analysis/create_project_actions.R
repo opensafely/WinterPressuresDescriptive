@@ -279,8 +279,80 @@ apply_model_function <- function(
 # Create function for making model outputs --------------------------------------
 
 make_model_output <- function(cohort, subgroup, exposure_group) {
+  # Divide patient case-mix exposures into two output groups --------------------
+  case_mix1_exposures <- active_analyses %>%
+    filter(
+      exposure_group == "case_mix",
+      str_detect(
+        exposure,
+        "^(age_|sex_|ethnicity_)"
+      )
+    ) %>%
+    pull(exposure) %>%
+    unique()
+
+  case_mix2_exposures <- active_analyses %>%
+    filter(
+      exposure_group == "case_mix",
+      !exposure %in% case_mix1_exposures
+    ) %>%
+    pull(exposure) %>%
+    unique()
+
+  # Select analyses for the cohort -------------------------------------------
+
+  selected_analyses <- active_analyses %>%
+    filter(
+      .data$cohort == .env$cohort
+    )
+
+  # Select exposure group -----------------------------------------------------
+
+  if (exposure_group == "case_mix1") {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$exposure_group == "case_mix",
+        .data$exposure %in% case_mix1_exposures
+      )
+  } else if (exposure_group == "case_mix2") {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$exposure_group == "case_mix",
+        .data$exposure %in% case_mix2_exposures
+      )
+  } else {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$exposure_group == .env$exposure_group
+      )
+  }
+
+  # Select subgroup -----------------------------------------------------------
+
+  if (subgroup != "all") {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$analysis == .env$subgroup
+      )
+  }
+
+  # Check that analyses were selected ----------------------------------------
+
+  if (nrow(selected_analyses) == 0) {
+    stop(
+      paste0(
+        "No active analyses found for cohort = ",
+        cohort,
+        ", subgroup = ",
+        subgroup,
+        ", exposure_group = ",
+        exposure_group
+      )
+    )
+  }
+
   splice(
-    comment(glue("Generate model_output for {cohort} - {subgroup} - {exposure_group}")),
+    comment(glue("Generate model_output {cohort} - {exposure_group}_characteristic - {subgroup}")),
     action(
       name = glue(
         "make_model_output-{cohort}-{subgroup}-{exposure_group}"
@@ -288,33 +360,29 @@ make_model_output <- function(cohort, subgroup, exposure_group) {
       run = glue(
         "r:v2 analysis/make_output/make_model_output.R {cohort} {subgroup} {exposure_group}"
       ),
-      needs = as.list(c(
+      needs = as.list(
         paste0(
           "run_regression_model-",
-          active_analyses$name[
-            active_analyses$cohort == cohort &
-              active_analyses$analysis == subgroup &
-              active_analyses$exposure_group == exposure_group
-          ]
+          selected_analyses$name
         )
-      )),
+      ),
       moderately_sensitive = list(
         model_output_regression = glue(
-          "output/make_output/model_output-{cohort}-{subgroup}-{exposure_group}.csv"
+          "output/make_output/model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
         ),
         model_output_lrtest = paste0(
           "output/make_output/",
           glue(
-            "model_output_lrtest-{cohort}-{subgroup}-{exposure_group}.csv"
+            "model_output_lrtest-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
           )
         ),
         model_output_regression_midpoint6 = glue(
-          "output/make_output/model_output-{cohort}-{subgroup}-{exposure_group}-midpoint6.csv"
+          "output/make_output/model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
         ),
         model_output_lrtest_midpoint6 = paste0(
           "output/make_output/",
           glue(
-            "model_output_lrtest-{cohort}-{subgroup}-{exposure_group}-midpoint6.csv"
+            "model_output_lrtest-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
           )
         )
       )
@@ -537,15 +605,32 @@ actions_list <- c(
 )
 
 # Generate model outputs for all cohort-subgroup combinations -----------------
-for (subgroup in c(subgroups_short)) {
+
+for (cohort in cohorts_all) {
+  for (subgroup in c(subgroups_short)) {
+    actions_list <- c(
+      actions_list,
+      make_model_output(cohort, subgroup, "practice")
+    )
+  }
+}
+
+for (exposure_group in c("case_mix1", "case_mix2")) {
   for (cohort in cohorts_all) {
-    for (exposure_group in exposure_groups) {
+    for (subgroup in c(subgroups_short)) {
       actions_list <- c(
         actions_list,
         make_model_output(cohort, subgroup, exposure_group)
       )
     }
   }
+}
+
+for (cohort in cohorts_all) {
+  actions_list <- c(
+    actions_list,
+    make_model_output(cohort, "all", "all")
+  )
 }
 
 # Add action to generate correlation figures for exposures

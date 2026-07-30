@@ -19,7 +19,7 @@ print("Specify arguments")
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) == 0) {
-    cohort <- "precovid"
+    cohort <- "postcovid1"
     subgroup <- "main"
     exposure_group <- "practice"
 } else {
@@ -129,7 +129,7 @@ df_reg <- df_reg[, c(
 
 readr::write_csv(
     df_reg,
-    paste0(makeout_dir, "model_output-", cohort, "-", subgroup, "-", exposure_group, ".csv")
+    paste0(makeout_dir, "model_output-", cohort, "-subgroup_", subgroup, "-exposure_", exposure_group, ".csv")
 )
 
 # List available LR test model outputs -----------------------------------------------
@@ -196,7 +196,7 @@ df_lrtest <- df_lrtest[, c(
 
 readr::write_csv(
     df_lrtest,
-    paste0(makeout_dir, "model_output_lrtest-", cohort, "-", subgroup, "-", exposure_group, ".csv")
+    paste0(makeout_dir, "model_output_lrtest-", cohort, "-subgroup_", subgroup, "-exposure_", exposure_group, ".csv")
 )
 
 
@@ -220,10 +220,8 @@ readr::write_csv(
         makeout_dir,
         "model_output-",
         cohort,
-        "-",
-        subgroup,
-        "-",
-        exposure_group,
+        "-subgroup_", subgroup,
+        "-exposure_", exposure_group,
         "-midpoint6.csv"
     )
 )
@@ -237,10 +235,8 @@ readr::write_csv(
         makeout_dir,
         "model_output_lrtest-",
         cohort,
-        "-",
-        subgroup,
-        "-",
-        exposure_group,
+        "-subgroup_", subgroup,
+        "-exposure_", exposure_group,
         "-midpoint6.csv"
     )
 )
