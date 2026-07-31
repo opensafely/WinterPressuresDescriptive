@@ -667,10 +667,6 @@ for (cohort in cohorts_all) {
           "output/correlations/{cohort}/",
           "heatmap_deprivation_{cohort}.png"
         ),
-        heatmap_morbidity = glue(
-          "output/correlations/{cohort}/",
-          "heatmap_morbidity_{cohort}.png"
-        ),
         heatmap_other_health = glue(
           "output/correlations/{cohort}/",
           "heatmap_other_health_{cohort}.png"
@@ -696,10 +692,6 @@ for (cohort in cohorts_all) {
         correlations_deprivation = glue(
           "output/correlations/{cohort}/",
           "correlations_deprivation_{cohort}.csv"
-        ),
-        correlations_morbidity = glue(
-          "output/correlations/{cohort}/",
-          "correlations_morbidity_{cohort}.csv"
         ),
         correlations_other_health = glue(
           "output/correlations/{cohort}/",
