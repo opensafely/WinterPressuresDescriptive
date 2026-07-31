@@ -279,8 +279,80 @@ apply_model_function <- function(
 # Create function for making model outputs --------------------------------------
 
 make_model_output <- function(cohort, subgroup, exposure_group) {
+  # Divide patient case-mix exposures into two output groups --------------------
+  case_mix1_exposures <- active_analyses %>%
+    filter(
+      exposure_group == "case_mix",
+      str_detect(
+        exposure,
+        "^(age_|sex_|ethnicity_)"
+      )
+    ) %>%
+    pull(exposure) %>%
+    unique()
+
+  case_mix2_exposures <- active_analyses %>%
+    filter(
+      exposure_group == "case_mix",
+      !exposure %in% case_mix1_exposures
+    ) %>%
+    pull(exposure) %>%
+    unique()
+
+  # Select analyses for the cohort -------------------------------------------
+
+  selected_analyses <- active_analyses %>%
+    filter(
+      .data$cohort == .env$cohort
+    )
+
+  # Select exposure group -----------------------------------------------------
+
+  if (exposure_group == "case_mix1") {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$exposure_group == "case_mix",
+        .data$exposure %in% case_mix1_exposures
+      )
+  } else if (exposure_group == "case_mix2") {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$exposure_group == "case_mix",
+        .data$exposure %in% case_mix2_exposures
+      )
+  } else {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$exposure_group == .env$exposure_group
+      )
+  }
+
+  # Select subgroup -----------------------------------------------------------
+
+  if (subgroup != "all") {
+    selected_analyses <- selected_analyses %>%
+      filter(
+        .data$analysis == .env$subgroup
+      )
+  }
+
+  # Check that analyses were selected ----------------------------------------
+
+  if (nrow(selected_analyses) == 0) {
+    stop(
+      paste0(
+        "No active analyses found for cohort = ",
+        cohort,
+        ", subgroup = ",
+        subgroup,
+        ", exposure_group = ",
+        exposure_group
+      )
+    )
+  }
+
   splice(
-    comment(glue("Generate model_output for {cohort} - {subgroup} - {exposure_group}")),
+    comment(glue("Generate model_output {cohort} - {exposure_group}_characteristic - {subgroup}")),
     action(
       name = glue(
         "make_model_output-{cohort}-{subgroup}-{exposure_group}"
@@ -288,33 +360,29 @@ make_model_output <- function(cohort, subgroup, exposure_group) {
       run = glue(
         "r:v2 analysis/make_output/make_model_output.R {cohort} {subgroup} {exposure_group}"
       ),
-      needs = as.list(c(
+      needs = as.list(
         paste0(
           "run_regression_model-",
-          active_analyses$name[
-            active_analyses$cohort == cohort &
-              active_analyses$analysis == subgroup &
-              active_analyses$exposure_group == exposure_group
-          ]
+          selected_analyses$name
         )
-      )),
+      ),
       moderately_sensitive = list(
         model_output_regression = glue(
-          "output/make_output/model_output-{cohort}-{subgroup}-{exposure_group}.csv"
+          "output/make_output/model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
         ),
         model_output_lrtest = paste0(
           "output/make_output/",
           glue(
-            "model_output_lrtest-{cohort}-{subgroup}-{exposure_group}.csv"
+            "model_output_lrtest-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
           )
         ),
         model_output_regression_midpoint6 = glue(
-          "output/make_output/model_output-{cohort}-{subgroup}-{exposure_group}-midpoint6.csv"
+          "output/make_output/model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
         ),
         model_output_lrtest_midpoint6 = paste0(
           "output/make_output/",
           glue(
-            "model_output_lrtest-{cohort}-{subgroup}-{exposure_group}-midpoint6.csv"
+            "model_output_lrtest-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
           )
         )
       )
@@ -537,9 +605,19 @@ actions_list <- c(
 )
 
 # Generate model outputs for all cohort-subgroup combinations -----------------
-for (subgroup in c(subgroups_short)) {
+
+for (cohort in cohorts_all) {
+  for (subgroup in c(subgroups_short)) {
+    actions_list <- c(
+      actions_list,
+      make_model_output(cohort, subgroup, "practice")
+    )
+  }
+}
+
+for (exposure_group in c("case_mix1", "case_mix2")) {
   for (cohort in cohorts_all) {
-    for (exposure_group in exposure_groups) {
+    for (subgroup in c(subgroups_short)) {
       actions_list <- c(
         actions_list,
         make_model_output(cohort, subgroup, exposure_group)
@@ -548,65 +626,126 @@ for (subgroup in c(subgroups_short)) {
   }
 }
 
-# Add action to generate correlation figures for exposures
 for (cohort in cohorts_all) {
-  generate_exposure_correlations <- c(
-    comment(glue("Generates exposure correlation figures - {cohort}")),
+  actions_list <- c(
+    actions_list,
+    make_model_output(cohort, "all", "all")
+  )
+}
+
+# Add action to generate correlation figures for exposures
+# Add actions to generate exposure-correlation outputs ------------------------
+for (cohort in cohorts_all) {
+  actions_list <- c(
+    actions_list,
+    comment(
+      glue("Generate exposure-correlation outputs - {cohort}")
+    ),
     action(
-      name = glue("generate_exposure_correlation_figures_{cohort}"),
-      run = glue("r:v2 analysis/graphs/correlations_exposures.R {cohort}"),
-      needs = list(glue("generate_input_{cohort}_clean")),
+      name = glue("generate_exposure_correlations_{cohort}"),
+      run = glue(
+        "r:v2 analysis/graphs/correlations_exposures.R {cohort}"
+      ),
+      needs = list(
+        glue("generate_input_{cohort}_clean")
+      ),
       moderately_sensitive = list(
-        heatmap_age = glue("output/correlations/heatmap_age_{cohort}.png"),
-        heatmap_sex = glue("output/correlations/heatmap_sex_{cohort}.png"),
-        heatmap_eth = glue(
-          "output/correlations/heatmap_ethnicity_{cohort}.png"
+        # Domain-specific heatmaps
+        heatmap_practice = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_practice_{cohort}.png"
         ),
-        heatmap_imd = glue("output/correlations/heatmap_imd_{cohort}.png"),
-        heatmap_rur = glue("output/correlations/heatmap_rurality_{cohort}.png"),
-        heatmap_smk = glue("output/correlations/heatmap_smoking_{cohort}.png"),
-        heatmap_cons = glue(
-          "output/correlations/heatmap_consultation_{cohort}.png"
+        heatmap_age_and_sex = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_age_and_sex_{cohort}.png"
         ),
-        heatmap_morb = glue(
-          "output/correlations/heatmap_morbidity_{cohort}.png"
+        heatmap_ethnicity = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_ethnicity_{cohort}.png"
         ),
-        heatmap_all = glue(
-          "output/correlations/heatmap_all_exposures_{cohort}.png"
+        heatmap_deprivation = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_deprivation_{cohort}.png"
         ),
-        corr_tab_age = glue(
-          "output/correlations/correlations_age_{cohort}.csv"
+        heatmap_morbidity = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_morbidity_{cohort}.png"
         ),
-        corr_tab_sex = glue(
-          "output/correlations/correlations_sex_{cohort}.csv"
+        heatmap_other_health = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_other_health_{cohort}.png"
         ),
-        corr_tab_eth = glue(
-          "output/correlations/correlations_ethnicity_{cohort}.csv"
+        heatmap_smoking = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_smoking_{cohort}.png"
         ),
-        corr_tab_imd = glue(
-          "output/correlations/correlations_imd_{cohort}.csv"
+
+        # Domain-specific correlation matrices
+        correlations_practice = glue(
+          "output/correlations/{cohort}/",
+          "correlations_practice_{cohort}.csv"
         ),
-        corr_tab_rur = glue(
-          "output/correlations/correlations_rurality_{cohort}.csv"
+        correlations_age_and_sex = glue(
+          "output/correlations/{cohort}/",
+          "correlations_age_and_sex_{cohort}.csv"
         ),
-        corr_tab_smk = glue(
-          "output/correlations/correlations_smoking_{cohort}.csv"
+        correlations_ethnicity = glue(
+          "output/correlations/{cohort}/",
+          "correlations_ethnicity_{cohort}.csv"
         ),
-        corr_tab_cons = glue(
-          "output/correlations/correlations_consultation_{cohort}.csv"
+        correlations_deprivation = glue(
+          "output/correlations/{cohort}/",
+          "correlations_deprivation_{cohort}.csv"
         ),
-        corr_tab_morb = glue(
-          "output/correlations/correlations_morbidity_{cohort}.csv"
+        correlations_morbidity = glue(
+          "output/correlations/{cohort}/",
+          "correlations_morbidity_{cohort}.csv"
         ),
-        scatter_cons = glue(
-          "output/correlations/scatter_cons_sep_vs_mean_{cohort}.png"
+        correlations_other_health = glue(
+          "output/correlations/{cohort}/",
+          "correlations_other_health_{cohort}.csv"
+        ),
+        correlations_smoking = glue(
+          "output/correlations/{cohort}/",
+          "correlations_smoking_{cohort}.csv"
+        ),
+
+        # Overall correlation outputs
+        heatmap_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_all_exposures_{cohort}.png"
+        ),
+        correlations_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "correlations_all_exposures_{cohort}.csv"
+        ),
+        heatmap_mutually_adjusted_exposures = glue(
+          "output/correlations/{cohort}/",
+          "heatmap_mutually_adjusted_exposures_{cohort}.png"
+        ),
+        correlations_mutually_adjusted_exposures = glue(
+          "output/correlations/{cohort}/",
+          "correlations_mutually_adjusted_exposures_{cohort}.csv"
+        ),
+        high_correlation_pairs = glue(
+          "output/correlations/{cohort}/",
+          "high_correlation_pairs_07_{cohort}.csv"
+        ),
+        pairwise_n_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "pairwise_n_all_exposures_{cohort}.csv"
+        ),
+        pairwise_n_all_exposures_midpoint6 = glue(
+          "output/correlations/{cohort}/",
+          "pairwise_n_all_exposures_{cohort}-midpoint6.csv"
+        ),
+        correlation_pairs_all_exposures = glue(
+          "output/correlations/{cohort}/",
+          "correlation_pairs_all_exposures_{cohort}.csv"
         )
       )
     )
   )
-
-  # Appending action to the list of all actions for this .yaml
-  actions_list <- c(actions_list, generate_exposure_correlations)
 }
 
 # Combine actions into project list --------------------------------------------

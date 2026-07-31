@@ -9,6 +9,8 @@ library(lubridate)
 # Source functions -------------------------------------------------------------
 print("Source functions")
 
+source("analysis/utility.R")
+
 lapply(
   list.files("analysis/model", full.names = TRUE, pattern = "fn-"),
   source
@@ -20,7 +22,7 @@ print("Specify arguments")
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) == 0) {
-  name <- "cohort_precovid-main-ethnicity_white-apc_unpl"
+  name <- "cohort_postcovid1-main-practice_rurality-apc_acsc_any"
 } else {
   name <- args[[1]]
 }
