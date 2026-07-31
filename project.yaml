@@ -83695,14 +83695,12 @@ actions:
         heatmap_age_and_sex: output/correlations/precovid/heatmap_age_and_sex_precovid.png
         heatmap_ethnicity: output/correlations/precovid/heatmap_ethnicity_precovid.png
         heatmap_deprivation: output/correlations/precovid/heatmap_deprivation_precovid.png
-        heatmap_morbidity: output/correlations/precovid/heatmap_morbidity_precovid.png
         heatmap_other_health: output/correlations/precovid/heatmap_other_health_precovid.png
         heatmap_smoking: output/correlations/precovid/heatmap_smoking_precovid.png
         correlations_practice: output/correlations/precovid/correlations_practice_precovid.csv
         correlations_age_and_sex: output/correlations/precovid/correlations_age_and_sex_precovid.csv
         correlations_ethnicity: output/correlations/precovid/correlations_ethnicity_precovid.csv
         correlations_deprivation: output/correlations/precovid/correlations_deprivation_precovid.csv
-        correlations_morbidity: output/correlations/precovid/correlations_morbidity_precovid.csv
         correlations_other_health: output/correlations/precovid/correlations_other_health_precovid.csv
         correlations_smoking: output/correlations/precovid/correlations_smoking_precovid.csv
         heatmap_all_exposures: output/correlations/precovid/heatmap_all_exposures_precovid.png
@@ -83726,14 +83724,12 @@ actions:
         heatmap_age_and_sex: output/correlations/postcovid1/heatmap_age_and_sex_postcovid1.png
         heatmap_ethnicity: output/correlations/postcovid1/heatmap_ethnicity_postcovid1.png
         heatmap_deprivation: output/correlations/postcovid1/heatmap_deprivation_postcovid1.png
-        heatmap_morbidity: output/correlations/postcovid1/heatmap_morbidity_postcovid1.png
         heatmap_other_health: output/correlations/postcovid1/heatmap_other_health_postcovid1.png
         heatmap_smoking: output/correlations/postcovid1/heatmap_smoking_postcovid1.png
         correlations_practice: output/correlations/postcovid1/correlations_practice_postcovid1.csv
         correlations_age_and_sex: output/correlations/postcovid1/correlations_age_and_sex_postcovid1.csv
         correlations_ethnicity: output/correlations/postcovid1/correlations_ethnicity_postcovid1.csv
         correlations_deprivation: output/correlations/postcovid1/correlations_deprivation_postcovid1.csv
-        correlations_morbidity: output/correlations/postcovid1/correlations_morbidity_postcovid1.csv
         correlations_other_health: output/correlations/postcovid1/correlations_other_health_postcovid1.csv
         correlations_smoking: output/correlations/postcovid1/correlations_smoking_postcovid1.csv
         heatmap_all_exposures: output/correlations/postcovid1/heatmap_all_exposures_postcovid1.png
@@ -83757,14 +83753,12 @@ actions:
         heatmap_age_and_sex: output/correlations/postcovid2/heatmap_age_and_sex_postcovid2.png
         heatmap_ethnicity: output/correlations/postcovid2/heatmap_ethnicity_postcovid2.png
         heatmap_deprivation: output/correlations/postcovid2/heatmap_deprivation_postcovid2.png
-        heatmap_morbidity: output/correlations/postcovid2/heatmap_morbidity_postcovid2.png
         heatmap_other_health: output/correlations/postcovid2/heatmap_other_health_postcovid2.png
         heatmap_smoking: output/correlations/postcovid2/heatmap_smoking_postcovid2.png
         correlations_practice: output/correlations/postcovid2/correlations_practice_postcovid2.csv
         correlations_age_and_sex: output/correlations/postcovid2/correlations_age_and_sex_postcovid2.csv
         correlations_ethnicity: output/correlations/postcovid2/correlations_ethnicity_postcovid2.csv
         correlations_deprivation: output/correlations/postcovid2/correlations_deprivation_postcovid2.csv
-        correlations_morbidity: output/correlations/postcovid2/correlations_morbidity_postcovid2.csv
         correlations_other_health: output/correlations/postcovid2/correlations_other_health_postcovid2.csv
         correlations_smoking: output/correlations/postcovid2/correlations_smoking_postcovid2.csv
         heatmap_all_exposures: output/correlations/postcovid2/heatmap_all_exposures_postcovid2.png
@@ -83788,14 +83782,12 @@ actions:
         heatmap_age_and_sex: output/correlations/postcovid3/heatmap_age_and_sex_postcovid3.png
         heatmap_ethnicity: output/correlations/postcovid3/heatmap_ethnicity_postcovid3.png
         heatmap_deprivation: output/correlations/postcovid3/heatmap_deprivation_postcovid3.png
-        heatmap_morbidity: output/correlations/postcovid3/heatmap_morbidity_postcovid3.png
         heatmap_other_health: output/correlations/postcovid3/heatmap_other_health_postcovid3.png
         heatmap_smoking: output/correlations/postcovid3/heatmap_smoking_postcovid3.png
         correlations_practice: output/correlations/postcovid3/correlations_practice_postcovid3.csv
         correlations_age_and_sex: output/correlations/postcovid3/correlations_age_and_sex_postcovid3.csv
         correlations_ethnicity: output/correlations/postcovid3/correlations_ethnicity_postcovid3.csv
         correlations_deprivation: output/correlations/postcovid3/correlations_deprivation_postcovid3.csv
-        correlations_morbidity: output/correlations/postcovid3/correlations_morbidity_postcovid3.csv
         correlations_other_health: output/correlations/postcovid3/correlations_other_health_postcovid3.csv
         correlations_smoking: output/correlations/postcovid3/correlations_smoking_postcovid3.csv
         heatmap_all_exposures: output/correlations/postcovid3/heatmap_all_exposures_postcovid3.png

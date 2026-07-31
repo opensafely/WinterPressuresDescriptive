@@ -64,21 +64,28 @@ outcomes_sub <- as.vector(
 outcome_names <- c(outcomes_main, outcomes_sub)
 
 # Define exposure variable names ----
-exposure_listsize <- c(
-    "list_size"
-)
 
-## Exposure: region
+## Practice characteristics: region
 exposure_region <- c(
     "practice_region"
 )
 
-## Exposure: rurality
+## Practice characteristics: rurality
 exposure_rurality <- c(
     "practice_rurality"
 )
 
-## Exposure: demographic exposures
+## Practice characteristics: List size
+exposure_listsize <- c(
+    "list_size"
+)
+
+## Practice characteristics: consultation frequency
+exposure_consultation <- c(
+    "cons_mean"
+)
+
+## Patient case-mix characteristics: age, sex
 exposure_age <- c(
     "age_0_4",
     # "age_5_11",
@@ -99,6 +106,8 @@ exposure_sex <- c(
     "sex_female"
 )
 
+## Patient case-mix characteristics: ethnicity
+
 exposure_ethnicity <- c(
     "ethnicity_white",
     "ethnicity_mixed",
@@ -108,7 +117,7 @@ exposure_ethnicity <- c(
     # "ethnicity_missing"
 )
 
-## Exposure: socioeconomic exposures
+## Patient case-mix characteristics: deprivation
 exposure_imd <- c(
     "imd_1_most",
     # "imd_2",
@@ -118,7 +127,7 @@ exposure_imd <- c(
     # "imd_missing"
 )
 
-# Exposure: health-related exposures
+## Patient case-mix characteristics: long-term conditions
 exposure_conditions <- c(
     "cms_af",
     "cms_alcohol",
@@ -142,12 +151,13 @@ exposure_conditions <- c(
     "cms_stia"
 )
 
+## Patient case-mix characteristics: other health conditions
 exposure_other_health <- c(
     "obesity",
     "carehome"
 )
 
-## Exposure: lifestyle exposures
+## Patient case-mix characteristics: smoking status
 exposure_smoking <- c(
     "smoking_current",
     "smoking_ever",
@@ -155,37 +165,32 @@ exposure_smoking <- c(
     # "smoking_missing"
 )
 
-## Exposure: consultation frequency
-exposure_consultation <- c(
-    "cons_mean"
-)
-
-## Exposure:vaccination
+## Patient case-mix characteristics: vaccination
 exposure_vax <- c(
     "vax_flu_y",
     "vax_pneum_y"
 )
 
 exposure_names <- c(
-    exposure_listsize,
     exposure_region,
     exposure_rurality,
+    exposure_listsize,
+    exposure_consultation,
     exposure_age,
     exposure_sex,
     exposure_ethnicity,
     exposure_imd,
     # exposure_conditions,
     exposure_other_health,
-    exposure_smoking,
+    exposure_smoking
     # exposure_vax,
-    exposure_consultation
 )
 
 # Practice characteristics
 exposure_practice <- c(
-    exposure_listsize,
     exposure_region,
     exposure_rurality,
+    exposure_listsize,
     exposure_consultation
 )
 
@@ -309,7 +314,7 @@ df_mutually_adjusted <- crossing(
     mutate(
         outcome_start = unname(unlist(cohort_dates[cohort])),
         exposure = paste(
-            exposure_names,  # we can change this to a subset of exposures if we want to limit the mutually adjusted analyses
+            exposure_names, # we can change this to a subset of exposures if we want to limit the mutually adjusted analyses, also correlation heatmap can use identical subset of exposures to check for collinearity
             collapse = ";"
         ),
         exposure_group = "all",
