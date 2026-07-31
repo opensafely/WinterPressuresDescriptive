@@ -309,7 +309,7 @@ df_mutually_adjusted <- crossing(
     mutate(
         outcome_start = unname(unlist(cohort_dates[cohort])),
         exposure = paste(
-            exposure_names,  # we can change this to a subset of exposures if we want to limit the mutually adjusted analyses
+            exposure_names,  # we can change this to a subset of exposures if we want to limit the mutually adjusted analyses, also correlation heatmap can use identical subset of exposures to check for collinearity
             collapse = ";"
         ),
         exposure_group = "all",
