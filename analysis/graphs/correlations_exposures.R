@@ -711,6 +711,125 @@ if (length(mutually_adjusted_columns) > 1) {
     )
 }
 
+# Calculate VIFs for mutually adjusted model exposures ------------------------
+print("Calculate VIFs for mutually adjusted model exposures")
+
+calculate_vifs <- function(df) {
+    predictor_matrix <- as.matrix(df)
+
+    map_dfr(seq_len(ncol(predictor_matrix)), function(j) {
+        outcome <- predictor_matrix[, j]
+
+        other_predictors <- predictor_matrix[, -j, drop = FALSE]
+
+        auxiliary_model <- lm.fit(
+            x = cbind(
+                intercept = 1,
+                other_predictors
+            ),
+            y = outcome
+        )
+
+        residual_sum_squares <- sum(auxiliary_model$residuals^2)
+        total_sum_squares <- sum(
+            (outcome - mean(outcome))^2
+        )
+
+        r_squared <- 1 - residual_sum_squares / total_sum_squares
+
+        # Protect against small numerical deviations outside 0–1.
+        r_squared <- min(max(r_squared, 0), 1)
+        tolerance <- 1 - r_squared
+
+        vif <- if (
+            tolerance <= sqrt(.Machine$double.eps)
+        ) {
+            Inf
+        } else {
+            1 / tolerance
+        }
+
+        tibble(
+            exposure = colnames(predictor_matrix)[j],
+            r_squared = r_squared,
+            vif = vif
+        )
+    })
+}
+
+if (length(mutually_adjusted_columns) > 1) {
+    # Use a common complete-case sample for every VIF.
+    vif_data <- correlation_data %>%
+        select(all_of(mutually_adjusted_columns)) %>%
+        drop_na()
+
+    # testing code to allow the calculation to have a complete-case sample size of at least 10 practices
+    # vif_data <- correlation_data %>%
+    #     select(all_of(mutually_adjusted_columns)) %>%
+    #     mutate(
+    #         across(
+    #             everything(),
+    #             ~ replace(
+    #                 .x,
+    #                 is.na(.x),
+    #                 median(.x, na.rm = TRUE)
+    #             )
+    #         )
+    #     )
+
+    if (nrow(vif_data) <= ncol(vif_data)) {
+        stop(
+            "There are insufficient complete observations to calculate VIFs."
+        )
+    }
+
+    # Variables may become constant after restricting to complete cases.
+    constant_vif_variables <- names(vif_data)[
+        map_lgl(vif_data, ~ n_distinct(.x) < 2)
+    ]
+
+    if (length(constant_vif_variables) > 0) {
+        stop(
+            "The following variables are constant in the complete-case ",
+            "VIF dataset: ",
+            paste(constant_vif_variables, collapse = ", ")
+        )
+    }
+
+    vif_results <- calculate_vifs(vif_data) %>%
+        mutate(
+            cohort = cohort,
+            exposure_label = map_chr(exposure, display_label),
+            n_practices_midpoint6 = roundmid_num(nrow(vif_data))
+        ) %>%
+        select(
+            cohort,
+            exposure,
+            exposure_label,
+            r_squared,
+            vif,
+            n_practices_midpoint6
+        ) %>%
+        arrange(match(exposure, mutually_adjusted_columns))
+
+    write_csv(
+        vif_results,
+        file.path(
+            output_dir,
+            paste0(
+                "vif_mutually_adjusted_exposures_",
+                cohort,
+                ".csv"
+            )
+        )
+    )
+} else {
+    warning(
+        "Fewer than two mutually adjusted model columns were available; ",
+        "VIFs were not calculated."
+    )
+}
+
 # Export unique highly correlated pairs ---------------------------------------
 print("Export highly correlated exposure pairs")
 
