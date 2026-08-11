@@ -181,8 +181,8 @@ exposure_names <- c(
     exposure_ethnicity,
     exposure_imd,
     # exposure_conditions,
-    exposure_other_health,
-    exposure_smoking
+    exposure_smoking,
+    exposure_other_health
     # exposure_vax,
 )
 

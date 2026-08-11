@@ -21,6 +21,25 @@ collapse_categories <- function(input) {
             )
         )
 
+    # Practice region
+    region_levels <- c(
+        "East",
+        "East Midlands",
+        "London",
+        "North East",
+        "North West",
+        "South East",
+        "South West",
+        "West Midlands",
+        "Yorkshire and The Humber"
+    )
+    if ("practice_region" %in% names(input)) {
+        input$practice_region <- factor(
+            input$practice_region,
+            levels = region_levels
+        )
+    }
+
     # Variables to remove
     vars_to_remove <- c(grep(
         "80_84|85|urban_major|urban_minor",

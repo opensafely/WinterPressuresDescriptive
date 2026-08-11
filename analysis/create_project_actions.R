@@ -719,6 +719,10 @@ for (cohort in cohorts_all) {
           "output/correlations/{cohort}/",
           "correlations_mutually_adjusted_exposures_{cohort}.csv"
         ),
+        vif_mutually_adjusted_exposures = glue(
+          "output/correlations/{cohort}/",
+          "vif_mutually_adjusted_exposures_{cohort}.csv"
+        ),
         high_correlation_pairs = glue(
           "output/correlations/{cohort}/",
           "high_correlation_pairs_07_{cohort}.csv"
