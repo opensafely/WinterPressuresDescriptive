@@ -38,7 +38,7 @@ df_plot <- readr::read_csv(
 )
 
 # Select cohorts for the figure
-cohorts_to_plot <- c("precovid", "postcovid3")
+cohorts_to_plot <- c("precovid", "postcovid1", "postcovid2", "postcovid3")
 
 df_plot <- df_plot %>%
     filter(cohort %in% cohorts_to_plot) %>%
@@ -141,6 +141,14 @@ walk(groups, function(g) {
 
     pd <- position_dodge(width = 0.7)
 
+    width <- if (g == "Obesity") {
+        6
+    } else if (g == "Care home residence") {
+        5
+    } else {
+        13
+    }
+
     p <- ggplot(
         plot_data,
         aes(
@@ -235,7 +243,7 @@ walk(groups, function(g) {
             paste0("table1_", g, "_median_iqr.png")
         ),
         plot = p,
-        width = 13,
+        width = width,
         height = 4
     )
 })

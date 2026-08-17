@@ -41,7 +41,7 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 # Define group order for plotting
 group_order <- c(
     "Practice region",
-    "Rurality",
+    "Practice rurality",
     "List size",
     "Monthly consultation",
     "Age",
@@ -55,7 +55,7 @@ group_order <- c(
 
 practice_groups <- c(
     "Practice region",
-    "Rurality",
+    "Practice rurality",
     "List size",
     "Monthly consultation"
 )
@@ -72,7 +72,7 @@ case_mix_groups <- setdiff(
 # practice_char <- "practice"
 # regression can be negbin or poisson
 # outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
-plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_char) {
+plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_char = "all") {
     # Load data --------------------------------------------------------------------
     print("Load model output")
 
@@ -119,7 +119,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             model = factor(
                 model,
                 levels = c("mdl_crude", "mdl_age_sex"),
-                labels = c("Crude", "Age–sex adjusted")
+                labels = c("Single-characteristic (crude)", "Single-characteristic (age-sex adjusted)")
             ),
             cohort = factor(
                 cohort,
@@ -241,8 +241,9 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     # filter the df according to the practice_char argument
     is_ec <- all(str_detect(outcome_names, "^ec"))
+    combined_ec <- is_ec && practice_char == "all"
 
-    if (!is_ec) {
+    if (!combined_ec) {
         if (practice_char == "practice") {
             df <- df %>%
                 filter(group %in% practice_groups)
@@ -285,18 +286,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         widths <- c(0.70, 0.30)
     }
 
-    row_levels <- rev(table_side$exposure_label)
-
-    table_side <- table_side %>%
-        mutate(
-            exposure_label = factor(
-                exposure_label,
-                levels = row_levels
-            )
-        )
-
-    # Calculate median MAD for each exposure across cohorts and create a new label for the exposure label that includes the median MAD value in parentheses, unless the row is a header or the median MAD is NaN
-
+    # Calculate median MAD and construct characteristic labels
     table_side <- table_side %>%
         rowwise() %>%
         mutate(
@@ -305,51 +295,357 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 na.rm = TRUE
             ),
             exposure_label_full = case_when(
-                is.na(mad_median) ~ exposure_label,
+                is.na(mad_median) ~ as.character(exposure_label),
                 mad_median <= 100 ~ sprintf(
-                    "%s (%.1f%%)",
+                    "%s (per %.1f%%)",
                     exposure_label,
                     mad_median
                 ),
                 TRUE ~ sprintf(
-                    "%s (%.0f)",
+                    "%s (per %.0f)",
                     exposure_label,
                     mad_median
                 )
             )
         ) %>%
-        ungroup()
-
-    # Set the y-axis labels for the forest plot to be the exposure_label_full values, with names corresponding to the exposure_label values
-    y_labels <- table_side$exposure_label_full
-    names(y_labels) <- table_side$exposure_label
-
-    # set the order of the exposure_label factor to match the order in the table
-    df <- df %>%
+        ungroup() %>%
         mutate(
-            exposure_label = factor(
-                exposure_label,
-                levels = row_levels
-            )
+            exposure_label = as.character(exposure_label)
         )
 
-    if (is_ec) {
+    # Groups that require a separate subtitle.
+    # Single characteristics such as list size and obesity do not need
+    # a subtitle because this would repeat the characteristic name.
+    groups_with_subtitle <- c(
+        "Practice region",
+        "Practice rurality",
+        "Age",
+        "Sex",
+        "Ethnicity",
+        "Deprivation",
+        "Smoking Status"
+    )
+    # Bold the characteristic name but not its "(per X)" information
+    format_single_label <- function(x) {
+        if_else(
+            str_detect(x, fixed(" (per ")),
+            str_replace(
+                x,
+                "^(.*?)( \\(per .+\\))$",
+                "<b>\\1</b>\\2"
+            ),
+            paste0("<b>", x, "</b>")
+        )
+    }
+
+    if (combined_ec) {
+        # Main sections
+        practice_section <- "Practice characteristics"
+
+        case_mix_section <- paste0(
+            "Patient case-mix ",
+            "(% of patients in practice with each characteristic)"
+        )
+
+        section_order <- c(
+            practice_section,
+            case_mix_section
+        )
+
+        # Create an identifier for each plotted characteristic
         df <- df %>%
             mutate(
-                facet_row = if_else(
+                section = if_else(
                     group %in% practice_groups,
-                    "Practice characteristics",
-                    "Patient case-mix (% of patients in practice with each characteristic)"
+                    practice_section,
+                    case_mix_section
                 ),
-                facet_row = factor(
-                    facet_row,
-                    levels = c(
-                        "Practice characteristics",
-                        "Patient case-mix (% of patients in practice with each characteristic)"
+                group_character = as.character(group),
+                exposure_character = as.character(exposure_label),
+                plot_row = paste(
+                    "item",
+                    group_character,
+                    exposure_character,
+                    sep = "|||"
+                )
+            )
+
+        # One row per characteristic, in the required order
+        item_rows <- df %>%
+            distinct(
+                section,
+                group_character,
+                exposure_character,
+                plot_row,
+                ref_order
+            ) %>%
+            left_join(
+                table_side %>%
+                    select(
+                        exposure_character = exposure_label,
+                        exposure_label_full
+                    ),
+                by = "exposure_character"
+            ) %>%
+            arrange(
+                factor(section, levels = section_order),
+                match(group_character, group_order),
+                ref_order
+            )
+
+        # Construct the hierarchy:
+        # section heading -> subgroup heading -> characteristics
+        row_structure <- purrr::map_dfr(
+            section_order,
+            function(section_name) {
+                groups_in_section <- group_order[
+                    group_order %in%
+                        item_rows$group_character[
+                            item_rows$section == section_name
+                        ]
+                ]
+
+                group_rows <- purrr::map_dfr(
+                    groups_in_section,
+                    function(group_name) {
+                        rows_in_group <- item_rows %>%
+                            filter(
+                                section == section_name,
+                                group_character == group_name
+                            ) %>%
+                            arrange(ref_order)
+
+                        has_subtitle <- group_name %in%
+                            groups_with_subtitle
+
+                        characteristic_rows <- rows_in_group %>%
+                            transmute(
+                                plot_row,
+                                y_label = if (has_subtitle) {
+                                    paste0(
+                                        "&nbsp;&nbsp;&nbsp;",
+                                        exposure_label_full
+                                    )
+                                } else {
+                                    format_single_label(exposure_label_full)
+                                },
+                                row_type = "characteristic"
+                            )
+
+                        if (has_subtitle) {
+                            bind_rows(
+                                tibble(
+                                    plot_row = paste(
+                                        "group",
+                                        group_name,
+                                        sep = "|||"
+                                    ),
+                                    y_label = paste0(
+                                        "<b>",
+                                        group_name,
+                                        "</b>"
+                                    ),
+                                    row_type = "subgroup"
+                                ),
+                                characteristic_rows
+                            )
+                        } else {
+                            characteristic_rows
+                        }
+                    }
+                )
+
+                # Give the case-mix heading two rows
+                section_rows <- if (section_name == case_mix_section) {
+                    tibble(
+                        plot_row = c(
+                            paste(
+                                "section",
+                                section_name,
+                                "title",
+                                sep = "|||"
+                            ),
+                            paste(
+                                "section",
+                                section_name,
+                                "description",
+                                sep = "|||"
+                            )
+                        ),
+                        y_label = c(
+                            paste0(
+                                "<span style='color:#2F5597;font-size:11pt;'>",
+                                "<b>Patient case-mix</b>",
+                                "</span>"
+                            ),
+                            paste0(
+                                "<span style='color:#2F5597;font-size:10pt;'>",
+                                "(% of patients in practice with each characteristic)",
+                                "</span>"
+                            )
+                        ),
+                        row_type = "section"
                     )
+                } else {
+                    tibble(
+                        plot_row = paste(
+                            "section",
+                            section_name,
+                            "title",
+                            sep = "|||"
+                        ),
+                        y_label = paste0(
+                            "<span style='color:#2F5597;font-size:11pt;'>",
+                            "<b>",
+                            section_name,
+                            "</b>",
+                            "</span>"
+                        ),
+                        row_type = "section"
+                    )
+                }
+
+                bind_rows(
+                    section_rows,
+                    group_rows
+                )
+            }
+        )
+
+        # ggplot displays the first factor level at the bottom
+        row_levels <- rev(row_structure$plot_row)
+
+        y_labels <- row_structure$y_label
+        names(y_labels) <- row_structure$plot_row
+
+        df <- df %>%
+            mutate(
+                plot_row = factor(
+                    plot_row,
+                    levels = row_levels
+                )
+            )
+
+        # Data used to add pale bands to the two main section rows
+        section_band_df <- row_structure %>%
+            filter(row_type == "section") %>%
+            transmute(
+                plot_row = factor(
+                    plot_row,
+                    levels = row_levels
+                )
+            )
+    } else {
+        # Add subgroup headings to the separate practice and case-mix plots
+        df <- df %>%
+            mutate(
+                group_character = as.character(group),
+                exposure_character = as.character(exposure_label),
+                plot_row = paste(
+                    "item",
+                    group_character,
+                    exposure_character,
+                    sep = "|||"
+                )
+            )
+
+        # Obtain one row for each characteristic
+        item_rows <- df %>%
+            distinct(
+                group_character,
+                exposure_character,
+                plot_row,
+                ref_order
+            ) %>%
+            left_join(
+                table_side %>%
+                    select(
+                        exposure_character = exposure_label,
+                        exposure_label_full
+                    ),
+                by = "exposure_character"
+            ) %>%
+            arrange(
+                match(group_character, group_order),
+                ref_order
+            )
+
+        # Retain only groups present in the current figure
+        groups_in_plot <- group_order[
+            group_order %in% item_rows$group_character
+        ]
+
+        # Construct:
+        # subgroup heading -> indented characteristics
+        row_structure <- purrr::map_dfr(
+            groups_in_plot,
+            function(group_name) {
+                has_subtitle <- group_name %in% groups_with_subtitle
+
+                characteristic_rows <- item_rows %>%
+                    filter(
+                        group_character == group_name
+                    ) %>%
+                    arrange(ref_order) %>%
+                    transmute(
+                        plot_row,
+                        y_label = if (has_subtitle) {
+                            paste0(
+                                "&nbsp;&nbsp;&nbsp;",
+                                exposure_label_full
+                            )
+                        } else {
+                            format_single_label(exposure_label_full)
+                        },
+                        row_type = "characteristic"
+                    )
+
+                group_display <- if_else(
+                    group_name == "Smoking Status",
+                    "Smoking status",
+                    group_name
+                )
+
+                if (has_subtitle) {
+                    bind_rows(
+                        tibble(
+                            plot_row = paste(
+                                "group",
+                                group_name,
+                                sep = "|||"
+                            ),
+                            y_label = paste0(
+                                "<span style='font-size:10pt;'>",
+                                "<b>",
+                                group_display,
+                                "</b>",
+                                "</span>"
+                            ),
+                            row_type = "subgroup"
+                        ),
+                        characteristic_rows
+                    )
+                } else {
+                    characteristic_rows
+                }
+            }
+        )
+
+        # The first factor level appears at the bottom of a ggplot
+        row_levels <- rev(row_structure$plot_row)
+
+        y_labels <- row_structure$y_label
+        names(y_labels) <- row_structure$plot_row
+
+        df <- df %>%
+            mutate(
+                plot_row = factor(
+                    plot_row,
+                    levels = row_levels
                 )
             )
     }
+
     # Make forest plot -----------------------------------------------------------
     print("Make forest plot")
 
@@ -393,18 +689,18 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     # Plot width and height
 
-    if (is_ec) {
+    if (combined_ec) {
         ci_cap <- 0.2
         panel_width <- 5
-        plot_height <- 9
+        plot_height <- 11
     } else if (practice_char == "practice") {
         ci_cap <- 0.4
         panel_width <- 4.5
-        plot_height <- 9
+        plot_height <- 10
     } else {
         ci_cap <- 0.4
         panel_width <- 3.8
-        plot_height <- 9
+        plot_height <- 11
     }
 
     n_outcomes <- length(outcome_names)
@@ -439,17 +735,14 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             ifelse(regression == "negbin", "negative binomial", "Poisson"),
             " regression models.",
             "\n\n",
-            " MAD: median absolute deviation. The median MAD across cohorts is shown in parentheses for each continuous characteristic, representing a one-unit increase in the standardised exposure."
+            " Continuous characteristics were scaled by the cohort-specific median absolute deviation (MAD). Values in parentheses show the median MAD across the included cohorts and indicate the increase represented by each IRR."
         ),
         width = caption_width
     )
 
-    facet_spec <- if (is_ec) {
+    facet_spec <- if (combined_ec) {
         facet_grid(
-            rows = vars(facet_row),
-            cols = vars(outcome_label),
-            scales = "free_y",
-            space = "free_y"
+            cols = vars(outcome_label)
         )
     } else {
         facet_wrap(
@@ -458,7 +751,9 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         )
     }
 
-    y_title <- if (practice_char == "all") {
+    y_title <- if (combined_ec) {
+        NULL
+    } else if (practice_char == "all") {
         "Characteristics (median MAD across cohorts)"
     } else if (practice_char == "practice") {
         "Practice characteristics"
@@ -470,12 +765,30 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         df,
         aes(
             x = irr,
-            y = exposure_label,
+            y = plot_row,
             colour = cohort_label,
             alpha = model,
             group = interaction(cohort_label, model)
         )
-    ) +
+    )
+
+    if (combined_ec) {
+        p <- p +
+            geom_tile(
+                data = section_band_df,
+                aes(
+                    x = mean(x_limits),
+                    y = plot_row
+                ),
+                inherit.aes = FALSE,
+                width = diff(x_limits),
+                height = 1.2,
+                fill = "#EAF1F7",
+                colour = NA
+            )
+    }
+
+    p <- p +
         geom_vline(
             xintercept = 1,
             colour = "grey60",
@@ -498,10 +811,11 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         ) +
         # --- Scales ---
         scale_alpha_manual(
-            values = c("Crude" = 0.35, "Age-sex adjusted" = 1),
+            values = c("Single-characteristic (crude)" = 0.35, "Single-characteristic (age-sex adjusted)" = 1),
             name = "Model"
         ) +
         scale_colour_manual(
+            name = "Cohort",
             values = c(
                 "Pre-COVID19" = "#F8766D",
                 "2022/23" = "#7CAE00",
@@ -511,10 +825,11 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             drop = FALSE
         ) +
         scale_y_discrete(
-            labels = y_labels
+            labels = y_labels,
+            drop = FALSE
         ) +
         scale_size_manual(
-            values = c("Crude" = 1.6, "Age-sex adjusted" = 2.2),
+            values = c("Single-characteristic (crude)" = 1.6, "Single-characteristic (age-sex adjusted)" = 2.2),
             name = "Model"
         ) +
         scale_x_log10(
@@ -529,7 +844,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             title = title_text,
             x = "Incidence rate ratio (IRR)",
             y = y_title,
-            colour = "",
             linetype = "Model",
             caption = caption_text
         ) +
@@ -564,7 +878,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         ) +
         guides(
             colour = guide_legend(
-                title = "",
                 nrow = 1,
                 byrow = TRUE,
                 override.aes = list(size = 2, alpha = 1)
@@ -587,111 +900,103 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         dpi = 300
     )
 }
-plot_irr("negbin", "main", c("apc", "apc_unpl"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "main", c("apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "practice")
-
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# Run main analyses
 plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+plot_irr("negbin", "sub_asth", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+plot_irr("negbin", "sub_asth", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "sub_asth", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+plot_irr("negbin", "sub_copd", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+plot_irr("negbin", "sub_copd", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "sub_copd", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+plot_irr("negbin", "sub_htn", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+plot_irr("negbin", "sub_htn", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "sub_htn", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+plot_irr("negbin", "sub_diab", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+plot_irr("negbin", "sub_diab", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "sub_diab", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+
+plot_irr("negbin", "sub_sevmh", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+plot_irr("negbin", "sub_sevmh", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
+plot_irr("negbin", "sub_sevmh", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
 
 
 
-plot_irr("negbin", "main", c("apc_unpl", "apc_plan", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "main", c("apc_unpl", "apc_plan", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# Run all analyses for supplementary figures
+# Analyses to plot
+all_analyses <- c(
+    "main",
+    "sub_asth",
+    "sub_copd",
+    "sub_htn",
+    "sub_diab",
+    "sub_sevmh"
+)
 
+# Cohorts to include
+ec_cohorts <- c(
+    "postcovid1",
+    "postcovid2",
+    "postcovid3"
+)
 
+apc_cohorts <- c(
+    "precovid",
+    "postcovid1",
+    "postcovid2",
+    "postcovid3"
+)
 
-plot_irr("negbin", "main", c("apc", "apc_unpl"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# Outcomes
+ec_outcomes <- c(
+    "ec",
+    "ec_acsc_any"
+)
 
+apc_outcomes <- c(
+    "apc",
+    "apc_unpl",
+    "apc_plan",
+    "apc_acsc_any",
+    "apc_unpl_acsc_any",
+    "apc_plan_acsc_any"
+)
 
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "practice")
+# Generate all plots
+purrr::walk(
+    all_analyses,
+    function(current_analysis) {
 
-# regression can be negbin or poisson
-# outcomes can be apc_main; apc_acsc_any_main; apc_plan_acsc_any_main; apc_unpl_main; apc_unpl_acsc_any_main; ec_main; ec_acsc_any_main
+        # EC: practice characteristics and case-mix together
+        plot_irr(
+            regression = "negbin",
+            sub_group = current_analysis,
+            outcome_names = ec_outcomes,
+            cohorts = ec_cohorts,
+            practice_char = "all"
+        )
 
-# Hospital use
-plot_irr("negbin", "main", c("apc", "ec"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
+        # APC: practice characteristics
+        plot_irr(
+            regression = "negbin",
+            sub_group = current_analysis,
+            outcome_names = apc_outcomes,
+            cohorts = apc_cohorts,
+            practice_char = "practice"
+        )
 
-plot_irr("negbin", "main", c("apc", "ec"), c("precovid", "postcovid3"))
-plot_irr("poisson", "main", c("apc", "ec"), c("precovid", "postcovid3"))
-
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_acsc_any", "apc_unpl_acsc_any"), c("precovid", "postcovid3"))
-plot_irr("poisson", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-
-plot_irr("negbin", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid3"))
-plot_irr("poisson", "main", c("apc_unpl", "apc_plan"), c("precovid", "postcovid3"))
-
-# ACSC-related hospital use
-plot_irr("negbin", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-plot_irr("poisson", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-
-plot_irr("negbin", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid3"))
-plot_irr("poisson", "main", c("apc_acsc_any", "ec_acsc_any"), c("precovid", "postcovid3"))
-
-plot_irr("negbin", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-plot_irr("poisson", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid1", "postcovid2", "postcovid3"))
-
-plot_irr("negbin", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"))
-plot_irr("poisson", "main", c("apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"))
-
-plot_irr("negbin", "sub_asth", "apc")
-plot_irr("poisson", "sub_asth", "apc")
-plot_irr("negbin", "sub_asth", "ec")
-plot_irr("poisson", "sub_asth", "ec")
-plot_irr("negbin", "sub_asth", "apc_unpl")
-plot_irr("poisson", "sub_asth", "apc_unpl")
-
-plot_irr("negbin", "sub_asth", "apc_acsc_any")
-plot_irr("poisson", "sub_asth", "apc_acsc_any")
-plot_irr("negbin", "sub_asth", "ec_acsc_any")
-plot_irr("poisson", "sub_asth", "ec_acsc_any")
-
-plot_irr("negbin", "sub_copd", "apc")
-plot_irr("poisson", "sub_copd", "apc")
-plot_irr("negbin", "sub_copd", "ec")
-plot_irr("poisson", "sub_copd", "ec")
-plot_irr("negbin", "sub_copd", "apc_unpl")
-plot_irr("poisson", "sub_copd", "apc_unpl")
-
-plot_irr("negbin", "sub_copd", "apc_acsc_any")
-plot_irr("poisson", "sub_copd", "apc_acsc_any")
-plot_irr("negbin", "sub_copd", "ec_acsc_any")
-plot_irr("poisson", "sub_copd", "ec_acsc_any")
-
-plot_irr("negbin", "sub_diab", "apc")
-plot_irr("poisson", "sub_diab", "apc")
-plot_irr("negbin", "sub_diab", "ec")
-plot_irr("poisson", "sub_diab", "ec")
-plot_irr("negbin", "sub_diab", "apc_unpl")
-plot_irr("poisson", "sub_diab", "apc_unpl")
-
-plot_irr("negbin", "sub_diab", "apc_acsc_any")
-plot_irr("poisson", "sub_diab", "apc_acsc_any")
-plot_irr("negbin", "sub_diab", "ec_acsc_any")
-plot_irr("poisson", "sub_diab", "ec_acsc_any")
-
-plot_irr("negbin", "sub_htn", "apc")
-plot_irr("poisson", "sub_htn", "apc")
-plot_irr("negbin", "sub_htn", "ec")
-plot_irr("poisson", "sub_htn", "ec")
-plot_irr("negbin", "sub_htn", "apc_unpl")
-plot_irr("poisson", "sub_htn", "apc_unpl")
-
-plot_irr("negbin", "sub_htn", "apc_acsc_any")
-plot_irr("poisson", "sub_htn", "apc_acsc_any")
-plot_irr("negbin", "sub_htn", "ec_acsc_any")
-plot_irr("poisson", "sub_htn", "ec_acsc_any")
-
-plot_irr("negbin", "sub_sevmh", "apc")
-plot_irr("poisson", "sub_sevmh", "apc")
-plot_irr("negbin", "sub_sevmh", "ec")
-plot_irr("poisson", "sub_sevmh", "ec")
-plot_irr("negbin", "sub_sevmh", "apc_unpl")
-plot_irr("poisson", "sub_sevmh", "apc_unpl")
-
-plot_irr("negbin", "sub_sevmh", "apc_acsc_any")
-plot_irr("poisson", "sub_sevmh", "apc_acsc_any")
-plot_irr("negbin", "sub_sevmh", "ec_acsc_any")
-plot_irr("poisson", "sub_sevmh", "ec_acsc_any")
+        # APC: patient case-mix
+        plot_irr(
+            regression = "negbin",
+            sub_group = current_analysis,
+            outcome_names = apc_outcomes,
+            cohorts = apc_cohorts,
+            practice_char = "case_mix"
+        )
+    }
+)

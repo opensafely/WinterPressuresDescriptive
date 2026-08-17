@@ -101,18 +101,30 @@ smoking_ever,Ever smoker,Smoking Status,2
 smoking_missing,Missing smoking,Smoking Status,4
 carehome_True, Care home residence,Care home residence,
 carehome,Care home residence,Care home residence,
-exp_prop_East (ref),Region: East (ref),Practice region,1
-exp_prop_East Midlands,Region: East Midlands,Practice region,2
-exp_prop_London,Region: London,Practice region,3
-exp_prop_North East,Region: North East,Practice region,4
-exp_prop_North West,Region: North West,Practice region,5
-exp_prop_South East,Region: South East,Practice region,6
-exp_prop_South West,Region: South West,Practice region,7
-exp_prop_West Midlands,Region: West Midlands,Practice region,8
-exp_prop_Yorkshire and The Humber,Region: Yorkshire and The Humber,Practice region,9
-exp_prop_Urban conurbation (ref),Rurality: Urban conurbation (ref),Rurality,1
-exp_prop_Urban town,Rurality: Urban town,Rurality,2
-exp_prop_Rural,Rurality: Rural,Rurality,3
+practice_region_East (ref),East (ref),Practice region,1
+practice_region_East Midlands,East Midlands,Practice region,2
+practice_region_London,London,Practice region,3
+practice_region_North East,North East,Practice region,4
+practice_region_North West,North West,Practice region,5
+practice_region_South East,South East,Practice region,6
+practice_region_South West,South West,Practice region,7
+practice_region_West Midlands,West Midlands,Practice region,8
+practice_region_Yorkshire and The Humber,Yorkshire and The Humber,Practice region,9
+practice_rurality_Urban conurbation (ref),Urban conurbation (ref),Practice rurality,1
+practice_rurality_Urban town,Urban town,Practice rurality,2
+practice_rurality_Rural,Rural,Practice rurality,3
+exp_prop_East (ref),East (ref),Practice region,1
+exp_prop_East Midlands,East Midlands,Practice region,2
+exp_prop_London,London,Practice region,3
+exp_prop_North East,North East,Practice region,4
+exp_prop_North West,North West,Practice region,5
+exp_prop_South East,South East,Practice region,6
+exp_prop_South West,South West,Practice region,7
+exp_prop_West Midlands,West Midlands,Practice region,8
+exp_prop_Yorkshire and The Humber,Yorkshire and The Humber,Practice region,9
+exp_prop_Urban conurbation (ref),Urban conurbation (ref),Practice rurality,1
+exp_prop_Urban town,Urban town,Practice rurality,2
+exp_prop_Rural,Rural,Practice rurality,3
 af,Atrial fibrillation,Condition,
 alcoholproblem,Alcohol problems,Condition,
 anxietydepression,Anxiety or depression,Condition,
@@ -159,11 +171,11 @@ apc_plan_acsc_any_mean,Planned Hospital admitted patient care (ACSC admissions),
 apc,All APC,admitted patient care,1
 apc_unpl,Unplanned APC,admitted patient care,2
 apc_plan,Planned APC,admitted patient care,3
-apc_acsc_any,All ACSC-related APC,acsc admitted patient care,1
-apc_unpl_acsc_any,Unplanned ACSC-related APC,acsc admitted patient care,2
-apc_plan_acsc_any,Planned ACSC-related APC,acsc admitted patient care,3
-ec,EC,emergency care,1
-ec_acsc_any,ACSC-related EC,emergency care,2
+apc_acsc_any,All ACSC-related APC,admitted patient care,4
+apc_unpl_acsc_any,Unplanned ACSC-related APC,admitted patient care,5
+apc_plan_acsc_any,Planned ACSC-related APC,admitted patient care,6
+ec,Emergency care,emergency care,1
+ec_acsc_any,ACSC-related emergency care,emergency care,2
 main,All people,main,
 sub_asth,People with asthma,subgroup,1
 sub_copd,People with COPD,subgroup,2

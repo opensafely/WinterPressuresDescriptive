@@ -50,6 +50,16 @@ df <- file_list %>%
   bind_rows() %>%
   distinct()
 
+df <- df %>%
+  mutate(
+    exposure = if_else(
+      str_detect(exposure, fixed(";")),
+      str_remove(term, "^exp_(num|cat)_"),
+      exposure,
+      missing = exposure
+    )
+  )
+
 df_lr <- file_list_lr %>%
   lapply(read_csv, show_col_types = FALSE) %>%
   bind_rows()
