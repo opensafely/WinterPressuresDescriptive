@@ -241,16 +241,14 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     # filter the df according to the practice_char argument
     is_ec <- all(str_detect(outcome_names, "^ec"))
-    combined_ec <- is_ec && practice_char == "all"
+    combined_all <- practice_char == "all"
 
-    if (!combined_ec) {
-        if (practice_char == "practice") {
-            df <- df %>%
-                filter(group %in% practice_groups)
-        } else if (practice_char == "case_mix") {
-            df <- df %>%
-                filter(group %in% case_mix_groups)
-        }
+    if (practice_char == "practice") {
+        df <- df %>%
+            filter(group %in% practice_groups)
+    } else if (practice_char == "case_mix") {
+        df <- df %>%
+            filter(group %in% case_mix_groups)
     }
 
     table_df <- df %>%
@@ -313,6 +311,24 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             exposure_label = as.character(exposure_label)
         )
 
+    # Regions where TPP practices cover <50% of the regional population
+    low_coverage_regions <- c(
+        "South East",
+        "London",
+        "West Midlands",
+        "North West",
+        "North East"
+    )
+
+    table_side <- table_side %>%
+        mutate(
+            exposure_label_full = if_else(
+                exposure_label %in% low_coverage_regions,
+                paste0(exposure_label_full, "<sup><span style='font-size:10pt;'><b>*</b></span></sup>"),
+                exposure_label_full
+            )
+        )
+
     # Groups that require a separate subtitle.
     # Single characteristics such as list size and obesity do not need
     # a subtitle because this would repeat the characteristic name.
@@ -338,7 +354,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         )
     }
 
-    if (combined_ec) {
+    if (combined_all) {
         # Main sections
         practice_section <- "Practice characteristics"
 
@@ -668,31 +684,24 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         "**"
     )
 
-    if (practice_char == "practice") {
-        if (is_ec) {
-            x_limits <- c(0.7, 1.8)
-            x_breaks <- c(0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8)
-        } else {
-            x_limits <- c(0.6, 1.5)
-            x_breaks <- c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.3, 1.5)
-        }
-    } else { # case_mix
-
-        if (is_ec) {
-            x_limits <- c(0.7, 1.8)
-            x_breaks <- c(0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8)
-        } else {
-            x_limits <- c(0.9, 1.3)
-            x_breaks <- c(0.9, 1.0, 1.1, 1.2, 1.3)
-        }
+    if (is_ec) {
+        x_limits <- c(0.7, 1.8)
+        x_breaks <- c(0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8)
+    } else if (practice_char %in% c("all", "practice")) {
+        # Wider range required because practice characteristics are included
+        x_limits <- c(0.6, 1.5)
+        x_breaks <- c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.3, 1.5)
+    } else {
+        x_limits <- c(0.9, 1.3)
+        x_breaks <- c(0.9, 1.0, 1.1, 1.2, 1.3)
     }
 
     # Plot width and height
 
-    if (combined_ec) {
+    if (combined_all) {
         ci_cap <- 0.2
-        panel_width <- 5
-        plot_height <- 11
+        panel_width <- if (is_ec) 5 else 4
+        plot_height <- if (is_ec) 11 else 12
     } else if (practice_char == "practice") {
         ci_cap <- 0.4
         panel_width <- 4.5
@@ -705,7 +714,9 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     n_outcomes <- length(outcome_names)
 
-    ncol <- if (is_ec || n_outcomes == 2) {
+    ncol <- if (combined_all) {
+        n_outcomes
+    } else if (n_outcomes == 2) {
         n_outcomes
     } else {
         ceiling(n_outcomes / 2)
@@ -728,19 +739,36 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             uci_plot = pmin(uci, x_limits[2])
         )
 
-    caption_text <- str_wrap(
-        paste0(
-            "Points show incidence rate ratios (IRRs) with 95% confidence intervals. ",
-            "Estimates from random-intercept ",
-            ifelse(regression == "negbin", "negative binomial", "Poisson"),
-            " regression models.",
-            "\n\n",
-            " Continuous characteristics were scaled by the cohort-specific median absolute deviation (MAD). Values in parentheses show the median MAD across the included cohorts and indicate the increase represented by each IRR."
-        ),
-        width = caption_width
+    model_note <- paste0(
+        "Points show incidence rate ratios (IRRs) with 95% confidence intervals. ",
+        "Estimates from random-intercept ",
+        ifelse(regression == "negbin", "negative binomial", "Poisson"),
+        " regression models."
     )
 
-    facet_spec <- if (combined_ec) {
+    mad_note <- paste0(
+        "Continuous characteristics were scaled by the cohort-specific median ",
+        "absolute deviation (MAD). Values in parentheses show the median MAD ",
+        "across the included cohorts and indicate the increase represented by each IRR."
+    )
+
+    region_note <- paste0(
+        "* TPP practices cover less than 50% ",
+        "of the total regional population."
+    )
+
+    caption_parts <- if (practice_char %in% c("all", "practice")) {
+        c(model_note, region_note, mad_note)
+    } else {
+        c(model_note, mad_note)
+    }
+
+    caption_text <- paste(
+        str_wrap(caption_parts, width = caption_width),
+        collapse = "\n"
+    )
+
+    facet_spec <- if (combined_all) {
         facet_grid(
             cols = vars(outcome_label)
         )
@@ -751,7 +779,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         )
     }
 
-    y_title <- if (combined_ec) {
+    y_title <- if (combined_all) {
         NULL
     } else if (practice_char == "all") {
         "Characteristics (median MAD across cohorts)"
@@ -772,7 +800,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         )
     )
 
-    if (combined_ec) {
+    if (combined_all) {
         p <- p +
             geom_tile(
                 data = section_band_df,
@@ -902,8 +930,8 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 }
 # Run main analyses
 plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
+plot_irr("negbin", "main", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
 plot_irr("negbin", "sub_asth", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
 plot_irr("negbin", "sub_asth", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
@@ -967,11 +995,22 @@ apc_outcomes <- c(
     "apc_plan_acsc_any"
 )
 
+apc_all_cause_outcomes <- c(
+    "apc",
+    "apc_unpl",
+    "apc_plan"
+)
+
+apc_acsc_outcomes <- c(
+    "apc_acsc_any",
+    "apc_unpl_acsc_any",
+    "apc_plan_acsc_any"
+)
+
 # Generate all plots
 purrr::walk(
     all_analyses,
     function(current_analysis) {
-
         # EC: practice characteristics and case-mix together
         plot_irr(
             regression = "negbin",
@@ -981,7 +1020,25 @@ purrr::walk(
             practice_char = "all"
         )
 
-        # APC: practice characteristics
+        # APC, all-cause outcomes: practice characteristics and case-mix together
+        plot_irr(
+            regression = "negbin",
+            sub_group = current_analysis,
+            outcome_names = apc_all_cause_outcomes,
+            cohorts = apc_cohorts,
+            practice_char = "all"
+        )
+
+        # APC, ACSC-related outcomes: practice characteristics and case-mix together
+        plot_irr(
+            regression = "negbin",
+            sub_group = current_analysis,
+            outcome_names = apc_acsc_outcomes,
+            cohorts = apc_cohorts,
+            practice_char = "all"
+        )
+
+        # APC, all: practice characteristics
         plot_irr(
             regression = "negbin",
             sub_group = current_analysis,
@@ -990,7 +1047,7 @@ purrr::walk(
             practice_char = "practice"
         )
 
-        # APC: patient case-mix
+        # APC, all: patient case-mix
         plot_irr(
             regression = "negbin",
             sub_group = current_analysis,
