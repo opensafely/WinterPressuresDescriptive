@@ -4,7 +4,6 @@
 print("Load libraries")
 
 library(tidyverse)
-library(here)
 library(fs)
 
 # Specify paths ---------------------------------------------------------------
@@ -37,6 +36,7 @@ generate_correlation_heatmaps <- function(cohort) {
     )
 
     output_dir <- plot_dir
+    high_correlation_cutoff <- 0.70
 
     if (!file_exists(input_path)) {
         stop("Released correlation matrix not found: ", input_path)
@@ -44,39 +44,32 @@ generate_correlation_heatmaps <- function(cohort) {
 
     dir_create(output_dir)
 
-    # Load active analyses ---------------------------------------------------------
-    # This keeps the reduced heatmap consistent with the exposures currently used
-    # in the mutually adjusted model.
-    print("Load active analyses")
-
-    active_analyses_path <- here::here("lib", "active_analyses.rds")
-
-    if (!file_exists(active_analyses_path)) {
-        stop("Active analyses file not found: ", active_analyses_path)
-    }
-
-    active_analyses <- readr::read_rds(active_analyses_path)
-
-    mutually_adjusted_exposure_strings <- active_analyses %>%
-        filter(analysis_type == "mutually_adjusted") %>%
-        pull(exposure) %>%
-        unique()
-
-    if (length(mutually_adjusted_exposure_strings) != 1) {
-        stop(
-            "Expected exactly one unique exposure specification for the ",
-            "mutually adjusted analysis, but found ",
-            length(mutually_adjusted_exposure_strings),
-            "."
-        )
-    }
-
-    mutually_adjusted_exposures <- mutually_adjusted_exposure_strings %>%
-        str_split(pattern = fixed(";")) %>%
-        unlist() %>%
-        trimws() %>%
-        discard(~ .x == "") %>%
-        unique()
+    # Define exposures used in the mutually adjusted model -------------------
+    # These are specified directly because the post-release plotting script is
+    # run independently of the active analyses pipeline.
+    mutually_adjusted_exposures <- c(
+        "list_size",
+        "practice_region",
+        "practice_rurality",
+        "age_0_4",
+        "age_65_74",
+        "age_75_79",
+        "age_80",
+        "sex_female",
+        "ethnicity_white",
+        "ethnicity_mixed",
+        "ethnicity_asian",
+        "ethnicity_black",
+        "ethnicity_other",
+        "imd_1_most",
+        "imd_5_least",
+        "obesity",
+        "carehome",
+        "smoking_current",
+        "smoking_ever",
+        "smoking_never",
+        "cons_mean"
+    )
 
     # Read and validate the released correlation matrix ---------------------------
     print("Load released correlation matrix")
@@ -447,6 +440,63 @@ generate_correlation_heatmaps <- function(cohort) {
         dpi = 300
     )
 
+    # Export highly correlated pairs among mutually adjusted exposures -------
+    print("Export highly correlated mutually adjusted exposure pairs")
+
+    high_correlation_pairs <- subset_correlation_matrix(
+        correlation_matrix,
+        mutually_adjusted_columns
+    ) %>%
+        as.data.frame(check.names = FALSE) %>%
+        rownames_to_column("exposure_1") %>%
+        pivot_longer(
+            -exposure_1,
+            names_to = "exposure_2",
+            values_to = "correlation"
+        ) %>%
+        mutate(
+            exposure_1_order = match(
+                exposure_1,
+                mutually_adjusted_columns
+            ),
+            exposure_2_order = match(
+                exposure_2,
+                mutually_adjusted_columns
+            )
+        ) %>%
+        filter(
+            exposure_1_order < exposure_2_order,
+            !is.na(correlation),
+            abs(correlation) >= high_correlation_cutoff
+        ) %>%
+        transmute(
+            exposure_1,
+            exposure_1_label = map_chr(exposure_1, display_label),
+            exposure_2,
+            exposure_2_label = map_chr(exposure_2, display_label),
+            correlation = round(correlation, 2),
+            absolute_correlation = round(abs(correlation), 2)
+        ) %>%
+        arrange(desc(absolute_correlation))
+
+    write_csv(
+        high_correlation_pairs,
+        file.path(
+            output_dir,
+            paste0(
+                "high_correlation_pairs_",
+                str_replace(
+                    as.character(high_correlation_cutoff),
+                    "\\.",
+                    ""
+                ),
+                "_",
+                cohort,
+                ".csv"
+            )
+        )
+    )
+
     # Generate reduced mutually adjusted model heatmap ----------------------------
     print("Generate mutually adjusted model correlation heatmap")
 
@@ -492,6 +542,6 @@ generate_correlation_heatmaps <- function(cohort) {
 
 # Run one cohort at a time after sourcing this script, for example:
 generate_correlation_heatmaps("precovid")
-# generate_correlation_heatmaps("postcovid1")
-# generate_correlation_heatmaps("postcovid2")
-# generate_correlation_heatmaps("postcovid3")
+generate_correlation_heatmaps("postcovid1")
+generate_correlation_heatmaps("postcovid2")
+generate_correlation_heatmaps("postcovid3")
