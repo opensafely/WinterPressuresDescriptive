@@ -77,9 +77,9 @@ df_plot <- df_plot %>%
 
 cohort_colours <- c(
     "Pre COVID-19" = "#F8766D",
-    "2022/23"     = "#7CAE00",
-    "2023/24"     = "#00BFC4",
-    "2024/25"     = "#C77CFF"
+    "2022/23" = "#7CAE00",
+    "2023/24" = "#00BFC4",
+    "2024/25" = "#C77CFF"
 )
 
 # Get list of unique groups
@@ -92,9 +92,29 @@ groups <- df_plot %>%
 plot_dir <- file.path(output_folder, "/table1_plots")
 dir.create(plot_dir, showWarnings = FALSE)
 
+# Categories to exclude from selected plots ----------------------------------
+# Values must match the text in category_label
+categories_to_ignore <- c(
+    "Sex" = "Missing sex"
+)
+
 walk(groups, function(g) {
+    # Identify categories to exclude for this group
+    ignored_categories <- unname(
+        categories_to_ignore[
+            names(categories_to_ignore) == as.character(g)
+        ]
+    )
+
     plot_data <- df_plot %>%
-        filter(group == g)
+        filter(
+            group == g,
+            !(
+                as.character(category_label) %in%
+                    ignored_categories
+            )
+        ) %>%
+        droplevels()
 
     if (nrow(plot_data) == 0) {
         return(NULL)
@@ -141,7 +161,7 @@ walk(groups, function(g) {
 
     pd <- position_dodge(width = 0.7)
 
-    width <- if (g == "Obesity") {
+    width <- if (g == "Obesity" | g == "Sex" | g == "List size") {
         6
     } else if (g == "Care home residence") {
         5
@@ -196,6 +216,7 @@ walk(groups, function(g) {
             drop = TRUE
         ) +
         labs(
+            title = title,
             x = NULL,
             y = y_label,
             caption = paste(
@@ -205,7 +226,12 @@ walk(groups, function(g) {
         ) +
         theme_classic() +
         theme(
-            plot.title = element_blank(),
+            plot.title = ggtext::element_markdown(
+                size = 12,
+                hjust = 0,
+                lineheight = 1.1,
+                margin = margin(b = 8)
+            ),
             panel.grid.major.y = element_line(
                 colour = "grey90",
                 linewidth = 0.4
