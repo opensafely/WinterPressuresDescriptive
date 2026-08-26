@@ -25,8 +25,22 @@ dir.create(plot_dir, recursive = TRUE, showWarnings = FALSE)
 # Run this function manually for one released cohort at a time. The script does
 # not need to be added to the OpenSAFELY project YAML.
 
+# Define readable cohort names for plot titles --------------------------------
+cohort_titles <- c(
+    precovid = "2018-2019",
+    postcovid1 = "2022-2023",
+    postcovid2 = "2023-2024",
+    postcovid3 = "2024-2025"
+)
+
 generate_correlation_heatmaps <- function(cohort) {
     message("Cohort: ", cohort)
+
+    if (!cohort %in% names(cohort_titles)) {
+        stop("Unknown cohort: ", cohort)
+    }
+
+    cohort_title <- unname(cohort_titles[cohort])
 
     # Specify paths and settings ----------------------------------------------
     input_path <- file.path(
@@ -48,27 +62,27 @@ generate_correlation_heatmaps <- function(cohort) {
     # These are specified directly because the post-release plotting script is
     # run independently of the active analyses pipeline.
     mutually_adjusted_exposures <- c(
-        "list_size",
         "practice_region",
         "practice_rurality",
+        "list_size",
+        "cons_mean",
         "age_0_4",
         "age_65_74",
         "age_75_79",
         "age_80",
         "sex_female",
         "ethnicity_white",
-        "ethnicity_mixed",
         "ethnicity_asian",
         "ethnicity_black",
+        "ethnicity_mixed",
         "ethnicity_other",
         "imd_1_most",
         "imd_5_least",
-        "obesity",
-        "carehome",
-        "smoking_current",
-        "smoking_ever",
         "smoking_never",
-        "cons_mean"
+        "smoking_ever",
+        "smoking_current",
+        "obesity",
+        "carehome"
     )
 
     # Read and validate the released correlation matrix ---------------------------
@@ -311,11 +325,9 @@ generate_correlation_heatmaps <- function(cohort) {
         matrix[variables, variables, drop = FALSE]
     }
 
-    make_correlation_plot <- function(
-      correlation_matrix,
-      plot_title,
-      text_size = 8
-    ) {
+    make_correlation_plot <- function(correlation_matrix,
+                                      plot_title,
+                                      text_size = 8) {
         variable_order <- colnames(correlation_matrix)
 
         plot_data <- correlation_matrix %>%
@@ -397,9 +409,8 @@ generate_correlation_heatmaps <- function(cohort) {
             subset_correlation_matrix(correlation_matrix, group_variables),
             paste0(
                 category_labels[[group_name]],
-                ": exposure correlations (",
-                cohort,
-                ")"
+                ": exposure correlations in ",
+                cohort_title
             ),
             text_size = 9
         )
@@ -422,9 +433,8 @@ generate_correlation_heatmaps <- function(cohort) {
     overall_plot <- make_correlation_plot(
         correlation_matrix,
         paste0(
-            "Correlations between candidate mutually adjusted exposures (",
-            cohort,
-            ")"
+            "Correlations between candidate mutually adjusted exposures in ",
+            cohort_title
         ),
         text_size = 6
     )
@@ -507,9 +517,8 @@ generate_correlation_heatmaps <- function(cohort) {
                 mutually_adjusted_columns
             ),
             paste0(
-                "Correlations between mutually adjusted model exposures (",
-                cohort,
-                ")"
+                "Correlations between mutually adjusted model exposures in ",
+                cohort_title
             ),
             text_size = 7
         )
