@@ -29,7 +29,7 @@ inex_practice <- function(
 
   input_sensitivity <- filter(
     input,
-    is.na(cons_mean) | cons_mean != 0
+    is.na(prop_cons_mean) | prop_cons_mean != 0
   )
 
   n_after <- n_distinct(input_sensitivity$practice_id)
