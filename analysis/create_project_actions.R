@@ -159,8 +159,26 @@ generate_input_clean <- function(cohort) {
         glue("generate_merged_{cohort}")
       ),
       highly_sensitive = list(
-        cohort_clean = glue("output/dataset_clean/input_{cohort}_clean.rds"),
-        icc_input = glue("output/dataset_clean/icc_input-{cohort}.dta")
+        cohort_clean = glue(
+          "output/dataset_clean/input_{cohort}_clean.rds"
+        ),
+        icc_input = glue(
+          "output/dataset_clean/icc_input-{cohort}.dta"
+        ),
+        cohort_clean_sensitivity = glue(
+          "output/dataset_clean/input_{cohort}_clean_sensitivity.rds"
+        ),
+        icc_input_sensitivity = glue(
+          "output/dataset_clean/icc_input-{cohort}_sensitivity.dta"
+        )
+      ),
+      moderately_sensitive = list(
+        flow = glue(
+          "output/dataset_clean/flow-cohort_{cohort}.csv"
+        ),
+        flow_midpoint6 = glue(
+          "output/dataset_clean/flow-cohort_{cohort}-midpoint6.csv"
+        )
       )
     )
   )
@@ -199,44 +217,65 @@ generate_input_trajectory_outcomes <- function() {
   )
 }
 
-# Generate Table 1
-generate_table1 <- function(cohort) {
+# Generate Table 1 -------------------------------------------------------------
+generate_table1 <- function(cohort, input_type = "main") {
+  output_suffix <- if (input_type == "main") {
+    ""
+  } else {
+    paste0("_", input_type)
+  }
+
   splice(
-    comment(glue("Generate Table 1 summary statistics - {cohort}")),
+    comment(glue(
+      "Generate Table 1 summary statistics - {cohort} - {input_type}"
+    )),
     action(
-      name = glue("generate_table1_{cohort}"),
-      run = glue("r:v2 analysis/table1/table1.R {cohort}"),
+      name = glue("generate_table1_{cohort}_{input_type}"),
+      run = glue(
+        "r:v2 analysis/table1/table1.R {cohort} {input_type}"
+      ),
       needs = list(
         glue("generate_input_{cohort}_clean")
       ),
       moderately_sensitive = list(
-        table1_midpoint6_TRUE = glue(
-          "output/table1/table1-cohort_{cohort}-midpoint6.csv"
+        table1 = glue(
+          "output/table1/table1-cohort_{cohort}{output_suffix}.csv"
         ),
-        table1_midpoint6_FALSE = glue(
-          "output/table1/table1-cohort_{cohort}.csv"
+        table1_midpoint6 = glue(
+          "output/table1/table1-cohort_{cohort}{output_suffix}-midpoint6.csv"
         )
       )
     )
   )
 }
 
-# Generate Table 2
-generate_table2 <- function(cohort) {
+
+# Generate Table 2 -------------------------------------------------------------
+generate_table2 <- function(cohort, input_type = "main") {
+  output_suffix <- if (input_type == "main") {
+    ""
+  } else {
+    paste0("_", input_type)
+  }
+
   splice(
-    comment(glue("Generate Table 2 summary statistics - {cohort}")),
+    comment(glue(
+      "Generate Table 2 summary statistics - {cohort} - {input_type}"
+    )),
     action(
-      name = glue("generate_table2_{cohort}"),
-      run = glue("r:v2 analysis/table2/table2.R {cohort}"),
+      name = glue("generate_table2_{cohort}_{input_type}"),
+      run = glue(
+        "r:v2 analysis/table2/table2.R {cohort} {input_type}"
+      ),
       needs = list(
         glue("generate_input_{cohort}_clean")
       ),
       moderately_sensitive = list(
-        table2_midpoint6_TRUE = glue(
-          "output/table2/table2-cohort_{cohort}-midpoint6.csv"
+        table2 = glue(
+          "output/table2/table2-cohort_{cohort}{output_suffix}.csv"
         ),
-        table2_midpoint6_FALSE = glue(
-          "output/table2/table2-cohort_{cohort}.csv"
+        table2_midpoint6 = glue(
+          "output/table2/table2-cohort_{cohort}{output_suffix}-midpoint6.csv"
         )
       )
     )
@@ -578,6 +617,8 @@ for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_input_clean(cohort))
   actions_list <- c(actions_list, generate_table1(cohort))
   actions_list <- c(actions_list, generate_table2(cohort))
+  actions_list <- c(actions_list, generate_table1(cohort, "sensitivity_consultation"))
+  actions_list <- c(actions_list, generate_table2(cohort, "sensitivity_consultation"))
   actions_list <- c(actions_list, generate_icc_outcome(cohort))
 }
 actions_list <- c(actions_list, generate_input_trajectory_outcomes())
