@@ -23,11 +23,34 @@ print("Source common functions")
 
 source("analysis/utility.R")
 
+# Specify command arguments ----------------------------------------------------
+print("Specify command arguments")
+
+args <- commandArgs(trailingOnly = TRUE)
+print(length(args))
+sensitivity_type <- if (length(args) >= 1) {
+    args[[1]]
+} else {
+    "main"
+}
+
+# Specify input/output file based on sensitivity_type ----------------------------------
+input_dir <- if (sensitivity_type == "main") {
+    file.path("output", "dataset_clean")
+} else {
+    file.path("output", "dataset_clean", sensitivity_type)
+}
+output_suffix <- if (sensitivity_type == "main") {
+    ""
+} else {
+    paste0("_", sensitivity_type)
+}
+
 # Load data ----------------------------------------------------------------------
 print("Load data")
 
 file_list <- list.files(
-    path = "output/dataset_clean",
+    path = input_dir,
     pattern = "^icc_input-.*\\.dta$",
     full.names = TRUE
 )
@@ -80,7 +103,9 @@ write.csv(
     outcome_traj_summary,
     paste0(
         trajectory_dir,
-        "input_trajectory_outcomes.csv"
+        "input_trajectory_outcomes",
+        output_suffix,
+        ".csv"
     ),
     row.names = FALSE
 )

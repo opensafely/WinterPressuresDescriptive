@@ -1,5 +1,5 @@
 # Load libraries --------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(dplyr)
 library(tidyverse)
@@ -19,66 +19,77 @@ table2_dir <- "output/table2/"
 fs::dir_create(here::here(table2_dir))
 
 # Specify redaction threshold --------------------------------------------------
-print('Specify redaction threshold')
+print("Specify redaction threshold")
 
 threshold <- 6
 threshold_practice <- 50
 
 # Source common functions ------------------------------------------------------
-print('Source common functions')
+print("Source common functions")
 
 source("analysis/utility.R")
 lapply(
-  c(
-    list.files("analysis/table1", full.names = TRUE, pattern = "fn-"),
-    list.files("analysis/table2", full.names = TRUE, pattern = "fn-")
-  ),
-  source
+    c(
+        list.files("analysis/table1", full.names = TRUE, pattern = "fn-"),
+        list.files("analysis/table2", full.names = TRUE, pattern = "fn-")
+    ),
+    source
 )
 
 # Specify command arguments ----------------------------------------------------
-print('Specify command arguments')
+print("Specify command arguments")
 
 args <- commandArgs(trailingOnly = TRUE)
 print(length(args))
-if (length(args) == 0) {
-    cohort <- "precovid"
+cohort <- if (length(args) >= 1) args[[1]] else "precovid"
+sensitivity_type <- if (length(args) >= 2) args[[2]] else "main"
+
+# Specify input/output file based on sensitivity_type
+input_dir <- if (sensitivity_type == "main") {
+  "output/dataset_clean/"
 } else {
-    cohort <- args[[1]]
+  paste0("output/dataset_clean/", sensitivity_type, "/")
+}
+
+output_suffix <- if (sensitivity_type == "main") {
+  ""
+} else {
+  paste0("_", sensitivity_type)
 }
 
 # Load data ----------------------------------------------------------------------
-print('Load data')
+print("Load data")
 
 input <- readr::read_rds(paste0(
-    "output/dataset_clean/input_",
-    cohort,
-    "_clean.rds"
+  input_dir,
+  "input_",
+  cohort,
+  "_clean.rds"
 ))
 message(paste0(
-    "Dataset has been read successfully with N = ",
-    nrow(input),
-    " rows"
+  "Dataset has been read successfully with N = ",
+  nrow(input),
+  " rows"
 ))
 
 # Restrict columns for table 2 ------------------------------------------------
 print("Restrict columns for table 2")
 
 patient_vars <- c(
-  "age",
-  "sex",
-  "ethnicity",
-  "imd",
-  "rurality",
-  "carehome",
-  "smoking",
-  "obesity"
+    "age",
+    "sex",
+    "ethnicity",
+    "imd",
+    "rurality",
+    "carehome",
+    "smoking",
+    "obesity"
 )
 
 patient_vars_pattern <- paste0(
-  "^(",
-  paste(patient_vars, collapse = "|"),
-  ")"
+    "^(",
+    paste(patient_vars, collapse = "|"),
+    ")"
 )
 
 table2_outcome_vars <- names(input)[
@@ -101,29 +112,29 @@ rounded_vars <- table2_outcome_vars[grepl("_mp6$", table2_outcome_vars)]
 unrounded_vars <- table2_outcome_vars[!grepl("_mp6$", table2_outcome_vars)]
 
 # Add Strata variables if needed --------------------------------------------------------------
-print('Add Strata variables if needed')
+print("Add Strata variables if needed")
 input <- add_strata_vars(input, Strata = TRUE)
 
 # Create Table 2 -----------------------------------------------------------------
 table2_summary_all_rounded <- create_table2(
-  input,
-  rounded = TRUE,
-  Strata = TRUE,
-  rounded_vars = rounded_vars,
-  unrounded_vars = unrounded_vars,
-  threshold = threshold,
-  threshold_practice = threshold_practice
+    input,
+    rounded = TRUE,
+    Strata = TRUE,
+    rounded_vars = rounded_vars,
+    unrounded_vars = unrounded_vars,
+    threshold = threshold,
+    threshold_practice = threshold_practice
 )
 message("Created Table 2 summary with rounded variables")
 
 table2_summary_all_unrounded <- create_table2(
-  input,
-  rounded = FALSE,
-  Strata = TRUE,
-  rounded_vars = rounded_vars,
-  unrounded_vars = unrounded_vars,
-  threshold = threshold,
-  threshold_practice = threshold_practice
+    input,
+    rounded = FALSE,
+    Strata = TRUE,
+    rounded_vars = rounded_vars,
+    unrounded_vars = unrounded_vars,
+    threshold = threshold,
+    threshold_practice = threshold_practice
 )
 message("Created Table 2 summary with unrounded variables")
 
@@ -137,6 +148,7 @@ write.csv(
         table2_dir,
         "table2-cohort_",
         cohort,
+        output_suffix,
         "-midpoint6.csv"
     ),
     row.names = FALSE
@@ -151,6 +163,7 @@ write.csv(
         table2_dir,
         "table2-cohort_",
         cohort,
+        output_suffix,
         ".csv"
     ),
     row.names = FALSE

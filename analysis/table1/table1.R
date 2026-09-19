@@ -1,5 +1,5 @@
 # Load libraries --------------------------------------------------------------
-print('Load libraries')
+print("Load libraries")
 
 library(dplyr)
 library(tidyverse)
@@ -19,13 +19,13 @@ table1_dir <- "output/table1/"
 fs::dir_create(here::here(table1_dir))
 
 # Specify redaction threshold --------------------------------------------------
-print('Specify redaction threshold')
+print("Specify redaction threshold")
 
 threshold <- 6
 threshold_practice <- 50
 
 # Source common functions ------------------------------------------------------
-print('Source common functions')
+print("Source common functions")
 
 source("analysis/utility.R")
 lapply(
@@ -34,21 +34,32 @@ lapply(
 )
 
 # Specify command arguments ----------------------------------------------------
-print('Specify command arguments')
+print("Specify command arguments")
 
 args <- commandArgs(trailingOnly = TRUE)
 print(length(args))
-if (length(args) == 0) {
-  cohort <- "precovid"
+cohort <- if (length(args) >= 1) args[[1]] else "precovid"
+sensitivity_type <- if (length(args) >= 2) args[[2]] else "main"
+
+# Specify input/output file based on sensitivity_type ----------------------------------
+input_dir <- if (sensitivity_type == "main") {
+  "output/dataset_clean/"
 } else {
-  cohort <- args[[1]]
+  paste0("output/dataset_clean/", sensitivity_type, "/")
+}
+
+output_suffix <- if (sensitivity_type == "main") {
+  ""
+} else {
+  paste0("_", sensitivity_type)
 }
 
 # Load data ----------------------------------------------------------------------
-print('Load data')
+print("Load data")
 
 input <- readr::read_rds(paste0(
-  "output/dataset_clean/input_",
+  input_dir,
+  "input_",
   cohort,
   "_clean.rds"
 ))
@@ -59,7 +70,7 @@ message(paste0(
 ))
 
 # Restrict columns to those needed for Table 1 --------------------------------------------------------------
-print('Restrict columns to those needed for Table 1')
+print("Restrict columns to those needed for Table 1")
 
 table1_patient_vars <- c(
   "age",
@@ -98,7 +109,7 @@ unrounded_vars <- names(input)[
 ]
 
 # Add Strata variables if needed --------------------------------------------------------------
-print('Add Strata variables if needed')
+print("Add Strata variables if needed")
 input <- add_strata_vars(input, Strata = TRUE)
 
 # Create Table 1 -----------------------------------------------------------------
@@ -125,7 +136,7 @@ table1_summary_all_unrounded <- create_table1(
 message("Created Table 1 summary with unrounded variables")
 
 # Save rounded Table 1 -----------------------------------------------------------------
-print("Save Table 1")
+print("Save rounded Table 1")
 
 write.csv(
   table1_summary_all_rounded,
@@ -133,6 +144,7 @@ write.csv(
     table1_dir,
     "table1-cohort_",
     cohort,
+    output_suffix,
     "-midpoint6.csv"
   ),
   row.names = FALSE
@@ -147,6 +159,7 @@ write.csv(
     table1_dir,
     "table1-cohort_",
     cohort,
+    output_suffix,
     ".csv"
   ),
   row.names = FALSE
