@@ -39,35 +39,30 @@ print("Specify command arguments")
 args <- commandArgs(trailingOnly = TRUE)
 print(length(args))
 cohort <- if (length(args) >= 1) args[[1]] else "precovid"
-input_type <- if (length(args) >= 2) args[[2]] else "main"
+sensitivity_type <- if (length(args) >= 2) args[[2]] else "main"
+
+# Specify input/output file based on sensitivity_type ----------------------------------
+input_dir <- if (sensitivity_type == "main") {
+  "output/dataset_clean/"
+} else {
+  paste0("output/dataset_clean/", sensitivity_type, "/")
+}
+
+output_suffix <- if (sensitivity_type == "main") {
+  ""
+} else {
+  paste0("_", sensitivity_type)
+}
 
 # Load data ----------------------------------------------------------------------
 print("Load data")
 
-input_file <- switch(input_type,
-  main = file.path(
-    "output/dataset_clean",
-    paste0("input_", cohort, "_clean.rds")
-  ),
-  sensitivity_consultation = file.path(
-    "output/dataset_clean",
-    paste0("input_", cohort, "_clean_sensitivity.rds")
-  ),
-  stop("Unknown input_type: ", input_type)
-)
-
-if (!file.exists(input_file)) {
-  stop("Input file does not exist: ", input_file)
-}
-
-input <- readr::read_rds(input_file)
-
-output_suffix <- if (input_type == "main") {
-  ""
-} else {
-  paste0("_", input_type)
-}
-
+input <- readr::read_rds(paste0(
+  input_dir,
+  "input_",
+  cohort,
+  "_clean.rds"
+))
 message(paste0(
   "Dataset has been read successfully with N = ",
   nrow(input),
