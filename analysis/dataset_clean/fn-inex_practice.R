@@ -3,7 +3,8 @@
 inex_practice <- function(
     input,
     flow,
-    exclude_small_practices = TRUE
+    exclude_small_practices = TRUE,
+    exclude_unknown_region = TRUE
 ) {
   # Main analysis: exclude practices with <1000 patients or missing list size.
   n_before <- n_distinct(input$practice_id)
@@ -24,26 +25,27 @@ inex_practice <- function(
   )
   print(flow[nrow(flow), ])
 
-  # Sensitivity analysis: additionally exclude zero consultation rates.
-  n_before <- n_after
+  n_before <- n_distinct(input$practice_id)
 
-  input_sensitivity <- filter(
-    input,
-    is.na(prop_cons_mean) | prop_cons_mean != 0
-  )
+  if (exclude_unknown_region) {
+    input <- filter(input, !is.na(practice_region))
+    description <- "Main analysis: exclude practices with unknown region"
+  } else {
+    description <- "Main analysis: unknown region exclusion skipped"
+  }
 
-  n_after <- n_distinct(input_sensitivity$practice_id)
+  n_after <- n_distinct(input$practice_id)
 
   flow[nrow(flow) + 1, ] <- list(
-    "Sensitivity analysis: exclude consultation rate == 0",
+    description,
     n_after,
     n_before - n_after
   )
   print(flow[nrow(flow), ])
+  
 
   return(list(
     input = input,
-    input_sensitivity = input_sensitivity,
     flow = flow
   ))
 }

@@ -110,11 +110,11 @@ print("Apply inclusion/exclusion criteria")
 inex_results <- inex_practice(
   input,
   flow,
-  exclude_small_practices = FALSE
+  exclude_small_practices = TRUE,
+  exclude_unknown_region = TRUE
 )
 
 input <- inex_results$input
-input_sensitivity <- inex_results$input_sensitivity
 
 # Save flow data after inclusion/exclusion criteria ----------------------------
 print("Saving flow data after inclusion/exclusion criteria")
@@ -163,7 +163,6 @@ write.csv(
 print("Restrict to relevant variables only")
 
 restricted_input <- restrict_column(input)
-restricted_input_sensitivity <- restrict_column(input_sensitivity)
 message("restricted to relevant variables only")
 
 # Save clean dataset ---------------------------------------------------
@@ -179,19 +178,4 @@ print("Save dataset for ICC")
 haven::write_dta(
   restricted_input$icc,
   paste0(dataclean_dir, "icc_input-", cohort, ".dta")
-)
-
-# Save clean dataset for sensitivity analysis
-print("Save clean dataset for sensitivity analysis")
-
-saveRDS(
-  restricted_input_sensitivity$input,
-  paste0(dataclean_dir, "input_", cohort, "_clean_sensitivity.rds"),
-  compress = TRUE
-)
-
-print("Save dataset for ICC (sensitivity analysis)")
-haven::write_dta(
-  restricted_input_sensitivity$icc,
-  paste0(dataclean_dir, "icc_input-", cohort, "_sensitivity.dta")
 )
