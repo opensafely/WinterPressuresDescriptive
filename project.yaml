@@ -2320,31 +2320,34 @@ actions:
     - generate_cohort_precovid
     - generate_merged_precovid
     outputs:
+      moderately_sensitive:
+        flow: output/dataset_clean/flow-cohort_precovid.csv
+        flow_midpoint6: output/dataset_clean/flow-cohort_precovid-midpoint6.csv
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_precovid_clean.rds
         icc_input: output/dataset_clean/icc_input-precovid.dta
 
-  ## Generate Table 1 summary statistics - precovid 
+  ## Generate Table 1 summary statistics - precovid - main 
 
-  generate_table1_precovid:
-    run: r:v2 analysis/table1/table1.R precovid
+  generate_table1_precovid_main:
+    run: r:v2 analysis/table1/table1.R precovid main
     needs:
     - generate_input_precovid_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6_TRUE: output/table1/table1-cohort_precovid-midpoint6.csv
-        table1_midpoint6_FALSE: output/table1/table1-cohort_precovid.csv
+        table1: output/table1/table1-cohort_precovid.csv
+        table1_midpoint6: output/table1/table1-cohort_precovid-midpoint6.csv
 
-  ## Generate Table 2 summary statistics - precovid 
+  ## Generate Table 2 summary statistics - precovid - main 
 
-  generate_table2_precovid:
-    run: r:v2 analysis/table2/table2.R precovid
+  generate_table2_precovid_main:
+    run: r:v2 analysis/table2/table2.R precovid main
     needs:
     - generate_input_precovid_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6_TRUE: output/table2/table2-cohort_precovid-midpoint6.csv
-        table2_midpoint6_FALSE: output/table2/table2-cohort_precovid.csv
+        table2: output/table2/table2-cohort_precovid.csv
+        table2_midpoint6: output/table2/table2-cohort_precovid-midpoint6.csv
 
   ## Generate icc_outcome - precovid 
 
@@ -2356,6 +2359,47 @@ actions:
       moderately_sensitive:
         icc_outcome: output/icc_outcome/icc_outcome-precovid.csv
 
+  ## Generate cleaned input dataset - sensitivity_consultation - precovid 
+
+  generate_input_precovid_clean_sensitivity_consultation:
+    run: r:v2 analysis/dataset_clean_sensitivity/dataset_clean_sensitivity.R precovid
+      sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      moderately_sensitive:
+        flow_sensitivity: output/dataset_clean/sensitivity_consultation/flow-cohort_precovid.csv
+        flow_sensitivity_midpoint6: output/dataset_clean/sensitivity_consultation/flow-cohort_precovid-midpoint6.csv
+      highly_sensitive:
+        cohort_clean_sensitivity: output/dataset_clean/sensitivity_consultation/input_precovid_clean.rds
+        icc_input_sensitivity: output/dataset_clean/sensitivity_consultation/icc_input-precovid.dta
+
+  ## Generate Table 1 summary statistics - precovid - sensitivity_consultation
+
+    
+
+  generate_table1_precovid_sensitivity_consultation:
+    run: r:v2 analysis/table1/table1.R precovid sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_precovid_sensitivity_consultation.csv
+        table1_midpoint6: output/table1/table1-cohort_precovid_sensitivity_consultation-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - precovid - sensitivity_consultation
+
+    
+
+  generate_table2_precovid_sensitivity_consultation:
+    run: r:v2 analysis/table2/table2.R precovid sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table2: output/table2/table2-cohort_precovid_sensitivity_consultation.csv
+        table2_midpoint6: output/table2/table2-cohort_precovid_sensitivity_consultation-midpoint6.csv
+
   ## Generate cleaned input dataset - postcovid1 
 
   generate_input_postcovid1_clean:
@@ -2364,31 +2408,34 @@ actions:
     - generate_cohort_postcovid1
     - generate_merged_postcovid1
     outputs:
+      moderately_sensitive:
+        flow: output/dataset_clean/flow-cohort_postcovid1.csv
+        flow_midpoint6: output/dataset_clean/flow-cohort_postcovid1-midpoint6.csv
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid1_clean.rds
         icc_input: output/dataset_clean/icc_input-postcovid1.dta
 
-  ## Generate Table 1 summary statistics - postcovid1 
+  ## Generate Table 1 summary statistics - postcovid1 - main 
 
-  generate_table1_postcovid1:
-    run: r:v2 analysis/table1/table1.R postcovid1
+  generate_table1_postcovid1_main:
+    run: r:v2 analysis/table1/table1.R postcovid1 main
     needs:
     - generate_input_postcovid1_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6_TRUE: output/table1/table1-cohort_postcovid1-midpoint6.csv
-        table1_midpoint6_FALSE: output/table1/table1-cohort_postcovid1.csv
+        table1: output/table1/table1-cohort_postcovid1.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid1-midpoint6.csv
 
-  ## Generate Table 2 summary statistics - postcovid1 
+  ## Generate Table 2 summary statistics - postcovid1 - main 
 
-  generate_table2_postcovid1:
-    run: r:v2 analysis/table2/table2.R postcovid1
+  generate_table2_postcovid1_main:
+    run: r:v2 analysis/table2/table2.R postcovid1 main
     needs:
     - generate_input_postcovid1_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid1-midpoint6.csv
-        table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid1.csv
+        table2: output/table2/table2-cohort_postcovid1.csv
+        table2_midpoint6: output/table2/table2-cohort_postcovid1-midpoint6.csv
 
   ## Generate icc_outcome - postcovid1 
 
@@ -2400,6 +2447,47 @@ actions:
       moderately_sensitive:
         icc_outcome: output/icc_outcome/icc_outcome-postcovid1.csv
 
+  ## Generate cleaned input dataset - sensitivity_consultation - postcovid1 
+
+  generate_input_postcovid1_clean_sensitivity_consultation:
+    run: r:v2 analysis/dataset_clean_sensitivity/dataset_clean_sensitivity.R postcovid1
+      sensitivity_consultation
+    needs:
+    - generate_input_postcovid1_clean
+    outputs:
+      moderately_sensitive:
+        flow_sensitivity: output/dataset_clean/sensitivity_consultation/flow-cohort_postcovid1.csv
+        flow_sensitivity_midpoint6: output/dataset_clean/sensitivity_consultation/flow-cohort_postcovid1-midpoint6.csv
+      highly_sensitive:
+        cohort_clean_sensitivity: output/dataset_clean/sensitivity_consultation/input_postcovid1_clean.rds
+        icc_input_sensitivity: output/dataset_clean/sensitivity_consultation/icc_input-postcovid1.dta
+
+  ## Generate Table 1 summary statistics - postcovid1 - sensitivity_consultation
+
+    
+
+  generate_table1_postcovid1_sensitivity_consultation:
+    run: r:v2 analysis/table1/table1.R postcovid1 sensitivity_consultation
+    needs:
+    - generate_input_postcovid1_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_postcovid1_sensitivity_consultation.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid1_sensitivity_consultation-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - postcovid1 - sensitivity_consultation
+
+    
+
+  generate_table2_postcovid1_sensitivity_consultation:
+    run: r:v2 analysis/table2/table2.R postcovid1 sensitivity_consultation
+    needs:
+    - generate_input_postcovid1_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table2: output/table2/table2-cohort_postcovid1_sensitivity_consultation.csv
+        table2_midpoint6: output/table2/table2-cohort_postcovid1_sensitivity_consultation-midpoint6.csv
+
   ## Generate cleaned input dataset - postcovid2 
 
   generate_input_postcovid2_clean:
@@ -2408,31 +2496,34 @@ actions:
     - generate_cohort_postcovid2
     - generate_merged_postcovid2
     outputs:
+      moderately_sensitive:
+        flow: output/dataset_clean/flow-cohort_postcovid2.csv
+        flow_midpoint6: output/dataset_clean/flow-cohort_postcovid2-midpoint6.csv
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid2_clean.rds
         icc_input: output/dataset_clean/icc_input-postcovid2.dta
 
-  ## Generate Table 1 summary statistics - postcovid2 
+  ## Generate Table 1 summary statistics - postcovid2 - main 
 
-  generate_table1_postcovid2:
-    run: r:v2 analysis/table1/table1.R postcovid2
+  generate_table1_postcovid2_main:
+    run: r:v2 analysis/table1/table1.R postcovid2 main
     needs:
     - generate_input_postcovid2_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6_TRUE: output/table1/table1-cohort_postcovid2-midpoint6.csv
-        table1_midpoint6_FALSE: output/table1/table1-cohort_postcovid2.csv
+        table1: output/table1/table1-cohort_postcovid2.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid2-midpoint6.csv
 
-  ## Generate Table 2 summary statistics - postcovid2 
+  ## Generate Table 2 summary statistics - postcovid2 - main 
 
-  generate_table2_postcovid2:
-    run: r:v2 analysis/table2/table2.R postcovid2
+  generate_table2_postcovid2_main:
+    run: r:v2 analysis/table2/table2.R postcovid2 main
     needs:
     - generate_input_postcovid2_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid2-midpoint6.csv
-        table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid2.csv
+        table2: output/table2/table2-cohort_postcovid2.csv
+        table2_midpoint6: output/table2/table2-cohort_postcovid2-midpoint6.csv
 
   ## Generate icc_outcome - postcovid2 
 
@@ -2444,6 +2535,47 @@ actions:
       moderately_sensitive:
         icc_outcome: output/icc_outcome/icc_outcome-postcovid2.csv
 
+  ## Generate cleaned input dataset - sensitivity_consultation - postcovid2 
+
+  generate_input_postcovid2_clean_sensitivity_consultation:
+    run: r:v2 analysis/dataset_clean_sensitivity/dataset_clean_sensitivity.R postcovid2
+      sensitivity_consultation
+    needs:
+    - generate_input_postcovid2_clean
+    outputs:
+      moderately_sensitive:
+        flow_sensitivity: output/dataset_clean/sensitivity_consultation/flow-cohort_postcovid2.csv
+        flow_sensitivity_midpoint6: output/dataset_clean/sensitivity_consultation/flow-cohort_postcovid2-midpoint6.csv
+      highly_sensitive:
+        cohort_clean_sensitivity: output/dataset_clean/sensitivity_consultation/input_postcovid2_clean.rds
+        icc_input_sensitivity: output/dataset_clean/sensitivity_consultation/icc_input-postcovid2.dta
+
+  ## Generate Table 1 summary statistics - postcovid2 - sensitivity_consultation
+
+    
+
+  generate_table1_postcovid2_sensitivity_consultation:
+    run: r:v2 analysis/table1/table1.R postcovid2 sensitivity_consultation
+    needs:
+    - generate_input_postcovid2_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_postcovid2_sensitivity_consultation.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid2_sensitivity_consultation-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - postcovid2 - sensitivity_consultation
+
+    
+
+  generate_table2_postcovid2_sensitivity_consultation:
+    run: r:v2 analysis/table2/table2.R postcovid2 sensitivity_consultation
+    needs:
+    - generate_input_postcovid2_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table2: output/table2/table2-cohort_postcovid2_sensitivity_consultation.csv
+        table2_midpoint6: output/table2/table2-cohort_postcovid2_sensitivity_consultation-midpoint6.csv
+
   ## Generate cleaned input dataset - postcovid3 
 
   generate_input_postcovid3_clean:
@@ -2452,31 +2584,34 @@ actions:
     - generate_cohort_postcovid3
     - generate_merged_postcovid3
     outputs:
+      moderately_sensitive:
+        flow: output/dataset_clean/flow-cohort_postcovid3.csv
+        flow_midpoint6: output/dataset_clean/flow-cohort_postcovid3-midpoint6.csv
       highly_sensitive:
         cohort_clean: output/dataset_clean/input_postcovid3_clean.rds
         icc_input: output/dataset_clean/icc_input-postcovid3.dta
 
-  ## Generate Table 1 summary statistics - postcovid3 
+  ## Generate Table 1 summary statistics - postcovid3 - main 
 
-  generate_table1_postcovid3:
-    run: r:v2 analysis/table1/table1.R postcovid3
+  generate_table1_postcovid3_main:
+    run: r:v2 analysis/table1/table1.R postcovid3 main
     needs:
     - generate_input_postcovid3_clean
     outputs:
       moderately_sensitive:
-        table1_midpoint6_TRUE: output/table1/table1-cohort_postcovid3-midpoint6.csv
-        table1_midpoint6_FALSE: output/table1/table1-cohort_postcovid3.csv
+        table1: output/table1/table1-cohort_postcovid3.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid3-midpoint6.csv
 
-  ## Generate Table 2 summary statistics - postcovid3 
+  ## Generate Table 2 summary statistics - postcovid3 - main 
 
-  generate_table2_postcovid3:
-    run: r:v2 analysis/table2/table2.R postcovid3
+  generate_table2_postcovid3_main:
+    run: r:v2 analysis/table2/table2.R postcovid3 main
     needs:
     - generate_input_postcovid3_clean
     outputs:
       moderately_sensitive:
-        table2_midpoint6_TRUE: output/table2/table2-cohort_postcovid3-midpoint6.csv
-        table2_midpoint6_FALSE: output/table2/table2-cohort_postcovid3.csv
+        table2: output/table2/table2-cohort_postcovid3.csv
+        table2_midpoint6: output/table2/table2-cohort_postcovid3-midpoint6.csv
 
   ## Generate icc_outcome - postcovid3 
 
@@ -2488,10 +2623,51 @@ actions:
       moderately_sensitive:
         icc_outcome: output/icc_outcome/icc_outcome-postcovid3.csv
 
-  ## Generate input for trajectory outcome graphs 
+  ## Generate cleaned input dataset - sensitivity_consultation - postcovid3 
+
+  generate_input_postcovid3_clean_sensitivity_consultation:
+    run: r:v2 analysis/dataset_clean_sensitivity/dataset_clean_sensitivity.R postcovid3
+      sensitivity_consultation
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      moderately_sensitive:
+        flow_sensitivity: output/dataset_clean/sensitivity_consultation/flow-cohort_postcovid3.csv
+        flow_sensitivity_midpoint6: output/dataset_clean/sensitivity_consultation/flow-cohort_postcovid3-midpoint6.csv
+      highly_sensitive:
+        cohort_clean_sensitivity: output/dataset_clean/sensitivity_consultation/input_postcovid3_clean.rds
+        icc_input_sensitivity: output/dataset_clean/sensitivity_consultation/icc_input-postcovid3.dta
+
+  ## Generate Table 1 summary statistics - postcovid3 - sensitivity_consultation
+
+    
+
+  generate_table1_postcovid3_sensitivity_consultation:
+    run: r:v2 analysis/table1/table1.R postcovid3 sensitivity_consultation
+    needs:
+    - generate_input_postcovid3_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table1: output/table1/table1-cohort_postcovid3_sensitivity_consultation.csv
+        table1_midpoint6: output/table1/table1-cohort_postcovid3_sensitivity_consultation-midpoint6.csv
+
+  ## Generate Table 2 summary statistics - postcovid3 - sensitivity_consultation
+
+    
+
+  generate_table2_postcovid3_sensitivity_consultation:
+    run: r:v2 analysis/table2/table2.R postcovid3 sensitivity_consultation
+    needs:
+    - generate_input_postcovid3_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        table2: output/table2/table2-cohort_postcovid3_sensitivity_consultation.csv
+        table2_midpoint6: output/table2/table2-cohort_postcovid3_sensitivity_consultation-midpoint6.csv
+
+  ## Generate input for trajectory outcome graphs - main 
 
   generate_input_trajectory_outcomes:
-    run: r:v2 analysis/graphs/trajectory_outcomes.R
+    run: r:v2 analysis/graphs/trajectory_outcomes.R main
     needs:
     - generate_input_precovid_clean
     - generate_input_postcovid1_clean
@@ -2500,6 +2676,21 @@ actions:
     outputs:
       moderately_sensitive:
         input_trajectory_outcomes: output/graphs/input_trajectory_outcomes.csv
+
+  ## Generate input for trajectory outcome graphs - sensitivity_consultation
+
+    
+
+  generate_input_trajectory_outcomes_sensitivity_consultation:
+    run: r:v2 analysis/graphs/trajectory_outcomes.R sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    - generate_input_postcovid1_clean_sensitivity_consultation
+    - generate_input_postcovid2_clean_sensitivity_consultation
+    - generate_input_postcovid3_clean_sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        input_trajectory_outcomes: output/graphs/input_trajectory_outcomes_sensitivity_consultation.csv
 
   ## Run regression models for all active analyses 
 
