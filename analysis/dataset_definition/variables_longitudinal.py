@@ -8,14 +8,19 @@ from variable_helper_functions import (
 )
 
 # Define generate variables function
-def generate_variables(interval_start, interval_end):  
+def generate_variables(interval_start, interval_end, start_cohort):  
     ## Inclusion/exclusion criteria-------------------------------------------------------------------------
 
     ### Registered throughout the study period (for longitudinal measures, i.e. consultation rate/hospital admission)
-    inex_bin_reg_long = (practice_registrations.spanning_with_systmone(
+    inex_bin_reg_long = (
+        practice_registrations.spanning_with_systmone(
         interval_start, interval_end
-    )).exists_for_patient()
-
+        ).where(
+            practice_registrations.practice_systmone_go_live_date <= start_cohort
+            )
+            .exists_for_patient()
+    )
+    
     ## Exposure---------------------------------------------------------------------------------------------
 
     ###  Consultation rate during follow-up of exposure
