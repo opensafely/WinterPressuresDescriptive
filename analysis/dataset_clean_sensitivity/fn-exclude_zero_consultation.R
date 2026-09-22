@@ -15,7 +15,7 @@ exclude_zero_consultation <- function(input, flow) {
 
     # Filter out practices with zero consultation rates ----------------------------
     input <- input %>%
-        filter(is.na(cons_mean) | cons_mean != 0)
+        filter(is.na(cons_mean) | cons_mean > 0.005)
 
     n_after <- n_distinct(input$practice_id)
 
@@ -23,13 +23,13 @@ exclude_zero_consultation <- function(input, flow) {
     flow <- bind_rows(
         flow,
         data.frame(
-            Description = "Sensitivity analysis: exclude practices with average monthly consultation rates = 0",
+            Description = "Sensitivity analysis: exclude practices with average monthly consultation rates <= 0.005",
             N = n_after,
             stringsAsFactors = FALSE
         )
     )
 
-    message("Practices excluded with zero consultation rates: ", n_before - n_after)
+    message("Practices excluded with consultation rates <= 0.005: ", n_before - n_after)
     message("Practices remaining for sensitivity analysis: ", n_after)
     print(flow[nrow(flow), ])
 
