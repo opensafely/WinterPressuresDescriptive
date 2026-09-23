@@ -14,7 +14,7 @@ if practice_measures:
 
     # Import longitudinal variables (focusing on time period)
     from variables_longitudinal import generate_variables
-    variables_dynamic = generate_variables(INTERVAL.start_date, INTERVAL.end_date)
+    variables_dynamic = generate_variables(INTERVAL.start_date, INTERVAL.end_date, start_cohort - months(12))
     # Extract variables from the dictionary so they can be directly used
     globals().update(variables_dynamic)
 
