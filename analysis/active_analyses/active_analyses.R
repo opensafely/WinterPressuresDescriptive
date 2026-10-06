@@ -338,13 +338,28 @@ df_mutually_adjusted <- crossing(
         analysis_type
     )
 
-# Combine the single exposure and mutually adjusted analyses ----
+# Combine the single exposure and mutually adjusted analyses --------------------
 df <- bind_rows(df, df_mutually_adjusted)
 
-# Add name for each analysis ----
+# Define dataset variants ------------------------------------------------------
 
-# Add name for each analysis --------------------------------------------------
+sensitivity_types <- c(
+    "main",
+    "sensitivity_consultation"
+)
 
+if (anyNA(sensitivity_types) || any(!nzchar(sensitivity_types)) ||
+    anyDuplicated(sensitivity_types) > 0) {
+    stop("Sensitivity types must be non-missing, non-empty and unique.")
+}
+
+# Generate each model for each dataset variant ---------------------------------
+# 'analysis' retains main/sub_* because it selects the outcome denominator.
+df <- bind_rows(lapply(sensitivity_types, function(sensitivity) {
+    mutate(df, sensitivity_type = sensitivity)
+}))
+
+# Add unique names; preserve existing names for main datasets -------------------
 df <- df %>%
     mutate(
         exposure_name = if_else(
@@ -352,7 +367,7 @@ df <- df %>%
             "all",
             exposure
         ),
-        name = paste0(
+        base_name = paste0(
             "cohort_",
             cohort,
             "-",
@@ -360,18 +375,25 @@ df <- df %>%
             "-",
             exposure_name,
             "-",
-            gsub(
-                "(_main|_sub_[a-z]+)",
-                "",
-                outcome
-            )
+            gsub("(_main|_sub_[a-z]+)", "", outcome)
+        ),
+        name = if_else(
+            sensitivity_type == "main",
+            base_name,
+            paste0(base_name, "-", sensitivity_type)
         )
     ) %>%
-    select(-exposure_name)
+    select(-exposure_name, -base_name)
 
-# Check names are unique and save active analyses list ----
-if (length(unique(df$name)) == nrow(df)) {
-    saveRDS(df, file = "lib/active_analyses.rds", compress = "gzip")
-} else {
+# Check names are unique and save the active analyses registry ------------------
+if (anyDuplicated(df$name) > 0) {
     stop("ERROR: names must be unique in active analyses table")
 }
+
+fs::dir_create(here::here("lib"))
+
+saveRDS(
+    df,
+    file = here::here("lib", "active_analyses.rds"),
+    compress = "gzip"
+)
