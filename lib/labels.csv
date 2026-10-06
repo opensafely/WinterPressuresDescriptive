@@ -47,7 +47,7 @@ cons_jun_postcovid3,Jun 2024,Consultations,
 cons_jul_postcovid3,Jul 2024,Consultations,
 cons_aug_postcovid3,Aug 2024,Consultations,
 cons_sep_postcovid3,Sep 2024,Consultations,
-cons_mean,Monthly consultation per 1000 patients,Monthly consultation,
+cons_mean,Monthly consultation,Monthly consultation,
 cons_oct,October,Monthly consultation,1
 cons_nov,November,Monthly consultation,2
 cons_dec,December,Monthly consultation,3
@@ -101,27 +101,27 @@ smoking_ever,Ever smoker,Smoking Status,2
 smoking_missing,Missing smoking,Smoking Status,4
 carehome_True, Care home residence,Care home residence,
 carehome,Care home residence,Care home residence,
-practice_region_East (ref),East (ref),Practice region,1
-practice_region_East Midlands,East Midlands,Practice region,2
-practice_region_London,London,Practice region,3
-practice_region_North East,North East,Practice region,4
-practice_region_North West,North West,Practice region,5
-practice_region_South East,South East,Practice region,6
-practice_region_South West,South West,Practice region,7
-practice_region_West Midlands,West Midlands,Practice region,8
-practice_region_Yorkshire and The Humber,Yorkshire and The Humber,Practice region,9
+practice_region_East (ref),East (ref),Practice region*,1
+practice_region_East Midlands,East Midlands,Practice region*,2
+practice_region_London,London,Practice region*,3
+practice_region_North East,North East,Practice region*,4
+practice_region_North West,North West,Practice region*,5
+practice_region_South East,South East,Practice region*,6
+practice_region_South West,South West,Practice region*,7
+practice_region_West Midlands,West Midlands,Practice region*,8
+practice_region_Yorkshire and The Humber,Yorkshire and The Humber,Practice region*,9
 practice_rurality_Urban conurbation (ref),Urban conurbation (ref),Practice rurality,1
 practice_rurality_Urban town,Urban town,Practice rurality,2
 practice_rurality_Rural,Rural,Practice rurality,3
-exp_prop_East (ref),East (ref),Practice region,1
-exp_prop_East Midlands,East Midlands,Practice region,2
-exp_prop_London,London,Practice region,3
-exp_prop_North East,North East,Practice region,4
-exp_prop_North West,North West,Practice region,5
-exp_prop_South East,South East,Practice region,6
-exp_prop_South West,South West,Practice region,7
-exp_prop_West Midlands,West Midlands,Practice region,8
-exp_prop_Yorkshire and The Humber,Yorkshire and The Humber,Practice region,9
+exp_prop_East (ref),East (ref),Practice region*,1
+exp_prop_East Midlands,East Midlands,Practice region*,2
+exp_prop_London,London,Practice region*,3
+exp_prop_North East,North East,Practice region*,4
+exp_prop_North West,North West,Practice region*,5
+exp_prop_South East,South East,Practice region*,6
+exp_prop_South West,South West,Practice region*,7
+exp_prop_West Midlands,West Midlands,Practice region*,8
+exp_prop_Yorkshire and The Humber,Yorkshire and The Humber,Practice region*,9
 exp_prop_Urban conurbation (ref),Urban conurbation (ref),Practice rurality,1
 exp_prop_Urban town,Urban town,Practice rurality,2
 exp_prop_Rural,Rural,Practice rurality,3
@@ -148,7 +148,7 @@ osteoarthritis,Osteoarthritis,Condition,
 psychosis,Psychosis,Condition,
 stroketia,Stroke or TIA,Condition,
 listsize,Practice list size,List size,
-precovid,Pre-COVID19,,
+precovid,Pre-COVID19 (2018/19),,
 postcovid1,2022/23,,
 postcovid2,2023/24,,
 postcovid3,2024/25,,
@@ -168,14 +168,14 @@ apc_acsc_any_mean,Admitted patient care (ACSC admissions),average weekly ACSC-re
 ec_acsc_any_mean,Emergency care (ACSC attendances),average weekly ACSC-related hospital use,2
 apc_unpl_acsc_any_mean,Unplanned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,3
 apc_plan_acsc_any_mean,Planned Hospital admitted patient care (ACSC admissions),average weekly ACSC-related hospital use,4
-apc,All APC,admitted patient care,1
-apc_unpl,Unplanned APC,admitted patient care,2
-apc_plan,Planned APC,admitted patient care,3
-apc_acsc_any,All ACSC-related APC,admitted patient care,4
-apc_unpl_acsc_any,Unplanned ACSC-related APC,admitted patient care,5
-apc_plan_acsc_any,Planned ACSC-related APC,admitted patient care,6
-ec,Emergency care,emergency care,1
-ec_acsc_any,ACSC-related emergency care,emergency care,2
+apc,All admissions,admitted patient care,1
+apc_unpl,Unplanned admissions,admitted patient care,2
+apc_plan,Planned admissions,admitted patient care,3
+apc_acsc_any,All ACSC admissions,admitted patient care,4
+apc_unpl_acsc_any,Unplanned ACSC admissions,admitted patient care,5
+apc_plan_acsc_any,Planned ACSC admissions,admitted patient care,6
+ec,A&E attendances,emergency care,1
+ec_acsc_any,ACSC attendances,emergency care,2
 main,All people,main,
 sub_asth,People with asthma,subgroup,1
 sub_copd,People with COPD,subgroup,2

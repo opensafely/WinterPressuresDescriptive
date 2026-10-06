@@ -40,7 +40,7 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 
 # Define group order for plotting
 group_order <- c(
-    "Practice region",
+    "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation",
@@ -54,7 +54,7 @@ group_order <- c(
 )
 
 practice_groups <- c(
-    "Practice region",
+    "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation"
@@ -111,8 +111,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             irr,
             lci,
             uci,
-            n_obs_midpoint6,
-            mad
+            n_obs_midpoint6
         ) %>%
         mutate(
             # model aesthetics
@@ -251,89 +250,37 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             filter(group %in% case_mix_groups)
     }
 
-    table_df <- df %>%
-        select(
-            cohort,
-            cohort_label,
-            exposure_label,
-            group,
-            ref,
-            mad
-        ) %>%
-        distinct() %>%
-        arrange(cohort_label, group, ref) %>%
-        select(
-            cohort_label,
-            exposure_label,
-            mad
-        )
-    table_side <- table_df %>%
-        pivot_wider(
-            names_from = cohort_label,
-            values_from = mad
-        )
-
-    cohort_cols <- names(table_side)[
-        names(table_side) != "exposure_label"
-    ]
-    n_cohorts <- length(cohort_cols)
-
-    if (n_cohorts == 4) {
-        widths <- c(0.65, 0.35)
-    } else {
-        widths <- c(0.70, 0.30)
-    }
-
-    # Calculate median MAD and construct characteristic labels
-    table_side <- table_side %>%
-        rowwise() %>%
+    # Use the characteristic names directly; MAD values are not shown in labels.
+    table_side <- df %>%
+        distinct(exposure_label) %>%
         mutate(
-            mad_median = median(
-                c_across(all_of(cohort_cols)),
-                na.rm = TRUE
-            ),
-            exposure_label_full = case_when(
-                is.na(mad_median) ~ as.character(exposure_label),
-                mad_median <= 100 ~ sprintf(
-                    "%s (per %.1f%%)",
-                    exposure_label,
-                    mad_median
-                ),
-                TRUE ~ sprintf(
-                    "%s (per %.0f)",
-                    exposure_label,
-                    mad_median
-                )
-            )
-        ) %>%
-        ungroup() %>%
-        mutate(
-            exposure_label = as.character(exposure_label)
+            exposure_label = as.character(exposure_label),
+            exposure_label_full = exposure_label
         )
 
     # Regions where TPP practices cover <50% of the regional population
-    low_coverage_regions <- c(
-        "South East",
-        "London",
-        "West Midlands",
-        "North West",
-        "North East"
-    )
+    # low_coverage_regions <- c(
+    #     "South East",
+    #     "London",
+    #     "West Midlands",
+    #     "North West",
+    #     "North East"
+    # )
 
-    table_side <- table_side %>%
-        mutate(
-            exposure_label_full = if_else(
-                exposure_label %in% low_coverage_regions,
-                paste0(exposure_label_full, "<sup><span style='font-size:10pt;'><b>*</b></span></sup>"),
-                exposure_label_full
-            )
-        )
+    # table_side <- table_side %>%
+    #     mutate(
+    #         exposure_label_full = if_else(
+    #             exposure_label %in% low_coverage_regions,
+    #             paste0(exposure_label_full, "<sup><span style='font-size:10pt;'><b>*</b></span></sup>"),
+    #             exposure_label_full
+    #         )
+    #     )
 
     # Groups that require a separate subtitle.
     # Single characteristics such as list size and obesity do not need
     # a subtitle because this would repeat the characteristic name.
     groups_with_subtitle <- c(
-        "Practice region",
+        "Practice region*",
         "Practice rurality",
         "Age",
         "Sex",
@@ -341,17 +288,9 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         "Deprivation",
         "Smoking Status"
     )
-    # Bold the characteristic name but not its "(per X)" information
+    # Bold characteristic labels without adding scaling information.
     format_single_label <- function(x) {
-        if_else(
-            str_detect(x, fixed(" (per ")),
-            str_replace(
-                x,
-                "^(.*?)( \\(per .+\\))$",
-                "<b>\\1</b>\\2"
-            ),
-            paste0("<b>", x, "</b>")
-        )
+        paste0("<b>", x, "</b>")
     }
 
     if (combined_all) {
@@ -360,7 +299,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
         case_mix_section <- paste0(
             "Patient case-mix ",
-            "(% of patients in practice with each characteristic)"
+            "(% of patients in the practice)"
         )
 
         section_order <- c(
@@ -409,8 +348,8 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 ref_order
             )
 
-        # Construct the hierarchy:
-        # section heading -> subgroup heading -> characteristics
+        # Construct subgroup headings and characteristics within each section.
+        # Each section gets its own horizontal row of outcome facets below.
         row_structure <- purrr::map_dfr(
             section_order,
             function(section_name) {
@@ -471,60 +410,8 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                     }
                 )
 
-                # Give the case-mix heading two rows
-                section_rows <- if (section_name == case_mix_section) {
-                    tibble(
-                        plot_row = c(
-                            paste(
-                                "section",
-                                section_name,
-                                "title",
-                                sep = "|||"
-                            ),
-                            paste(
-                                "section",
-                                section_name,
-                                "description",
-                                sep = "|||"
-                            )
-                        ),
-                        y_label = c(
-                            paste0(
-                                "<span style='color:#2F5597;font-size:11pt;'>",
-                                "<b>Patient case-mix</b>",
-                                "</span>"
-                            ),
-                            paste0(
-                                "<span style='color:#2F5597;font-size:10pt;'>",
-                                "(% of patients in practice with each characteristic)",
-                                "</span>"
-                            )
-                        ),
-                        row_type = "section"
-                    )
-                } else {
-                    tibble(
-                        plot_row = paste(
-                            "section",
-                            section_name,
-                            "title",
-                            sep = "|||"
-                        ),
-                        y_label = paste0(
-                            "<span style='color:#2F5597;font-size:11pt;'>",
-                            "<b>",
-                            section_name,
-                            "</b>",
-                            "</span>"
-                        ),
-                        row_type = "section"
-                    )
-                }
-
-                bind_rows(
-                    section_rows,
-                    group_rows
-                )
+                group_rows %>%
+                    mutate(section = section_name)
             }
         )
 
@@ -536,16 +423,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
         df <- df %>%
             mutate(
-                plot_row = factor(
-                    plot_row,
-                    levels = row_levels
-                )
-            )
-
-        # Data used to add pale bands to the two main section rows
-        section_band_df <- row_structure %>%
-            filter(row_type == "section") %>%
-            transmute(
                 plot_row = factor(
                     plot_row,
                     levels = row_levels
@@ -670,7 +547,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     } else if (practice_char == "practice") {
         "Practice characteristics"
     } else {
-        "Patient case-mix (% of patients in practice with each characteristic)"
+        "Patient case-mix (% of patients in the practice)"
     }
     title_text <- paste0(
         title_prefix,
@@ -686,15 +563,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     if (is_ec) {
         x_limits <- c(0.7, 1.8)
-        x_breaks <- c(0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8)
     } else if (practice_char %in% c("all", "practice")) {
         # Wider range required because practice characteristics are included
         x_limits <- c(0.6, 1.5)
-        x_breaks <- c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.3, 1.5)
     } else {
         x_limits <- c(0.9, 1.3)
-        x_breaks <- c(0.9, 1.0, 1.1, 1.2, 1.3)
     }
+
+    # Evenly spaced breaks on the log2 x-axis.
+    x_breaks <- round(2^seq(-1, 1, 0.25), 1)
 
     # Plot width and height
 
@@ -740,7 +617,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         )
 
     model_note <- paste0(
-        "Points show incidence rate ratios (IRRs) with 95% confidence intervals. ",
+        "Points show incidence rate ratios with 95% confidence intervals. ",
         "Estimates from random-intercept ",
         ifelse(regression == "negbin", "negative binomial", "Poisson"),
         " regression models."
@@ -770,7 +647,8 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
 
     facet_spec <- if (combined_all) {
         facet_grid(
-            cols = vars(outcome_label)
+            cols = vars(outcome_label),
+            drop = FALSE
         )
     } else {
         facet_wrap(
@@ -782,11 +660,11 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     y_title <- if (combined_all) {
         NULL
     } else if (practice_char == "all") {
-        "Characteristics (median MAD across cohorts)"
+        "Characteristics"
     } else if (practice_char == "practice") {
         "Practice characteristics"
     } else {
-        "Patient case-mix (median MAD across cohorts)"
+        "Patient case-mix"
     }
 
     p <- ggplot(
@@ -799,22 +677,6 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
             group = interaction(cohort_label, model)
         )
     )
-
-    if (combined_all) {
-        p <- p +
-            geom_tile(
-                data = section_band_df,
-                aes(
-                    x = mean(x_limits),
-                    y = plot_row
-                ),
-                inherit.aes = FALSE,
-                width = diff(x_limits),
-                height = 1.2,
-                fill = "#EAF1F7",
-                colour = NA
-            )
-    }
 
     p <- p +
         geom_vline(
@@ -840,20 +702,16 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         # --- Scales ---
         scale_alpha_manual(
             values = c("Single-characteristic (crude)" = 0.35, "Single-characteristic (age-sex adjusted)" = 1),
-            name = "Model"
+            guide = "none"
         ) +
         scale_colour_manual(
-            name = "Cohort",
+            name = NULL,
             values = c(
-                "Pre-COVID19" = "#F8766D",
+                "Pre-COVID19 (2018/19)" = "#F8766D",
                 "2022/23" = "#7CAE00",
                 "2023/24" = "#00BFC4",
                 "2024/25" = "#C77CFF"
             ),
-            drop = FALSE
-        ) +
-        scale_y_discrete(
-            labels = y_labels,
             drop = FALSE
         ) +
         scale_size_manual(
@@ -862,18 +720,15 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         ) +
         scale_x_log10(
             breaks = x_breaks,
-            labels = scales::number_format(accuracy = 0.01)
+            labels = scales::number_format(accuracy = 0.1)
         ) +
         coord_cartesian(
             xlim = x_limits
         ) +
         facet_spec +
         labs(
-            title = title_text,
-            x = "Incidence rate ratio (IRR)",
-            y = y_title,
-            linetype = "Model",
-            caption = caption_text
+            x = "Incidence rate ratio and 95% confidence interval",
+            y = y_title
         ) +
         theme_bw() +
         theme(
@@ -882,27 +737,35 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 size = 12,
                 margin = margin(b = 8)
             ),
+            panel.border = element_blank(),
+            strip.background = element_blank(),
             strip.text.x = element_text(
-                size = 12,
-                face = "bold"
+                size = 15,
+                hjust = 0.5,
+                margin = margin(t = 5, b = 6)
             ),
-            plot.caption = element_text(
-                size = 8,
-                hjust = 0,
-                colour = "grey30",
-                lineheight = 1.2,
-                margin = margin(t = 8)
+            panel.grid.major.x = element_line(
+                colour = "grey88",
+                linewidth = 0.3
             ),
+            panel.grid.minor.x = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor.y = element_blank(),
+            panel.spacing = unit(12, "pt"),
+            axis.ticks = element_blank(),
             legend.position = "bottom",
-            axis.text.y = ggtext::element_markdown(size = 9),
+            axis.text.x = element_text(size = 11),
+            axis.title.x = element_text(margin = margin(t = 14)),
+            axis.text.y = ggtext::element_markdown(size = 13),
+            axis.title = element_text(size = 13),
             plot.margin = margin(t = 14, r = 10, b = 14, l = 10),
             legend.box = "vertical",
             legend.key.width = unit(12, "pt"),
             legend.key.height = unit(10, "pt"),
             legend.spacing.x = unit(4, "pt"),
             legend.spacing.y = unit(2, "pt"),
-            legend.text = element_text(size = 9),
-            legend.title = element_text(size = 9)
+            legend.text = element_text(size = 11),
+            legend.title = element_text(size = 11)
         ) +
         guides(
             colour = guide_legend(
@@ -910,12 +773,84 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
                 byrow = TRUE,
                 override.aes = list(size = 2, alpha = 1)
             ),
-            alpha = guide_legend(
-                title = "Model",
-                override.aes = list(colour = "black")
-            ),
             size = "none" # hide duplicate legend
         )
+
+    if (combined_all) {
+        # Two stacked rows, each retaining the original outcome facet labels.
+        # The section title sits across its entire row above those facets.
+        make_section_plot <- function(section_name) {
+            section_rows <- row_structure %>%
+                filter(section == section_name)
+            section_levels <- rev(section_rows$plot_row)
+            section_df <- df %>%
+                filter(section == section_name) %>%
+                mutate(
+                    plot_row = factor(
+                        as.character(plot_row),
+                        levels = section_levels
+                    )
+                )
+
+            p + section_df +
+                scale_y_discrete(
+                    limits = section_levels,
+                    labels = y_labels,
+                    drop = FALSE
+                ) +
+                labs(
+                    title = section_name,
+                    x = if (section_name == practice_section) {
+                        NULL
+                    } else {
+                        "Incidence rate ratio and 95% confidence interval"
+                    },
+                    caption = NULL
+                ) +
+                theme(
+                    plot.title = ggtext::element_markdown(
+                        hjust = 0,
+                        size = 16,
+                        # face = "bold",
+                        margin = margin(b = 8)
+                    )
+                )
+        }
+
+        outcome_header <- ggplot(df %>% distinct(outcome_label)) +
+            facet_spec +
+            theme_void() +
+            theme(
+                strip.background = element_blank(),
+                strip.text.x = element_text(
+                    size = 15,
+                    face = "bold",
+                    hjust = 0.5,
+                    margin = margin(t = 5, b = 6)
+                ),
+                panel.spacing = unit(12, "pt"),
+                plot.margin = margin(t = 0, r = 10, b = 0, l = 10)
+            )
+
+        practice_plot <- make_section_plot(practice_section) +
+            theme(strip.text.x = element_blank())
+        case_mix_plot <- make_section_plot(case_mix_section) +
+            theme(strip.text.x = element_blank())
+
+        p <- (
+            (outcome_header / practice_plot / case_mix_plot) +
+                patchwork::plot_layout(
+                    heights = c(
+                        0,
+                        sum(row_structure$section == practice_section),
+                        sum(row_structure$section == case_mix_section)
+                    ),
+                    guides = "collect"
+                )
+        ) & theme(legend.position = "bottom")
+    } else {
+        p <- p + scale_y_discrete(labels = y_labels, drop = FALSE)
+    }
 
     ggsave(
         filename = file.path(
@@ -924,7 +859,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         ),
         plot = p,
         width = plot_width,
-        height = plot_height,
+        height = plot_height + if (combined_all) 2 else 0,
         dpi = 300
     )
 }
@@ -933,127 +868,129 @@ plot_irr("negbin", "main", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
 plot_irr("negbin", "main", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
 plot_irr("negbin", "main", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
-plot_irr("negbin", "sub_asth", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
-plot_irr("negbin", "sub_asth", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "sub_asth", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# Run subgroup analyses
+# plot_irr("negbin", "sub_asth", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+# plot_irr("negbin", "sub_asth", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
+# plot_irr("negbin", "sub_asth", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
-plot_irr("negbin", "sub_copd", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
-plot_irr("negbin", "sub_copd", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "sub_copd", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# plot_irr("negbin", "sub_copd", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+# plot_irr("negbin", "sub_copd", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
+# plot_irr("negbin", "sub_copd", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
-plot_irr("negbin", "sub_htn", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
-plot_irr("negbin", "sub_htn", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "sub_htn", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# plot_irr("negbin", "sub_htn", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+# plot_irr("negbin", "sub_htn", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
+# plot_irr("negbin", "sub_htn", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
-plot_irr("negbin", "sub_diab", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
-plot_irr("negbin", "sub_diab", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "sub_diab", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# plot_irr("negbin", "sub_diab", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+# plot_irr("negbin", "sub_diab", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
+# plot_irr("negbin", "sub_diab", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
-plot_irr("negbin", "sub_sevmh", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
-plot_irr("negbin", "sub_sevmh", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "practice")
-plot_irr("negbin", "sub_sevmh", c("apc", "apc_unpl", "apc_plan", "apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "case_mix")
+# plot_irr("negbin", "sub_sevmh", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
+# plot_irr("negbin", "sub_sevmh", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
+# plot_irr("negbin", "sub_sevmh", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
 
 
 
-# Run all analyses for supplementary figures
-# Analyses to plot
-all_analyses <- c(
-    "main",
-    "sub_asth",
-    "sub_copd",
-    "sub_htn",
-    "sub_diab",
-    "sub_sevmh"
-)
 
-# Cohorts to include
-ec_cohorts <- c(
-    "postcovid1",
-    "postcovid2",
-    "postcovid3"
-)
+# # Run all analyses for supplementary figures
+# # Analyses to plot
+# all_analyses <- c(
+#     "main",
+#     "sub_asth",
+#     "sub_copd",
+#     "sub_htn",
+#     "sub_diab",
+#     "sub_sevmh"
+# )
 
-apc_cohorts <- c(
-    "precovid",
-    "postcovid1",
-    "postcovid2",
-    "postcovid3"
-)
+# # Cohorts to include
+# ec_cohorts <- c(
+#     "postcovid1",
+#     "postcovid2",
+#     "postcovid3"
+# )
 
-# Outcomes
-ec_outcomes <- c(
-    "ec",
-    "ec_acsc_any"
-)
+# apc_cohorts <- c(
+#     "precovid",
+#     "postcovid1",
+#     "postcovid2",
+#     "postcovid3"
+# )
 
-apc_outcomes <- c(
-    "apc",
-    "apc_unpl",
-    "apc_plan",
-    "apc_acsc_any",
-    "apc_unpl_acsc_any",
-    "apc_plan_acsc_any"
-)
+# # Outcomes
+# ec_outcomes <- c(
+#     "ec",
+#     "ec_acsc_any"
+# )
 
-apc_all_cause_outcomes <- c(
-    "apc",
-    "apc_unpl",
-    "apc_plan"
-)
+# apc_outcomes <- c(
+#     "apc",
+#     "apc_unpl",
+#     "apc_plan",
+#     "apc_acsc_any",
+#     "apc_unpl_acsc_any",
+#     "apc_plan_acsc_any"
+# )
 
-apc_acsc_outcomes <- c(
-    "apc_acsc_any",
-    "apc_unpl_acsc_any",
-    "apc_plan_acsc_any"
-)
+# apc_all_cause_outcomes <- c(
+#     "apc",
+#     "apc_unpl",
+#     "apc_plan"
+# )
 
-# Generate all plots
-purrr::walk(
-    all_analyses,
-    function(current_analysis) {
-        # EC: practice characteristics and case-mix together
-        plot_irr(
-            regression = "negbin",
-            sub_group = current_analysis,
-            outcome_names = ec_outcomes,
-            cohorts = ec_cohorts,
-            practice_char = "all"
-        )
+# apc_acsc_outcomes <- c(
+#     "apc_acsc_any",
+#     "apc_unpl_acsc_any",
+#     "apc_plan_acsc_any"
+# )
 
-        # APC, all-cause outcomes: practice characteristics and case-mix together
-        plot_irr(
-            regression = "negbin",
-            sub_group = current_analysis,
-            outcome_names = apc_all_cause_outcomes,
-            cohorts = apc_cohorts,
-            practice_char = "all"
-        )
+# # Generate all plots
+# purrr::walk(
+#     all_analyses,
+#     function(current_analysis) {
+#         # EC: practice characteristics and case-mix together
+#         plot_irr(
+#             regression = "negbin",
+#             sub_group = current_analysis,
+#             outcome_names = ec_outcomes,
+#             cohorts = ec_cohorts,
+#             practice_char = "all"
+#         )
 
-        # APC, ACSC-related outcomes: practice characteristics and case-mix together
-        plot_irr(
-            regression = "negbin",
-            sub_group = current_analysis,
-            outcome_names = apc_acsc_outcomes,
-            cohorts = apc_cohorts,
-            practice_char = "all"
-        )
+#         # APC, all-cause outcomes: practice characteristics and case-mix together
+#         plot_irr(
+#             regression = "negbin",
+#             sub_group = current_analysis,
+#             outcome_names = apc_all_cause_outcomes,
+#             cohorts = apc_cohorts,
+#             practice_char = "all"
+#         )
 
-        # APC, all: practice characteristics
-        plot_irr(
-            regression = "negbin",
-            sub_group = current_analysis,
-            outcome_names = apc_outcomes,
-            cohorts = apc_cohorts,
-            practice_char = "practice"
-        )
+#         # APC, ACSC-related outcomes: practice characteristics and case-mix together
+#         plot_irr(
+#             regression = "negbin",
+#             sub_group = current_analysis,
+#             outcome_names = apc_acsc_outcomes,
+#             cohorts = apc_cohorts,
+#             practice_char = "all"
+#         )
 
-        # APC, all: patient case-mix
-        plot_irr(
-            regression = "negbin",
-            sub_group = current_analysis,
-            outcome_names = apc_outcomes,
-            cohorts = apc_cohorts,
-            practice_char = "case_mix"
-        )
-    }
-)
+#         # APC, all: practice characteristics
+#         plot_irr(
+#             regression = "negbin",
+#             sub_group = current_analysis,
+#             outcome_names = apc_outcomes,
+#             cohorts = apc_cohorts,
+#             practice_char = "practice"
+#         )
+
+#         # APC, all: patient case-mix
+#         plot_irr(
+#             regression = "negbin",
+#             sub_group = current_analysis,
+#             outcome_names = apc_outcomes,
+#             cohorts = apc_cohorts,
+#             practice_char = "case_mix"
+#         )
+#     }
+# )
