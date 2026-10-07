@@ -498,7 +498,11 @@ drop_all_duplicates <- function(
 # Generate function to summarise distribution  ----
 print("Generate function to summarise distribution")
 
-summarise_dist <- function(x, is_outcome = FALSE) {
+summarise_dist <- function(
+  x,
+  is_outcome = FALSE,
+  include_tail_percentiles = FALSE
+) {
   q <- quantile(x, probs = seq(0.1, 0.9, 0.1), na.rm = TRUE)
 
   res <- tibble(
@@ -520,12 +524,32 @@ summarise_dist <- function(x, is_outcome = FALSE) {
     p90 = q[[9]]
   )
 
-  # Add outcome-specific metric
+  # Add the requested lower and upper percentiles only when enabled.
+  if (include_tail_percentiles) {
+    q_tail <- quantile(
+      x,
+      probs = c(0.005, 0.01, 0.05, 0.95, 0.99, 0.995),
+      na.rm = TRUE,
+      names = FALSE
+    )
+
+    res <- res |>
+      mutate(
+        p0_5 = q_tail[[1]],
+        p1 = q_tail[[2]],
+        p5 = q_tail[[3]],
+        p95 = q_tail[[4]],
+        p99 = q_tail[[5]],
+        p99_5 = q_tail[[6]]
+      )
+  }
+
+  # Add outcome-specific metric.
   if (is_outcome) {
     res <- res |>
       mutate(prop_zero = sum(x == 0, na.rm = TRUE) / sum(!is.na(x)))
   } else {
-    # Add exposure-specific metric
+    # Add exposure-specific metric.
     res <- res |>
       mutate(mad = stats::mad(x, na.rm = TRUE))
   }
