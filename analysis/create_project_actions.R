@@ -27,6 +27,16 @@ cohort_dates <- active_analyses |>
   dplyr::distinct() |>
   tibble::deframe()
 
+# Define sensitivity analyses
+if (!"sensitivity_type" %in% names(active_analyses)) {
+  stop("Regenerate active_analyses.rds with the sensitivity_type column.")
+}
+
+sensitivity_types <- unique(active_analyses$sensitivity_type)
+
+if (anyNA(sensitivity_types) || any(!nzchar(sensitivity_types))) {
+  stop("Every active analysis must have a non-empty sensitivity_type.")
+}
 
 # Define subgroups (This is consistent with the study definition measure generation, see /analysis/dataset_definition/config_setup.py)
 subgroups <- c(
@@ -351,13 +361,20 @@ generate_table2 <- function(cohort, sensitivity_type = "main") {
 # Create function to run a model -----------------------------------------------
 apply_model_function <- function(
   name,
-  cohort
+  cohort,
+  sensitivity_type = "main"
 ) {
+  input_action <- if (sensitivity_type == "main") {
+    glue("generate_input_{cohort}_clean")
+  } else {
+    glue("generate_input_{cohort}_clean_{sensitivity_type}")
+  }
+
   splice(
     action(
       name = glue("make_model_input-{name}"),
       run = glue("r:v2 analysis/model/make_model_input.R {name}"),
-      needs = as.list(glue("generate_input_{cohort}_clean")),
+      needs = as.list(input_action),
       highly_sensitive = list(
         model_input = glue("output/model/model_input-{name}.dta")
       )
@@ -383,7 +400,18 @@ apply_model_function <- function(
 
 # Create function for making model outputs --------------------------------------
 
-make_model_output <- function(cohort, subgroup, exposure_group) {
+make_model_output <- function(cohort, subgroup, exposure_group, sensitivity_type = "main") {
+  makeout_dir <- if (sensitivity_type == "main") {
+    "output/make_output/"
+  } else {
+    paste0("output/make_output/", sensitivity_type, "/")
+  }
+
+  action_name <- glue("make_model_output-{cohort}-{subgroup}-{exposure_group}")
+  if (sensitivity_type != "main") {
+    action_name <- glue("{action_name}-{sensitivity_type}")
+  }
+
   # Divide patient case-mix exposures into two output groups --------------------
   case_mix1_exposures <- active_analyses %>%
     filter(
@@ -408,7 +436,8 @@ make_model_output <- function(cohort, subgroup, exposure_group) {
 
   selected_analyses <- active_analyses %>%
     filter(
-      .data$cohort == .env$cohort
+      .data$cohort == .env$cohort,
+      .data$sensitivity_type == .env$sensitivity_type
     )
 
   # Select exposure group -----------------------------------------------------
@@ -451,20 +480,32 @@ make_model_output <- function(cohort, subgroup, exposure_group) {
         ", subgroup = ",
         subgroup,
         ", exposure_group = ",
-        exposure_group
+        exposure_group,
+        ", sensitivity_type = ",
+        sensitivity_type
       )
     )
   }
 
+  model_comments <- comment(
+    glue("Generate model_output {cohort} - {exposure_group}_characteristic - {subgroup}")
+  )
+  if (sensitivity_type != "main") {
+    model_comments <- c(
+      model_comments,
+      comment(glue("Sensitivity analysis: {sensitivity_type}"))
+    )
+  }
+
   splice(
-    comment(glue("Generate model_output {cohort} - {exposure_group}_characteristic - {subgroup}")),
+    model_comments,
     action(
-      name = glue(
-        "make_model_output-{cohort}-{subgroup}-{exposure_group}"
-      ),
-      run = glue(
-        "r:v2 analysis/make_output/make_model_output.R {cohort} {subgroup} {exposure_group}"
-      ),
+      name = action_name,
+      run = if (sensitivity_type == "main") {
+        glue("r:v2 analysis/make_output/make_model_output.R {cohort} {subgroup} {exposure_group}")
+      } else {
+        glue("r:v2 analysis/make_output/make_model_output.R {cohort} {subgroup} {exposure_group} {sensitivity_type}")
+      },
       needs = as.list(
         paste0(
           "run_regression_model-",
@@ -473,19 +514,19 @@ make_model_output <- function(cohort, subgroup, exposure_group) {
       ),
       moderately_sensitive = list(
         model_output_regression = glue(
-          "output/make_output/model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
+          "{makeout_dir}model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
         ),
         model_output_lrtest = paste0(
-          "output/make_output/",
+          makeout_dir,
           glue(
             "model_output_lrtest-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}.csv"
           )
         ),
         model_output_regression_midpoint6 = glue(
-          "output/make_output/model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
+          "{makeout_dir}model_output-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
         ),
         model_output_lrtest_midpoint6 = paste0(
-          "output/make_output/",
+          makeout_dir,
           glue(
             "model_output_lrtest-{cohort}-subgroup_{subgroup}-exposure_{exposure_group}-midpoint6.csv"
           )
@@ -684,15 +725,18 @@ for (cohort in cohorts_all) {
   actions_list <- c(actions_list, generate_table1(cohort))
   actions_list <- c(actions_list, generate_table2(cohort))
   actions_list <- c(actions_list, generate_icc_outcome(cohort))
-  actions_list <- c(actions_list, generate_input_sensitivity(cohort, "sensitivity_consultation"))
-  actions_list <- c(actions_list, generate_table1(cohort, "sensitivity_consultation"))
-  actions_list <- c(actions_list, generate_table2(cohort, "sensitivity_consultation"))
+  for (sensitivity_type in setdiff(sensitivity_types, "main")) {
+    actions_list <- c(actions_list, generate_input_sensitivity(cohort, sensitivity_type))
+    actions_list <- c(actions_list, generate_table1(cohort, sensitivity_type))
+    actions_list <- c(actions_list, generate_table2(cohort, sensitivity_type))
+  }
 }
-actions_list <- c(
-  actions_list,
-  generate_input_trajectory_outcomes("main"),
-  generate_input_trajectory_outcomes("sensitivity_consultation")
-)
+for (sensitivity_type in sensitivity_types) {
+  actions_list <- c(
+    actions_list,
+    generate_input_trajectory_outcomes(sensitivity_type)
+  )
+}
 
 # Run models for all active analyses ----------------------------------------------
 actions_list <- c(
@@ -705,7 +749,8 @@ run_models_action <- lapply(
   function(x) {
     apply_model_function(
       name = active_analyses$name[x],
-      cohort = active_analyses$cohort[x]
+      cohort = active_analyses$cohort[x],
+      sensitivity_type = active_analyses$sensitivity_type[x]
     )
   }
 )
@@ -717,32 +762,31 @@ actions_list <- c(
 )
 
 # Generate model outputs for all cohort-subgroup combinations -----------------
-
-for (cohort in cohorts_all) {
-  for (subgroup in c(subgroups_short)) {
-    actions_list <- c(
-      actions_list,
-      make_model_output(cohort, subgroup, "practice")
-    )
-  }
-}
-
-for (exposure_group in c("case_mix1", "case_mix2")) {
+for (sensitivity_type in sensitivity_types) {
   for (cohort in cohorts_all) {
     for (subgroup in c(subgroups_short)) {
       actions_list <- c(
         actions_list,
-        make_model_output(cohort, subgroup, exposure_group)
+        make_model_output(cohort, subgroup, "practice", sensitivity_type)
       )
     }
   }
-}
-
-for (cohort in cohorts_all) {
-  actions_list <- c(
-    actions_list,
-    make_model_output(cohort, "all", "all")
-  )
+  for (exposure_group in c("case_mix1", "case_mix2")) {
+    for (cohort in cohorts_all) {
+      for (subgroup in c(subgroups_short)) {
+        actions_list <- c(
+          actions_list,
+          make_model_output(cohort, subgroup, exposure_group, sensitivity_type)
+        )
+      }
+    }
+  }
+  for (cohort in cohorts_all) {
+    actions_list <- c(
+      actions_list,
+      make_model_output(cohort, "all", "all", sensitivity_type)
+    )
+  }
 }
 
 # Add action to generate correlation figures for exposures

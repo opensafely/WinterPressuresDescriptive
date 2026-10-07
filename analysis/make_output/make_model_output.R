@@ -28,11 +28,20 @@ if (length(args) == 0) {
     exposure_group <- args[[3]]
 }
 
+# Optional fourth argument selects the merged output folder.
+# YAML needs selects the model outputs available to this merge action.
+sensitivity_type <- if (length(args) >= 4) args[[4]] else "main"
+
 # Define model output folder ---------------------------------------
 print("Creating output/model output folder")
 
 # setting up the sub directory
-makeout_dir <- "output/make_output/"
+makeout_dir <- if (sensitivity_type == "main") {
+    "output/make_output/"
+} else {
+    paste0("output/make_output/", sensitivity_type, "/")
+}
+
 model_dir <- "output/model/"
 
 # check if sub directory exists, create if not

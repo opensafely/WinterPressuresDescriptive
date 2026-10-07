@@ -101,8 +101,19 @@ prepare_model_input <- function(name) {
     # Load data ------------------------------------------------------------------
     print(paste0("Load data for ", active_analysis$name))
 
+    input_dir <- if (active_analysis$sensitivity_type == "main") {
+        "output/dataset_clean/"
+    } else {
+        paste0(
+            "output/dataset_clean/",
+            active_analysis$sensitivity_type,
+            "/"
+        )
+    }
+
     input <- readr::read_rds(paste0(
-        "output/dataset_clean/input_",
+        input_dir,
+        "input_",
         active_analysis$cohort,
         "_clean.rds"
     ))

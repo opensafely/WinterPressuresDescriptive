@@ -58,7 +58,7 @@ create_table1 <- function(
     # Overall
     table1_summary_overall <- table1_long %>%
         group_by(characteristic, subcharacteristic) %>%
-        summarise(summarise_dist(value, is_outcome = FALSE), .groups = "drop") %>%
+        summarise(summarise_dist(value, is_outcome = FALSE, include_tail_percentiles = TRUE), .groups = "drop") %>%
         mutate(strata = "Overall")
 
     # Practice region
