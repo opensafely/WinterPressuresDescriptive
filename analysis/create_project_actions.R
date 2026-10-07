@@ -900,6 +900,39 @@ for (cohort in cohorts_all) {
   )
 }
 
+# Temporarily remove unwanted actions ------------------------------------------
+# Remove post-COVID consultation sensitivity model inputs, regressions and outputs, as very few pracitces were excluded from the sensitivity_consultation analysis
+model_cohorts_to_skip <- c("postcovid1", "postcovid2", "postcovid3")
+
+model_names_to_skip <- active_analyses |>
+  dplyr::filter(
+    .data$cohort %in% model_cohorts_to_skip,
+    .data$sensitivity_type == "sensitivity_consultation"
+  ) |>
+  dplyr::pull(name)
+
+model_outputs_to_skip <- names(actions_list)[
+  str_detect(
+    names(actions_list),
+    paste0(
+      "^make_model_output-(",
+      paste(model_cohorts_to_skip, collapse = "|"),
+      ")-.*-sensitivity_consultation$"
+    )
+  )
+]
+
+# Set this to character(0) to restore all actions.
+temporarily_unwanted_actions <- c(
+  paste0("make_model_input-", model_names_to_skip),
+  paste0("run_regression_model-", model_names_to_skip),
+  model_outputs_to_skip
+)
+
+actions_list <- actions_list[
+  !names(actions_list) %in% temporarily_unwanted_actions
+]
+
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
   defaults_list,
