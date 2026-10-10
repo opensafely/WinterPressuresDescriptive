@@ -922,11 +922,17 @@ model_outputs_to_skip <- names(actions_list)[
   )
 ]
 
+model_inputs_to_skip <- names(actions_list)[
+  str_detect(names(actions_list), "^make_model_input-") &
+    !str_detect(names(actions_list), "-sensitivity_consultation$")
+]
+
 # Set this to character(0) to restore all actions.
 temporarily_unwanted_actions <- c(
   paste0("make_model_input-", model_names_to_skip),
   paste0("run_regression_model-", model_names_to_skip),
-  model_outputs_to_skip
+  model_outputs_to_skip,
+  model_inputs_to_skip
 )
 
 actions_list <- actions_list[
