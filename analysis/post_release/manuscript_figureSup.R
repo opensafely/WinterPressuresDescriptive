@@ -52,7 +52,7 @@ labels <- readr::read_csv(
 
 # Define the order of characteristic groups
 group_order <- c(
-    "Practice region",
+    "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation",
@@ -66,7 +66,7 @@ group_order <- c(
 )
 
 practice_groups <- c(
-    "Practice region",
+    "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation"
@@ -602,10 +602,10 @@ plot_irr_sup <- function(
 
     n_outcomes <- length(outcome_names)
 
-    ncol <- if (is_ec || n_outcomes == 2) {
+    ncol <- if (is_ec) {
         n_outcomes
     } else {
-        ceiling(n_outcomes / 2)
+        min(3L, n_outcomes)
     }
 
     n_facet_rows <- ceiling(n_outcomes / ncol)
@@ -617,8 +617,8 @@ plot_irr_sup <- function(
     } else {
         # APC: six outcomes arranged as three columns × two rows
         panel_width <- 5
-        plot_width <- panel_width * ncol 
-        plot_height <- 10 * n_facet_rows 
+        plot_width <- panel_width * ncol
+        plot_height <- 10 * n_facet_rows
     }
 
     caption_width <- round(14 * plot_width)
@@ -708,15 +708,15 @@ plot_irr_sup <- function(
             size = 2
         ) +
         scale_alpha_manual(
-            name = "Model",
             values = c(
                 "Mutually adjusted" = 1
-            )
+            ),
+            guide = "none"
         ) +
         scale_colour_manual(
             name = "Cohort",
             values = c(
-                "Pre-COVID19" = "#F8766D",
+                "Pre-COVID19 (2018/19)" = "#F8766D",
                 "2022/23" = "#7CAE00",
                 "2023/24" = "#00BFC4",
                 "2024/25" = "#C77CFF"
@@ -739,7 +739,7 @@ plot_irr_sup <- function(
         facet_spec +
         labs(
             title = title_text,
-            x = "Incidence rate ratio (IRR)",
+            x = "Incidence rate ratio and 95% confidence interval",
             y = NULL,
             caption = caption_text
         ) +
@@ -781,21 +781,12 @@ plot_irr_sup <- function(
         ) +
         guides(
             colour = guide_legend(
-                title = "Cohort",
+                title = NULL,
                 nrow = 1,
                 byrow = TRUE,
-                override.aes = list(
-                    size = 2,
-                    alpha = 1
-                )
+                override.aes = list(size = 2, alpha = 1)
             ),
-            alpha = guide_legend(
-                title = "Model",
-                override.aes = list(
-                    colour = "black",
-                    alpha = 1
-                )
-            )
+            alpha = "none"
         )
 
     # Save plot ----------------------------------------------------------------
@@ -825,68 +816,61 @@ plot_irr_sup <- function(
 
 # Create mutually adjusted figures --------------------------------------------
 
-# Six APC outcomes: three columns by two rows
-plot_irr_sup(
-    regression = "negbin",
-    sub_group = "main",
-    outcome_names = c(
-        "apc",
-        "apc_unpl",
-        "apc_plan",
-        "apc_acsc_any",
-        "apc_unpl_acsc_any",
-        "apc_plan_acsc_any"
-    ),
-    cohorts = c(
-        "precovid",
-        "postcovid3"
-    )
+# Create mutually adjusted figures --------------------------------------------
+
+analyses_to_plot <- c(
+    "main",
+    "sub_asth",
+    "sub_copd",
+    "sub_diab",
+    "sub_htn",
+    "sub_sevmh"
 )
 
-# EC outcomes: first and most recent post-COVID-19 cohorts
-plot_irr_sup(
-    regression = "negbin",
-    sub_group = "main",
-    outcome_names = c(
-        "ec",
-        "ec_acsc_any"
-    ),
-    cohorts = c(
-        "postcovid3"
-    )
+# Choose the outcomes to include.
+apc_outcomes <- c(
+    "apc",
+    "apc_unpl",
+    "apc_plan"
 )
 
-# Six APC outcomes: three columns by two rows
-plot_irr_sup(
-    regression = "negbin",
-    sub_group = "main",
-    outcome_names = c(
-        "apc",
-        "apc_unpl",
-        "apc_plan",
-        "apc_acsc_any",
-        "apc_unpl_acsc_any",
-        "apc_plan_acsc_any"
-    ),
-    cohorts = c(
-        "precovid",
-        "postcovid1",
-        "postcovid2",
-        "postcovid3"
-    )
+apc_outcomes_acsc <- c(
+    "apc_acsc_any",
+    "apc_unpl_acsc_any",
+    "apc_plan_acsc_any"
 )
 
-# EC outcomes: first and most recent post-COVID-19 cohorts
-plot_irr_sup(
-    regression = "negbin",
-    sub_group = "main",
-    outcome_names = c(
-        "ec",
-        "ec_acsc_any"
-    ),
-    cohorts = c(
-        "postcovid1",
-        "postcovid2",
-        "postcovid3"
-    )
+ec_outcomes <- c(
+    "ec",
+    "ec_acsc_any"
 )
+
+# Choose the cohorts to compare.
+apc_cohorts <- c("precovid", "postcovid3")
+ec_cohorts <- c("postcovid3")
+
+for (current_analysis in analyses_to_plot) {
+    # Three APC outcomes in one row.
+    plot_irr_sup(
+        regression = "negbin",
+        sub_group = current_analysis,
+        outcome_names = apc_outcomes,
+        cohorts = apc_cohorts
+    )
+
+    # Three APC ACSC outcomes in one row.
+    plot_irr_sup(
+        regression = "negbin",
+        sub_group = current_analysis,
+        outcome_names = apc_outcomes_acsc,
+        cohorts = apc_cohorts
+    )
+
+    # A&E outcomes.
+    plot_irr_sup(
+        regression = "negbin",
+        sub_group = current_analysis,
+        outcome_names = ec_outcomes,
+        cohorts = ec_cohorts
+    )
+}
