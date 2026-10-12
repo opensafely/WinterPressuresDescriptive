@@ -77,11 +77,11 @@ subgroups_to_compare <- c(
 )
 
 subgroup_colours <- c(
-    sub_asth = "#2864A0",  # Deep blue
-    sub_copd = "#C65D28",  # Burnt orange
-    sub_diab = "#238577",  # Teal
-    sub_htn = "#95639E",   # Plum
-    sub_sevmh = "#C99A18"  # Golden yellow
+    sub_asth = "#2864A0", # Deep blue
+    sub_copd = "#C65D28", # Burnt orange
+    sub_diab = "#238577", # Teal
+    sub_htn = "#95639E", # Plum
+    sub_sevmh = "#C99A18" # Golden yellow
 )
 
 subgroup_shapes <- c(
@@ -546,6 +546,10 @@ plot_irr <- function(
         is_last_section <- section_name ==
             tail(section_order, 1)
 
+        separator_lines <- section_rows %>%
+            filter(row_type == "characteristic") %>%
+            transmute(yintercept = y_position - 0.5)
+
         ggplot(
             section_df,
             aes(
@@ -561,6 +565,13 @@ plot_irr <- function(
                 colour = "grey60",
                 linetype = "dashed",
                 linewidth = 0.6
+            ) +
+            geom_hline(
+                data = separator_lines,
+                aes(yintercept = yintercept),
+                inherit.aes = FALSE,
+                colour = "grey95",
+                linewidth = 0.25
             ) +
             # Confidence intervals for non-reference estimates only.
             geom_errorbar(
