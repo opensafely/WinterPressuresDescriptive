@@ -901,43 +901,71 @@ for (cohort in cohorts_all) {
 }
 
 # Temporarily remove unwanted actions ------------------------------------------
-# Remove post-COVID consultation sensitivity model inputs, regressions and outputs, as very few pracitces were excluded from the sensitivity_consultation analysis
-model_cohorts_to_skip <- c("postcovid1", "postcovid2", "postcovid3")
+# Remove model inputs, regressions and combined outputs together.
+# Main analyses: skip postcovid1 and postcovid2.
+# Sensitivity analyses: skip postcovid1, postcovid2 and postcovid3.
+main_model_cohorts_to_skip <- c("postcovid1", "postcovid2")
+sensitivity_model_cohorts_to_skip <- c("postcovid1", "postcovid2", "postcovid3")
 
 model_names_to_skip <- active_analyses |>
   dplyr::filter(
-    .data$cohort %in% model_cohorts_to_skip,
-    .data$sensitivity_type == "sensitivity_consultation"
+    (.data$cohort %in% main_model_cohorts_to_skip &
+      .data$sensitivity_type == "main") |
+      (.data$cohort %in% sensitivity_model_cohorts_to_skip &
+        .data$sensitivity_type != "main")
   ) |>
   dplyr::pull(name)
 
-model_outputs_to_skip <- names(actions_list)[
-  str_detect(
-    names(actions_list),
-    paste0(
-      "^make_model_output-(",
-      paste(model_cohorts_to_skip, collapse = "|"),
-      ")-.*-sensitivity_consultation$"
-    )
+regression_actions_to_skip <- paste0("run_regression_model-", model_names_to_skip)
+
+# Remove any combined model output that needs an excluded regression.
+model_output_actions <- names(actions_list)[
+  startsWith(names(actions_list), "make_model_output-")
+]
+
+model_outputs_to_skip <- model_output_actions[
+  vapply(
+    actions_list[model_output_actions],
+    function(action) {
+      any(unlist(action$needs, use.names = FALSE) %in% regression_actions_to_skip)
+    },
+    logical(1)
   )
 ]
 
-model_inputs_to_skip <- names(actions_list)[
-  str_detect(names(actions_list), "^make_model_input-") &
-    !str_detect(names(actions_list), "-sensitivity_consultation$")
-]
-
-# Set this to character(0) to restore all actions.
+# Set this to character(0) to restore all model actions.
 temporarily_unwanted_actions <- c(
   paste0("make_model_input-", model_names_to_skip),
-  paste0("run_regression_model-", model_names_to_skip),
-  model_outputs_to_skip,
-  model_inputs_to_skip
+  regression_actions_to_skip,
+  model_outputs_to_skip
 )
 
 actions_list <- actions_list[
   !names(actions_list) %in% temporarily_unwanted_actions
 ]
+
+# Check dependencies before writing project.yaml -------------------------------
+missing_needs <- lapply(actions_list, function(action) {
+  if (!is.list(action) || is.null(action$needs)) {
+    return(character(0))
+  }
+
+  setdiff(unlist(action$needs, use.names = FALSE), names(actions_list))
+})
+missing_needs <- missing_needs[lengths(missing_needs) > 0L]
+
+if (length(missing_needs) > 0L) {
+  missing_details <- vapply(
+    missing_needs,
+    function(needs) paste(needs, collapse = ", "),
+    character(1)
+  )
+
+  stop(
+    "Undefined action dependencies; project.yaml was not written:\n",
+    paste(paste0(names(missing_needs), ": ", missing_details), collapse = "\n")
+  )
+}
 
 # Combine actions into project list --------------------------------------------
 project_list <- splice(
