@@ -27,14 +27,6 @@ subgroups_to_plot <- c(
     "sub_sevmh"
 )
 
-# Figure legend:
-# (A) All people
-# (B) Patients living with asthma
-# (C) Patients living with COPD
-# (D) Patients living with diabetes
-# (E) Patients living with hypertension
-# (F) Patients living with severe mental illness
-
 outcomes_all_cause <- c(
     "apc",
     "apc_unpl",
@@ -313,13 +305,22 @@ create_and_save_iqr_plot <- function(
     }
 
     # Letter labels for patient-group rows.
+    # subgroup_names <- c(
+    #     main = "(A)",
+    #     sub_asth = "(B)",
+    #     sub_copd = "(C)",
+    #     sub_diab = "(D)",
+    #     sub_htn = "(E)",
+    #     sub_sevmh = "(F)"
+    # )
+
     subgroup_names <- c(
-        main = "(A)",
-        sub_asth = "(B)",
-        sub_copd = "(C)",
-        sub_diab = "(D)",
-        sub_htn = "(E)",
-        sub_sevmh = "(F)"
+        main = "All people",
+        sub_asth = "Patients living\nwith asthma",
+        sub_copd = "Patients living\nwith COPD",
+        sub_diab = "Patients living\nwith diabetes",
+        sub_htn = "Patients living\nwith hypertension",
+        sub_sevmh = "Patients living\nwith severe\nmental illness"
     )
 
     if (!all(subgroups %in% names(subgroup_names))) {
@@ -454,7 +455,7 @@ create_and_save_iqr_plot <- function(
 
             # Horizontal (A)–(F) labels on the left.
             strip.text.y.left = element_text(
-                size = 25,
+                size = 20,
                 face = "bold",
                 angle = 0,
                 hjust = 0,
