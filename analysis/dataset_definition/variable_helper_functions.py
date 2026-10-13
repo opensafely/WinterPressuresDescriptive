@@ -1,6 +1,7 @@
 import operator
 from functools import reduce # for function building, e.g. any_of
 from module_table_imports import *
+from datetime import date
 from codelists import *
 
 def ever_matching_event_clinical_ctv3_before(codelist, start_date, where=True):
@@ -274,42 +275,403 @@ def has_condition_before(
 
     return any_of(conditions)
 
-def get_cms_on_date(index_date, death_date, return_components=False):
+# Function to obtain Cambridge multimorbidity score (https://github.com/opensafely/NeurodegenerativeDiseaseBurden/blob/6ce9d827aa16356c76b3680b8d7ef58122eb2305/analysis/dataset_definition/variable_helper_functions.py#L45-L320)
+
+def get_cms_on_date(input_date, death_date, return_components=False):
 
     cms = clinical_events.exists_for_patient().as_int().as_float() * 0
     components = {}
 
-    for name, weight, snomed, dmd1, dmd2 in [
-        ("alcohol",      0.65, multimorbidity_dict["MS_AlcoholProblem_snomed"], None, None),
-        ("anxiety",      0.50, multimorbidity_dict["MS_AnxietyDepression_snomed"], multimorbidity_dict["MS_AnxietyDepression_dmd"], None),
-        ("asthma",       0.19, multimorbidity_dict["MS_Asthma_snomed"], multimorbidity_dict["MS_Asthma_dmd"], None),
-        ("af",           1.34, multimorbidity_dict["MS_AF_snomed"], None, None),
-        ("cancer",       1.53, multimorbidity_dict["MS_Cancer_snomed"], None, None),
-        ("ckd",          0.53, multimorbidity_dict["MS_CKD_snomed"], None, None),
-        ("constipation", 1.12, None, multimorbidity_dict["MS_Constipation_dmd"], None),
-        ("copd",         1.46, multimorbidity_dict["MS_COPD_snomed"], None, None),
-        ("ctd",          0.43, multimorbidity_dict["MS_CTD_snomed"], None, None),
-        ("chd",          0.49, multimorbidity_dict["MS_CHD_snomed"], None, None),
-        ("dementia",     2.50, multimorbidity_dict["MS_Dementia_snomed"], None, None),
-        ("diabetes",     0.75, multimorbidity_dict["MS_Diabetes_snomed"], None, None),
-        ("epilepsy",     0.92, multimorbidity_dict["MS_Epilepsy_snomed"], multimorbidity_dict["MS_Epilepsy_dmd"], None),
-        ("hearing_loss", 0.09, multimorbidity_dict["MS_HL_snomed"], None, None),
-        ("hf",           1.18, multimorbidity_dict["MS_HF_snomed"], None, None),
-        ("hypertension", 0.08, multimorbidity_dict["MS_Hypertension_snomed"], None, None),
-        ("ibs",          0.21, multimorbidity_dict["MS_IBS_snomed"], multimorbidity_dict["MS_IBS_dmd"], None),
-        ("psychosis",    0.64, multimorbidity_dict["MS_Psychosis_snomed"], multimorbidity_dict["MS_Psychosis_dmd"], None),
-        ("stroke",       0.80, multimorbidity_dict["MS_StrokeTIA_snomed"], None, None),
-        ("pain",         0.92, None,
-                        multimorbidity_dict["MS_PC_Analgesics_dmd"],
-                        multimorbidity_dict["MS_PC_Antiepileptic_dmd"]),
+    # Any diagnosis ever before input_date
+    for name, codelist, weight in [
+        ("alcohol", multimorbidity_dict["MS_AlcoholProblem_snomed"], 0.792243),
+        ("af", multimorbidity_dict["MS_AF_snomed"], 0.334891),
+        ("copd", multimorbidity_dict["MS_COPD_snomed"], 0.702181),
+        ("dementia", multimorbidity_dict["MS_Dementia_snomed"], 0.938001),
+        ("diabetes", multimorbidity_dict["MS_Diabetes_snomed"], 0.29467),
+        ("hf", multimorbidity_dict["MS_HF_snomed"], 0.505245),
+        ("cld", multimorbidity_dict["MS_CLD_snomed"], 0.68621),
+        ("prostate", multimorbidity_dict["MS_Prostate_snomed"], -0.18781),
+        ("learning", multimorbidity_dict["MS_LD_snomed"], 0.637273),
+        ("sclerosis", multimorbidity_dict["MS_Sclerosis_snomed"], 0.761606),
+        ("parkinsonism", multimorbidity_dict["MS_Parkinson_snomed"], 0.546194),
+        (
+            "perivascular_leg",
+            multimorbidity_dict["MS_Perivascular_snomed"],
+            0.334558,
+        ),
+        (
+            "psychosub_misuse",
+            multimorbidity_dict["MS_Psychoactive_snomed"],
+            0.449321,
+        ),
     ]:
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
 
-        binary = has_condition_before(
-            index_date=index_date,
-            death_date=death_date,
-            snomed=snomed,
-            dmd1=dmd1,
-            dmd2=dmd2,
+        binary = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient().as_int()
+
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # First recorded cancer diagnosis in the last 5 years
+    for name, codelist, weight in [
+        ("cancer", multimorbidity_dict["MS_Cancer_snomed"], 1.202615),
+    ]:
+        if isinstance(input_date, str):
+            d = date.fromisoformat(input_date)
+            earliest = f"{d.year-5}-{d.month:02d}-{d.day:02d}"
+        else:
+            earliest = input_date - years(5)
+
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
+
+        filtered2 = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).date.minimum_for_patient()
+
+        binary = (
+            filtered2.is_not_null() & (filtered2 >= earliest)
+        ).as_int()
+
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # Larger eGFR value from the two most recent measurement dates < 60
+    for name, codelist, weight in [
+        ("ckd", multimorbidity_dict["MS_CKD_snomed"], 0.213652),
+    ]:
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
+
+        filtered2 = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        )
+
+        recent1 = filtered2.date.maximum_for_patient()
+        recent2 = filtered2.where(
+            filtered2.date < recent1
+        ).date.maximum_for_patient()
+
+        value1 = filtered2.where(
+            filtered2.date == recent1
+        ).numeric_value.minimum_for_patient()
+
+        value2 = filtered2.where(
+            filtered2.date == recent2
+        ).numeric_value.minimum_for_patient()
+
+        value = maximum_of(value1, value2)
+        binary = (value.is_not_null() & (value < 60)).as_int()
+
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # Epilepsy: any diagnosis ever AND at least one prescription
+    # in the last 12 months
+    for name, codelist, medlist, weight in [
+        (
+            "epilepsy",
+            multimorbidity_dict["MS_Epilepsy_snomed"],
+            multimorbidity_dict["MS_Epilepsy_dmd"],
+            0.477465,
+        ),
+    ]:
+        if isinstance(input_date, str):
+            d = date.fromisoformat(input_date)
+            earliest = f"{d.year-1}-{d.month:02d}-{d.day:02d}"
+        else:
+            earliest = input_date - years(1)
+
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
+
+        diag = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        medfiltered = medications.where(
+            medications.dmd_code.is_in(medlist)
+        ).where(
+            medications.date.is_before(input_date)
+        ).where(
+            medications.date.is_on_or_after(earliest)
+        )
+
+        med = medfiltered.where(
+            check_date_validity(
+                medfiltered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        binary = (diag & med).as_int()
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # IBS: any diagnosis ever OR prescriptions on at least
+    # four distinct dates in the last 12 months
+    for name, codelist, medlist, weight in [
+        (
+            "bowel",
+            multimorbidity_dict["MS_IBS_snomed"],
+            multimorbidity_dict["MS_IBS_dmd"],
+            -0.20368,
+        ),
+    ]:
+        if isinstance(input_date, str):
+            d = date.fromisoformat(input_date)
+            earliest = f"{d.year-1}-{d.month:02d}-{d.day:02d}"
+        else:
+            earliest = input_date - years(1)
+
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
+
+        diag = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        medfiltered = medications.where(
+            medications.dmd_code.is_in(medlist)
+        ).where(
+            medications.date.is_before(input_date)
+        ).where(
+            medications.date.is_on_or_after(earliest)
+        )
+
+        med = medfiltered.where(
+            check_date_validity(
+                medfiltered.date, death_date=death_date
+            ).is_not_null()
+        ).date.count_distinct_for_patient()
+
+        binary = (diag | (med >= 4)).as_int()
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # Psychosis/bipolar disorder: any diagnosis OR prescription ever
+    for name, codelist, medlist, weight in [
+        (
+            "psychosis",
+            multimorbidity_dict["MS_Psychosis_snomed"],
+            multimorbidity_dict["MS_Psychosis_dmd"],
+            0.482469,
+        ),
+    ]:
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
+
+        diag = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        medfiltered = medications.where(
+            medications.dmd_code.is_in(medlist)
+        ).where(
+            medications.date.is_before(input_date)
+        )
+
+        med = medfiltered.where(
+            check_date_validity(
+                medfiltered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        binary = (diag | med).as_int()
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # Constipation: prescriptions on at least four distinct dates
+    # in the last 12 months; no diagnosis required
+    for name, medlist, weight in [
+        (
+            "constipation",
+            multimorbidity_dict["MS_Constipation_dmd"],
+            0.383006,
+        ),
+    ]:
+        if isinstance(input_date, str):
+            d = date.fromisoformat(input_date)
+            earliest = f"{d.year-1}-{d.month:02d}-{d.day:02d}"
+        else:
+            earliest = input_date - years(1)
+
+        medfiltered = medications.where(
+            medications.dmd_code.is_in(medlist)
+        ).where(
+            medications.date.is_before(input_date)
+        ).where(
+            medications.date.is_on_or_after(earliest)
+        )
+
+        med = medfiltered.where(
+            check_date_validity(
+                medfiltered.date, death_date=death_date
+            ).is_not_null()
+        ).date.count_distinct_for_patient()
+
+        binary = (med >= 4).as_int()
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # Anxiety/depression: diagnosis in the last 12 months OR
+    # prescriptions on at least four distinct dates in that period
+    for name, codelist, medlist, weight in [
+        (
+            "anxiety",
+            multimorbidity_dict["MS_AnxietyDepression_snomed"],
+            multimorbidity_dict["MS_AnxietyDepression_dmd"],
+            0.324207,
+        ),
+    ]:
+        if isinstance(input_date, str):
+            d = date.fromisoformat(input_date)
+            earliest = f"{d.year-1}-{d.month:02d}-{d.day:02d}"
+        else:
+            earliest = input_date - years(1)
+
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        ).where(
+            clinical_events.date.is_on_or_after(earliest)
+        )
+
+        diag = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        medfiltered = medications.where(
+            medications.dmd_code.is_in(medlist)
+        ).where(
+            medications.date.is_before(input_date)
+        ).where(
+            medications.date.is_on_or_after(earliest)
+        )
+
+        med = medfiltered.where(
+            check_date_validity(
+                medfiltered.date, death_date=death_date
+            ).is_not_null()
+        ).date.count_distinct_for_patient()
+
+        binary = (diag | (med >= 4)).as_int()
+        cms += binary.as_float() * weight
+
+        if return_components:
+            components[name] = binary
+
+    # Painful condition:
+    # analgesics on >=4 distinct dates in the last 12 months OR
+    # antiepileptics for pain on >=4 distinct dates in that period
+    # AND no previous epilepsy diagnosis
+    for name, codelist, medlist1, medlist2, weight in [
+        (
+            "pain",
+            multimorbidity_dict["MS_Epilepsy_snomed"],
+            multimorbidity_dict["MS_PC_Analgesics_dmd"],
+            multimorbidity_dict["MS_PC_Antiepileptic_dmd"],
+            0.445521,
+        ),
+    ]:
+        if isinstance(input_date, str):
+            d = date.fromisoformat(input_date)
+            earliest = f"{d.year-1}-{d.month:02d}-{d.day:02d}"
+        else:
+            earliest = input_date - years(1)
+
+        filtered = clinical_events.where(
+            clinical_events.snomedct_code.is_in(codelist)
+        ).where(
+            clinical_events.date.is_before(input_date)
+        )
+
+        diag = filtered.where(
+            check_date_validity(
+                filtered.date, death_date=death_date
+            ).is_not_null()
+        ).exists_for_patient()
+
+        medfiltered1 = medications.where(
+            medications.dmd_code.is_in(medlist1)
+        ).where(
+            medications.date.is_before(input_date)
+        ).where(
+            medications.date.is_on_or_after(earliest)
+        )
+
+        med1 = medfiltered1.where(
+            check_date_validity(
+                medfiltered1.date, death_date=death_date
+            ).is_not_null()
+        ).date.count_distinct_for_patient()
+
+        medfiltered2 = medications.where(
+            medications.dmd_code.is_in(medlist2)
+        ).where(
+            medications.date.is_before(input_date)
+        ).where(
+            medications.date.is_on_or_after(earliest)
+        )
+
+        med2 = medfiltered2.where(
+            check_date_validity(
+                medfiltered2.date, death_date=death_date
+            ).is_not_null()
+        ).date.count_distinct_for_patient()
+
+        binary = (
+            ((~diag) & (med2 >= 4)) | (med1 >= 4)
         ).as_int()
 
         cms += binary.as_float() * weight
