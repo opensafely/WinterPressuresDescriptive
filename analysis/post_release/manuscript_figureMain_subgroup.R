@@ -33,7 +33,7 @@ labels <- readr::read_csv(
 # Specify characteristic order -------------------------------------------------
 
 group_order <- c(
-    "Practice region*",
+    # "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation",
@@ -47,7 +47,7 @@ group_order <- c(
 )
 
 practice_groups <- c(
-    "Practice region*",
+    # "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation"
@@ -56,7 +56,7 @@ practice_groups <- c(
 case_mix_groups <- setdiff(group_order, practice_groups)
 
 groups_with_subtitle <- c(
-    "Practice region*",
+    # "Practice region*",
     "Practice rurality",
     "Age",
     "Sex",
@@ -803,7 +803,7 @@ for (cohort_to_plot in c(
     plot_irr(
         regression = "negbin",
         sub_group = subgroups_to_compare,
-        outcome_names = c("apc", "apc_unpl", "apc_plan"),
+        outcome_names = c("apc", "apc_unpl"),
         cohorts = cohort_to_plot,
         practice_char = "all"
     )
