@@ -40,7 +40,7 @@ labels <- readr::read_csv("lib/labels.csv", show_col_types = FALSE)
 
 # Define group order for plotting
 group_order <- c(
-    "Practice region*",
+    # "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation",
@@ -54,7 +54,7 @@ group_order <- c(
 )
 
 practice_groups <- c(
-    "Practice region*",
+    # "Practice region*",
     "Practice rurality",
     "List size",
     "Monthly consultation"
@@ -280,7 +280,7 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
     # Single characteristics such as list size and obesity do not need
     # a subtitle because this would repeat the characteristic name.
     groups_with_subtitle <- c(
-        "Practice region*",
+        # "Practice region*",
         "Practice rurality",
         "Age",
         "Sex",
@@ -561,17 +561,16 @@ plot_irr <- function(regression, sub_group, outcome_names, cohorts, practice_cha
         "**"
     )
 
-    if (is_ec) {
-        x_limits <- c(0.7, 1.8)
-    } else if (practice_char %in% c("all", "practice")) {
-        # Wider range required because practice characteristics are included
-        x_limits <- c(0.6, 1.5)
+    x_limits <- if (is_ec) {
+        c(0.8, 1.4)
     } else {
-        x_limits <- c(0.9, 1.3)
+        c(0.9, 1.2)
     }
-
-    # Evenly spaced breaks on the log2 x-axis.
-    x_breaks <- round(2^seq(-1, 1, 0.25), 1)
+    # Clearly labelled ticks within the plotting range
+    x_breaks <- round(
+        seq(x_limits[1], x_limits[2], by = 0.1),
+        1
+    )
 
     # Plot width and height
 
@@ -888,8 +887,6 @@ plot_irr("negbin", "main", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc
 # plot_irr("negbin", "sub_sevmh", c("ec", "ec_acsc_any"), c("postcovid3"), "all")
 # plot_irr("negbin", "sub_sevmh", c("apc", "apc_unpl", "apc_plan"), c("precovid", "postcovid3"), "all")
 # plot_irr("negbin", "sub_sevmh", c("apc_acsc_any", "apc_unpl_acsc_any", "apc_plan_acsc_any"), c("precovid", "postcovid3"), "all")
-
-
 
 
 # # Run all analyses for supplementary figures
