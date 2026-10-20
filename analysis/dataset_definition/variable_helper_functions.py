@@ -384,11 +384,7 @@ def get_cms_on_date(input_date, death_date, return_components=False):
         ).numeric_value.minimum_for_patient()
 
         value = maximum_of(value1, value2)
-        binary = (
-            value1.is_not_null()
-            & value2.is_not_null()
-            & (value < 60)
-        ).as_int()
+        binary = (value.is_not_null() & (value < 60)).as_int()
 
         cms += binary.as_float() * weight
 
