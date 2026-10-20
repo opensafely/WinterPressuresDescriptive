@@ -10,7 +10,7 @@ if practice_measures:
     # Import variables function
     measures = create_measures()
     measures.configure_disclosure_control(enabled=False)    #disabling disclosure control for demonstration
-    measures.configure_dummy_data(population_size=10000, legacy=True)
+    measures.configure_dummy_data(population_size=1000, legacy=True)
 
     # Import longitudinal variables (focusing on time period)
     from variables_longitudinal import generate_variables
@@ -114,29 +114,30 @@ if practice_measures:
     }
 
     # =========================
-    # Multimorbidity-related measures
+    # Multimorbidity-related measures (21 conditions)
     # =========================
     measures_multimorbidity = {
-        "cms_af":                exp_bin_af,
         "cms_alcohol":           exp_bin_alcoholproblem,
         "cms_anxdep":            exp_bin_anxietydepression,
-        "cms_asthma":            exp_bin_asthma,
+        "cms_af":                exp_bin_af,
         "cms_cancer":            exp_bin_cancer,
-        "cms_chd":               exp_bin_chd,
         "cms_ckd":               exp_bin_ckd,
+        "cms_cld":               exp_bin_cld,
         "cms_constip":           exp_bin_constipation,
         "cms_copd":              exp_bin_copd,
-        "cms_ctd":               exp_bin_ctd,
         "cms_dem":               exp_bin_dementia,
         "cms_diabetes":          exp_bin_diabetes,
+        "cms_prostate":          exp_bin_prostate,
         "cms_epilepsy":          exp_bin_epilepsy,
-        "cms_hl":                exp_bin_hearingloss,
         "cms_hf":                exp_bin_hf,
-        "cms_htn":               exp_bin_hypertension,
         "cms_ibs":               exp_bin_ibs,
-        "cms_oa":                exp_bin_osteoarthritis,
+        "cms_learning":          exp_bin_learningdisability,
+        "cms_sclerosis":         exp_bin_multiplesclerosis,
+        "cms_pain":              exp_bin_painfulcondition,
+        "cms_parkinsonism":      exp_bin_parkinsonism,
+        "cms_peripheralvascular": exp_bin_peripheralvascular,
+        "cms_psychoactive":      exp_bin_psychoactive,
         "cms_psych":             exp_bin_psychosis,
-        "cms_stia":              exp_bin_stroketia,
     }
 
     # =========================
@@ -202,12 +203,37 @@ if practice_measures:
     }
 
     # ---------------------- Cross-Sectional Measures ----------------------
-    if CS:
+    cs_flags = [
+        CS,
+        CS_sub_asthma,
+        CS_sub_copd,
+        CS_sub_hypertension,
+        CS_sub_diabetes,
+        CS_sub_sev_mental_ill,
+    ]
+
+    if sum(cs_flags) > 1:
+        raise ValueError(
+            "Select only one cross-sectional population per action."
+        )
+
+    if any(cs_flags):
+        cs_denominator = inex_bin_reg_cs & inex_bin_alive
+
+        if CS_sub_asthma:
+            cs_denominator = cs_denominator & sub_bin_asthma
+        elif CS_sub_copd:
+            cs_denominator = cs_denominator & sub_bin_copd
+        elif CS_sub_hypertension:
+            cs_denominator = cs_denominator & sub_bin_hypertension
+        elif CS_sub_diabetes:
+            cs_denominator = cs_denominator & sub_bin_diabetes
+        elif CS_sub_sev_mental_ill:
+            cs_denominator = cs_denominator & sub_bin_sev_mental_ill
+
         measures.define_defaults(
-            denominator= inex_bin_reg_cs & inex_bin_alive,
-            group_by={
-                "practice_id": practice_id
-            },
+            denominator=cs_denominator,
+            group_by={"practice_id": practice_id},
             intervals=months(1).starting_on(start_cohort),
         )
 
@@ -357,6 +383,12 @@ if practice_measures:
             },
             intervals = weeks(20).starting_on(start_cohort),
         )
+        if Consultation:
+            measures.define_measure(
+                name = "cons_m_sub_asth",
+                numerator = exp_num_consrate,
+                intervals = months(12).starting_on(start_cohort - months(12)),
+            )
         if ec_all:
             for measure in measures_ec.keys():
                 measures.define_measure(
@@ -390,6 +422,12 @@ if practice_measures:
             },
             intervals = weeks(20).starting_on(start_cohort),
         )
+        if Consultation:
+            measures.define_measure(
+                name = "cons_m_sub_copd",
+                numerator = exp_num_consrate,
+                intervals = months(12).starting_on(start_cohort - months(12)),
+            )
         if ec_all:
             for measure in measures_ec.keys():
                 measures.define_measure(
@@ -424,6 +462,12 @@ if practice_measures:
             },
             intervals = weeks(20).starting_on(start_cohort),
         )
+        if Consultation:
+            measures.define_measure(
+                name="cons_m_sub_htn",
+                numerator=exp_num_consrate,
+                intervals=months(12).starting_on(start_cohort - months(12)),
+            )
         if ec_all:
             for measure in measures_ec.keys():
                 measures.define_measure(
@@ -457,6 +501,12 @@ if practice_measures:
             },
             intervals = weeks(20).starting_on(start_cohort),
         )
+        if Consultation:
+            measures.define_measure(
+                name="cons_m_sub_diab",
+                numerator=exp_num_consrate,
+                intervals=months(12).starting_on(start_cohort - months(12)),
+            )
         if ec_all:
             for measure in measures_ec.keys():
                 measures.define_measure(
@@ -490,6 +540,12 @@ if practice_measures:
             },
             intervals = weeks(20).starting_on(start_cohort),
         )
+        if Consultation:
+            measures.define_measure(
+                name="cons_m_sub_sevmh",
+                numerator=exp_num_consrate,
+                intervals=months(12).starting_on(start_cohort - months(12)),
+            )
         if ec_all:
             for measure in measures_ec.keys():
                 measures.define_measure(
@@ -542,7 +598,7 @@ if patient_measures:
     for var_name, var_value in jcvi_variables.items():
         setattr(dataset, var_name, var_value)
 
-    # Import other dataset variables including region and multimorbidity conditions (20)
+    # Import other dataset variables including region and multimorbidity conditions (21)
 
     from variables_cross_sectional import generate_dataset_variables
     variables_cs = generate_dataset_variables(start_cohort)

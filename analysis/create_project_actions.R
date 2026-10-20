@@ -647,7 +647,7 @@ for (flag in long_args_all) {
 }
 
 for (subgroup in subgroups) {
-  for (flag in long_args_outcomes) {
+  for (flag in c("Consultation",long_args_outcomes)) {
     for (cohort in cohorts_all) {
       date <- cohort_dates[[cohort]]
       comment_text <- glue(
@@ -684,6 +684,53 @@ for (subgroup in subgroups) {
     }
   }
 }
+
+# Generate cross-sectional measures for subgroups -------------------------------
+
+for (subgroup in subgroups) {
+  for (flag in cs_args) {
+    for (cohort in cohorts_all) {
+      date <- cohort_dates[[cohort]]
+
+      comment_text <- glue(
+        "Generate measures for {flag} (cross-sectional) - {cohort} - {subgroup}"
+      )
+
+      name <- glue(
+        "generate_measures_{cohort}_{date}-{subgroup}-{tolower(flag)}"
+      )
+
+      file <- glue(
+        "output/measures/measures_{tolower(flag)}_{cohort}_{subgroup}.csv"
+      )
+
+      arguments <- c(
+        "--",
+        "--practice_measures",
+        glue("--CS_{subgroup}"),
+        glue("--{flag}"),
+        glue("--start_cohort {date}")
+      )
+
+      act <- c(
+        comment(comment_text),
+        action(
+          name = name,
+          run = glue(
+            "ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output {file}"
+          ),
+          arguments = arguments,
+          moderately_sensitive = list(
+            dataset = file
+          )
+        )
+      )
+
+      measure_actions <- append(measure_actions, act)
+    }
+  }
+}
+
 # Append measure actions to main action list -----------------------------------
 actions_list <- c(actions_list, measure_actions)
 
@@ -710,8 +757,8 @@ for (cohort in cohorts_all) {
         "r:v2 analysis/dataset_clean/measures_merge.R {cohort} {date}"
       ),
       needs = generate_measures_list,
-      moderately_sensitive = list(
-        dataset1 = glue("output/dataset_clean/merged_data_long_{cohort}.csv")
+      highly_sensitive = list(
+        dataset1 = glue("output/dataset_clean/merged_data_long_{cohort}.csv.gz")
       )
     )
   )

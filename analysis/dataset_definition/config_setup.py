@@ -7,6 +7,11 @@ parser = argparse.ArgumentParser() # Instantiate parser
 parser.add_argument("--patient_measures", action= 'store_true', help = "Sets measures defaults to patient-level subgroups.")
 parser.add_argument("--practice_measures", action= 'store_true', help = "Sets measures defaults to practice-level subrgoups.")
 parser.add_argument("--CS", action = 'store_true', help = "The study period is cross-sectional.")
+parser.add_argument("--CS_sub_asthma", action= 'store_true', help="Cross-sectional measures for the asthma subgroup.")
+parser.add_argument("--CS_sub_copd", action= 'store_true', help="Cross-sectional measures for the COPD subgroup.")
+parser.add_argument("--CS_sub_hypertension", action= 'store_true', help="Cross-sectional measures for the hypertension subgroup.")
+parser.add_argument("--CS_sub_diabetes", action= 'store_true', help="Cross-sectional measures for the diabetes subgroup.")
+parser.add_argument("--CS_sub_sev_mental_ill", action= 'store_true', help="Cross-sectional measures for the severe mental illness subgroup.")
 parser.add_argument("--Long_all", action = 'store_true', help = "The study period is longitudinal.")
 parser.add_argument("--Long_sub_asthma", action = 'store_true', help = "The study period is longitudinal for asthma sub-cohort.")
 parser.add_argument("--Long_sub_copd", action = 'store_true', help = "The study period is longitudinal for COPD sub-cohort.")
@@ -45,6 +50,11 @@ Long_sub_hypertension = args.Long_sub_hypertension
 Long_sub_diabetes = args.Long_sub_diabetes
 Long_sub_sev_mental_ill = args.Long_sub_sev_mental_ill
 CS = args.CS
+CS_sub_asthma = args.CS_sub_asthma
+CS_sub_copd = args.CS_sub_copd
+CS_sub_hypertension = args.CS_sub_hypertension
+CS_sub_diabetes = args.CS_sub_diabetes
+CS_sub_sev_mental_ill = args.CS_sub_sev_mental_ill
 patient_measures = args.patient_measures
 practice_measures = args.practice_measures
 Age = args.Age

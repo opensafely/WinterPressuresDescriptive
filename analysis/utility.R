@@ -102,50 +102,50 @@ numerical_to_categorical <- function(
 }
 
 
-#DEFINING FUNCTIONS [used in the analysis/dataset_clean]
-##var_consistency_check:
+# DEFINING FUNCTIONS [used in the analysis/dataset_clean]
+## var_consistency_check:
 ## checks if the VALUES of a specific variable are the same:
-#1. For the entire variable WITHIN a file & 2. For the variable if it exists across multiple files
+# 1. For the entire variable WITHIN a file & 2. For the variable if it exists across multiple files
 ## Arg 1: file_list: list of files you want to loop over
 ## Arg 2: var_list: list of variables you want to check
-#Other functions used when defining "var_consistency_check"
-#message: apparently a better way to print text than "print"
+# Other functions used when defining "var_consistency_check"
+# message: apparently a better way to print text than "print"
 
 var_consistency_check <- function(file_list, var_list) {
-  #Makes sure the second argument in the function is a character vector of column names
+  # Makes sure the second argument in the function is a character vector of column names
   if (!is.character(var_list)) {
     stop("`var_list` must be a character vector of column names.")
   }
 
-  #Store reference values (from the first file)
+  # Store reference values (from the first file)
   ref_values <- list()
-  result <- TRUE #Add a function "result", start assuming the result = TRUE
+  result <- TRUE # Add a function "result", start assuming the result = TRUE
 
-  #Sequentially upload each .csv file in the file_list
+  # Sequentially upload each .csv file in the file_list
   for (i in seq_along(file_list)) {
     df <- readr::read_csv(file_list[[i]])
     for (var in var_list) {
-      #Then, sequentially go through each variable in the var_list
+      # Then, sequentially go through each variable in the var_list
       if (!var %in% colnames(df)) {
-        #Check whether each variable is actually in the dataset
+        # Check whether each variable is actually in the dataset
         warning("Variable '", var, "' not found in dataset: ", i)
         result <- FALSE
-        next #Allows the loop to continue?
+        next # Allows the loop to continue?
       }
       # Variable - internal consistency: Check values are the same for each ROW in the dataset
       if (length(unique(df[[var]])) != 1) {
-        #If the number of unique values in this var !=1
+        # If the number of unique values in this var !=1
         warning("Error - var: '", var, "' has multiple values in dataset: ", i)
         result <- FALSE
       }
-      #Variable - cross-file consistency, as compared to reference:
+      # Variable - cross-file consistency, as compared to reference:
       if (i == 1) {
-        #If it's the first file, set the reference values = the values from the first file
+        # If it's the first file, set the reference values = the values from the first file
         ref_values[[var]] <- unique(df[[var]])
       } else {
-        #If it's not the first file
+        # If it's not the first file
         if (!setequal(unique(df[[var]]), ref_values[[var]])) {
-          #Compare the values from this file to the reference values
+          # Compare the values from this file to the reference values
           warning("Variable '", var, "' is inconsistent across datasets: ", i)
           result <- FALSE
         }
@@ -156,10 +156,10 @@ var_consistency_check <- function(file_list, var_list) {
 }
 
 
-##date_check_long
-#Check date variable exists
-#Check that the date values = specific SET of SEQUENTIAL values, BY certain variables
-#Check that the date values are the same across datasets
+## date_check_long
+# Check date variable exists
+# Check that the date values = specific SET of SEQUENTIAL values, BY certain variables
+# Check that the date values are the same across datasets
 
 date_check_long <- function(
   file_list,
@@ -170,47 +170,47 @@ date_check_long <- function(
   n_expected = NULL,
   by = "1 week"
 ) {
-  #First write a "helper" function to create all the components for the check
+  # First write a "helper" function to create all the components for the check
   date_check_long_helper <- function(df, date_var, is_start, i) {
     if (!date_var %in% colnames(df)) {
-      #Check if the SPECIFIC DATE VARIABLE exists in your data & format it as a date (just in case)
+      # Check if the SPECIFIC DATE VARIABLE exists in your data & format it as a date (just in case)
       warning("Variable '", date_var, "' not found in dataset: ", i)
       return(NULL)
     }
     df[[date_var]] <- as.Date(df[[date_var]])
     start_date <- as.Date(start_date)
 
-    #Create an "expected" sequence of dates, based on whether date_var contains starting or end dates
+    # Create an "expected" sequence of dates, based on whether date_var contains starting or end dates
     expected <- if (is_start) {
       seq(min(df[[date_var]]), max(df[[date_var]]), by = by)
     } else {
-      if (by == '1 month') {
+      if (by == "1 month") {
         ceiling_date(
           seq(
             ymd(start_date),
             ymd(start_date + years(1) - months(1)),
-            by = '1 month'
+            by = "1 month"
           ),
           unit = "months"
         ) -
           days(1)
-      } else if (by == '1 week') {
+      } else if (by == "1 week") {
         seq(
           ymd(start_date + days(6)),
           ymd(start_date + days(7) * (n_expected) - days(1)),
-          by = '1 week'
+          by = "1 week"
         )
       }
     }
 
-    #Create the actual set of dates
+    # Create the actual set of dates
     actual <- sort(unique(df[[date_var]]))
 
-    #Create a summary dataset
+    # Create a summary dataset
     date_check_summary <- df %>%
-      group_by(across(all_of(group_vars))) %>% #groups the data by the variables specified in the group_vars argument
+      group_by(across(all_of(group_vars))) %>% # groups the data by the variables specified in the group_vars argument
       summarise(
-        #Creates a summary dataset containing the below specified columns (min_date, max_date, etc)
+        # Creates a summary dataset containing the below specified columns (min_date, max_date, etc)
         dataset = i,
         var_type = if (is_start) "start" else "end",
         date_var = date_var,
@@ -233,19 +233,19 @@ date_check_long <- function(
       )
   }
 
-  #Now we're back in the "main" function
-  #NOTE: We've defined the helper above, but haven't called it yet, so it hasn't created the summary dataset yet
+  # Now we're back in the "main" function
+  # NOTE: We've defined the helper above, but haven't called it yet, so it hasn't created the summary dataset yet
   result_list <- list() # store all results
 
   for (i in seq_along(file_list)) {
-    #Looping over each file in the dataset
+    # Looping over each file in the dataset
     df <- read_csv(file_list[[i]]) # Importing the file
 
     pair_results <- map2_dfr(
       start_date_var_list,
       end_date_var_list,
       ~ {
-        #Pair the start date/end date variables
+        # Pair the start date/end date variables
         bind_rows(
           date_check_long_helper(df, .x, TRUE, i), # start variable
           date_check_long_helper(df, .y, FALSE, i) # end variable
@@ -266,7 +266,7 @@ date_check_long <- function(
   )
 }
 
-##To process each subgroup file
+## To process each subgroup file
 process_subgroup_file <- function(file) {
   df <- readr::read_csv(file)
 
@@ -293,8 +293,8 @@ process_subgroup_file <- function(file) {
   return(df)
 }
 
-##Identical_vector_check:
-##Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes
+## Identical_vector_check:
+## Checks whether variables are COMPLETELY IDENTICAL across multiple dataframes
 identical_vector_check <- function(df_list, var_list) {
   result <- TRUE
   for (i in seq_along(df_list)) {
@@ -317,8 +317,8 @@ identical_vector_check <- function(df_list, var_list) {
   return(result)
 }
 
-##one_row_check
-##Checks whether the dataframe has one row per id (unit of interest)
+## one_row_check
+## Checks whether the dataframe has one row per id (unit of interest)
 one_row_check <- function(df, id) {
   df_name <- deparse(substitute(df)) # captures the name of the data frame
   total_rows <- nrow(df)
@@ -340,8 +340,8 @@ one_row_check <- function(df, id) {
   return(result)
 }
 
-##positive_var_check
-#Checks whether the values of numeric variables are positive
+## positive_var_check
+# Checks whether the values of numeric variables are positive
 positive_var_check <- function(df) {
   df_name <- deparse(substitute(df)) # captures the name of the data frame
 
@@ -364,8 +364,8 @@ positive_var_check <- function(df) {
   return(result)
 }
 
-##range_check
-#Checks whether the value of a specific variable fits within a certain range
+## range_check
+# Checks whether the value of a specific variable fits within a certain range
 range_check <- function(df, var_list, min, max) {
   for (var in var_list) {
     if (!var %in% names(df)) {
@@ -375,7 +375,7 @@ range_check <- function(df, var_list, min, max) {
       stop("Variable '", var, "' is not numeric.")
     }
 
-    #Now doing the actual check to see if all values of var are within the range (inclusive)
+    # Now doing the actual check to see if all values of var are within the range (inclusive)
     values <- df[[var]]
     result <- all(values >= min & values <= max, na.rm = TRUE)
 
@@ -404,15 +404,15 @@ range_check <- function(df, var_list, min, max) {
   return(result)
 }
 
-##Rename if var exists: renames multiple variables across multiple files
+## Rename if var exists: renames multiple variables across multiple files
 rename_if_var_exists <- function(file_list, rename_rules) {
   lapply(file_list, function(df) {
     df %>% rename_with(~ str_replace_all(., rename_rules))
   })
 }
 
-##merge_and_drop:
-##Merges dataset, and drops duplicate variables
+## merge_and_drop:
+## Merges dataset, and drops duplicate variables
 merge_and_drop <- function(
   df_list,
   var_list,
@@ -431,29 +431,29 @@ merge_and_drop <- function(
     " matched IDs retained)"
   )
 
-  #Identify if any of the vars in var_list are now duplicates, post-merge
+  # Identify if any of the vars in var_list are now duplicates, post-merge
   duplicate_vars <- grep(
     paste0("^(", paste(var_list, collapse = "|"), ")"),
     colnames(merged_df),
     value = TRUE
   )
 
-  #Create a list of vars to remove, but make sure to KEEP the first instance of each var
+  # Create a list of vars to remove, but make sure to KEEP the first instance of each var
   remove_vars <- unlist(lapply(var_list, function(v) {
     matches <- grep(paste0("^", v), duplicate_vars, value = TRUE)
     if (length(matches) > 1) matches[-1] else character(0)
   }))
 
-  #Keeping the first instance of the var, and removing the .x suffix
+  # Keeping the first instance of the var, and removing the .x suffix
   merged_df <- merged_df %>%
     select(-all_of(remove_vars)) %>%
-    rename_with(~ str_replace(., "\\.x$", "")) #Removing the .x suffix
+    rename_with(~ str_replace(., "\\.x$", "")) # Removing the .x suffix
   message("Dataset merged and duplicates removed successfully")
-  assign(merged_df_name, merged_df, envir = .GlobalEnv) #adds new dataframe to the global environment
+  assign(merged_df_name, merged_df, envir = .GlobalEnv) # adds new dataframe to the global environment
 }
 
 
-#Check how many duplicates you have, drop all duplicates
+# Check how many duplicates you have, drop all duplicates
 drop_all_duplicates <- function(
   df,
   df_name = "name",
@@ -557,22 +557,39 @@ summarise_dist <- function(
   return(res)
 }
 
-#Function to get the majority category of a vector ----
+# Function to get the majority category of a vector ----
 get_majority_category <- function(x) {
   x <- x[!is.na(x)]
-  if (length(x) == 0) return(NA)
+  if (length(x) == 0) {
+    return(NA)
+  }
 
   names(sort(table(x), decreasing = TRUE))[1]
 }
 
-#Function to add a prefix to a vector of variable names ----
+# Function to add a prefix to a vector of variable names ----
 add_prefix <- function(vars, prefix) {
-    if (length(vars) == 0) {
-        return(character(0))
-    }
+  if (length(vars) == 0) {
+    return(character(0))
+  }
 
-    paste0(
-        prefix,
-        vars
-    )
+  paste0(
+    prefix,
+    vars
+  )
+}
+
+# Mean CMS among patients aged >=20 at cohort start
+mean_cms_20plus <- function(score, age) {
+  eligible <- !is.na(age) & age >= 20
+  eligible_scores <- score[eligible]
+
+  if (
+    length(eligible_scores) == 0L ||
+      anyNA(eligible_scores)
+  ) {
+    return(NA_real_)
+  }
+
+  sum(eligible_scores) / length(eligible_scores)
 }

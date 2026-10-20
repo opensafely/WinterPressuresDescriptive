@@ -3,19 +3,32 @@ redact <- function(input) {
     message(
         "Applying rounding + generating _mp6 proportion variables using roundmid_num() specified in the utility.R"
     )
-    # Apply rounding to list size ------------------------------------------------------------------------
-    print("Rounding list_size to midpoint rounding to nearest 6")
+    # Round overall and subgroup baseline population sizes
+    list_size_vars <- grep(
+        "^list_size(_sub_(asth|copd|htn|diab|sevmh))?$",
+        names(input),
+        value = TRUE
+    )
+
     input <- input %>%
         mutate(
-            list_size_mp6 = roundmid_num(list_size, to = 6)
+            across(
+                all_of(list_size_vars),
+                ~ roundmid_num(.x, to = 6),
+                .names = "{.col}_mp6"
+            )
         )
-    # Check summary
-    message("Summary of rounded list_size:")
-    summary(input$list_size)
-    summary(input$list_size_mp6)
 
-    # Identify numerator/denominator variables ----------------------------------------
-    # numerator variables
+    # Check original and rounded list sizes
+    for (var in list_size_vars) {
+        message("Summary of ", var, ":")
+        print(summary(input[[var]]))
+
+        rounded_var <- paste0(var, "_mp6")
+        message("Summary of ", rounded_var, ":")
+        print(summary(input[[rounded_var]]))
+    }
+
     num_vars <- names(input)[
         grepl("^num_", names(input)) &
             !grepl("_mean$|_cumu$|_mp6$", names(input))
@@ -39,31 +52,67 @@ redact <- function(input) {
     # For each rounded numerator, find its matching denominator
     num_mp6_vars <- names(input)[grepl("^num_.*_mp6$", names(input))]
 
-    missing_denom_list <- c() # track missing denominators
+    missing_denom_list <- character(0)
+
+    # Identify cross-sectional subgroup characteristic counts only.
+    # Hospital outcome counts retain their existing denominator logic.
+    cs_subgroup_pattern <- paste0(
+        "^num_(age|sex|ethnicity|imd|rurality|carehome|smoking|obesity|cms)",
+        "(_.*)?_sub_(asth|copd|htn|diab|sevmh)_mp6$"
+    )
 
     for (num_mp6_var in num_mp6_vars) {
-        # infer denominator name
         denom_mp6_var <- sub("^num_", "denom_", num_mp6_var)
         prop_mp6_var <- sub("^num_", "prop_", num_mp6_var)
 
-        # CASE 1: denominator exists → use it
-        if (denom_mp6_var %in% names(input)) {
-            input[[prop_mp6_var]] <- ifelse(
-                input[[denom_mp6_var]] > 0,
-                input[[num_mp6_var]] / input[[denom_mp6_var]],
-                NA_real_
-            )
-        } else {
-            # CASE 2: denominator missing → use list_size_mp6
-            missing_denom_list <- c(missing_denom_list, denom_mp6_var)
-
-            input[[prop_mp6_var]] <- ifelse(
-                input$list_size_mp6 > 0,
-                input[[num_mp6_var]] / input$list_size_mp6,
-                NA_real_
+        # Consultations must use their corresponding monthly denominator.
+        if (
+            grepl("^num_cons_", num_mp6_var) &&
+                !denom_mp6_var %in% names(input)
+        ) {
+            stop(
+                "Missing monthly consultation denominator: ",
+                denom_mp6_var
             )
         }
+
+        if (denom_mp6_var %in% names(input)) {
+            # Prefer the retained measure-specific denominator
+            denominator_var <- denom_mp6_var
+        } else if (grepl(cs_subgroup_pattern, num_mp6_var)) {
+            # Otherwise use the subgroup baseline list size
+            subgroup <- sub(
+                "^.*_(sub_(asth|copd|htn|diab|sevmh))_mp6$",
+                "\\1",
+                num_mp6_var
+            )
+
+            denominator_var <- paste0(
+                "list_size_", subgroup, "_mp6"
+            )
+
+            if (!denominator_var %in% names(input)) {
+                stop(
+                    "Missing subgroup denominator: ",
+                    denominator_var
+                )
+            }
+        } else {
+            denominator_var <- "list_size_mp6"
+
+            missing_denom_list <- c(
+                missing_denom_list,
+                denom_mp6_var
+            )
+        }
+
+        input[[prop_mp6_var]] <- ifelse(
+            input[[denominator_var]] > 0,
+            input[[num_mp6_var]] / input[[denominator_var]],
+            NA_real_
+        )
     }
+
     # Check summaries
     message("Summary of rounded numerator and denominator variables:")
     summary(input[num_vars])
@@ -77,29 +126,71 @@ redact <- function(input) {
         na.rm = TRUE
     )
 
-    # Apply rounding to mean consultation ----------------------------
+    # Compute mean monthly consultation rates from rounded counts --------------
     print(
-        "Compute mean consultation proportions per practice (midepoint6 rounded)"
+        "Compute mean monthly consultation rates per practice and patient group (midpoint-6 rounded)"
     )
 
-    cons_cols_mp6 <- grep("^prop_cons_.*_mp6$", names(input), value = TRUE)
+    population_suffixes <- c(
+        "",
+        "_sub_asth",
+        "_sub_copd",
+        "_sub_htn",
+        "_sub_diab",
+        "_sub_sevmh"
+    )
 
-    if (length(cons_cols_mp6) > 0) {
-        input <- input %>%
-            rowwise() %>%
-            mutate(
-                prop_cons_mean_mp6 = mean(
-                    c_across(all_of(cons_cols_mp6)),
-                    na.rm = TRUE
-                )
-            ) %>%
-            ungroup()
-        message(
-            "Added prop_cons_mean_mp6 (average across prop_cons_M_mp6 columns)."
+    consultation_months <- c(
+        "oct", "nov", "dec", "jan", "feb", "mar",
+        "apr", "may", "jun", "jul", "aug", "sep"
+    )
+
+    for (suffix in population_suffixes) {
+        # Select the 12 rounded monthly rates for this population only.
+        expected_cols <- paste0(
+            "prop_cons_",
+            consultation_months,
+            suffix,
+            "_mp6"
         )
-    } else {
-        warning(
-            "No rounded consultation proportion columns found (prop_cons_M_mp6...)."
+
+        cons_cols_mp6 <- intersect(expected_cols, names(input))
+        missing_cols <- setdiff(expected_cols, names(input))
+
+        output_var <- paste0(
+            "prop_cons_mean",
+            suffix,
+            "_mp6"
+        )
+
+        if (length(missing_cols) > 0L) {
+            warning(
+                "Missing rounded monthly consultation columns for ",
+                output_var, ": ",
+                paste(missing_cols, collapse = ", ")
+            )
+        }
+
+        if (length(cons_cols_mp6) == 0L) {
+            input[[output_var]] <- NA_real_
+            next
+        }
+
+        # Average available monthly rates, consistent with preprocess_measure().
+        mean_values <- rowMeans(
+            input[, cons_cols_mp6, drop = FALSE],
+            na.rm = TRUE
+        )
+
+        # All months missing: return NA rather than NaN.
+        mean_values[is.nan(mean_values)] <- NA_real_
+
+        input[[output_var]] <- mean_values
+
+        message(
+            "Added ", output_var,
+            " (average across ", length(cons_cols_mp6),
+            " rounded monthly consultation columns)."
         )
     }
 
