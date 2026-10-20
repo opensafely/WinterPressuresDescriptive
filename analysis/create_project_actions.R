@@ -647,7 +647,7 @@ for (flag in long_args_all) {
 }
 
 for (subgroup in subgroups) {
-  for (flag in long_args_outcomes) {
+  for (flag in c("Consultation",long_args_outcomes)) {
     for (cohort in cohorts_all) {
       date <- cohort_dates[[cohort]]
       comment_text <- glue(
