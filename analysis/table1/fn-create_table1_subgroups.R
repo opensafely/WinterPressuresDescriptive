@@ -29,16 +29,13 @@ create_table1_subgroups <- function(
         grepl(subgroup_pattern, rate_vars)
     ]
 
-    # CMS means have no rounded versions; include them only in thresholded output.
-    cms_vars <- if (!rounded) {
-        grep(
-            "^cms_mean_sub_(asth|copd|htn|diab|sevmh)$",
-            names(input),
-            value = TRUE
-        )
-    } else {
-        character(0)
-    }
+    # CMS mean in the practice has no data disclosure risk, so no need to round them.
+    # Include the existing scores in both outputs without rounding them.
+    cms_vars <- grep(
+        "^cms_mean_sub_(asth|copd|htn|diab|sevmh)$",
+        names(input),
+        value = TRUE
+    )
 
     rate_vars <- unique(c(rate_vars, cms_vars))
 
