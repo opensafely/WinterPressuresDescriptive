@@ -13,12 +13,6 @@ create_table1 <- function(
         "^([^_]+)(?:_(.*))?$"
     }
 
-    # CMS values are unchanged.
-    if (rounded && "cms_mean" %in% names(input)) {
-        input$cms_mean_mp6 <- input$cms_mean
-        rounded_vars <- unique(c(rounded_vars, "cms_mean_mp6"))
-    }
-
     rate_vars <- if (rounded) {
         rounded_vars
     } else {
