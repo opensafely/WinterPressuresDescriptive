@@ -171,6 +171,9 @@ exposure_vax <- c(
     "vax_pneum_y"
 )
 
+## Patient case-mix characteristics: Cambridge Multimorbidity Score
+exposure_cms <- "cms_mean"
+
 exposure_names <- c(
     exposure_region,
     exposure_rurality,
@@ -182,8 +185,9 @@ exposure_names <- c(
     exposure_imd,
     # exposure_conditions,
     exposure_smoking,
-    exposure_other_health
+    exposure_other_health,
     # exposure_vax,
+    exposure_cms
 )
 
 # Practice characteristics
@@ -203,23 +207,23 @@ exposure_case_mix <- setdiff(
 ## Define covariates ----
 covariate_age <- c("age_0_4", "age_80")
 covariate_sex <- "sex_female"
-covariate_region <- "practice_region"
-covariate_ethnicity <- c("ethnicity_white")
+# covariate_region <- "practice_region"
+# covariate_ethnicity <- c("ethnicity_white")
 covariate_imd <- c("imd_1_most")
-covariate_rurality <- c("practice_rurality")
-covariate_smoking <- c("smoking_current")
-covariate_carehome <- c("carehome")
-covariate_obesity <- c("obesity")
-covariate_consultation <- c("cons_mean")
+# covariate_rurality <- c("practice_rurality")
+# covariate_smoking <- c("smoking_current")
+# covariate_carehome <- c("carehome")
+# covariate_obesity <- c("obesity")
+# covariate_consultation <- c("cons_mean")
 covariate_other <- c(
-    covariate_region,
-    covariate_ethnicity,
-    covariate_imd,
-    covariate_rurality,
-    covariate_smoking,
-    covariate_carehome,
-    covariate_obesity,
-    covariate_consultation
+    # covariate_region,
+    # covariate_ethnicity,
+    covariate_imd
+    # covariate_rurality,
+    # covariate_smoking,
+    # covariate_carehome,
+    # covariate_obesity,
+    # covariate_consultation
 )
 # Create empty data frame ----
 df <- data.frame(
@@ -255,31 +259,38 @@ for (i in cohorts) {
 
         # Identify other covariates that overlap with the exposure ----------------
 
-        covariates_to_exclude <- if (j %in% exposure_region) {
-            covariate_region
-        } else if (j %in% exposure_rurality) {
-            covariate_rurality
-        } else if (j %in% exposure_ethnicity) {
-            covariate_ethnicity
-        } else if (j %in% exposure_imd) {
-            covariate_imd
-        } else if (j %in% exposure_smoking) {
-            covariate_smoking
-        } else if (j %in% exposure_other_health) {
-            intersect(j, covariate_other)
-        } else if (j %in% exposure_consultation) {
-            covariate_consultation
-        } else {
-            character(0)
-        }
+        # covariates_to_exclude <- if (j %in% exposure_region) {
+        #     covariate_region
+        # } else if (j %in% exposure_rurality) {
+        #     covariate_rurality
+        # } else if (j %in% exposure_ethnicity) {
+        #     covariate_ethnicity
+        # } else if (j %in% exposure_imd) {
+        #     covariate_imd
+        # } else if (j %in% exposure_smoking) {
+        #     covariate_smoking
+        # } else if (j %in% exposure_other_health) {
+        #     intersect(j, covariate_other)
+        # } else if (j %in% exposure_consultation) {
+        #     covariate_consultation
+        # } else {
+        #     character(0)
+        # }
 
-        covariate_other_clean <- paste(
-            setdiff(
-                covariate_other,
-                covariates_to_exclude
-            ),
-            collapse = ";"
-        )
+        # covariate_other_clean <- paste(
+        #     setdiff(
+        #         covariate_other,
+        #         covariates_to_exclude
+        #     ),
+        #     collapse = ";"
+        # )
+
+        # Do not additionally adjust for IMD when IMD is the exposure.
+        covariate_other_clean <- if (j %in% exposure_imd) {
+            ""
+        } else {
+            paste(covariate_other, collapse = ";")
+        }
 
         for (k in outcome_names) {
             analysis <- str_extract(k, "(main|sub_[a-z]+)")
