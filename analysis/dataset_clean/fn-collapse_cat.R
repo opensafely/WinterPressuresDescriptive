@@ -40,35 +40,83 @@ collapse_categories <- function(input) {
         )
     }
 
-    # Variables to remove
-    vars_to_remove <- c(grep(
-        "80_84|85|urban_major|urban_minor",
+    # Collapse categories for the overall population and each subgroup ----------
+    population_suffixes <- c(
+        "",
+        "_sub_asth",
+        "_sub_copd",
+        "_sub_htn",
+        "_sub_diab",
+        "_sub_sevmh"
+    )
+
+    for (suffix in population_suffixes) {
+        denominator <- paste0("list_size", suffix)
+
+        age_components <- paste0(
+            c("num_age_80_84", "num_age_85"),
+            suffix
+        )
+
+        rurality_components <- paste0(
+            c("num_rurality_urban_major", "num_rurality_urban_minor"),
+            suffix
+        )
+
+        required_vars <- c(
+            denominator,
+            age_components,
+            rurality_components
+        )
+
+        missing_vars <- setdiff(required_vars, names(input))
+
+        if (length(missing_vars) > 0L) {
+            stop(
+                "Missing variables for category collapsing: ",
+                paste(missing_vars, collapse = ", ")
+            )
+        }
+
+        # Collapse age 80–84 and 85+
+        age_num <- paste0("num_age_80", suffix)
+        age_prop <- paste0("prop_age_80", suffix)
+
+        input[[age_num]] <-
+            input[[age_components[1]]] +
+            input[[age_components[2]]]
+
+        input[[age_prop]] <- ifelse(
+            input[[denominator]] > 0,
+            input[[age_num]] / input[[denominator]],
+            NA_real_
+        )
+
+        # Collapse urban major and minor
+        rurality_num <- paste0("num_rurality_urban_comb", suffix)
+        rurality_prop <- paste0("prop_rurality_urban_comb", suffix)
+
+        input[[rurality_num]] <-
+            input[[rurality_components[1]]] +
+            input[[rurality_components[2]]]
+
+        input[[rurality_prop]] <- ifelse(
+            input[[denominator]] > 0,
+            input[[rurality_num]] / input[[denominator]],
+            NA_real_
+        )
+    }
+
+    # Remove components only after creating all collapsed variables
+    removed_vars <- grep(
+        "^(num|prop|denom)_(age_80_84|age_85|rurality_urban_major|rurality_urban_minor)(|_sub_(asth|copd|htn|diab|sevmh))$",
         names(input),
         value = TRUE
-    ))
+    )
 
-    # Collapse age 80–84 + 85+
     input <- input %>%
-        mutate(
-            num_age_80 = num_age_80_84 + num_age_85,
-            prop_age_80 = num_age_80 / list_size
-        )
+        select(-all_of(removed_vars))
 
-    # Collapse urban major + minor
-    input <- input %>%
-        mutate(
-            num_rurality_urban_comb = num_rurality_urban_major +
-                num_rurality_urban_minor,
-            prop_rurality_urban_comb = num_rurality_urban_comb / list_size
-        )
-
-    # Determine which variables exist
-    removed_vars <- vars_to_remove[vars_to_remove %in% names(input)]
-
-    # Remove them
-    input <- input %>% select(-any_of(removed_vars))
-
-    # Report
     message(
         "Removed component variables: ",
         paste(removed_vars, collapse = ", ")
