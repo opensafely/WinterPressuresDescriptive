@@ -18,7 +18,7 @@ aggregate_patient <- function(input) {
     }
 
     # Create practice-level summary dataset ----------------------------------------
-    print('Create practice-level summary dataset')
+    print("Create practice-level summary dataset")
     practice_summary <- input %>%
         filter(!is.na(patient_id), !is.na(practice_id)) %>%
         group_by(practice_id) %>%
@@ -37,7 +37,7 @@ aggregate_patient <- function(input) {
             ),
             across(
                 contains("_cms"),
-                ~ mean(.x, na.rm = TRUE),
+                ~ mean_cms_20plus(.x, exp_num_age),   # Mean CMS among patients aged >=20 at cohort start
                 .names = "{.col}_mean"
             ),
             .groups = "drop"
@@ -62,6 +62,38 @@ aggregate_patient <- function(input) {
             practice_rurality = exp_cat_rurality,
             cms_mean = exp_num_cms_mean
         )
+
+    # Add mean CMS for each patient subgroup ------------------------------------
+    subgroup_flags <- c(
+        sub_asth = "sub_bin_asthma",
+        sub_copd = "sub_bin_copd",
+        sub_htn = "sub_bin_hypertension",
+        sub_diab = "sub_bin_diabetes",
+        sub_sevmh = "sub_bin_sev_mental_ill"
+    )
+
+    for (subgroup in names(subgroup_flags)) {
+        flag <- unname(subgroup_flags[[subgroup]])
+        output_var <- paste0("cms_mean_", subgroup)
+
+        subgroup_summary <- input %>%
+            filter(
+                !is.na(patient_id),
+                !is.na(practice_id),
+                .data[[flag]] == TRUE
+            ) %>%
+            group_by(practice_id) %>%
+            summarise(
+                !!output_var := mean_cms_20plus(         # Mean CMS among patients aged >=20 at cohort start
+                    exp_num_cms,
+                    exp_num_age
+                ),
+                .groups = "drop"
+            )
+
+        practice_summary <- practice_summary %>%
+            left_join(subgroup_summary, by = "practice_id")
+    }
 
     return(practice_summary)
 }
