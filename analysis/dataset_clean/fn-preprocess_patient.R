@@ -90,6 +90,7 @@ preprocess_patient <- function(cohort) {
       starts_with("index_date"),
       starts_with("exp_"), # Exposures
       starts_with("inex_"), # Inclusion/exclusion
+      starts_with("sub_bin_"), # NEW: retain subgroup binary flags
       starts_with("cens_"), # Censor
       starts_with("vax_date_"), # Vaccination dates and vax type
       starts_with("vax_cat_"), # Vaccination products

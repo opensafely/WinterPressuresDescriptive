@@ -1009,6 +1009,62 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_main.csv
 
+  ## Generate measures for Consultation - precovid - sub_asthma 
+
+  generate_measures_precovid_2018-10-01-sub_asthma-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --Long_sub_asthma
+        --Consultation
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_precovid_sub_asthma.csv
+
+  ## Generate measures for Consultation - postcovid1 - sub_asthma 
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --Long_sub_asthma
+        --Consultation
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Consultation - postcovid2 - sub_asthma 
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --Long_sub_asthma
+        --Consultation
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Consultation - postcovid3 - sub_asthma 
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --Long_sub_asthma
+        --Consultation
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid3_sub_asthma.csv
+
   ## Generate measures for ec_all - precovid - sub_asthma 
 
   generate_measures_precovid_2018-10-01-sub_asthma-ec_all:
@@ -1232,6 +1288,62 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Consultation - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --Long_sub_copd
+        --Consultation
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_precovid_sub_copd.csv
+
+  ## Generate measures for Consultation - postcovid1 - sub_copd 
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --Long_sub_copd
+        --Consultation
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid1_sub_copd.csv
+
+  ## Generate measures for Consultation - postcovid2 - sub_copd 
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --Long_sub_copd
+        --Consultation
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid2_sub_copd.csv
+
+  ## Generate measures for Consultation - postcovid3 - sub_copd 
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --Long_sub_copd
+        --Consultation
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid3_sub_copd.csv
 
   ## Generate measures for ec_all - precovid - sub_copd 
 
@@ -1457,6 +1569,62 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_copd.csv
 
+  ## Generate measures for Consultation - precovid - sub_hypertension 
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --Long_sub_hypertension
+        --Consultation
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_precovid_sub_hypertension.csv
+
+  ## Generate measures for Consultation - postcovid1 - sub_hypertension 
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --Long_sub_hypertension
+        --Consultation
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Consultation - postcovid2 - sub_hypertension 
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --Long_sub_hypertension
+        --Consultation
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Consultation - postcovid3 - sub_hypertension 
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --Long_sub_hypertension
+        --Consultation
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid3_sub_hypertension.csv
+
   ## Generate measures for ec_all - precovid - sub_hypertension 
 
   generate_measures_precovid_2018-10-01-sub_hypertension-ec_all:
@@ -1680,6 +1848,62 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Consultation - precovid - sub_diabetes 
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --Long_sub_diabetes
+        --Consultation
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_precovid_sub_diabetes.csv
+
+  ## Generate measures for Consultation - postcovid1 - sub_diabetes 
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --Long_sub_diabetes
+        --Consultation
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Consultation - postcovid2 - sub_diabetes 
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --Long_sub_diabetes
+        --Consultation
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Consultation - postcovid3 - sub_diabetes 
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --Long_sub_diabetes
+        --Consultation
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid3_sub_diabetes.csv
 
   ## Generate measures for ec_all - precovid - sub_diabetes 
 
@@ -1905,6 +2129,62 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_diabetes.csv
 
+  ## Generate measures for Consultation - precovid - sub_sev_mental_ill 
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --Long_sub_sev_mental_ill
+        --Consultation
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Consultation - postcovid1 - sub_sev_mental_ill 
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --Long_sub_sev_mental_ill
+        --Consultation
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Consultation - postcovid2 - sub_sev_mental_ill 
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --Long_sub_sev_mental_ill
+        --Consultation
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Consultation - postcovid3 - sub_sev_mental_ill 
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-consultation:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_consultation_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --Long_sub_sev_mental_ill
+        --Consultation
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_consultation_postcovid3_sub_sev_mental_ill.csv
+
   ## Generate measures for ec_all - precovid - sub_sev_mental_ill 
 
   generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_all:
@@ -2129,6 +2409,2824 @@ actions:
       moderately_sensitive:
         dataset: output/measures/measures_apc_acscs_postcovid3_sub_sev_mental_ill.csv
 
+  ## Generate measures for Age (cross-sectional) - precovid - sub_asthma 
+
+  generate_measures_precovid_2018-10-01-sub_asthma-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Age
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_precovid_sub_asthma.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid1 - sub_asthma 
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Age
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid2 - sub_asthma 
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Age
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid3 - sub_asthma 
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Age
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Sex (cross-sectional) - precovid - sub_asthma 
+
+  generate_measures_precovid_2018-10-01-sub_asthma-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Sex
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_precovid_sub_asthma.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid1 - sub_asthma 
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Sex
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid2 - sub_asthma 
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Sex
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid3 - sub_asthma 
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Sex
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - precovid - sub_asthma
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_asthma-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Ethnicity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_precovid_sub_asthma.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid1 - sub_asthma
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Ethnicity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid2 - sub_asthma
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Ethnicity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid3 - sub_asthma
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Ethnicity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid3_sub_asthma.csv
+
+  ## Generate measures for IMD (cross-sectional) - precovid - sub_asthma 
+
+  generate_measures_precovid_2018-10-01-sub_asthma-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --IMD
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_precovid_sub_asthma.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid1 - sub_asthma 
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --IMD
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid1_sub_asthma.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid2 - sub_asthma 
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --IMD
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid2_sub_asthma.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid3 - sub_asthma 
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --IMD
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Rurality (cross-sectional) - precovid - sub_asthma
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_asthma-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Rurality
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_precovid_sub_asthma.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid1 - sub_asthma
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Rurality
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid2 - sub_asthma
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Rurality
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid3 - sub_asthma
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Rurality
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Carehome (cross-sectional) - precovid - sub_asthma
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_asthma-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Carehome
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_precovid_sub_asthma.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid1 - sub_asthma
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Carehome
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid2 - sub_asthma
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Carehome
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid3 - sub_asthma
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Carehome
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Smoking (cross-sectional) - precovid - sub_asthma
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_asthma-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Smoking
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_precovid_sub_asthma.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid1 - sub_asthma
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Smoking
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid2 - sub_asthma
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Smoking
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid3 - sub_asthma
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Smoking
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Obesity (cross-sectional) - precovid - sub_asthma
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_asthma-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Obesity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_precovid_sub_asthma.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid1 - sub_asthma
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Obesity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid2 - sub_asthma
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Obesity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid3 - sub_asthma
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Obesity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - precovid - sub_asthma
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_asthma-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_precovid_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Multimorbidity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_precovid_sub_asthma.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid1 - sub_asthma
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_asthma-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid1_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Multimorbidity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid1_sub_asthma.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid2 - sub_asthma
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_asthma-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid2_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Multimorbidity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid2_sub_asthma.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid3 - sub_asthma
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_asthma-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid3_sub_asthma.csv
+        --
+        --practice_measures
+        --CS_sub_asthma
+        --Multimorbidity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid3_sub_asthma.csv
+
+  ## Generate measures for Age (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Age
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_precovid_sub_copd.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid1 - sub_copd 
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Age
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid1_sub_copd.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid2 - sub_copd 
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Age
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid2_sub_copd.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid3 - sub_copd 
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Age
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid3_sub_copd.csv
+
+  ## Generate measures for Sex (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Sex
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_precovid_sub_copd.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid1 - sub_copd 
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Sex
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid1_sub_copd.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid2 - sub_copd 
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Sex
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid2_sub_copd.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid3 - sub_copd 
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Sex
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid3_sub_copd.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - precovid - sub_copd
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_copd-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Ethnicity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_precovid_sub_copd.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid1 - sub_copd
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Ethnicity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid1_sub_copd.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid2 - sub_copd
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Ethnicity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid2_sub_copd.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid3 - sub_copd
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Ethnicity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid3_sub_copd.csv
+
+  ## Generate measures for IMD (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --IMD
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_precovid_sub_copd.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid1 - sub_copd 
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --IMD
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid1_sub_copd.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid2 - sub_copd 
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --IMD
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid2_sub_copd.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid3 - sub_copd 
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --IMD
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid3_sub_copd.csv
+
+  ## Generate measures for Rurality (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Rurality
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_precovid_sub_copd.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid1 - sub_copd
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Rurality
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid1_sub_copd.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid2 - sub_copd
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Rurality
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid2_sub_copd.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid3 - sub_copd
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Rurality
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid3_sub_copd.csv
+
+  ## Generate measures for Carehome (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Carehome
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_precovid_sub_copd.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid1 - sub_copd
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Carehome
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid1_sub_copd.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid2 - sub_copd
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Carehome
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid2_sub_copd.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid3 - sub_copd
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Carehome
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid3_sub_copd.csv
+
+  ## Generate measures for Smoking (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Smoking
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_precovid_sub_copd.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid1 - sub_copd
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Smoking
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid1_sub_copd.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid2 - sub_copd
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Smoking
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid2_sub_copd.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid3 - sub_copd
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Smoking
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid3_sub_copd.csv
+
+  ## Generate measures for Obesity (cross-sectional) - precovid - sub_copd 
+
+  generate_measures_precovid_2018-10-01-sub_copd-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Obesity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_precovid_sub_copd.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid1 - sub_copd
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Obesity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid1_sub_copd.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid2 - sub_copd
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Obesity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid2_sub_copd.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid3 - sub_copd
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Obesity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid3_sub_copd.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - precovid - sub_copd
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_copd-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_precovid_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Multimorbidity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_precovid_sub_copd.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid1 - sub_copd
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_copd-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid1_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Multimorbidity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid1_sub_copd.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid2 - sub_copd
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_copd-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid2_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Multimorbidity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid2_sub_copd.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid3 - sub_copd
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_copd-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid3_sub_copd.csv
+        --
+        --practice_measures
+        --CS_sub_copd
+        --Multimorbidity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid3_sub_copd.csv
+
+  ## Generate measures for Age (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Age
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_precovid_sub_hypertension.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Age
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Age
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Age
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Sex (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Sex
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_precovid_sub_hypertension.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Sex
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Sex
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Sex
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Ethnicity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_precovid_sub_hypertension.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Ethnicity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Ethnicity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Ethnicity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for IMD (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --IMD
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_precovid_sub_hypertension.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --IMD
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --IMD
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --IMD
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Rurality (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Rurality
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_precovid_sub_hypertension.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Rurality
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Rurality
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Rurality
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Carehome (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Carehome
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_precovid_sub_hypertension.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Carehome
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Carehome
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Carehome
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Smoking (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Smoking
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_precovid_sub_hypertension.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Smoking
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Smoking
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Smoking
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Obesity (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Obesity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_precovid_sub_hypertension.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Obesity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Obesity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Obesity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - precovid - sub_hypertension
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_hypertension-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_precovid_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Multimorbidity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_precovid_sub_hypertension.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid1 - sub_hypertension
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_hypertension-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid1_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Multimorbidity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid1_sub_hypertension.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid2 - sub_hypertension
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_hypertension-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid2_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Multimorbidity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid2_sub_hypertension.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid3 - sub_hypertension
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_hypertension-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid3_sub_hypertension.csv
+        --
+        --practice_measures
+        --CS_sub_hypertension
+        --Multimorbidity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid3_sub_hypertension.csv
+
+  ## Generate measures for Age (cross-sectional) - precovid - sub_diabetes 
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Age
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_precovid_sub_diabetes.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Age
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Age
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Age
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Sex (cross-sectional) - precovid - sub_diabetes 
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Sex
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_precovid_sub_diabetes.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Sex
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Sex
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Sex
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - precovid - sub_diabetes
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Ethnicity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_precovid_sub_diabetes.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Ethnicity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Ethnicity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Ethnicity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for IMD (cross-sectional) - precovid - sub_diabetes 
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --IMD
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_precovid_sub_diabetes.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --IMD
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --IMD
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --IMD
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Rurality (cross-sectional) - precovid - sub_diabetes
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Rurality
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_precovid_sub_diabetes.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Rurality
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Rurality
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Rurality
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Carehome (cross-sectional) - precovid - sub_diabetes
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Carehome
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_precovid_sub_diabetes.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Carehome
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Carehome
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Carehome
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Smoking (cross-sectional) - precovid - sub_diabetes
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Smoking
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_precovid_sub_diabetes.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Smoking
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Smoking
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Smoking
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Obesity (cross-sectional) - precovid - sub_diabetes
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Obesity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_precovid_sub_diabetes.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Obesity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Obesity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Obesity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - precovid - sub_diabetes
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_diabetes-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_precovid_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Multimorbidity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_precovid_sub_diabetes.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid1 - sub_diabetes
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_diabetes-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid1_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Multimorbidity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid1_sub_diabetes.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid2 - sub_diabetes
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_diabetes-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid2_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Multimorbidity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid2_sub_diabetes.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid3 - sub_diabetes
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_diabetes-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid3_sub_diabetes.csv
+        --
+        --practice_measures
+        --CS_sub_diabetes
+        --Multimorbidity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid3_sub_diabetes.csv
+
+  ## Generate measures for Age (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Age
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Age
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Age
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Age (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-age:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_age_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Age
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_age_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Sex (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Sex
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Sex
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Sex
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Sex (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-sex:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_sex_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Sex
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_sex_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Ethnicity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Ethnicity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Ethnicity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Ethnicity (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ethnicity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_ethnicity_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Ethnicity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_ethnicity_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for IMD (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --IMD
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --IMD
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --IMD
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for IMD (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-imd:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_imd_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --IMD
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_imd_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Rurality (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Rurality
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Rurality
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Rurality
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Rurality (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-rurality:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_rurality_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Rurality
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_rurality_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Carehome (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Carehome
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Carehome
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Carehome
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Carehome (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-carehome:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_carehome_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Carehome
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_carehome_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Smoking (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Smoking
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Smoking
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Smoking
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Smoking (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-smoking:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_smoking_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Smoking
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_smoking_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Obesity (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Obesity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Obesity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Obesity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Obesity (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-obesity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_obesity_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Obesity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_obesity_postcovid3_sub_sev_mental_ill.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - precovid - sub_sev_mental_ill
+
+    
+
+  generate_measures_precovid_2018-10-01-sub_sev_mental_ill-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_precovid_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Multimorbidity
+        --start_cohort 2018-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_precovid_sub_sev_mental_ill.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid1 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid1_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Multimorbidity
+        --start_cohort 2022-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid1_sub_sev_mental_ill.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid2 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid2_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Multimorbidity
+        --start_cohort 2023-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid2_sub_sev_mental_ill.csv
+
+  ## Generate measures for Multimorbidity (cross-sectional) - postcovid3 - sub_sev_mental_ill
+
+    
+
+  generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-multimorbidity:
+    run: |-
+      ehrql:v1 generate-measures analysis/dataset_definition/measures_cohorts.py --output output/measures/measures_multimorbidity_postcovid3_sub_sev_mental_ill.csv
+        --
+        --practice_measures
+        --CS_sub_sev_mental_ill
+        --Multimorbidity
+        --start_cohort 2024-10-01
+    outputs:
+      moderately_sensitive:
+        dataset: output/measures/measures_multimorbidity_postcovid3_sub_sev_mental_ill.csv
+
   ## Check measures files & generate merged datasets for cohort: precovid 
 
   generate_merged_precovid:
@@ -2150,29 +5248,79 @@ actions:
     - generate_measures_precovid_2018-10-01-main-apc_all
     - generate_measures_precovid_2018-10-01-main-ec_acscs
     - generate_measures_precovid_2018-10-01-main-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_asthma-consultation
     - generate_measures_precovid_2018-10-01-sub_asthma-ec_all
     - generate_measures_precovid_2018-10-01-sub_asthma-apc_all
     - generate_measures_precovid_2018-10-01-sub_asthma-ec_acscs
     - generate_measures_precovid_2018-10-01-sub_asthma-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_copd-consultation
     - generate_measures_precovid_2018-10-01-sub_copd-ec_all
     - generate_measures_precovid_2018-10-01-sub_copd-apc_all
     - generate_measures_precovid_2018-10-01-sub_copd-ec_acscs
     - generate_measures_precovid_2018-10-01-sub_copd-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_hypertension-consultation
     - generate_measures_precovid_2018-10-01-sub_hypertension-ec_all
     - generate_measures_precovid_2018-10-01-sub_hypertension-apc_all
     - generate_measures_precovid_2018-10-01-sub_hypertension-ec_acscs
     - generate_measures_precovid_2018-10-01-sub_hypertension-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_diabetes-consultation
     - generate_measures_precovid_2018-10-01-sub_diabetes-ec_all
     - generate_measures_precovid_2018-10-01-sub_diabetes-apc_all
     - generate_measures_precovid_2018-10-01-sub_diabetes-ec_acscs
     - generate_measures_precovid_2018-10-01-sub_diabetes-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-consultation
     - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_all
     - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-apc_all
     - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ec_acscs
     - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-apc_acscs
+    - generate_measures_precovid_2018-10-01-sub_asthma-age
+    - generate_measures_precovid_2018-10-01-sub_asthma-sex
+    - generate_measures_precovid_2018-10-01-sub_asthma-ethnicity
+    - generate_measures_precovid_2018-10-01-sub_asthma-imd
+    - generate_measures_precovid_2018-10-01-sub_asthma-rurality
+    - generate_measures_precovid_2018-10-01-sub_asthma-carehome
+    - generate_measures_precovid_2018-10-01-sub_asthma-smoking
+    - generate_measures_precovid_2018-10-01-sub_asthma-obesity
+    - generate_measures_precovid_2018-10-01-sub_asthma-multimorbidity
+    - generate_measures_precovid_2018-10-01-sub_copd-age
+    - generate_measures_precovid_2018-10-01-sub_copd-sex
+    - generate_measures_precovid_2018-10-01-sub_copd-ethnicity
+    - generate_measures_precovid_2018-10-01-sub_copd-imd
+    - generate_measures_precovid_2018-10-01-sub_copd-rurality
+    - generate_measures_precovid_2018-10-01-sub_copd-carehome
+    - generate_measures_precovid_2018-10-01-sub_copd-smoking
+    - generate_measures_precovid_2018-10-01-sub_copd-obesity
+    - generate_measures_precovid_2018-10-01-sub_copd-multimorbidity
+    - generate_measures_precovid_2018-10-01-sub_hypertension-age
+    - generate_measures_precovid_2018-10-01-sub_hypertension-sex
+    - generate_measures_precovid_2018-10-01-sub_hypertension-ethnicity
+    - generate_measures_precovid_2018-10-01-sub_hypertension-imd
+    - generate_measures_precovid_2018-10-01-sub_hypertension-rurality
+    - generate_measures_precovid_2018-10-01-sub_hypertension-carehome
+    - generate_measures_precovid_2018-10-01-sub_hypertension-smoking
+    - generate_measures_precovid_2018-10-01-sub_hypertension-obesity
+    - generate_measures_precovid_2018-10-01-sub_hypertension-multimorbidity
+    - generate_measures_precovid_2018-10-01-sub_diabetes-age
+    - generate_measures_precovid_2018-10-01-sub_diabetes-sex
+    - generate_measures_precovid_2018-10-01-sub_diabetes-ethnicity
+    - generate_measures_precovid_2018-10-01-sub_diabetes-imd
+    - generate_measures_precovid_2018-10-01-sub_diabetes-rurality
+    - generate_measures_precovid_2018-10-01-sub_diabetes-carehome
+    - generate_measures_precovid_2018-10-01-sub_diabetes-smoking
+    - generate_measures_precovid_2018-10-01-sub_diabetes-obesity
+    - generate_measures_precovid_2018-10-01-sub_diabetes-multimorbidity
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-age
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-sex
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-ethnicity
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-imd
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-rurality
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-carehome
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-smoking
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-obesity
+    - generate_measures_precovid_2018-10-01-sub_sev_mental_ill-multimorbidity
     outputs:
-      moderately_sensitive:
-        dataset1: output/dataset_clean/merged_data_long_precovid.csv
+      highly_sensitive:
+        dataset1: output/dataset_clean/merged_data_long_precovid.csv.gz
 
   ## Check measures files & generate merged datasets for cohort: postcovid1 
 
@@ -2196,29 +5344,79 @@ actions:
     - generate_measures_postcovid1_2022-10-01-main-apc_all
     - generate_measures_postcovid1_2022-10-01-main-ec_acscs
     - generate_measures_postcovid1_2022-10-01-main-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-consultation
     - generate_measures_postcovid1_2022-10-01-sub_asthma-ec_all
     - generate_measures_postcovid1_2022-10-01-sub_asthma-apc_all
     - generate_measures_postcovid1_2022-10-01-sub_asthma-ec_acscs
     - generate_measures_postcovid1_2022-10-01-sub_asthma-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_copd-consultation
     - generate_measures_postcovid1_2022-10-01-sub_copd-ec_all
     - generate_measures_postcovid1_2022-10-01-sub_copd-apc_all
     - generate_measures_postcovid1_2022-10-01-sub_copd-ec_acscs
     - generate_measures_postcovid1_2022-10-01-sub_copd-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-consultation
     - generate_measures_postcovid1_2022-10-01-sub_hypertension-ec_all
     - generate_measures_postcovid1_2022-10-01-sub_hypertension-apc_all
     - generate_measures_postcovid1_2022-10-01-sub_hypertension-ec_acscs
     - generate_measures_postcovid1_2022-10-01-sub_hypertension-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-consultation
     - generate_measures_postcovid1_2022-10-01-sub_diabetes-ec_all
     - generate_measures_postcovid1_2022-10-01-sub_diabetes-apc_all
     - generate_measures_postcovid1_2022-10-01-sub_diabetes-ec_acscs
     - generate_measures_postcovid1_2022-10-01-sub_diabetes-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-consultation
     - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ec_all
     - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-apc_all
     - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ec_acscs
     - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-apc_acscs
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-age
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-sex
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-ethnicity
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-imd
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-rurality
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-carehome
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-smoking
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-obesity
+    - generate_measures_postcovid1_2022-10-01-sub_asthma-multimorbidity
+    - generate_measures_postcovid1_2022-10-01-sub_copd-age
+    - generate_measures_postcovid1_2022-10-01-sub_copd-sex
+    - generate_measures_postcovid1_2022-10-01-sub_copd-ethnicity
+    - generate_measures_postcovid1_2022-10-01-sub_copd-imd
+    - generate_measures_postcovid1_2022-10-01-sub_copd-rurality
+    - generate_measures_postcovid1_2022-10-01-sub_copd-carehome
+    - generate_measures_postcovid1_2022-10-01-sub_copd-smoking
+    - generate_measures_postcovid1_2022-10-01-sub_copd-obesity
+    - generate_measures_postcovid1_2022-10-01-sub_copd-multimorbidity
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-age
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-sex
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-ethnicity
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-imd
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-rurality
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-carehome
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-smoking
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-obesity
+    - generate_measures_postcovid1_2022-10-01-sub_hypertension-multimorbidity
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-age
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-sex
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-ethnicity
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-imd
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-rurality
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-carehome
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-smoking
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-obesity
+    - generate_measures_postcovid1_2022-10-01-sub_diabetes-multimorbidity
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-age
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-sex
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-ethnicity
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-imd
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-rurality
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-carehome
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-smoking
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-obesity
+    - generate_measures_postcovid1_2022-10-01-sub_sev_mental_ill-multimorbidity
     outputs:
-      moderately_sensitive:
-        dataset1: output/dataset_clean/merged_data_long_postcovid1.csv
+      highly_sensitive:
+        dataset1: output/dataset_clean/merged_data_long_postcovid1.csv.gz
 
   ## Check measures files & generate merged datasets for cohort: postcovid2 
 
@@ -2242,29 +5440,79 @@ actions:
     - generate_measures_postcovid2_2023-10-01-main-apc_all
     - generate_measures_postcovid2_2023-10-01-main-ec_acscs
     - generate_measures_postcovid2_2023-10-01-main-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-consultation
     - generate_measures_postcovid2_2023-10-01-sub_asthma-ec_all
     - generate_measures_postcovid2_2023-10-01-sub_asthma-apc_all
     - generate_measures_postcovid2_2023-10-01-sub_asthma-ec_acscs
     - generate_measures_postcovid2_2023-10-01-sub_asthma-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_copd-consultation
     - generate_measures_postcovid2_2023-10-01-sub_copd-ec_all
     - generate_measures_postcovid2_2023-10-01-sub_copd-apc_all
     - generate_measures_postcovid2_2023-10-01-sub_copd-ec_acscs
     - generate_measures_postcovid2_2023-10-01-sub_copd-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-consultation
     - generate_measures_postcovid2_2023-10-01-sub_hypertension-ec_all
     - generate_measures_postcovid2_2023-10-01-sub_hypertension-apc_all
     - generate_measures_postcovid2_2023-10-01-sub_hypertension-ec_acscs
     - generate_measures_postcovid2_2023-10-01-sub_hypertension-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-consultation
     - generate_measures_postcovid2_2023-10-01-sub_diabetes-ec_all
     - generate_measures_postcovid2_2023-10-01-sub_diabetes-apc_all
     - generate_measures_postcovid2_2023-10-01-sub_diabetes-ec_acscs
     - generate_measures_postcovid2_2023-10-01-sub_diabetes-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-consultation
     - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ec_all
     - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-apc_all
     - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ec_acscs
     - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-apc_acscs
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-age
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-sex
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-ethnicity
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-imd
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-rurality
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-carehome
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-smoking
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-obesity
+    - generate_measures_postcovid2_2023-10-01-sub_asthma-multimorbidity
+    - generate_measures_postcovid2_2023-10-01-sub_copd-age
+    - generate_measures_postcovid2_2023-10-01-sub_copd-sex
+    - generate_measures_postcovid2_2023-10-01-sub_copd-ethnicity
+    - generate_measures_postcovid2_2023-10-01-sub_copd-imd
+    - generate_measures_postcovid2_2023-10-01-sub_copd-rurality
+    - generate_measures_postcovid2_2023-10-01-sub_copd-carehome
+    - generate_measures_postcovid2_2023-10-01-sub_copd-smoking
+    - generate_measures_postcovid2_2023-10-01-sub_copd-obesity
+    - generate_measures_postcovid2_2023-10-01-sub_copd-multimorbidity
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-age
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-sex
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-ethnicity
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-imd
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-rurality
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-carehome
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-smoking
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-obesity
+    - generate_measures_postcovid2_2023-10-01-sub_hypertension-multimorbidity
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-age
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-sex
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-ethnicity
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-imd
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-rurality
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-carehome
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-smoking
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-obesity
+    - generate_measures_postcovid2_2023-10-01-sub_diabetes-multimorbidity
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-age
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-sex
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-ethnicity
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-imd
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-rurality
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-carehome
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-smoking
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-obesity
+    - generate_measures_postcovid2_2023-10-01-sub_sev_mental_ill-multimorbidity
     outputs:
-      moderately_sensitive:
-        dataset1: output/dataset_clean/merged_data_long_postcovid2.csv
+      highly_sensitive:
+        dataset1: output/dataset_clean/merged_data_long_postcovid2.csv.gz
 
   ## Check measures files & generate merged datasets for cohort: postcovid3 
 
@@ -2288,29 +5536,79 @@ actions:
     - generate_measures_postcovid3_2024-10-01-main-apc_all
     - generate_measures_postcovid3_2024-10-01-main-ec_acscs
     - generate_measures_postcovid3_2024-10-01-main-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-consultation
     - generate_measures_postcovid3_2024-10-01-sub_asthma-ec_all
     - generate_measures_postcovid3_2024-10-01-sub_asthma-apc_all
     - generate_measures_postcovid3_2024-10-01-sub_asthma-ec_acscs
     - generate_measures_postcovid3_2024-10-01-sub_asthma-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_copd-consultation
     - generate_measures_postcovid3_2024-10-01-sub_copd-ec_all
     - generate_measures_postcovid3_2024-10-01-sub_copd-apc_all
     - generate_measures_postcovid3_2024-10-01-sub_copd-ec_acscs
     - generate_measures_postcovid3_2024-10-01-sub_copd-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-consultation
     - generate_measures_postcovid3_2024-10-01-sub_hypertension-ec_all
     - generate_measures_postcovid3_2024-10-01-sub_hypertension-apc_all
     - generate_measures_postcovid3_2024-10-01-sub_hypertension-ec_acscs
     - generate_measures_postcovid3_2024-10-01-sub_hypertension-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-consultation
     - generate_measures_postcovid3_2024-10-01-sub_diabetes-ec_all
     - generate_measures_postcovid3_2024-10-01-sub_diabetes-apc_all
     - generate_measures_postcovid3_2024-10-01-sub_diabetes-ec_acscs
     - generate_measures_postcovid3_2024-10-01-sub_diabetes-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-consultation
     - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ec_all
     - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-apc_all
     - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ec_acscs
     - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-apc_acscs
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-age
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-sex
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-ethnicity
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-imd
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-rurality
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-carehome
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-smoking
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-obesity
+    - generate_measures_postcovid3_2024-10-01-sub_asthma-multimorbidity
+    - generate_measures_postcovid3_2024-10-01-sub_copd-age
+    - generate_measures_postcovid3_2024-10-01-sub_copd-sex
+    - generate_measures_postcovid3_2024-10-01-sub_copd-ethnicity
+    - generate_measures_postcovid3_2024-10-01-sub_copd-imd
+    - generate_measures_postcovid3_2024-10-01-sub_copd-rurality
+    - generate_measures_postcovid3_2024-10-01-sub_copd-carehome
+    - generate_measures_postcovid3_2024-10-01-sub_copd-smoking
+    - generate_measures_postcovid3_2024-10-01-sub_copd-obesity
+    - generate_measures_postcovid3_2024-10-01-sub_copd-multimorbidity
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-age
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-sex
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-ethnicity
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-imd
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-rurality
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-carehome
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-smoking
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-obesity
+    - generate_measures_postcovid3_2024-10-01-sub_hypertension-multimorbidity
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-age
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-sex
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-ethnicity
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-imd
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-rurality
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-carehome
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-smoking
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-obesity
+    - generate_measures_postcovid3_2024-10-01-sub_diabetes-multimorbidity
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-age
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-sex
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-ethnicity
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-imd
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-rurality
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-carehome
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-smoking
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-obesity
+    - generate_measures_postcovid3_2024-10-01-sub_sev_mental_ill-multimorbidity
     outputs:
-      moderately_sensitive:
-        dataset1: output/dataset_clean/merged_data_long_postcovid3.csv
+      highly_sensitive:
+        dataset1: output/dataset_clean/merged_data_long_postcovid3.csv.gz
 
   ## Generate cleaned input dataset - precovid 
 
