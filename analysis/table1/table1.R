@@ -81,7 +81,8 @@ table1_patient_vars <- c(
   "carehome",
   "smoking",
   "obesity",
-  "cons"
+  "cons",
+  "cms"
 )
 table1_patient_vars_pattern <- paste0(
   "^(",
@@ -93,6 +94,7 @@ input <- input %>%
   select(
     practice_id,
     list_size_mp6,
+    matches("^list_size_sub_(asth|copd|htn|diab|sevmh)_mp6$"),
     practice_region,
     practice_rurality,
     matches(table1_patient_vars_pattern)
@@ -106,6 +108,26 @@ rounded_vars <- names(input)[
 unrounded_vars <- names(input)[
   grepl(table1_patient_vars_pattern, names(input)) &
     !grepl("_mp6$", names(input))
+]
+
+# Separate subgroup and whole-population variables -----------------------------
+subgroup_pattern <- "_sub_(asth|copd|htn|diab|sevmh)(_mp6)?$"
+
+rounded_vars_subgroups <- rounded_vars[
+  grepl(subgroup_pattern, rounded_vars)
+]
+
+unrounded_vars_subgroups <- unrounded_vars[
+  grepl(subgroup_pattern, unrounded_vars)
+]
+
+# Keep only whole-population variables for the original create_table1().
+rounded_vars <- rounded_vars[
+  !grepl(subgroup_pattern, rounded_vars)
+]
+
+unrounded_vars <- unrounded_vars[
+  !grepl(subgroup_pattern, unrounded_vars)
 ]
 
 # Add Strata variables if needed --------------------------------------------------------------
@@ -134,6 +156,38 @@ table1_summary_all_unrounded <- create_table1(
   threshold_practice = threshold_practice
 )
 message("Created Table 1 summary with unrounded variables")
+
+# Create patient-group summaries without additional strata ---------------------
+table1_summary_subgroups_rounded <- create_table1_subgroups(
+  input,
+  rounded = TRUE,
+  rounded_vars = rounded_vars_subgroups,
+  unrounded_vars = unrounded_vars_subgroups,
+  threshold = threshold,
+  threshold_practice = threshold_practice
+)
+
+table1_summary_subgroups_unrounded <- create_table1_subgroups(
+  input,
+  rounded = FALSE,
+  rounded_vars = rounded_vars_subgroups,
+  unrounded_vars = unrounded_vars_subgroups,
+  threshold = threshold,
+  threshold_practice = threshold_practice
+)
+
+# Append patient groups to the existing Table 1 outputs -------------------------
+table1_summary_all_rounded <- bind_rows(
+  table1_summary_all_rounded,
+  table1_summary_subgroups_rounded
+)
+
+table1_summary_all_unrounded <- bind_rows(
+  table1_summary_all_unrounded,
+  table1_summary_subgroups_unrounded
+)
+
+message("Appended patient-group summaries to Table 1")
 
 # Save rounded Table 1 -----------------------------------------------------------------
 print("Save rounded Table 1")
