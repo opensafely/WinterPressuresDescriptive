@@ -75,7 +75,7 @@ def generate_dataset_variables(cohort_start):
     ### Had hypertension ever recorded prior to the cohort start date
     sub_bin_hypertension = (
         (last_matching_event_clinical_snomed_before(
-            multimorbidity_dict["MS_Hypertension_snomed"], cohort_start
+            hypertension_snomed, cohort_start
         ).exists_for_patient()) |
         (last_matching_event_apc_before(
             hypertension_icd10, cohort_start
@@ -120,7 +120,7 @@ def generate_dataset_variables(cohort_start):
     ### Practice data taken at the start of the interval
     practice_id = (practice_registrations.for_patient_on(cohort_start).practice_pseudo_id)
     
-    ## Multimorbidity conditions (n=20)----------------------------------------------------------------------
+    ## Multimorbidity conditions (n=21)----------------------------------------------------------------------
     cms_parts = get_cms_on_date(cohort_start, death_date, return_components=True)
 
     cs_dataset_variables = dict(
@@ -146,28 +146,31 @@ def generate_dataset_variables(cohort_start):
         sub_bin_hypertension = sub_bin_hypertension,
         sub_bin_diabetes   = sub_bin_diabetes,
         sub_bin_sev_mental_ill = sub_bin_sev_mental_ill,
-        # Cambridge Multimorbidity Conditions (20)
-        exp_bin_af                = cms_parts["af"],             # Atrial Fibrillation
-        exp_bin_alcoholproblem    = cms_parts["alcohol"],        # Alcohol Problem
-        exp_bin_anxietydepression = cms_parts["anxiety"],        # Anxiety and Depression
-        exp_bin_asthma            = cms_parts["asthma"],         # Asthma
-        exp_bin_cancer            = cms_parts["cancer"],         # Cancer
-        exp_bin_chd               = cms_parts["chd"],            # Coronary Heart Disease
-        exp_bin_ckd               = cms_parts["ckd"],            # Chronic Kidney Disease
-        exp_bin_constipation      = cms_parts["constipation"],   # Constipation
-        exp_bin_copd              = cms_parts["copd"],           # Chronic Obstructive Pulmonary Disease
-        exp_bin_ctd               = cms_parts["ctd"],            # Connective Tissue Disease
-        exp_bin_dementia          = cms_parts["dementia"],       # Dementia
-        exp_bin_diabetes          = cms_parts["diabetes"],       # Diabetes
-        exp_bin_epilepsy          = cms_parts["epilepsy"],       # Epilepsy
-        exp_bin_hearingloss       = cms_parts["hearing_loss"],   # Hearing Loss
-        exp_bin_hf                = cms_parts["hf"],             # Heart Failure
-        exp_bin_hypertension      = cms_parts["hypertension"],   # Hypertension
-        exp_bin_ibs               = cms_parts["ibs"],            # Irritable Bowel Syndrome
-        exp_bin_osteoarthritis    = cms_parts["pain"],           # Osteoarthritis
-        exp_bin_psychosis         = cms_parts["psychosis"],      # Psychosis
-        exp_bin_stroketia         = cms_parts["stroke"],         # Stroke and Transient Ischaemic Attack
-        exp_num_cms               = cms_parts["cms"],            # Cambridge Multimorbidity Score
+        # Cambridge Multimorbidity Conditions (21)
+        exp_bin_alcoholproblem    = cms_parts["alcohol"],
+        exp_bin_anxietydepression = cms_parts["anxiety"],
+        exp_bin_af                = cms_parts["af"],
+        exp_bin_cancer            = cms_parts["cancer"],
+        exp_bin_ckd               = cms_parts["ckd"],
+        exp_bin_cld               = cms_parts["cld"],
+        exp_bin_constipation      = cms_parts["constipation"],
+        exp_bin_copd              = cms_parts["copd"],
+        exp_bin_dementia          = cms_parts["dementia"],
+        exp_bin_diabetes          = cms_parts["diabetes"],
+        exp_bin_prostate          = cms_parts["prostate"],
+        exp_bin_epilepsy          = cms_parts["epilepsy"],
+        exp_bin_hf                = cms_parts["hf"],
+        exp_bin_ibs               = cms_parts["bowel"],
+        exp_bin_learningdisability = cms_parts["learning"],
+        exp_bin_multiplesclerosis = cms_parts["sclerosis"],
+        exp_bin_painfulcondition  = cms_parts["pain"],
+        exp_bin_parkinsonism      = cms_parts["parkinsonism"],
+        exp_bin_peripheralvascular = cms_parts["perivascular_leg"],
+        exp_bin_psychoactive      = cms_parts["psychosub_misuse"],
+        exp_bin_psychosis         = cms_parts["psychosis"],
+
+        # Cambridge Multimorbidity Score
+        exp_num_cms               = cms_parts["cms"],
     )
     return cs_dataset_variables
 

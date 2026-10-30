@@ -41,10 +41,10 @@ restrict_column <- function(input) {
     subgroups <- c("asth", "copd", "htn", "diab", "sevmh")
 
     for (sg in subgroups) {
-        pattern_mp6 <- paste0("^denom_.*sub_", sg, ".*_mp6$")
+        pattern_mp6 <- paste0("^denom_(apc|ec)_.*sub_", sg, ".*_mp6$")
         denom_sub_vars_mp6 <- grep(pattern_mp6, names(input), value = TRUE)
         denom_sub_vars <- names(input)[
-            grepl(paste0("^denom_.*sub_", sg), names(input)) &
+            grepl(paste0("^denom_(apc|ec)_.*sub_", sg), names(input)) &
                 !grepl("_mp6$", names(input))
         ]
 
