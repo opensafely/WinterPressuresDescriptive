@@ -1,0 +1,376 @@
+code,description,acsc_condition
+J10,Influenza due to identified seasonal influenza virus,Influenza and pneumonia
+J100,"Influenza with pneumonia, seasonal influenza virus identified",Influenza and pneumonia
+J101,"Influenza with other respiratory manifestations, seasonal influenza virus identified",Influenza and pneumonia
+J108,"Influenza with other manifestations, seasonal influenza virus identified",Influenza and pneumonia
+J11,"Influenza, virus not identified",Influenza and pneumonia
+J110,"Influenza with pneumonia, virus not identified",Influenza and pneumonia
+J111,"Influenza with other respiratory manifestations, virus not identified",Influenza and pneumonia
+J118,"Influenza with other manifestations, virus not identified",Influenza and pneumonia
+J13,Pneumonia due to Streptococcus pneumoniae,Influenza and pneumonia
+J14,Pneumonia due to Haemophilus influenzae,Influenza and pneumonia
+J153,"Pneumonia due to streptococcus, group B",Influenza and pneumonia
+J154,Pneumonia due to other streptococci,Influenza and pneumonia
+J157,Pneumonia due to Mycoplasma pneumoniae,Influenza and pneumonia
+J159,"Bacterial pneumonia, unspecified",Influenza and pneumonia
+J168,Pneumonia due to other specified infectious organisms,Influenza and pneumonia
+J181,"Lobar pneumonia, unspecified",Influenza and pneumonia
+J188,"Other pneumonia, organism unspecified",Influenza and pneumonia
+A35,Other tetanus,Other vaccine preventable
+A36,Diphtheria,Other vaccine preventable
+A360,Pharyngeal diphtheria,Other vaccine preventable
+A361,Nasopharyngeal diphtheria,Other vaccine preventable
+A362,Laryngeal diphtheria,Other vaccine preventable
+A363,Cutaneous diphtheria,Other vaccine preventable
+A368,Other diphtheria,Other vaccine preventable
+A369,"Diphtheria, unspecified",Other vaccine preventable
+A37,Whooping cough,Other vaccine preventable
+A370,Whooping cough due to Bordetella pertussis,Other vaccine preventable
+A371,Whooping cough due to Bordetella parapertussis,Other vaccine preventable
+A378,Whooping cough due to other Bordetella species,Other vaccine preventable
+A379,"Whooping cough, unspecified",Other vaccine preventable
+A80,Acute poliomyelitis,Other vaccine preventable
+A800,"Acute paralytic poliomyelitis, vaccine-associated",Other vaccine preventable
+A801,"Acute paralytic poliomyelitis, wild virus, imported",Other vaccine preventable
+A802,"Acute paralytic poliomyelitis, wild virus, indigenous",Other vaccine preventable
+A803,"Acute paralytic poliomyelitis, other and unspecified",Other vaccine preventable
+A804,Acute nonparalytic poliomyelitis,Other vaccine preventable
+A809,"Acute poliomyelitis, unspecified",Other vaccine preventable
+B05,Measles,Other vaccine preventable
+B050,Measles complicated by encephalitis,Other vaccine preventable
+B051,Measles complicated by meningitis,Other vaccine preventable
+B052,Measles complicated by pneumonia,Other vaccine preventable
+B053,Measles complicated by otitis media,Other vaccine preventable
+B054,Measles with intestinal complications,Other vaccine preventable
+B058,Measles with other complications,Other vaccine preventable
+B059,Measles without complication,Other vaccine preventable
+B06,Rubella [German measles],Other vaccine preventable
+B060,Rubella with neurological complications,Other vaccine preventable
+B068,Rubella with other complications,Other vaccine preventable
+B069,Rubella without complication,Other vaccine preventable
+B161,Acute hepatitis B with delta-agent (coinfection) without hepatic coma,Other vaccine preventable
+B169,Acute hepatitis B without delta-agent and without hepatic coma,Other vaccine preventable
+B180,Chronic viral hepatitis B with delta-agent,Other vaccine preventable
+B1800,Chronic viral hepatitis B with delta-agent: immune-tolerant phase,Other vaccine preventable
+B1809,Chronic viral hepatitis B with delta-agent: other and unspecified phase,Other vaccine preventable
+B181,Chronic viral hepatitis B without delta-agent,Other vaccine preventable
+B1810,Chronic viral hepatitis B without delta-agent: immune-tolerant phase,Other vaccine preventable
+B1819,Chronic viral hepatitis B without delta-agent: other and unspecified phase,Other vaccine preventable
+B26,Mumps,Other vaccine preventable
+B260,Mumps orchitis,Other vaccine preventable
+B261,Mumps meningitis,Other vaccine preventable
+B262,Mumps encephalitis,Other vaccine preventable
+B263,Mumps pancreatitis,Other vaccine preventable
+B268,Mumps with other complications,Other vaccine preventable
+B269,Mumps without complication,Other vaccine preventable
+G000,Haemophilus meningitis,Other vaccine preventable
+M014,Rubella arthritis,Other vaccine preventable
+M0140,Rubella arthritis: Multiple sites,Other vaccine preventable
+M0141,Rubella arthritis: Shoulder region,Other vaccine preventable
+M0142,Rubella arthritis: Upper arm,Other vaccine preventable
+M0143,Rubella arthritis: Forearm,Other vaccine preventable
+M0144,Rubella arthritis: Hand,Other vaccine preventable
+M0145,Rubella arthritis: Pelvic region and thigh,Other vaccine preventable
+M0146,Rubella arthritis: Lower leg,Other vaccine preventable
+M0147,Rubella arthritis: Ankle and foot,Other vaccine preventable
+M0148,Rubella arthritis: Other,Other vaccine preventable
+M0149,Rubella arthritis: Site unspecified,Other vaccine preventable
+J45,Asthma,Asthma
+J450,Predominantly allergic asthma,Asthma
+J451,Nonallergic asthma,Asthma
+J458,Mixed asthma,Asthma
+J459,"Asthma, unspecified",Asthma
+J46,Status asthmaticus,Asthma
+I110,Hypertensive heart disease with (congestive) heart failure,Congestive heart failure
+I50,Heart failure,Congestive heart failure
+I500,Congestive heart failure,Congestive heart failure
+I501,Left ventricular failure,Congestive heart failure
+I509,"Heart failure, unspecified",Congestive heart failure
+J81,Pulmonary oedema,Congestive heart failure
+E100,Type 1 diabetes mellitus: With coma,Diabetes complications
+E101,Type 1 diabetes mellitus: With ketoacidosis,Diabetes complications
+E102,Type 1 diabetes mellitus: With renal complications,Diabetes complications
+E103,Type 1 diabetes mellitus: With ophthalmic complications,Diabetes complications
+E104,Type 1 diabetes mellitus: With neurological complications,Diabetes complications
+E105,Type 1 diabetes mellitus: With peripheral circulatory complications,Diabetes complications
+E106,Type 1 diabetes mellitus: With other specified complications,Diabetes complications
+E107,Type 1 diabetes mellitus: With multiple complications,Diabetes complications
+E108,Type 1 diabetes mellitus: With unspecified complications,Diabetes complications
+E110,Type 2 diabetes mellitus: With coma,Diabetes complications
+E111,Type 2 diabetes mellitus: With ketoacidosis,Diabetes complications
+E112,Type 2 diabetes mellitus: With renal complications,Diabetes complications
+E113,Type 2 diabetes mellitus: With ophthalmic complications,Diabetes complications
+E114,Type 2 diabetes mellitus: With neurological complications,Diabetes complications
+E115,Type 2 diabetes mellitus: With peripheral circulatory complications,Diabetes complications
+E116,Type 2 diabetes mellitus: With other specified complications,Diabetes complications
+E117,Type 2 diabetes mellitus: With multiple complications,Diabetes complications
+E118,Type 2 diabetes mellitus: With unspecified complications,Diabetes complications
+E120,Malnutrition-related diabetes mellitus: With coma,Diabetes complications
+E121,Malnutrition-related diabetes mellitus: With ketoacidosis,Diabetes complications
+E122,Malnutrition-related diabetes mellitus: With renal complications,Diabetes complications
+E123,Malnutrition-related diabetes mellitus: With ophthalmic complications,Diabetes complications
+E124,Malnutrition-related diabetes mellitus: With neurological complications,Diabetes complications
+E125,Malnutrition-related diabetes mellitus: With peripheral circulatory complications,Diabetes complications
+E126,Malnutrition-related diabetes mellitus: With other specified complications,Diabetes complications
+E127,Malnutrition-related diabetes mellitus: With multiple complications,Diabetes complications
+E128,Malnutrition-related diabetes mellitus: With unspecified complications,Diabetes complications
+E130,Other specified diabetes mellitus: With coma,Diabetes complications
+E131,Other specified diabetes mellitus: With ketoacidosis,Diabetes complications
+E132,Other specified diabetes mellitus: With renal complications,Diabetes complications
+E133,Other specified diabetes mellitus: With ophthalmic complications,Diabetes complications
+E134,Other specified diabetes mellitus: With neurological complications,Diabetes complications
+E135,Other specified diabetes mellitus: With peripheral circulatory complications,Diabetes complications
+E136,Other specified diabetes mellitus: With other specified complications,Diabetes complications
+E137,Other specified diabetes mellitus: With multiple complications,Diabetes complications
+E138,Other specified diabetes mellitus: With unspecified complications,Diabetes complications
+E140,Unspecified diabetes mellitus: With coma,Diabetes complications
+E141,Unspecified diabetes mellitus: With ketoacidosis,Diabetes complications
+E142,Unspecified diabetes mellitus: With renal complications,Diabetes complications
+E143,Unspecified diabetes mellitus: With ophthalmic complications,Diabetes complications
+E144,Unspecified diabetes mellitus: With neurological complications,Diabetes complications
+E145,Unspecified diabetes mellitus: With peripheral circulatory complications,Diabetes complications
+E146,Unspecified diabetes mellitus: With other specified complications,Diabetes complications
+E147,Unspecified diabetes mellitus: With multiple complications,Diabetes complications
+E148,Unspecified diabetes mellitus: With unspecified complications,Diabetes complications
+J20,Acute bronchitis,Chronic obstructive pulmonary disease
+J200,Acute bronchitis due to Mycoplasma pneumoniae,Chronic obstructive pulmonary disease
+J201,Acute bronchitis due to Haemophilus influenzae,Chronic obstructive pulmonary disease
+J202,Acute bronchitis due to streptococcus,Chronic obstructive pulmonary disease
+J203,Acute bronchitis due to coxsackievirus,Chronic obstructive pulmonary disease
+J204,Acute bronchitis due to parainfluenza virus,Chronic obstructive pulmonary disease
+J205,Acute bronchitis due to respiratory syncytial virus,Chronic obstructive pulmonary disease
+J206,Acute bronchitis due to rhinovirus,Chronic obstructive pulmonary disease
+J207,Acute bronchitis due to echovirus,Chronic obstructive pulmonary disease
+J208,Acute bronchitis due to other specified organisms,Chronic obstructive pulmonary disease
+J209,"Acute bronchitis, unspecified",Chronic obstructive pulmonary disease
+J41,Simple and mucopurulent chronic bronchitis,Chronic obstructive pulmonary disease
+J410,Simple chronic bronchitis,Chronic obstructive pulmonary disease
+J411,Mucopurulent chronic bronchitis,Chronic obstructive pulmonary disease
+J418,Mixed simple and mucopurulent chronic bronchitis,Chronic obstructive pulmonary disease
+J42,Unspecified chronic bronchitis,Chronic obstructive pulmonary disease
+J43,Emphysema,Chronic obstructive pulmonary disease
+J430,MacLeod syndrome,Chronic obstructive pulmonary disease
+J431,Panlobular emphysema,Chronic obstructive pulmonary disease
+J432,Centrilobular emphysema,Chronic obstructive pulmonary disease
+J438,Other emphysema,Chronic obstructive pulmonary disease
+J439,"Emphysema, unspecified",Chronic obstructive pulmonary disease
+J44,Other chronic obstructive pulmonary disease,Chronic obstructive pulmonary disease
+J440,Chronic obstructive pulmonary disease with acute lower respiratory infection,Chronic obstructive pulmonary disease
+J441,"Chronic obstructive pulmonary disease with acute exacerbation, unspecified",Chronic obstructive pulmonary disease
+J448,Other specified chronic obstructive pulmonary disease,Chronic obstructive pulmonary disease
+J449,"Chronic obstructive pulmonary disease, unspecified",Chronic obstructive pulmonary disease
+J47,Bronchiectasis,Chronic obstructive pulmonary disease
+I20,Angina pectoris,Angina
+I200,Unstable angina,Angina
+I201,Angina pectoris with documented spasm,Angina
+I208,Other forms of angina pectoris,Angina
+I209,"Angina pectoris, unspecified",Angina
+I240,Coronary thrombosis not resulting in myocardial infarction,Angina
+I248,Other forms of acute ischaemic heart disease,Angina
+I249,"Acute ischaemic heart disease, unspecified",Angina
+D501,Sideropenic dysphagia,Iron deficiency anaemia
+D508,Other iron deficiency anaemias,Iron deficiency anaemia
+D509,"Iron deficiency anaemia, unspecified",Iron deficiency anaemia
+I10,Essential (primary) hypertension,Hypertension
+I119,Hypertensive heart disease without (congestive) heart failure,Hypertension
+E40,Kwashiorkor,Nutritional deficiencies
+E41,Nutritional marasmus,Nutritional deficiencies
+E42,Marasmic kwashiorkor,Nutritional deficiencies
+E43,Unspecified severe protein-energy malnutrition,Nutritional deficiencies
+E550,"Rickets, active",Nutritional deficiencies
+E643,Sequelae of rickets,Nutritional deficiencies
+E86,Volume depletion,Dehydration and gastroenteritis
+K522,Allergic and dietetic gastroenteritis and colitis,Dehydration and gastroenteritis
+K528,Other specified noninfective gastroenteritis and colitis,Dehydration and gastroenteritis
+K529,"Noninfective gastroenteritis and colitis, unspecified",Dehydration and gastroenteritis
+N10,Acute tubulo-interstitial nephritis,Pyelonephritis
+N11,Chronic tubulo-interstitial nephritis,Pyelonephritis
+N110,Nonobstructive reflux-associated chronic pyelonephritis,Pyelonephritis
+N111,Chronic obstructive pyelonephritis,Pyelonephritis
+N118,Other chronic tubulo-interstitial nephritis,Pyelonephritis
+N119,"Chronic tubulo-interstitial nephritis, unspecified",Pyelonephritis
+N12,"Tubulo-interstitial nephritis, not specified as acute or chronic",Pyelonephritis
+N136,Pyonephrosis,Pyelonephritis
+K250,Gastric ulcer: Acute with haemorrhage,Perforated/bleeding ulcer
+K251,Gastric ulcer: Acute with perforation,Perforated/bleeding ulcer
+K252,Gastric ulcer: Acute with both haemorrhage and perforation,Perforated/bleeding ulcer
+K254,Gastric ulcer: Chronic or unspecified with haemorrhage,Perforated/bleeding ulcer
+K255,Gastric ulcer: Chronic or unspecified with perforation,Perforated/bleeding ulcer
+K256,Gastric ulcer: Chronic or unspecified with both haemorrhage and perforation,Perforated/bleeding ulcer
+K260,Duodenal ulcer: Acute with haemorrhage,Perforated/bleeding ulcer
+K261,Duodenal ulcer: Acute with perforation,Perforated/bleeding ulcer
+K262,Duodenal ulcer: Acute with both haemorrhage and perforation,Perforated/bleeding ulcer
+K264,Duodenal ulcer: Chronic or unspecified with haemorrhage,Perforated/bleeding ulcer
+K265,Duodenal ulcer: Chronic or unspecified with perforation,Perforated/bleeding ulcer
+K266,Duodenal ulcer: Chronic or unspecified with both haemorrhage and perforation,Perforated/bleeding ulcer
+K270,"Peptic ulcer, site unspecified: Acute with haemorrhage",Perforated/bleeding ulcer
+K271,"Peptic ulcer, site unspecified: Acute with perforation",Perforated/bleeding ulcer
+K272,"Peptic ulcer, site unspecified: Acute with both haemorrhage and perforation",Perforated/bleeding ulcer
+K274,"Peptic ulcer, site unspecified: Chronic or unspecified with haemorrhage",Perforated/bleeding ulcer
+K275,"Peptic ulcer, site unspecified: Chronic or unspecified with perforation",Perforated/bleeding ulcer
+K276,"Peptic ulcer, site unspecified: Chronic or unspecified with both haemorrhage and perforation",Perforated/bleeding ulcer
+K280,Gastrojejunal ulcer: Acute with haemorrhage,Perforated/bleeding ulcer
+K281,Gastrojejunal ulcer: Acute with perforation,Perforated/bleeding ulcer
+K282,Gastrojejunal ulcer: Acute with both haemorrhage and perforation,Perforated/bleeding ulcer
+K284,Gastrojejunal ulcer: Chronic or unspecified with haemorrhage,Perforated/bleeding ulcer
+K285,Gastrojejunal ulcer: Chronic or unspecified with perforation,Perforated/bleeding ulcer
+K286,Gastrojejunal ulcer: Chronic or unspecified with both haemorrhage and perforation,Perforated/bleeding ulcer
+L03,Cellulitis,Cellulitis
+L030,Cellulitis of finger and toe,Cellulitis
+L031,Cellulitis of other parts of limb,Cellulitis
+L032,Cellulitis of face,Cellulitis
+L033,Cellulitis of trunk,Cellulitis
+L038,Cellulitis of other sites,Cellulitis
+L039,"Cellulitis, unspecified",Cellulitis
+L04,Acute lymphadenitis,Cellulitis
+L040,"Acute lymphadenitis of face, head and neck",Cellulitis
+L041,Acute lymphadenitis of trunk,Cellulitis
+L042,Acute lymphadenitis of upper limb,Cellulitis
+L043,Acute lymphadenitis of lower limb,Cellulitis
+L048,Acute lymphadenitis of other sites,Cellulitis
+L049,"Acute lymphadenitis, unspecified",Cellulitis
+L080,Pyoderma,Cellulitis
+L088,Other specified local infections of skin and subcutaneous tissue,Cellulitis
+L089,"Local infection of skin and subcutaneous tissue, unspecified",Cellulitis
+L88,Pyoderma gangrenosum,Cellulitis
+L980,Pyogenic granuloma,Cellulitis
+N70,Salpingitis and oophoritis,Pelvic inflammatory disease
+N700,Acute salpingitis and oophoritis,Pelvic inflammatory disease
+N701,Chronic salpingitis and oophoritis,Pelvic inflammatory disease
+N709,"Salpingitis and oophoritis, unspecified",Pelvic inflammatory disease
+N73,Other female pelvic inflammatory diseases,Pelvic inflammatory disease
+N730,Acute parametritis and pelvic cellulitis,Pelvic inflammatory disease
+N731,Chronic parametritis and pelvic cellulitis,Pelvic inflammatory disease
+N732,Unspecified parametritis and pelvic cellulitis,Pelvic inflammatory disease
+N733,Female acute pelvic peritonitis,Pelvic inflammatory disease
+N734,Female chronic pelvic peritonitis,Pelvic inflammatory disease
+N735,"Female pelvic peritonitis, unspecified",Pelvic inflammatory disease
+N736,Female pelvic peritoneal adhesions,Pelvic inflammatory disease
+N738,Other specified female pelvic inflammatory diseases,Pelvic inflammatory disease
+N739,"Female pelvic inflammatory disease, unspecified",Pelvic inflammatory disease
+N74,Female pelvic inflammatory disorders in diseases classified elsewhere,Pelvic inflammatory disease
+N740,Tuberculous infection of cervix uteri,Pelvic inflammatory disease
+N741,Female tuberculous pelvic inflammatory disease,Pelvic inflammatory disease
+N742,"Female syphilitic pelvic inflammatory disease (, )",Pelvic inflammatory disease
+N743,Female gonococcal pelvic inflammatory disease,Pelvic inflammatory disease
+N744,Female chlamydial pelvic inflammatory disease,Pelvic inflammatory disease
+N748,Female pelvic inflammatory disorders in other diseases classified elsewhere,Pelvic inflammatory disease
+H66,Suppurative and unspecified otitis media,"Ear, nose and throat infections"
+H660,Acute suppurative otitis media,"Ear, nose and throat infections"
+H661,Chronic tubotympanic suppurative otitis media,"Ear, nose and throat infections"
+H662,Chronic atticoantral suppurative otitis media,"Ear, nose and throat infections"
+H663,Other chronic suppurative otitis media,"Ear, nose and throat infections"
+H664,"Suppurative otitis media, unspecified","Ear, nose and throat infections"
+H669,"Otitis media, unspecified","Ear, nose and throat infections"
+H67,Otitis media in diseases classified elsewhere,"Ear, nose and throat infections"
+H670,Otitis media in bacterial diseases classified elsewhere,"Ear, nose and throat infections"
+H671,Otitis media in viral diseases classified elsewhere,"Ear, nose and throat infections"
+H678,Otitis media in other diseases classified elsewhere,"Ear, nose and throat infections"
+J02,Acute pharyngitis,"Ear, nose and throat infections"
+J020,Streptococcal pharyngitis,"Ear, nose and throat infections"
+J028,Acute pharyngitis due to other specified organisms,"Ear, nose and throat infections"
+J029,"Acute pharyngitis, unspecified","Ear, nose and throat infections"
+J03,Acute tonsillitis,"Ear, nose and throat infections"
+J030,Streptococcal tonsillitis,"Ear, nose and throat infections"
+J038,Acute tonsillitis due to other specified organisms,"Ear, nose and throat infections"
+J039,"Acute tonsillitis, unspecified","Ear, nose and throat infections"
+J06,Acute upper respiratory infections of multiple and unspecified sites,"Ear, nose and throat infections"
+J060,Acute laryngopharyngitis,"Ear, nose and throat infections"
+J068,Other acute upper respiratory infections of multiple sites,"Ear, nose and throat infections"
+J069,"Acute upper respiratory infection, unspecified","Ear, nose and throat infections"
+J312,Chronic pharyngitis,"Ear, nose and throat infections"
+A690,Necrotizing ulcerative stomatitis,Dental conditions
+K02,Dental caries,Dental conditions
+K020,Caries limited to enamel,Dental conditions
+K021,Caries of dentine,Dental conditions
+K022,Caries of cementum,Dental conditions
+K023,Arrested dental caries,Dental conditions
+K024,Odontoclasia,Dental conditions
+K025,Caries with pulp exposure,Dental conditions
+K028,Other dental caries,Dental conditions
+K029,"Dental caries, unspecified",Dental conditions
+K03,Other diseases of hard tissues of teeth,Dental conditions
+K030,Excessive attrition of teeth,Dental conditions
+K031,Abrasion of teeth,Dental conditions
+K032,Erosion of teeth,Dental conditions
+K033,Pathological resorption of teeth,Dental conditions
+K034,Hypercementosis,Dental conditions
+K035,Ankylosis of teeth,Dental conditions
+K036,Deposits [accretions] on teeth,Dental conditions
+K037,Posteruptive colour changes of dental hard tissues,Dental conditions
+K038,Other specified diseases of hard tissues of teeth,Dental conditions
+K039,"Disease of hard tissues of teeth, unspecified",Dental conditions
+K04,Diseases of pulp and periapical tissues,Dental conditions
+K040,Pulpitis,Dental conditions
+K041,Necrosis of pulp,Dental conditions
+K042,Pulp degeneration,Dental conditions
+K043,Abnormal hard tissue formation in pulp,Dental conditions
+K044,Acute apical periodontitis of pulpal origin,Dental conditions
+K045,Chronic apical periodontitis,Dental conditions
+K046,Periapical abscess with sinus,Dental conditions
+K047,Periapical abscess without sinus,Dental conditions
+K048,Radicular cyst,Dental conditions
+K049,Other and unspecified diseases of pulp and periapical tissues,Dental conditions
+K05,Gingivitis and periodontal diseases,Dental conditions
+K050,Acute gingivitis,Dental conditions
+K051,Chronic gingivitis,Dental conditions
+K052,Acute periodontitis,Dental conditions
+K053,Chronic periodontitis,Dental conditions
+K054,Periodontosis,Dental conditions
+K055,Other periodontal diseases,Dental conditions
+K056,"Periodontal disease, unspecified",Dental conditions
+K06,Other disorders of gingiva and edentulous alveolar ridge,Dental conditions
+K060,Gingival recession,Dental conditions
+K061,Gingival enlargement,Dental conditions
+K062,Gingival and edentulous alveolar ridge lesions associated with trauma,Dental conditions
+K068,Other specified disorders of gingiva and edentulous alveolar ridge,Dental conditions
+K069,"Disorder of gingiva and edentulous alveolar ridge, unspecified",Dental conditions
+K08,Other disorders of teeth and supporting structures,Dental conditions
+K080,Exfoliation of teeth due to systemic causes,Dental conditions
+K081,"Loss of teeth due to accident, extraction or local periodontal disease",Dental conditions
+K082,Atrophy of edentulous alveolar ridge,Dental conditions
+K083,Retained dental root,Dental conditions
+K088,Other specified disorders of teeth and supporting structures,Dental conditions
+K089,"Disorder of teeth and supporting structures, unspecified",Dental conditions
+K098,"Other cysts of oral region, not elsewhere classified",Dental conditions
+K099,"Cyst of oral region, unspecified",Dental conditions
+K12,Stomatitis and related lesions,Dental conditions
+K120,Recurrent oral aphthae,Dental conditions
+K121,Other forms of stomatitis,Dental conditions
+K122,Cellulitis and abscess of mouth,Dental conditions
+K123,Oral mucositis (ulcerative),Dental conditions
+K13,Other diseases of lip and oral mucosa,Dental conditions
+K130,Diseases of lips,Dental conditions
+K131,Cheek and lip biting,Dental conditions
+K132,"Leukoplakia and other disturbances of oral epithelium, including tongue",Dental conditions
+K133,Hairy leukoplakia,Dental conditions
+K134,Granuloma and granuloma-like lesions of oral mucosa,Dental conditions
+K135,Oral submucous fibrosis,Dental conditions
+K136,Irritative hyperplasia of oral mucosa,Dental conditions
+K137,Other and unspecified lesions of oral mucosa,Dental conditions
+G40,Epilepsy,Convulsions and epilepsy
+G400,Localization-related (focal)(partial) idiopathic epilepsy and epileptic syndromes with seizures of localized onset,Convulsions and epilepsy
+G401,Localization-related (focal)(partial) symptomatic epilepsy and epileptic syndromes with simple partial seizures,Convulsions and epilepsy
+G402,Localization-related (focal)(partial) symptomatic epilepsy and epileptic syndromes with complex partial seizures,Convulsions and epilepsy
+G403,Generalized idiopathic epilepsy and epileptic syndromes,Convulsions and epilepsy
+G404,Other generalized epilepsy and epileptic syndromes,Convulsions and epilepsy
+G405,Special epileptic syndromes,Convulsions and epilepsy
+G406,"Grand mal seizures, unspecified (with or without petit mal)",Convulsions and epilepsy
+G407,"Petit mal, unspecified, without grand mal seizures",Convulsions and epilepsy
+G408,Other epilepsy,Convulsions and epilepsy
+G409,"Epilepsy, unspecified",Convulsions and epilepsy
+G41,Status epilepticus,Convulsions and epilepsy
+G410,Grand mal status epilepticus,Convulsions and epilepsy
+G411,Petit mal status epilepticus,Convulsions and epilepsy
+G412,Complex partial status epilepticus,Convulsions and epilepsy
+G418,Other status epilepticus,Convulsions and epilepsy
+G419,"Status epilepticus, unspecified",Convulsions and epilepsy
+O15,Eclampsia,Convulsions and epilepsy
+O150,Eclampsia in pregnancy,Convulsions and epilepsy
+O151,Eclampsia in labour,Convulsions and epilepsy
+O152,Eclampsia in the puerperium,Convulsions and epilepsy
+O159,"Eclampsia, unspecified as to time period",Convulsions and epilepsy
+R56,"Convulsions, not elsewhere classified",Convulsions and epilepsy
+R560,Febrile convulsions,Convulsions and epilepsy
+R568,Other and unspecified convulsions,Convulsions and epilepsy
+R02,"Gangrene, not elsewhere classified",Gangrene

@@ -403,3 +403,14 @@ self_harm_aged15_icd10 = codelist_from_csv(
     "codelists/user-kurttaylor-self_harm_undetermined_intent_15_years_icd10.csv",
     column="code"
 )
+
+# Ambulatory Care Sensitive Conditions (ACSCs)
+acscs_icd10 = codelist_from_csv(
+    "codelists/bristol-ambulatory-care-sensitive-conditions-acscs-nhs-19-condition-definition-icd-10.csv",
+    column="code"
+)
+
+acscs_snomed = codelist_from_csv(
+    "codelists/bristol-ambulatory-care-sensitive-conditions-acscs-19-condition-definition-snomed-ct.csv",
+    column="code"
+)

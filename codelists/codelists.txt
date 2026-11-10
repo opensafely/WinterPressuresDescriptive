@@ -141,3 +141,6 @@ bristol/multimorbidity_prescription_antiepileptics_for_pain_bnf_dmd_converted/1e
 bristol/multimorbidity_prescription_anti_spasmodic_bnf-dmd/0257ea7e/
 bristol/multimorbidity_prescription_schizophrenia_bipolar_disorder_bnf-dmd/07bd6a6a/
 bristol/multimorbidity_prescription_anxiolytics_anti_depressants_bnf-dmd/52ebc409/
+#Ambulatory care sensitive conditions (ACSCs): NHS 19-condition definition (ICD-10)
+bristol/ambulatory-care-sensitive-conditions-acscs-nhs-19-condition-definition-icd-10/7e0e5a6c/
+bristol/ambulatory-care-sensitive-conditions-acscs-19-condition-definition-snomed-ct/21e8cd7a/
