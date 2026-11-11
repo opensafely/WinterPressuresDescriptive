@@ -60,6 +60,11 @@ DESCRIPTION:                 This do-file runs regression models for the followi
 							 n_obs
 							 aic
 							 bic
+                             r2_marginal r2_conditional
+                             Predicted rates per patient-week (all exposure contrasts):
+                             rate_reference rate_comparison
+                             rate_reference_se rate_comparison_se rate_pair_cov
+                             rate_reference_level rate_comparison_level
 							 likelihood-ratio test:
 							 chi2_lr 
 							 p_lr 
@@ -189,6 +194,116 @@ foreach var of local cov_other {
 display "Core covariates: `cov_core_spec'"
 display "Other covariates: `cov_other_spec'"
 
+// R-squared for the Poisson / NB2 models with one practice random intercept.
+// Nakagawa et al. (2017), lognormal approximation:
+// https://doi.org/10.1098/rsif.2017.0213
+capture program drop wp_count_r2
+program define wp_count_r2, rclass
+    args family variance_scalar
+
+    if e(converged) != 1 {
+        noisily display as text "R-squared skipped: the fitted model did not report convergence."
+        exit 498
+    }
+
+    tempvar xb mu_i
+    tempname v_practice v_fixed alpha mu v_obs v_total
+
+    // Reuse the fitted practice variance already extracted from r(table).
+    // Zero and near-zero variances are valid for this calculation.
+    scalar `v_practice' = scalar(`variance_scalar')
+    if missing(scalar(`v_practice')) | scalar(`v_practice') < 0 {
+        noisily display as text "R-squared skipped: fitted practice variance is missing or negative."
+        exit 498
+    }
+
+    // Exclude the offset from the variance explained by predictors.
+    quietly predict double `xb' if e(sample), xb nooffset
+    quietly summarize `xb' if e(sample)
+    if r(N) != e(N) | r(N) < 2 | missing(r(Var)) {
+        noisily display as text "R-squared skipped: fixed-predictor variance is unavailable for the estimation sample."
+        exit 498
+    }
+    scalar `v_fixed' = r(Var)
+
+    // Use expected weekly COUNTS, at observed denominators, for V_obs.
+    // Integrate over the normal practice random intercept: E(exp(u))=exp(V/2).
+    quietly generate double `mu_i' = ///
+        exp(`xb' + log_dnm + scalar(`v_practice') / 2) if e(sample)
+    quietly summarize `mu_i' if e(sample), meanonly
+    if r(N) != e(N) | missing(r(mean)) | r(mean) <= 0 {
+        noisily display as text "R-squared skipped: mean fitted count is missing or nonpositive."
+        exit 498
+    }
+    scalar `mu' = r(mean)
+
+    // Poisson: variance = mu. Default menbreg (NB2): mu + alpha * mu^2.
+    scalar `alpha' = 0
+    if "`family'" == "negbin" {
+        if "`e(dispersion)'" != "mean" {
+            noisily display as text "R-squared skipped: the fitted negative binomial model does not use mean dispersion."
+            exit 498
+        }
+        scalar `alpha' = exp(_b[/lnalpha])
+    }
+
+    scalar `v_obs' = ln(1 + 1 / scalar(`mu') + scalar(`alpha'))
+    scalar `v_total' = scalar(`v_fixed') + scalar(`v_practice') + scalar(`v_obs')
+    if missing(scalar(`v_total')) | scalar(`v_total') <= 0 {
+        noisily display as text "R-squared skipped: total variance is missing or nonpositive."
+        exit 498
+    }
+
+    return scalar marginal = scalar(`v_fixed') / scalar(`v_total')
+    return scalar conditional = ///
+        (scalar(`v_fixed') + scalar(`v_practice')) / scalar(`v_total')
+end
+
+// Predict all estimable levels of a categorical exposure in one margins call.
+// Read the base from the fitted model so the rates use the IRR reference.
+capture program drop wp_categorical_rates
+program define wp_categorical_rates, rclass
+    args factor
+    tempname fit_b rates rate_vce
+    matrix `fit_b' = e(b)
+    local fit_terms : colnames `fit_b'
+
+    local ref_code ""
+    local comparison_codes ""
+    foreach fitted_term of local fit_terms {
+        if regexm("`fitted_term'", "^([0-9]+)b[.]`factor'$") {
+            local ref_code = regexs(1)
+        }
+        else if regexm("`fitted_term'", "^([0-9]+)[.]`factor'$") {
+            local code = regexs(1)
+            local comparison_codes "`comparison_codes' `code'"
+        }
+    }
+    if "`ref_code'" == "" | trim("`comparison_codes'") == "" {
+        exit 498
+    }
+
+    // A separate at() for each level makes the reference the first margin.
+    local levels "`ref_code' `comparison_codes'"
+    local at_options ""
+    foreach code of local levels {
+        local at_options "`at_options' at(`factor'=`code')"
+    }
+    quietly margins, `at_options' predict(mu marginal nooffset)
+    matrix `rates' = r(b)
+    matrix `rate_vce' = r(V)
+
+    local n_levels : word count `levels'
+    if colsof(`rates') != `n_levels' | ///
+        rowsof(`rate_vce') != `n_levels' | colsof(`rate_vce') != `n_levels' {
+        exit 498
+    }
+
+    return local levels "`levels'"
+    return matrix rates = `rates'
+    return matrix rate_vce = `rate_vce'
+end
+
 //Results frame
 frame create results_poisson ///
     str15 model ///
@@ -196,7 +311,11 @@ frame create results_poisson ///
     double irr lci uci se_coef p_value ///
     double ri_variance ri_se ri_lci ri_uci ri_lb ri_ub ///
     double n_obs aic bic ///
-	double error
+    double(r2_marginal r2_conditional) ///
+    double error ///
+    double(rate_reference rate_comparison rate_reference_se rate_comparison_se rate_pair_cov) ///
+    str80 rate_reference_level ///
+    str80 rate_comparison_level
 
 frame create results_negbin ///
     str15 model ///
@@ -204,7 +323,11 @@ frame create results_negbin ///
     double irr lci uci se_coef p_value ///
     double ri_variance ri_se ri_lci ri_uci ri_lb ri_ub ///
     double n_obs aic bic ///
-	double error
+    double(r2_marginal r2_conditional) ///
+    double error ///
+    double(rate_reference rate_comparison rate_reference_se rate_comparison_se rate_pair_cov) ///
+    str80 rate_reference_level ///
+    str80 rate_comparison_level
 
 frame create results_lrtest ///
     str15 model ///
@@ -219,6 +342,8 @@ if `is_mutually_adjusted' {
 else {
     local models "mdl_crude mdl_age_sex mdl_max_adj"
 }
+
+tempname rate_b rate_V cat_rate_b cat_rate_V
 
 foreach mdl of local models {
 
@@ -266,16 +391,17 @@ foreach mdl of local models {
                 ("MODEL_FAILED") ///
                 (.) (.) (.) (.) (.) ///
                 (.) (.) (.) (.) (.) (.) ///
-                (.) (.) (.) ///
-                (`model_error')
+                (.) (.) (.) (.) (.) ///
+                (`model_error') ///
+                (.) (.) (.) (.) (.) ///
+                ("") ("")
             
             continue
         }
         else {
-            est store `analysis'_`mdl'
-
-            * ---- copy coefficient table ----
+            * ---- copy coefficient table before any postestimation commands ----
             matrix b = r(table)
+            est store `analysis'_`mdl'
             scalar n_obs = e(N)
             
             * ---- model-level statistics
@@ -314,11 +440,29 @@ foreach mdl of local models {
                 scalar ri_ub = .
             }
             
+            * ---- variance-based R-squared; leave missing if unavailable ----
+            scalar r2_marginal = .
+            scalar r2_conditional = .
+            capture quietly wp_count_r2 `analysis' ri_variance
+            local r2_rc = _rc
+            if `r2_rc' == 0 {
+                scalar r2_marginal = r(marginal)
+                scalar r2_conditional = r(conditional)
+            }
+            else {
+                display as text "R-squared unavailable for `analysis' `mdl' (code `r2_rc')"
+            }
+
             ** fixed-effect coefficients
             local k = colsof(b)
+            local cached_rate_factor ""
+            local cached_rate_levels ""
+            local cached_ref_label ""
 
             forvalues j = 1/`k' {
                 local term : word `j' of `colnames'
+                local is_numeric_exposure : list term in exposure_num
+                local is_categorical_exposure 0
 
                 * Reset indicators for every coefficient
                 local is_reference 0
@@ -362,6 +506,8 @@ foreach mdl of local models {
                         strlen("`term'") - `dot_position' ///
                     )
 
+                    local is_categorical_exposure : list factor_variable in exposure_cat
+
                     * Check whether the term is the reference category
                     if strpos("`category_code'", "b") > 0 {
                         local is_reference 1
@@ -393,6 +539,8 @@ foreach mdl of local models {
                         "", ///
                         . ///
                     )
+
+                    local category_label "`category_code'"
 
                     * Check whether the variable exists
                     capture confirm variable `factor_variable'
@@ -455,13 +603,98 @@ foreach mdl of local models {
                     scalar p_value = b[4, `j']
                 }
 
+                * ---- predicted rates per patient-week ----
+                scalar rate_reference = .
+                scalar rate_comparison = .
+                scalar rate_reference_se = .
+                scalar rate_comparison_se = .
+                scalar rate_pair_cov = .
+                local rate_reference_level ""
+                local rate_comparison_level ""
+
+                if `is_numeric_exposure' & !`is_omitted' & e(converged) == 1 {
+                    local rate_reference_level "Median"
+                    local rate_comparison_level "Median + 1 MAD"
+
+                    * On the upstream median-centred, MAD-scaled exposure scale:
+                    * 0 = median; 1 = median + one MAD.
+                    * Average over the same practice-weeks and integrate out
+                    * the practice random intercept. No offset => per patient.
+                    capture quietly margins, at(`term'=(0 1)) ///
+                        predict(mu marginal nooffset)
+                    local rate_rc = _rc
+                    if `rate_rc' == 0 {
+                        matrix `rate_b' = r(b)
+                        matrix `rate_V' = r(V)
+                        if colsof(`rate_b') == 2 {
+                            scalar rate_reference = `rate_b'[1,1]
+                            scalar rate_comparison = `rate_b'[1,2]
+                        }
+                        if rowsof(`rate_V') == 2 & colsof(`rate_V') == 2 & ///
+                            !missing(rate_reference, rate_comparison) {
+                            scalar rate_reference_se = sqrt(`rate_V'[1,1])
+                            scalar rate_comparison_se = sqrt(`rate_V'[2,2])
+                            scalar rate_pair_cov = `rate_V'[1,2]
+                        }
+                        if missing(rate_reference, rate_comparison) {
+                            display as text "Predicted rates not estimable for `analysis' `mdl' `term'"
+                        }
+                    }
+                    else {
+                        display as text "Predicted rates unavailable for `analysis' `mdl' `term' (code `rate_rc')"
+                    }
+                }
+
+                if `is_categorical_exposure' & !`is_reference' & ///
+                    !`is_omitted' & e(converged) == 1 {
+                    // Reuse the joint margins and covariance across levels
+                    // of the same categorical exposure in this model.
+                    if "`factor_variable'" != "`cached_rate_factor'" {
+                        local cached_rate_factor "`factor_variable'"
+                        local cached_rate_levels ""
+                        local cached_ref_label ""
+                        capture quietly wp_categorical_rates `factor_variable'
+                        local rate_rc = _rc
+                        if `rate_rc' == 0 {
+                            matrix `cat_rate_b' = r(rates)
+                            matrix `cat_rate_V' = r(rate_vce)
+                            local cached_rate_levels "`r(levels)'"
+                            local ref_code : word 1 of `cached_rate_levels'
+                            local cached_ref_label "`ref_code'"
+                            local ref_vallab : value label `factor_variable'
+                            if "`ref_vallab'" != "" {
+                                local cached_ref_label : label `ref_vallab' `ref_code'
+                            }
+                        }
+                        else {
+                            display as text "Categorical rates unavailable for `analysis' `mdl' `factor_variable' (code `rate_rc')"
+                        }
+                    }
+
+                    local cat_index : list posof "`category_code'" in cached_rate_levels
+                    if `cat_index' > 1 {
+                        local rate_reference_level "`cached_ref_label'"
+                        local rate_comparison_level "`category_label'"
+                        scalar rate_reference = `cat_rate_b'[1,1]
+                        scalar rate_comparison = `cat_rate_b'[1,`cat_index']
+                        if !missing(rate_reference, rate_comparison) {
+                            scalar rate_reference_se = sqrt(`cat_rate_V'[1,1])
+                            scalar rate_comparison_se = sqrt(`cat_rate_V'[`cat_index',`cat_index'])
+                            scalar rate_pair_cov = `cat_rate_V'[1,`cat_index']
+                        }
+                    }
+                }
+
                 frame post results_`analysis' ///
                     ("`mdl'") ///
                     ("`term'") ///
                     (irr) (lci) (uci) (se_coef) (p_value) ///
                     (ri_variance) (ri_se) (ri_lci) (ri_uci) (ri_lb) (ri_ub) ///
-                    (n_obs) (aic) (bic) ///
-                    (.)
+                    (n_obs) (aic) (bic) (r2_marginal) (r2_conditional) ///
+                    (.) ///
+                    (rate_reference) (rate_comparison) ///
+                    (rate_reference_se) (rate_comparison_se) (rate_pair_cov) ///
+                    ("`rate_reference_level'") ("`rate_comparison_level'")
             }
         }
     }
