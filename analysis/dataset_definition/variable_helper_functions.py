@@ -140,6 +140,18 @@ def first_matching_med_dmd_between(codelist, start_date, end_date, where=True):
         .first_for_patient()
     )
 
+def contains_any_of_balanced(series, codelist):
+    codes = list(dict.fromkeys(codelist))
+
+    def match(chunk):
+        if len(chunk) <= 25:
+            return series.contains_any_of(chunk)
+
+        mid = len(chunk) // 2
+        return match(chunk[:mid]) | match(chunk[mid:])
+
+    return match(codes)
+
 def ever_matching_event_apc_between(codelist, start_date, end_date, only_prim_diagnoses=False, where=True):
     query = apcs.where(where).where(apcs.admission_date.is_on_or_between(start_date, end_date))
     if only_prim_diagnoses:
@@ -147,7 +159,9 @@ def ever_matching_event_apc_between(codelist, start_date, end_date, only_prim_di
             apcs.primary_diagnosis.is_in(codelist)
         )
     else:
-        query = query.where(apcs.all_diagnoses.contains_any_of(codelist))
+        query = query.where(
+            contains_any_of_balanced(apcs.all_diagnoses, codelist)
+        )
     return query.sort_by(apcs.admission_date)
 
 def ever_matching_event_ec_snomed_between(codelist, start_date, end_date, where=True):
