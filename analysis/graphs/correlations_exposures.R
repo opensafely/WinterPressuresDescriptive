@@ -114,7 +114,8 @@ candidate_exposures <- list(
     # ),
     other_health = c(
         "obesity",
-        "carehome"
+        "carehome",
+        "cms_mean"
     ),
     smoking = c(
         "smoking_current",

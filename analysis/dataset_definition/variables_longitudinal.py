@@ -127,21 +127,21 @@ def generate_variables(interval_start, interval_end, start_cohort):
 
     ### Hospital admissions  - all ACSC conditions defined above
     out_num_acsc_apc = ever_matching_event_apc_between(
-        copd_icd10 + asthma_icd10 + hypertension_icd10 + diabetes_icd10 + angina_icd10, interval_start, interval_end
+        acscs_icd10, interval_start, interval_end
     ).count_for_patient()
 
     ### Unplanned hospital admissions - all ACSC conditions defined above
     out_num_acsc_apc_unplanned = ever_matching_event_apc_between(
-        copd_icd10 + asthma_icd10 + hypertension_icd10 + diabetes_icd10 + angina_icd10, interval_start, interval_end
+        acscs_icd10, interval_start, interval_end
     ).where(apcs.admission_method.is_in(["21", "22", "23", "24", "25", "2A", "2B", "2D", "28"])).count_for_patient()
     ### Planned hospital admissions - all ACSC conditions defined above
     out_num_acsc_apc_planned = ever_matching_event_apc_between(
-        copd_icd10 + asthma_icd10 + hypertension_icd10 + diabetes_icd10 + angina_icd10, interval_start, interval_end
+        acscs_icd10, interval_start, interval_end
     ).where(apcs.admission_method.is_in(["11", "12", "13", "81", "2C", "82", "83", "31", "32"])).count_for_patient()
 
     ### A&E attendances - all ACSC conditions defined above
     out_num_acsc_ec = ever_matching_event_ec_snomed_between(
-        multimorbidity_dict["MS_COPD_snomed"] + asthma_snomed + hypertension_snomed + diabetes_snomed + angina_snomed, interval_start, interval_end
+       acscs_snomed, interval_start, interval_end
     ).count_for_patient()
 
     dynamic_variables = dict(

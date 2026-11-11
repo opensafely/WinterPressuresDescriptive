@@ -1,5 +1,17 @@
 {
   "files": {
+    "bristol-ambulatory-care-sensitive-conditions-acscs-19-condition-definition-snomed-ct.csv": {
+      "id": "bristol/ambulatory-care-sensitive-conditions-acscs-19-condition-definition-snomed-ct/21e8cd7a",
+      "url": "https://www.opencodelists.org/codelist/bristol/ambulatory-care-sensitive-conditions-acscs-19-condition-definition-snomed-ct/21e8cd7a/",
+      "downloaded_at": "2026-11-10 17:38:47.294273+00:00Z",
+      "sha": "69c03cda1b94f59e088a60045b4ddf3bfb87207a"
+    },
+    "bristol-ambulatory-care-sensitive-conditions-acscs-nhs-19-condition-definition-icd-10.csv": {
+      "id": "bristol/ambulatory-care-sensitive-conditions-acscs-nhs-19-condition-definition-icd-10/7e0e5a6c",
+      "url": "https://www.opencodelists.org/codelist/bristol/ambulatory-care-sensitive-conditions-acscs-nhs-19-condition-definition-icd-10/7e0e5a6c/",
+      "downloaded_at": "2026-11-09 16:59:03.135446+00:00Z",
+      "sha": "01bc1860c6b52d6d6c56240fdf5bdb5caf309d4b"
+    },
     "opensafely-ethnicity-snomed-0removed.csv": {
       "id": "opensafely/ethnicity-snomed-0removed/22911876",
       "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/22911876/",

@@ -29,7 +29,7 @@ create_table1_subgroups <- function(
         grepl(subgroup_pattern, rate_vars)
     ]
 
-    # CMS means have no rounded versions.
+    # CMS mean in the practice has no data disclosure risk, so no need to round them.
     # Include the existing scores in both outputs without rounding them.
     cms_vars <- grep(
         "^cms_mean_sub_(asth|copd|htn|diab|sevmh)$",

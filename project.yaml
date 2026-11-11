@@ -24136,6 +24136,870 @@ actions:
         model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-carehome-ec.csv
         model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-carehome-ec.csv
 
+  make_model_input-cohort_precovid-main-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_unpl
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_plan
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-ec
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-ec.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-ec
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-ec.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_unpl
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_plan
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-ec
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-ec.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-ec
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-ec.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_unpl
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_plan
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-ec
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-ec.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-ec
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-ec.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_unpl
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_plan
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-ec
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-ec.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-ec
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-ec.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_unpl
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_plan
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-ec
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-ec.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-ec
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-ec.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_unpl
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_plan
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-ec
+    needs:
+    - generate_input_precovid_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-ec.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-ec
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-ec.csv
+
   make_model_input-cohort_postcovid3-main-practice_region-apc_acsc_any:
     run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-practice_region-apc_acsc_any
     needs:
@@ -42279,6 +43143,870 @@ actions:
         model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-carehome-ec.csv
         model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-carehome-ec.csv
         model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-carehome-ec.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-apc
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-apc.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-apc
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-apc.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-apc_unpl
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-apc_plan
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-main-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-cms_mean-ec
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-main-cms_mean-ec.dta
+
+  run_regression_model-cohort_postcovid3-main-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-main-cms_mean-ec
+    needs:
+    - make_model_input-cohort_postcovid3-main-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-main-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-main-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-main-cms_mean-ec.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-apc
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-apc.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-apc
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-apc.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-apc_unpl
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-apc_plan
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_asth-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_asth-cms_mean-ec
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_asth-cms_mean-ec.dta
+
+  run_regression_model-cohort_postcovid3-sub_asth-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_asth-cms_mean-ec
+    needs:
+    - make_model_input-cohort_postcovid3-sub_asth-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_asth-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_asth-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_asth-cms_mean-ec.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-apc
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-apc.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-apc
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-apc.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-apc_unpl
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-apc_plan
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_copd-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_copd-cms_mean-ec
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_copd-cms_mean-ec.dta
+
+  run_regression_model-cohort_postcovid3-sub_copd-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_copd-cms_mean-ec
+    needs:
+    - make_model_input-cohort_postcovid3-sub_copd-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_copd-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_copd-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_copd-cms_mean-ec.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-apc
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-apc.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-apc
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-apc.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-apc_unpl
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-apc_plan
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_htn-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_htn-cms_mean-ec
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_htn-cms_mean-ec.dta
+
+  run_regression_model-cohort_postcovid3-sub_htn-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_htn-cms_mean-ec
+    needs:
+    - make_model_input-cohort_postcovid3-sub_htn-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_htn-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_htn-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_htn-cms_mean-ec.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-apc
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-apc.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-apc
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-apc.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-apc_unpl
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-apc_plan
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_diab-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_diab-cms_mean-ec
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_diab-cms_mean-ec.dta
+
+  run_regression_model-cohort_postcovid3-sub_diab-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_diab-cms_mean-ec
+    needs:
+    - make_model_input-cohort_postcovid3-sub_diab-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_diab-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_diab-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_diab-cms_mean-ec.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-apc
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-apc
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-apc.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-apc.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-apc.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-apc_plan
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-apc_plan
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any.csv
+
+  make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-ec:
+    run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-sub_sevmh-cms_mean-ec
+    needs:
+    - generate_input_postcovid3_clean
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_postcovid3-sub_sevmh-cms_mean-ec.dta
+
+  run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-ec:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_postcovid3-sub_sevmh-cms_mean-ec
+    needs:
+    - make_model_input-cohort_postcovid3-sub_sevmh-cms_mean-ec
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_postcovid3-sub_sevmh-cms_mean-ec.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_postcovid3-sub_sevmh-cms_mean-ec.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_postcovid3-sub_sevmh-cms_mean-ec.csv
 
   make_model_input-cohort_postcovid3-main-all-apc_acsc_any:
     run: r:v2 analysis/model/make_model_input.R cohort_postcovid3-main-all-apc_acsc_any
@@ -62152,6 +63880,870 @@ actions:
         model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-carehome-ec-sensitivity_consultation.csv
         model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-carehome-ec-sensitivity_consultation.csv
 
+  make_model_input-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-main-cms_mean-ec-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-cms_mean-ec-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-main-cms_mean-ec-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-main-cms_mean-ec-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-main-cms_mean-ec-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-main-cms_mean-ec-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-main-cms_mean-ec-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-main-cms_mean-ec-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-main-cms_mean-ec-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation.csv
+
+  make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation:
+    run: r:v2 analysis/model/make_model_input.R cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation
+    needs:
+    - generate_input_precovid_clean_sensitivity_consultation
+    outputs:
+      highly_sensitive:
+        model_input: output/model/model_input-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation.dta
+
+  run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation:
+    run: stata-mp:v1 analysis/model/regression_model.do cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation
+    needs:
+    - make_model_input-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation
+    outputs:
+      moderately_sensitive:
+        model_output_poisson: output/model/model_output_poisson-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation.csv
+        model_output_negbin: output/model/model_output_negbin-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation.csv
+        model_output_lrtest: output/model/model_output_lrtest-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation.csv
+
   make_model_input-cohort_precovid-main-all-apc_acsc_any-sensitivity_consultation:
     run: r:v2 analysis/model/make_model_input.R cohort_precovid-main-all-apc_acsc_any-sensitivity_consultation
     needs:
@@ -64739,6 +67331,14 @@ actions:
     - run_regression_model-cohort_precovid-main-carehome-apc_plan
     - run_regression_model-cohort_precovid-main-carehome-ec_acsc_any
     - run_regression_model-cohort_precovid-main-carehome-ec
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-main-cms_mean-apc
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_unpl
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_plan
+    - run_regression_model-cohort_precovid-main-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-main-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-precovid-subgroup_main-exposure_case_mix2.csv
@@ -64807,6 +67407,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_asth-carehome-apc_plan
     - run_regression_model-cohort_precovid-sub_asth-carehome-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_asth-carehome-ec
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-precovid-subgroup_sub_asth-exposure_case_mix2.csv
@@ -64875,6 +67483,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_copd-carehome-apc_plan
     - run_regression_model-cohort_precovid-sub_copd-carehome-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_copd-carehome-ec
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-precovid-subgroup_sub_copd-exposure_case_mix2.csv
@@ -64943,6 +67559,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_htn-carehome-apc_plan
     - run_regression_model-cohort_precovid-sub_htn-carehome-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_htn-carehome-ec
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-precovid-subgroup_sub_htn-exposure_case_mix2.csv
@@ -65011,6 +67635,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_diab-carehome-apc_plan
     - run_regression_model-cohort_precovid-sub_diab-carehome-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_diab-carehome-ec
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-precovid-subgroup_sub_diab-exposure_case_mix2.csv
@@ -65079,6 +67711,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_sevmh-carehome-apc_plan
     - run_regression_model-cohort_precovid-sub_sevmh-carehome-ec_acsc_any
     - run_regression_model-cohort_precovid-sub_sevmh-carehome-ec
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-precovid-subgroup_sub_sevmh-exposure_case_mix2.csv
@@ -65163,6 +67803,14 @@ actions:
     - run_regression_model-cohort_postcovid3-main-carehome-apc_plan
     - run_regression_model-cohort_postcovid3-main-carehome-ec_acsc_any
     - run_regression_model-cohort_postcovid3-main-carehome-ec
+    - run_regression_model-cohort_postcovid3-main-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cms_mean-apc
+    - run_regression_model-cohort_postcovid3-main-cms_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-main-cms_mean-apc_plan
+    - run_regression_model-cohort_postcovid3-main-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-main-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-postcovid3-subgroup_main-exposure_case_mix2.csv
@@ -65231,6 +67879,14 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_asth-carehome-apc_plan
     - run_regression_model-cohort_postcovid3-sub_asth-carehome-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_asth-carehome-ec
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-apc_plan
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_asth-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-postcovid3-subgroup_sub_asth-exposure_case_mix2.csv
@@ -65299,6 +67955,14 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_copd-carehome-apc_plan
     - run_regression_model-cohort_postcovid3-sub_copd-carehome-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_copd-carehome-ec
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-apc_plan
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_copd-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-postcovid3-subgroup_sub_copd-exposure_case_mix2.csv
@@ -65367,6 +68031,14 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_htn-carehome-apc_plan
     - run_regression_model-cohort_postcovid3-sub_htn-carehome-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_htn-carehome-ec
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-apc_plan
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_htn-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-postcovid3-subgroup_sub_htn-exposure_case_mix2.csv
@@ -65435,6 +68107,14 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_diab-carehome-apc_plan
     - run_regression_model-cohort_postcovid3-sub_diab-carehome-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_diab-carehome-ec
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-apc_plan
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_diab-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-postcovid3-subgroup_sub_diab-exposure_case_mix2.csv
@@ -65505,6 +68185,14 @@ actions:
     - run_regression_model-cohort_postcovid3-sub_sevmh-carehome-apc_plan
     - run_regression_model-cohort_postcovid3-sub_sevmh-carehome-ec_acsc_any
     - run_regression_model-cohort_postcovid3-sub_sevmh-carehome-ec
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_unpl
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-apc_plan
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-ec_acsc_any
+    - run_regression_model-cohort_postcovid3-sub_sevmh-cms_mean-ec
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/model_output-postcovid3-subgroup_sub_sevmh-exposure_case_mix2.csv
@@ -66611,6 +69299,14 @@ actions:
     - run_regression_model-cohort_precovid-main-carehome-apc_plan-sensitivity_consultation
     - run_regression_model-cohort_precovid-main-carehome-ec_acsc_any-sensitivity_consultation
     - run_regression_model-cohort_precovid-main-carehome-ec-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-apc-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_unpl-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-apc_plan-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-ec_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-main-cms_mean-ec-sensitivity_consultation
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/sensitivity_consultation/model_output-precovid-subgroup_main-exposure_case_mix2.csv
@@ -66681,6 +69377,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_asth-carehome-apc_plan-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_asth-carehome-ec_acsc_any-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_asth-carehome-ec-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_unpl-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-apc_plan-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-ec_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_asth-cms_mean-ec-sensitivity_consultation
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/sensitivity_consultation/model_output-precovid-subgroup_sub_asth-exposure_case_mix2.csv
@@ -66751,6 +69455,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_copd-carehome-apc_plan-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_copd-carehome-ec_acsc_any-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_copd-carehome-ec-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_unpl-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-apc_plan-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-ec_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_copd-cms_mean-ec-sensitivity_consultation
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/sensitivity_consultation/model_output-precovid-subgroup_sub_copd-exposure_case_mix2.csv
@@ -66821,6 +69533,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_htn-carehome-apc_plan-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_htn-carehome-ec_acsc_any-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_htn-carehome-ec-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_unpl-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-apc_plan-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-ec_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_htn-cms_mean-ec-sensitivity_consultation
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/sensitivity_consultation/model_output-precovid-subgroup_sub_htn-exposure_case_mix2.csv
@@ -66891,6 +69611,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_diab-carehome-apc_plan-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_diab-carehome-ec_acsc_any-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_diab-carehome-ec-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_unpl-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-apc_plan-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-ec_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_diab-cms_mean-ec-sensitivity_consultation
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/sensitivity_consultation/model_output-precovid-subgroup_sub_diab-exposure_case_mix2.csv
@@ -66961,6 +69689,14 @@ actions:
     - run_regression_model-cohort_precovid-sub_sevmh-carehome-apc_plan-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_sevmh-carehome-ec_acsc_any-sensitivity_consultation
     - run_regression_model-cohort_precovid-sub_sevmh-carehome-ec-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_unpl-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-apc_plan-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec_acsc_any-sensitivity_consultation
+    - run_regression_model-cohort_precovid-sub_sevmh-cms_mean-ec-sensitivity_consultation
     outputs:
       moderately_sensitive:
         model_output_regression: output/make_output/sensitivity_consultation/model_output-precovid-subgroup_sub_sevmh-exposure_case_mix2.csv
