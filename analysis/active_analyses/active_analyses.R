@@ -349,6 +349,16 @@ df_mutually_adjusted <- crossing(
         analysis_type
     )
 
+# Exclude CMS from mutually adjusted models for the main population only.
+df_mutually_adjusted <- df_mutually_adjusted %>%
+    mutate(
+        exposure = if_else(
+            analysis == "main",
+            paste(setdiff(exposure_names, exposure_cms), collapse = ";"),
+            exposure
+        )
+    )
+    
 # Combine the single exposure and mutually adjusted analyses --------------------
 df <- bind_rows(df, df_mutually_adjusted)
 
