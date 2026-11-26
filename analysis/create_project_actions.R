@@ -981,11 +981,19 @@ model_outputs_to_skip <- model_output_actions[
 ]
 
 # Set this to character(0) to restore all model actions.
-temporarily_unwanted_actions <- c(
-  paste0("make_model_input-", model_names_to_skip),
-  regression_actions_to_skip,
-  model_outputs_to_skip
-)
+# TRUE: skip the specified model actions.
+# FALSE: restore all model actions.
+skip_model_actions <- FALSE
+
+temporarily_unwanted_actions <- if (skip_model_actions) {
+  c(
+    paste0("make_model_input-", model_names_to_skip),
+    regression_actions_to_skip,
+    model_outputs_to_skip
+  )
+} else {
+  character(0)
+}
 
 actions_list <- actions_list[
   !names(actions_list) %in% temporarily_unwanted_actions
