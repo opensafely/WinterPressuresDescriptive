@@ -79,6 +79,15 @@ long_args_all <- c(
   long_args_outcomes
 )
 
+# Select eligible cohorts for each measure -------------------------------------
+get_measure_cohorts <- function(flag) {
+  if (flag %in% c(long_args_postcovid, "ec_all", "ec_ACSCs")) {
+    cohorts_postcovid
+  } else {
+    cohorts_all
+  }
+}
+
 # Define regression categories [only for the old codes when unadjsuted and adjusted models were run separately in different actions]
 covariates_all <- c("unadjusted", "adjusted")
 
@@ -600,11 +609,7 @@ for (flag in cs_args) {
 }
 
 for (flag in long_args_all) {
-  cohorts <- if (flag %in% long_args_postcovid) {
-    cohorts_postcovid
-  } else {
-    cohorts_all
-  }
+  cohorts <- get_measure_cohorts(flag)
   for (cohort in cohorts) {
     date <- cohort_dates[[cohort]]
     if (flag %in% long_args_outcomes) {
@@ -647,8 +652,8 @@ for (flag in long_args_all) {
 }
 
 for (subgroup in subgroups) {
-  for (flag in c("Consultation",long_args_outcomes)) {
-    for (cohort in cohorts_all) {
+  for (flag in c("Consultation", long_args_outcomes)) {
+    for (cohort in get_measure_cohorts(flag)) {
       date <- cohort_dates[[cohort]]
       comment_text <- glue(
         "Generate measures for {flag} - {cohort} - {subgroup}"
