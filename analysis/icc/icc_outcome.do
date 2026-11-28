@@ -19,7 +19,7 @@ DESCRIPTION:                 This do-file runs mixed-effects models to estimate 
                              Comparing the above ICCs, and tell us to support the random-intercept model we used in main analysis.
 
                              Model outputs are stored in frames and exported as CSV files:
-                             outcome (n=48)    
+                             outcome (n=36 for pre-COVID; n=48 for post-COVID)    
 							 [APC]
 										"apc_main"                  "apc_unpl_main"                "apc_plan_main"                "apc_acsc_any_main"   "apc_unpl_acsc_any_main"    "apc_plan_acsc_any_main"      
 										"apc_acsc_any_sub_asth"     "apc_unpl_acsc_any_sub_asth"   "apc_plan_acsc_any_sub_asth"   "apc_sub_asth"        "apc_unpl_sub_asth"         "apc_plan_sub_asth" 
@@ -67,9 +67,21 @@ describe
 destring week_number, replace
 xtset practice_id week_number
 
-//Identify outcome (starting with apc or ec)
-ds apc_* ec_*
-local outcomes `r(varlist)'
+//Identify available APC and EC outcomes
+local outcomes ""
+
+foreach prefix in apc ec {
+    capture ds `prefix'_*
+
+    if _rc == 0 {
+        local outcomes "`outcomes' `r(varlist)'"
+    }
+}
+
+if "`outcomes'" == "" {
+    display as error "No APC or EC outcome variables found."
+    exit 111
+}
 
 //Results frame
 frame create icc_outcome ///
