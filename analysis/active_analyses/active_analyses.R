@@ -359,8 +359,11 @@ df_mutually_adjusted <- df_mutually_adjusted %>%
         )
     )
     
-# Combine the single exposure and mutually adjusted analyses --------------------
-df <- bind_rows(df, df_mutually_adjusted)
+# Combine analyses and exclude pre-COVID A&E outcomes ---------------------------
+df <- bind_rows(df, df_mutually_adjusted) %>%
+    filter(
+        !(cohort == "precovid" & str_detect(outcome, "^ec_"))
+    )
 
 # Define dataset variants ------------------------------------------------------
 
